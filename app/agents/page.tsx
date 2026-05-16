@@ -17,7 +17,7 @@ import { SiteNav } from "../components/site-nav";
 export const metadata: Metadata = {
   title: "Agents | The Loan Playbook",
   description:
-    "A premium mortgage strategy, education, and co-marketing platform for modern real estate agents.",
+    "A mortgage strategy, education, compliant co-marketing, and media support platform for modern real estate agents.",
 };
 
 const whyAgentsNeedStrategy = [
@@ -64,8 +64,8 @@ const contentSupport = [
   },
   {
     label: "Co-Branded Media",
-    title: "Content that raises the level of the conversation",
-    body: "Premium, practical mortgage strategy content that can support newsletters, social posts, buyer consults, open house follow-ups, and agent education campaigns.",
+    title: "Compliance-aware co-marketing support",
+    body: "Premium, practical mortgage strategy content that can support newsletters, social posts, buyer consults, open house follow-ups, and agent education campaigns with appropriate review.",
   },
   {
     label: "Local Authority",
@@ -133,7 +133,7 @@ export default function AgentsPage() {
           title="A sharper lending strategy layer for modern agents."
           lead="The Loan Playbook helps real estate professionals educate buyers, clarify financing decisions, and build a cleaner path from first conversation to closing."
           focusLabel="Platform Thesis"
-          focus="This is not a referral script or recruiting pitch. It is a buyer-readiness, mortgage education, and co-marketing system designed to make the agent relationship more strategic over time."
+          focus="This is not a recruiting pitch or transactional sales script. It is a buyer-readiness, mortgage education, and compliant co-marketing support system designed to make the agent relationship more strategic over time."
           visual="basketball-agents"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
@@ -334,8 +334,9 @@ export default function AgentsPage() {
                   <p className="reveal-item">
                     The partnership model is intentionally quiet and high-trust.
                     It supports the agent&apos;s brand, gives buyers better
-                    context, and creates a more intelligent financing experience
-                    without making the relationship feel transactional.
+                    context, and keeps co-marketing or lead-generation concepts
+                    subject to RESPA, state, licensing, and company-specific
+                    compliance review.
                   </p>
                 </div>
               </div>
@@ -348,7 +349,7 @@ export default function AgentsPage() {
           <CTASection
             eyebrow="Agent Strategy Conversation"
             title="Build a better front end for buyer financing."
-            body="For agents, teams, and brokerages that want a more strategic lending conversation around buyer readiness, co-branded education, market intelligence, and long-term client trust."
+            body="For agents, teams, and brokerages that want a more strategic lending conversation around buyer readiness, co-branded education, compliant lead generation, market intelligence, and long-term client trust."
             actions={[
               {
                 href: "mailto:hello@theloanplaybook.com?subject=Agent%20Strategy%20Conversation",

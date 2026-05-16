@@ -100,9 +100,9 @@ export default function Home() {
             <span className="text-zinc-500">before you apply.</span>
           </h1>
           <p className="hero-enter hero-enter-d3 relative mt-10 max-w-xl text-lg leading-relaxed text-zinc-400 md:mt-12 md:text-xl">
-            The Loan Playbook is a cinematic strategy system for borrowers who
-            refuse to enter the process blind. Film-room clarity. Game-day
-            execution.
+            The Loan Playbook is a mortgage strategy, education, and media
+            platform for buyers, real estate agents, and partners who want
+            lending decisions explained before the pressure starts.
           </p>
           <div className="hero-enter hero-enter-d4 relative mt-14 flex flex-col gap-4 sm:flex-row sm:items-center md:mt-16">
             <a
@@ -159,9 +159,10 @@ export default function Home() {
               className="flex flex-col justify-center space-y-9 text-lg leading-relaxed text-zinc-400 md:space-y-10"
             >
               <p className="reveal-item">
-                The lending process wasn&apos;t built for clarity. It was built
-                for volume. You get rate quotes, document lists, and urgency—but
-                rarely a strategy.
+                The lending process often gives people documents, deadlines,
+                and rate noise before it gives them context. Buyers need a way
+                to understand readiness, structure, and timing before the market
+                creates pressure.
               </p>
               <p className="reveal-item">
                 That&apos;s how strong applicants lose on timing, weak files
@@ -169,8 +170,9 @@ export default function Home() {
                 reacting instead of directing.
               </p>
               <p className="reveal-item border-l-2 border-[#5b21b6] pl-7 text-white transition-[border-color] duration-[var(--duration-hover)] ease-[var(--ease-soft)] hover:border-[#7c3aed]">
-                The Loan Playbook exists because the outcome is decided long
-                before underwriting opens your file.
+                The Loan Playbook exists because better education, stronger
+                preparation, and clearer strategy can improve the conversation
+                long before underwriting opens a file.
               </p>
             </div>
           </RevealGroup>
@@ -426,8 +428,9 @@ export default function Home() {
                     Start running the playbook.
                   </h2>
                   <p className="reveal-item mt-8 max-w-lg text-lg leading-relaxed text-zinc-400 md:mt-10">
-                    Get early access to the full strategy system—frameworks,
-                    sequences, and film-room breakdowns for your loan.
+                    Get early access to the strategy system: buyer education,
+                    mortgage explainers, social content themes, and partnership
+                    resources built around compliant lending conversations.
                   </p>
                   <form className="reveal-item mt-12 flex max-w-md flex-col gap-4 sm:flex-row md:mt-14">
                     <label htmlFor="email" className="sr-only">
@@ -447,7 +450,7 @@ export default function Home() {
                     </button>
                   </form>
                   <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
-                    No spam · Strategy only
+                    Educational content only · No rate quote or loan commitment
                   </p>
                 </RevealGroup>
               </div>

@@ -52,7 +52,7 @@ const platformPillars = [
   {
     step: "Capture",
     title: "Lead and conversation infrastructure",
-    body: "Buyer-facing strategy conversations, content pathways, and readiness prompts designed to create better intake without pressuring the relationship.",
+    body: "Buyer-facing strategy conversations, content pathways, and readiness prompts designed to create compliant intake without pressuring the relationship.",
   },
   {
     step: "Enablement",
@@ -252,7 +252,7 @@ export default function PartnersPage() {
               <SectionHeader
                 eyebrow="Partnership Models"
                 title="Flexible structures for education-led growth and lending strategy."
-                lead="Partnership design depends on market, licensing, company policy, RESPA analysis, and business objectives. The conversation starts with structure, not promises."
+              lead="Partnership design depends on RESPA, state, licensing, company-specific compliance, market needs, and business objectives. The conversation starts with structure, not promises."
               />
 
               <RevealGroup
@@ -289,15 +289,16 @@ export default function PartnersPage() {
                 </h2>
                 <p className="reveal-item mt-8 text-lg leading-relaxed text-zinc-400">
                   Any co-marketing, lead generation, education platform, or
-                  compensation-related structure should be reviewed for RESPA,
-                  state law, licensing requirements, company policy, and
-                  transaction-specific compliance. The Loan Playbook does not
-                  position partnership value as payment for referrals.
+                  partnership structure should be reviewed for RESPA, state,
+                  licensing, company-specific compliance, and
+                  transaction-specific requirements. The Loan Playbook is
+                  structured around education, compliant services, and approved
+                  business-development activity, not transaction steering.
                 </p>
                 <p className="reveal-item mt-6 text-sm leading-relaxed text-zinc-600">
-                  Where legally available, compliant compensation structures may
-                  be discussed only after appropriate legal, licensing, and
-                  company-level review.
+                  Structures should be documented and approved before launch by
+                  the appropriate legal, licensing, and company-level review
+                  process.
                 </p>
               </div>
             </RevealGroup>

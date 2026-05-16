@@ -15,11 +15,12 @@ import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
 import { SiteNav } from "../components/site-nav";
 import { broadviewArticles } from "../lib/content-sources";
+import { learnArticles } from "../lib/learn-articles";
 
 export const metadata: Metadata = {
   title: "Learn | The Loan Playbook",
   description:
-    "Mortgage education, buyer strategy, loan program guides, and real estate finance content from The Loan Playbook.",
+    "Mortgage education, SEO article hubs, buyer strategy guides, and Broadview Lending article import placeholders from The Loan Playbook.",
 };
 
 const featuredPlaybooks = [
@@ -38,19 +39,6 @@ const featuredPlaybooks = [
     title: "Choosing the right loan lane",
     body: "A practical framework for FHA, VA, conventional, jumbo, DSCR, refinance, HELOC, and commercial lending decisions.",
   },
-];
-
-const popularTopics = [
-  "Seller concessions",
-  "2-1 buydowns",
-  "FHA loans",
-  "VA loans",
-  "Jumbo loans",
-  "Refinance timing",
-  "HELOC strategy",
-  "DSCR loans",
-  "Commercial lending",
-  "First-time buyer strategy",
 ];
 
 const buyerStrategy = [
@@ -155,9 +143,9 @@ export default function LearnPage() {
         <PageHero
           eyebrow="Education Hub"
           title="Mortgage strategy, translated."
-          lead="The Loan Playbook organizes lending education into clear playbooks, topic guides, articles, and social-content themes for buyers, agents, and partners."
+          lead="The Loan Playbook organizes mortgage education into SEO-ready playbooks, topic guides, article templates, and social-content themes for buyers, agents, and partners."
           focusLabel="Editorial System"
-          focus="This is the strategy library: loan programs, offer structure, buyer readiness, agent education, commercial finance, and market context translated into useful decisions."
+          focus="This is the strategy library: loan programs, offer structure, buyer readiness, agent education, commercial finance, Broadview Lending article imports, and market context translated into useful decisions."
           visual="multi-strategy"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
@@ -177,7 +165,7 @@ export default function LearnPage() {
           <StatRow
             className="reveal-item mt-20"
             stats={[
-              { value: "10", label: "Core topics" },
+              { value: "9", label: "SEO topics" },
               { value: "3", label: "Strategy lanes" },
               { value: "1", label: "Learning hub" },
             ]}
@@ -231,22 +219,26 @@ export default function LearnPage() {
               className="mt-14 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2 lg:grid-cols-5"
               stagger={60}
             >
-              {popularTopics.map((topic) => (
-                <div
-                  key={topic}
+              {learnArticles.map((topic) => (
+                <Link
+                  key={topic.slug}
+                  href={`/learn/${topic.slug}`}
                   className="reveal-item group bg-[#050505] p-6 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a]"
                 >
                   <p className="font-mono text-[10px] tracking-[0.24em] text-[#7c3aed] uppercase">
-                    Topic
+                    SEO Article
                   </p>
                   <h2 className="mt-4 text-xl font-semibold tracking-[-0.02em] text-white">
-                    {topic}
+                    {topic.title}
                   </h2>
+                  <p className="mt-4 text-sm leading-relaxed text-zinc-600 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-500">
+                    {topic.description}
+                  </p>
                   <div
                     className="mt-6 h-px w-8 bg-zinc-800 transition-all duration-[var(--duration-hover)] group-hover:w-full group-hover:bg-[#7c3aed]/40"
                     aria-hidden
                   />
-                </div>
+                </Link>
               ))}
             </RevealGroup>
           </div>
@@ -408,7 +400,7 @@ export default function LearnPage() {
         <CTASection
           eyebrow="Build Your Loan Playbook"
           title="Turn mortgage information into a strategy system."
-          body="Start with the core playbooks, then build the buyer education, agent content, video topics, and commercial strategy pages around the decisions people actually need to make."
+          body="Start with the core playbooks, then build buyer education, agent content, video topics, Broadview imports, and commercial strategy pages around the decisions people actually need to make."
           actions={[
             {
               href: "/buyers",

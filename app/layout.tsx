@@ -15,7 +15,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "The Loan Playbook",
   description:
-    "A strategy-first approach to lending. Build your game plan before you enter the arena.",
+    "A mortgage strategy, education, and media platform for buyers, real estate agents, and partnership teams.",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
 };
 
 export default function RootLayout({

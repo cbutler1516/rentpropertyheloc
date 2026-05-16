@@ -18,7 +18,7 @@ import { videoSections } from "../lib/content-sources";
 export const metadata: Metadata = {
   title: "Videos | The Loan Playbook",
   description:
-    "Short-form mortgage strategy videos, market updates, explainers, and social content from The Loan Playbook.",
+    "A social media hub for mortgage education videos, market updates, agent education, buyer education, and AI creative concepts from The Loan Playbook.",
 };
 
 function VideoGrid({
@@ -65,9 +65,9 @@ export default function VideosPage() {
         <PageHero
           eyebrow="Video + Social Hub"
           title="Watch the playbook in motion."
-          lead="A premium media hub for short-form mortgage plays, educational explainers, market updates, social content, and future long-form strategy videos."
+          lead="A premium social media hub for short-form mortgage plays, educational explainers, market updates, agent support, buyer education, and future long-form strategy videos."
           focusLabel="Content System"
-          focus="The video hub turns mortgage education into repeatable formats for TikTok, Instagram, Facebook Reels, YouTube Shorts, and future long-form editorial breakdowns."
+          focus="The video hub turns mortgage education into repeatable, compliance-aware formats for TikTok, Instagram Reels, Facebook Reels, YouTube Shorts, long-form explainers, and future AI/Sora creative concepts."
           visual="basketball-agents"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
@@ -75,7 +75,7 @@ export default function VideosPage() {
               href="#tiktok"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              View Featured Videos
+              Browse Video Lanes
             </a>
             <Link
               href="/learn"
@@ -139,7 +139,7 @@ export default function VideosPage() {
         <CTASection
           eyebrow="Turn Content Into Strategy"
           title="Build a media system around the questions buyers actually ask."
-          body="Use the video hub to organize short-form plays, social content, explainers, market updates, agent education, and creative experiments into one premium strategy engine."
+          body="Use the video hub to organize short-form plays, social content, explainers, market updates, agent education, buyer education, and creative experiments into one premium education engine."
           actions={[
             {
               href: "/learn",
