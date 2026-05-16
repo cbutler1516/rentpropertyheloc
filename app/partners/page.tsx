@@ -3,7 +3,10 @@ import Link from "next/link";
 import { FooterBrand } from "../components/brand";
 import { ComplianceFooter } from "../components/compliance-footer";
 import {
-  CTASection,
+  ConversionCTA,
+  conversionCtas,
+} from "../components/conversion-cta";
+import {
   FeatureCard,
   PageHero,
   ProcessStep,
@@ -23,8 +26,8 @@ export const metadata: Metadata = {
 const problemAreas = [
   {
     label: "01 / Readiness",
-    title: "Agents need earlier buyer clarity",
-    body: "Firm leaders know that transaction quality often starts before the offer. Buyers need stronger financing context before agents are managing urgency.",
+    title: "Growth depends on cleaner buyer conversations",
+    body: "Brokerage growth is harder when agents are forced to manage financing confusion late in the transaction. Buyers need stronger context before urgency affects confidence.",
   },
   {
     label: "02 / Content",
@@ -50,12 +53,12 @@ const platformPillars = [
     body: "Short-form and editorial concepts built around market context, buyer decision-making, affordability, and transaction preparation.",
   },
   {
-    step: "Capture",
-    title: "Lead and conversation infrastructure",
+    step: "Lead Gen",
+    title: "Compliant lead-generation pathways",
     body: "Buyer-facing strategy conversations, content pathways, and readiness prompts designed to create compliant intake without pressuring the relationship.",
   },
   {
-    step: "Enablement",
+    step: "Adoption",
     title: "Agent adoption support",
     body: "A platform agents can understand quickly: clear talking points, simple frameworks, and useful buyer preparation tools.",
   },
@@ -102,12 +105,30 @@ const partnershipModels = [
   },
 ];
 
+const platformEconomics = [
+  {
+    label: "Cost of Confusion",
+    title: "Reduce avoidable friction",
+    body: "A better education layer can lower the operational cost of unclear buyer expectations, repeated explanations, and late-stage financing surprises.",
+  },
+  {
+    label: "Content Leverage",
+    title: "Turn expertise into repeatable media",
+    body: "Articles, short-form videos, and buyer guides can support agent adoption and compliant marketing without recreating the same explanation every week.",
+  },
+  {
+    label: "Measured Opportunity",
+    title: "Evaluate value without compensation promises",
+    body: "Platform economics should be reviewed around approved services, documented scope, compliance requirements, and measurable education outcomes, not transaction steering.",
+  },
+];
+
 export default function PartnersPage() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
       <PageAmbient enableParallax={false} />
       <div
-        className="playbook-grid playbook-grid-animated pointer-events-none fixed inset-0 z-0 opacity-30"
+        className="playbook-grid pointer-events-none fixed inset-0 z-0 opacity-30"
         aria-hidden
       />
       <div
@@ -166,7 +187,7 @@ export default function PartnersPage() {
           />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
-              eyebrow="The Problem"
+              eyebrow="Brokerage Growth Problem"
               title="Brokerages need better financing clarity before transactions are at risk."
               lead="Agents are expected to advise buyers through a market where financing decisions shape confidence, offer strategy, and execution. Most firms do not have a modern education layer built for that moment."
             />
@@ -193,7 +214,7 @@ export default function PartnersPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="The Platform"
-              title="Education, media, lead capture, buyer strategy, and agent enablement."
+              title="Education, media, compliant lead generation, buyer strategy, and agent adoption."
               lead="The Loan Playbook is designed as an operating layer around real estate finance conversations. It gives leadership a clearer way to support agents without turning lending into a sales script."
             />
 
@@ -252,7 +273,7 @@ export default function PartnersPage() {
               <SectionHeader
                 eyebrow="Partnership Models"
                 title="Flexible structures for education-led growth and lending strategy."
-              lead="Partnership design depends on RESPA, state, licensing, company-specific compliance, market needs, and business objectives. The conversation starts with structure, not promises."
+                lead="Partnership design depends on RESPA, state, licensing, company-specific compliance, market needs, and business objectives. The conversation starts with structure, not promises."
               />
 
               <RevealGroup
@@ -269,6 +290,32 @@ export default function PartnersPage() {
                 ))}
               </RevealGroup>
             </div>
+          </div>
+          <div className="section-bridge-bottom" aria-hidden />
+        </section>
+
+        <section className="section-flow relative">
+          <div className="section-bridge-top" aria-hidden />
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <SectionHeader
+              eyebrow="Platform Economics"
+              title="A partnership should create operational value without promising compensation."
+              lead="The business case is education infrastructure, agent enablement, content leverage, compliant intake, and a better client experience. Any structure should be documented and reviewed before launch."
+            />
+            <RevealGroup
+              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3 md:gap-8"
+              stagger={130}
+            >
+              {platformEconomics.map((item) => (
+                <FeatureCard
+                  key={item.label}
+                  label={item.label}
+                  title={item.title}
+                  body={item.body}
+                  className="card-lift border border-zinc-900/80"
+                />
+              ))}
+            </RevealGroup>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
@@ -307,19 +354,7 @@ export default function PartnersPage() {
         </section>
 
         <div id="partnership-conversation">
-          <CTASection
-            eyebrow="Partnership Conversation"
-            title="Explore a modern lending partnership for your firm."
-            body="For managing brokers, team leaders, firm owners, and brokerage leadership evaluating buyer readiness, education infrastructure, compliant co-marketing, lead generation, and strategic lending relationships."
-            actions={[
-              {
-                href: "mailto:hello@theloanplaybook.com?subject=Partnership%20Conversation",
-                label: "Explore a Partnership Conversation",
-                variant: "primary",
-              },
-              { href: "/agents", label: "View Agent Platform" },
-            ]}
-          />
+          <ConversionCTA {...conversionCtas.brokerPartnership} />
         </div>
       </main>
 

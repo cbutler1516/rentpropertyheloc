@@ -6,6 +6,9 @@ export type LearnArticle = {
   keyTakeaways: string[];
   howItWorks: string[];
   whenItMakesSense: string[];
+  commonMistakes?: string[];
+  videoTitle?: string;
+  videoDescription?: string;
   ctaTitle: string;
   ctaBody: string;
 };
@@ -15,9 +18,9 @@ export const learnArticles: LearnArticle[] = [
     slug: "seller-concessions",
     title: "Seller Concessions",
     description:
-      "A placeholder guide to seller concessions, credits, cash-to-close strategy, and compliant buyer education.",
+      "Learn how seller concessions can affect cash-to-close, payment strategy, and offer structure without treating credits as a guaranteed loan outcome.",
     intro:
-      "Seller concessions can help buyers think beyond price alone. This placeholder guide explains how credits may affect cash-to-close, payment design, and offer strategy without implying a specific approval, quote, or loan outcome.",
+      "Seller concessions can help buyers think beyond price alone. A properly structured credit may support cash-to-close planning, temporary buydown strategy, or closing-cost management, but it still has to fit the loan program, contract, property, and underwriting guidelines.",
     keyTakeaways: [
       "A seller concession is generally a seller-paid credit toward allowable buyer costs.",
       "Credits can affect cash needed at closing, but they do not automatically make a loan stronger.",
@@ -33,6 +36,14 @@ export const learnArticles: LearnArticle[] = [
       "A credit creates more practical value than a small price reduction.",
       "The offer strategy can support the credit without weakening seller confidence.",
     ],
+    commonMistakes: [
+      "Assuming every credit can be used for any cost.",
+      "Negotiating a concession before confirming program limits and seller-credit rules.",
+      "Focusing only on the credit amount instead of the full payment and cash-to-close picture.",
+    ],
+    videoTitle: "Seller concessions vs. price reductions",
+    videoDescription:
+      "Future embed placeholder for a short explainer comparing credits, price reductions, cash-to-close, and payment design.",
     ctaTitle: "Compare credits, cash, and payment before writing the offer.",
     ctaBody:
       "Use The Loan Playbook to evaluate concessions as part of a broader financing strategy, not as a one-size-fits-all tactic.",
@@ -41,9 +52,9 @@ export const learnArticles: LearnArticle[] = [
     slug: "2-1-buydowns",
     title: "2-1 Buydowns",
     description:
-      "A placeholder guide to temporary buydowns, payment education, and borrower strategy.",
+      "Understand how 2-1 buydowns work, when temporary payment relief may fit, and what borrowers should know before using seller credits this way.",
     intro:
-      "A 2-1 buydown is a temporary payment strategy that may reduce the borrower's payment in the early years of a loan. This page is an educational placeholder for understanding when that structure may or may not fit.",
+      "A 2-1 buydown is a temporary payment strategy that may reduce the borrower's payment in the early years of a loan. It can be useful when the borrower understands the full payment path, the funding source is eligible, and the structure fits the loan program.",
     keyTakeaways: [
       "A temporary buydown is not the same as a permanent rate reduction.",
       "The upfront cost is typically funded through an approved source such as seller credit or other eligible funds.",
@@ -59,6 +70,14 @@ export const learnArticles: LearnArticle[] = [
       "Seller credits are available and the structure passes program guidelines.",
       "The buyer values temporary payment relief more than another use of available credits.",
     ],
+    commonMistakes: [
+      "Treating the temporary payment as the long-term affordability number.",
+      "Ignoring how the buydown is funded and whether the credit is allowable.",
+      "Using a buydown when a different credit strategy would better support the buyer.",
+    ],
+    videoTitle: "2-1 buydown in under 60 seconds",
+    videoDescription:
+      "Future embed placeholder for a fast visual explanation of year-one, year-two, and long-term payment expectations.",
     ctaTitle: "Understand the full payment path before using a buydown.",
     ctaBody:
       "The Loan Playbook helps buyers and agents discuss temporary payment relief with context and compliance-aware expectations.",
@@ -119,9 +138,9 @@ export const learnArticles: LearnArticle[] = [
     slug: "jumbo-loans",
     title: "Jumbo Loans",
     description:
-      "A placeholder jumbo loan guide for higher-balance mortgage strategy and buyer preparation.",
+      "A jumbo loan strategy guide for higher-balance buyers preparing documentation, reserves, liquidity, and offer expectations.",
     intro:
-      "Jumbo loans can require a deeper look at liquidity, reserves, documentation, property type, and investor guidelines. This placeholder frames jumbo financing as a preparation exercise.",
+      "Jumbo loans can require a deeper look at liquidity, reserves, documentation, property type, appraisal risk, and investor guidelines. The strategy is to make the file legible before the buyer is competing for a higher-value property.",
     keyTakeaways: [
       "Jumbo guidelines can vary by lender and investor.",
       "Reserves, asset documentation, and property details often matter more.",
@@ -137,6 +156,14 @@ export const learnArticles: LearnArticle[] = [
       "The borrower can document reserves and assets clearly.",
       "The timeline allows for a more detailed underwriting review.",
     ],
+    commonMistakes: [
+      "Waiting until contract to organize asset and reserve documentation.",
+      "Assuming jumbo guidelines are the same across lenders and investors.",
+      "Underestimating property review, appraisal, or liquidity requirements.",
+    ],
+    videoTitle: "Jumbo readiness checklist",
+    videoDescription:
+      "Future embed placeholder for a film-room style checklist covering reserves, documentation, property risk, and offer timing.",
     ctaTitle: "Prepare the jumbo file before the negotiation starts.",
     ctaBody:
       "Use The Loan Playbook to organize liquidity, documentation, and offer strategy before a high-balance purchase moves quickly.",
@@ -145,7 +172,7 @@ export const learnArticles: LearnArticle[] = [
     slug: "refinance-timing",
     title: "Refinance Timing",
     description:
-      "A placeholder refinance timing guide for education around payment, break-even, and long-term strategy.",
+      "Learn how to evaluate refinance timing with payment, costs, break-even, cash flow, debt strategy, and time horizon in mind.",
     intro:
       "Refinance timing is not just about whether rates moved. It depends on goals, costs, break-even period, cash flow, debt strategy, and how long the borrower expects the new loan to matter.",
     keyTakeaways: [
@@ -163,6 +190,14 @@ export const learnArticles: LearnArticle[] = [
       "The expected benefit reasonably supports the costs and timeline.",
       "The new loan structure improves flexibility, cash flow, or long-term planning.",
     ],
+    commonMistakes: [
+      "Reacting to a headline rate without comparing total costs and time horizon.",
+      "Ignoring how long the borrower expects to keep the new loan.",
+      "Looking only at payment reduction instead of broader financial objectives.",
+    ],
+    videoTitle: "Rates moved. Should you refinance?",
+    videoDescription:
+      "Future embed placeholder for a refinance timing explainer focused on break-even, costs, and strategy rather than rate predictions.",
     ctaTitle: "Treat refinance timing as a strategy decision.",
     ctaBody:
       "The Loan Playbook helps borrowers evaluate refinance scenarios with context instead of reacting to market headlines.",
@@ -171,9 +206,9 @@ export const learnArticles: LearnArticle[] = [
     slug: "heloc-strategy",
     title: "HELOC Strategy",
     description:
-      "A placeholder HELOC strategy guide for home equity education and borrower planning.",
+      "A HELOC strategy guide for understanding home equity access, repayment risk, variable rates, and responsible planning.",
     intro:
-      "A HELOC can provide access to home equity, but it should be evaluated alongside purpose, repayment plan, risk, and alternatives. This placeholder keeps the conversation educational and strategy-first.",
+      "A HELOC can provide access to home equity, but it should be evaluated alongside purpose, repayment plan, rate structure, lien position, risk, and alternatives. The goal is to use equity with a plan rather than treating it like casual cash flow.",
     keyTakeaways: [
       "A HELOC is revolving credit secured by the home.",
       "Variable rates, draw periods, repayment terms, and lien position matter.",
@@ -189,6 +224,14 @@ export const learnArticles: LearnArticle[] = [
       "The repayment plan is realistic under the line's terms.",
       "Alternatives such as cash-out refinance or savings have been considered.",
     ],
+    commonMistakes: [
+      "Using equity without a defined repayment strategy.",
+      "Ignoring variable-rate risk, draw periods, and future payment changes.",
+      "Comparing a HELOC to a refinance without considering total structure and goals.",
+    ],
+    videoTitle: "HELOC strategy before borrowing",
+    videoDescription:
+      "Future embed placeholder for an educational video on equity access, repayment planning, and alternatives.",
     ctaTitle: "Use equity with a plan.",
     ctaBody:
       "The Loan Playbook helps borrowers think through HELOC strategy, tradeoffs, and responsible usage before applying.",

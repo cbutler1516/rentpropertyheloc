@@ -3,6 +3,7 @@ import {
   PageHero,
   ProcessStep,
 } from "./design-system";
+import type { ReactNode } from "react";
 import { FooterBrand } from "./brand";
 import { ComplianceFooter } from "./compliance-footer";
 import { PageAmbient } from "./page-ambient";
@@ -25,6 +26,7 @@ type InternalPageProps = {
     title: string;
     body: string;
   };
+  extraSections?: ReactNode;
 };
 
 export function InternalPage({
@@ -35,12 +37,13 @@ export function InternalPage({
   strategyVisual,
   sections,
   closing,
+  extraSections,
 }: InternalPageProps) {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
       <PageAmbient enableParallax={false} />
       <div
-        className="playbook-grid playbook-grid-animated pointer-events-none fixed inset-0 z-0 opacity-30"
+        className="playbook-grid pointer-events-none fixed inset-0 z-0 opacity-30"
         aria-hidden
       />
       <div
@@ -90,6 +93,8 @@ export function InternalPage({
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
+
+        {extraSections}
 
         <CTASection
           title={closing.title}

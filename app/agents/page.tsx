@@ -3,7 +3,10 @@ import Link from "next/link";
 import { FooterBrand } from "../components/brand";
 import { ComplianceFooter } from "../components/compliance-footer";
 import {
-  CTASection,
+  ConversionCTA,
+  conversionCtas,
+} from "../components/conversion-cta";
+import {
   FeatureCard,
   PageHero,
   ProcessStep,
@@ -109,7 +112,7 @@ export default function AgentsPage() {
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
       <PageAmbient enableParallax={false} />
       <div
-        className="playbook-grid playbook-grid-animated pointer-events-none fixed inset-0 z-0 opacity-30"
+        className="playbook-grid pointer-events-none fixed inset-0 z-0 opacity-30"
         aria-hidden
       />
       <div
@@ -346,19 +349,7 @@ export default function AgentsPage() {
         </section>
 
         <div id="agent-strategy">
-          <CTASection
-            eyebrow="Agent Strategy Conversation"
-            title="Build a better front end for buyer financing."
-            body="For agents, teams, and brokerages that want a more strategic lending conversation around buyer readiness, co-branded education, compliant lead generation, market intelligence, and long-term client trust."
-            actions={[
-              {
-                href: "mailto:hello@theloanplaybook.com?subject=Agent%20Strategy%20Conversation",
-                label: "Start the Conversation",
-                variant: "primary",
-              },
-              { href: "/strategy", label: "Explore the Framework" },
-            ]}
-          />
+          <ConversionCTA {...conversionCtas.agentPartnership} />
         </div>
       </main>
 

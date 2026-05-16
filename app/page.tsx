@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { FooterBrand } from "./components/brand";
 import { ComplianceFooter } from "./components/compliance-footer";
+import {
+  ConversionCTA,
+  conversionCtas,
+} from "./components/conversion-cta";
 import { StatRow } from "./components/design-system";
 import { HeroMotionLayer } from "./components/hero-motion-layer";
 import { PageAmbient } from "./components/page-ambient";
@@ -397,6 +401,8 @@ export default function Home() {
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
+
+        <ConversionCTA {...conversionCtas.newsletter} />
 
         {/* CTA */}
         <section id="cta" className="section-flow relative">

@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import {
+  ConversionCTA,
+  conversionCtas,
+} from "../components/conversion-cta";
 import { InternalPage } from "../components/internal-page";
 
 export const metadata: Metadata = {
@@ -36,6 +40,7 @@ export default function CommercialPage() {
         title: "Make the deal legible.",
         body: "The commercial path is built around clarity: show the asset, explain the operator, and structure the financing with intention.",
       }}
+      extraSections={<ConversionCTA {...conversionCtas.commercialReview} />}
     />
   );
 }

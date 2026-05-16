@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import {
+  ConversionCTA,
+  conversionCtas,
+} from "../components/conversion-cta";
 import { InternalPage } from "../components/internal-page";
 
 export const metadata: Metadata = {
@@ -36,6 +40,7 @@ export default function BuyersPage() {
         title: "Prepare before the search gets loud.",
         body: "The buyer path is designed to replace uncertainty with a calm sequence: understand the field, prepare the file, and enter the market with leverage.",
       }}
+      extraSections={<ConversionCTA {...conversionCtas.buyerStrategy} />}
     />
   );
 }

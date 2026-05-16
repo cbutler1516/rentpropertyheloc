@@ -121,7 +121,7 @@ export default function LearnPage() {
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
       <PageAmbient enableParallax={false} />
       <div
-        className="playbook-grid playbook-grid-animated pointer-events-none fixed inset-0 z-0 opacity-30"
+        className="playbook-grid pointer-events-none fixed inset-0 z-0 opacity-30"
         aria-hidden
       />
       <div

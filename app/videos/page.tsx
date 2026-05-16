@@ -3,7 +3,11 @@ import Link from "next/link";
 import { FooterBrand } from "../components/brand";
 import { ComplianceFooter } from "../components/compliance-footer";
 import {
-  CTASection,
+  ConversionCTA,
+  conversionCtas,
+} from "../components/conversion-cta";
+import {
+  FeatureCard,
   PageHero,
   SectionHeader,
   StatRow,
@@ -20,6 +24,40 @@ export const metadata: Metadata = {
   description:
     "A social media hub for mortgage education videos, market updates, agent education, buyer education, and AI creative concepts from The Loan Playbook.",
 };
+
+const videoFilters = [
+  "All",
+  "TikTok",
+  "Reels",
+  "Shorts",
+  "Explainers",
+  "Market",
+  "Agents",
+  "Buyers",
+  "AI / Sora",
+];
+
+const featuredVideo = videoSections
+  .flatMap((section) => section.videos)
+  .find((video) => video.title === "What buyers misunderstand about pre-approval");
+
+const landingPageSystem = [
+  {
+    label: "Article",
+    title: "Turn the topic into search content",
+    body: "Every video concept can become a Learn article, FAQ cluster, or landing page that supports buyer education and organic discovery.",
+  },
+  {
+    label: "Shorts",
+    title: "Cut the lesson into social formats",
+    body: "A single mortgage strategy can become a TikTok, Reel, Short, carousel, newsletter blurb, and agent talking point.",
+  },
+  {
+    label: "CTA",
+    title: "Route viewers into compliant next steps",
+    body: "Content should guide people toward education, strategy calls, or partner conversations without implying rates, approval, or commitments.",
+  },
+];
 
 function VideoGrid({
   videos,
@@ -43,7 +81,7 @@ export default function VideosPage() {
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
       <PageAmbient enableParallax={false} />
       <div
-        className="playbook-grid playbook-grid-animated pointer-events-none fixed inset-0 z-0 opacity-30"
+        className="playbook-grid pointer-events-none fixed inset-0 z-0 opacity-30"
         aria-hidden
       />
       <div
@@ -94,6 +132,35 @@ export default function VideosPage() {
           />
         </PageHero>
 
+        <section className="section-flow section-matte relative border-y border-zinc-900/40">
+          <div className="section-bridge-top" aria-hidden />
+          <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[0.85fr_1.15fr] md:px-10">
+            <div>
+              <SectionHeader
+                eyebrow="Featured Module"
+                title="A hero slot for the next flagship video."
+                lead="Use this module for the most important current explainer, featured campaign, or launch video before the deeper category lanes."
+              />
+              <div className="mt-10 flex flex-wrap gap-3">
+                {videoFilters.map((filter) => (
+                  <button
+                    key={filter}
+                    type="button"
+                    className="border border-zinc-900 bg-[#050505] px-4 py-3 font-mono text-[10px] tracking-[0.2em] text-zinc-600 uppercase transition-colors duration-[var(--duration-hover)] hover:border-[#7c3aed]/40 hover:text-zinc-300"
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+              <p className="mt-5 font-mono text-[10px] tracking-[0.18em] text-zinc-700 uppercase">
+                Filter UI placeholder only. No client-side filtering yet.
+              </p>
+            </div>
+            {featuredVideo ? <VideoCard video={featuredVideo} /> : null}
+          </div>
+          <div className="section-bridge-bottom" aria-hidden />
+        </section>
+
         {videoSections.map((section, index) => (
           <section
             key={section.id}
@@ -136,19 +203,33 @@ export default function VideosPage() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        <CTASection
-          eyebrow="Turn Content Into Strategy"
-          title="Build a media system around the questions buyers actually ask."
-          body="Use the video hub to organize short-form plays, social content, explainers, market updates, agent education, buyer education, and creative experiments into one premium education engine."
-          actions={[
-            {
-              href: "/learn",
-              label: "Turn Content Into Strategy",
-              variant: "primary",
-            },
-            { href: "/agents", label: "Agent Platform" },
-          ]}
-        />
+        <section className="section-flow relative">
+          <div className="section-bridge-top" aria-hidden />
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <SectionHeader
+              eyebrow="Video To Landing Page"
+              title="Turn every useful video into a deeper education asset."
+              lead="The video hub is not just a gallery. It is a production map for SEO articles, social clips, landing pages, agent resources, and newsletter content."
+            />
+            <RevealGroup
+              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3 md:gap-8"
+              stagger={120}
+            >
+              {landingPageSystem.map((item) => (
+                <FeatureCard
+                  key={item.label}
+                  label={item.label}
+                  title={item.title}
+                  body={item.body}
+                  className="card-lift border border-zinc-900/80"
+                />
+              ))}
+            </RevealGroup>
+          </div>
+          <div className="section-bridge-bottom" aria-hidden />
+        </section>
+
+        <ConversionCTA {...conversionCtas.newsletter} />
       </main>
 
       <footer className="relative z-10 border-t border-zinc-900/60 py-10">
