@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FooterBrand } from "./components/brand";
 import { ComplianceFooter } from "./components/compliance-footer";
 import { StatRow } from "./components/design-system";
@@ -5,6 +6,7 @@ import { HeroMotionLayer } from "./components/hero-motion-layer";
 import { PageAmbient } from "./components/page-ambient";
 import { RevealGroup } from "./components/reveal-group";
 import { SiteNav } from "./components/site-nav";
+import { homeHubLinks } from "./lib/content-sources";
 
 const paths = [
   {
@@ -300,6 +302,96 @@ export default function Home() {
                   </a>
               ))}
             </RevealGroup>
+          </div>
+          <div className="section-bridge-bottom" aria-hidden />
+        </section>
+
+        {/* Content Hub */}
+        <section className="section-flow relative border-t border-zinc-900/40">
+          <div className="section-bridge-top" aria-hidden />
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <RevealGroup
+              stagger={120}
+              className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-14"
+            >
+              <div data-parallax="0.025">
+                <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
+                  Content Hub
+                </p>
+                <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
+                  Education, media,
+                  <br />
+                  and partner resources.
+                </h2>
+              </div>
+              <p
+                className="reveal-item max-w-md text-zinc-500"
+                data-parallax="0.02"
+              >
+                The Loan Playbook now connects the Learn hub, video platform,
+                agent and partner systems, and Broadview Lending resources into
+                one educational media structure.
+              </p>
+            </RevealGroup>
+
+            <RevealGroup
+              className="mt-16 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:mt-20 md:grid-cols-5"
+              stagger={90}
+            >
+              {homeHubLinks.map((item) =>
+                item.external ? (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="reveal-item group relative flex min-h-[18rem] flex-col bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a]"
+                  >
+                    <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
+                      {item.label}
+                    </span>
+                    <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.02em] text-white">
+                      {item.title}
+                    </h3>
+                    <p className="relative mt-5 flex-1 leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
+                      {item.body}
+                    </p>
+                    <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] group-hover:text-white">
+                      Open resource
+                      <span className="text-[#7c3aed]" aria-hidden>
+                        →
+                      </span>
+                    </span>
+                  </a>
+                ) : (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="reveal-item group relative flex min-h-[18rem] flex-col bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a]"
+                  >
+                    <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
+                      {item.label}
+                    </span>
+                    <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.02em] text-white">
+                      {item.title}
+                    </h3>
+                    <p className="relative mt-5 flex-1 leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
+                      {item.body}
+                    </p>
+                    <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] group-hover:text-white">
+                      Explore lane
+                      <span className="text-[#7c3aed]" aria-hidden>
+                        →
+                      </span>
+                    </span>
+                  </Link>
+                ),
+              )}
+            </RevealGroup>
+            <p className="mt-8 max-w-2xl font-mono text-[10px] tracking-[0.18em] text-zinc-700 uppercase">
+              Educational resources only. Content does not imply loan approval,
+              rate availability, or a commitment to lend.
+            </p>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>

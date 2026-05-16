@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { FooterBrand } from "../components/brand";
 import { ComplianceFooter } from "../components/compliance-footer";
+import { ExternalArticleCard } from "../components/external-article-card";
 import {
   ArticleCard,
   CTASection,
@@ -13,6 +14,7 @@ import {
 import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
 import { SiteNav } from "../components/site-nav";
+import { broadviewArticles } from "../lib/content-sources";
 
 export const metadata: Metadata = {
   title: "Learn | The Loan Playbook",
@@ -357,6 +359,48 @@ export default function LearnPage() {
                 />
               ))}
             </RevealGroup>
+          </div>
+          <div className="section-bridge-bottom" aria-hidden />
+        </section>
+
+        <section className="section-flow section-matte relative border-y border-zinc-900/40">
+          <div className="section-bridge-top" aria-hidden />
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#5b21b6]/[0.035] via-transparent to-transparent"
+            aria-hidden
+          />
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <SectionHeader
+              eyebrow="From Broadview Lending"
+              title="External education sources prepared for future imports."
+              lead="These placeholders are based on Broadview Lending blog topics and are ready for manual import workflows later. They remain clearly educational and do not imply rates, approval, or a commitment to lend."
+            />
+            <RevealGroup
+              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 lg:grid-cols-3"
+              stagger={120}
+            >
+              {broadviewArticles.map((article) => (
+                <ExternalArticleCard key={article.title} article={article} />
+              ))}
+            </RevealGroup>
+            <div className="mt-12 flex flex-wrap gap-4">
+              <a
+                href="https://www.broadviewlending.com/blog"
+                target="_blank"
+                rel="noreferrer"
+                className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
+              >
+                Visit Broadview Blog
+              </a>
+              <a
+                href="https://www.broadviewlending.com"
+                target="_blank"
+                rel="noreferrer"
+                className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
+              >
+                Broadview Lending
+              </a>
+            </div>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
