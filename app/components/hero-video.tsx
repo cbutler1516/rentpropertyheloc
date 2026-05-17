@@ -1,12 +1,36 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 type HeroVideoProps = {
   src: string;
   className?: string;
   loading?: "eager" | "lazy";
 };
+
+const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
+
+function subscribeToReducedMotion(onStoreChange: () => void) {
+  const mediaQuery = window.matchMedia(reducedMotionQuery);
+  mediaQuery.addEventListener("change", onStoreChange);
+  return () => mediaQuery.removeEventListener("change", onStoreChange);
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia(reducedMotionQuery).matches;
+}
+
+function getReducedMotionServerSnapshot() {
+  return false;
+}
+
+function usePrefersReducedMotion() {
+  return useSyncExternalStore(
+    subscribeToReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot,
+  );
+}
 
 export function HeroVideo({
   src,
@@ -17,24 +41,13 @@ export function HeroVideo({
   const [canLoad, setCanLoad] = useState(loading === "eager");
   const [isReady, setIsReady] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    if (prefersReducedMotion) {
-      setHasError(true);
-      return;
-    }
-
-    if (loading === "eager") {
-      setCanLoad(true);
-      return;
-    }
+    if (prefersReducedMotion || loading === "eager") return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -47,17 +60,21 @@ export function HeroVideo({
 
     observer.observe(root);
     return () => observer.disconnect();
-  }, [loading]);
+  }, [loading, prefersReducedMotion]);
+
+  const shouldRenderVideo =
+    !prefersReducedMotion && !hasError && (canLoad || loading === "eager");
+  const shouldHideLayer = prefersReducedMotion || hasError;
 
   return (
     <div
       ref={rootRef}
       className={`hero-video-layer ${className}`}
       data-ready={isReady ? "true" : undefined}
-      data-hidden={hasError ? "true" : undefined}
+      data-hidden={shouldHideLayer ? "true" : undefined}
       aria-hidden
     >
-      {canLoad && !hasError ? (
+      {shouldRenderVideo ? (
         <video
           className="hero-video-media"
           autoPlay

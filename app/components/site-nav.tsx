@@ -44,15 +44,12 @@ function isActivePath(pathname: string, href: string) {
 
 export function SiteNav() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
+  const [openPathname, setOpenPathname] = useState<string | null>(null);
+  const isOpen = openPathname === pathname;
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsOpen(false);
+      if (event.key === "Escape") setOpenPathname(null);
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -96,7 +93,9 @@ export function SiteNav() {
           className="nav-menu-trigger md:hidden"
           aria-expanded={isOpen}
           aria-controls="mobile-navigation"
-          onClick={() => setIsOpen((current) => !current)}
+          onClick={() =>
+            setOpenPathname((current) => (current === pathname ? null : pathname))
+          }
         >
           <span>{isOpen ? "Close" : "Menu"}</span>
           <span className="nav-menu-icon" aria-hidden />
@@ -119,6 +118,7 @@ export function SiteNav() {
                 className="nav-mobile-link"
                 aria-current={active ? "page" : undefined}
                 data-active={active ? "true" : undefined}
+                onClick={() => setOpenPathname(null)}
               >
                 <span>{item.label}</span>
                 <span>{item.description}</span>

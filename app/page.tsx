@@ -3,7 +3,7 @@ import { FooterBrand } from "./components/brand";
 import { ComplianceFooter } from "./components/compliance-footer";
 import { HeroVideo } from "./components/hero-video";
 import { LeadCaptureForm } from "./components/lead-capture-form";
-import { StatRow } from "./components/design-system";
+import { FeatureCard, StatRow } from "./components/design-system";
 import { PageAmbient } from "./components/page-ambient";
 import { RevealGroup } from "./components/reveal-group";
 import { SiteNav } from "./components/site-nav";
@@ -11,43 +11,94 @@ import { homeHubLinks } from "./lib/content-sources";
 
 const paths = [
   {
-    label: "01",
-    title: "First Move",
-    subtitle: "First-time buyers",
+    label: "Buyers",
+    title: "Plan before you apply",
+    href: "/buyers",
     description:
-      "Map the field before you tour a single home. Timing, positioning, and pre-game prep.",
+      "Understand readiness, payment design, loan options, cash-to-close, and offer strategy before the market creates pressure.",
+    cta: "Start Buyer Strategy",
   },
   {
-    label: "02",
-    title: "Reset",
-    subtitle: "Refinance & reposition",
+    label: "Agents",
+    title: "Support better buyer conversations",
+    href: "/agents",
     description:
-      "When the board changes, your strategy should too. Audit, adjust, execute.",
+      "Use lending education, market context, and compliant co-marketing support to help buyers move with more clarity.",
+    cta: "View Agent Platform",
   },
   {
-    label: "03",
-    title: "Portfolio",
-    subtitle: "Investors & builders",
+    label: "Partners",
+    title: "Build firm-level education infrastructure",
+    href: "/partners",
     description:
-      "Multi-property plays demand a different playbook. Structure wins over speed.",
+      "Explore buyer readiness, compliant lead-generation pathways, agent adoption, and media support for brokerages and teams.",
+    cta: "Explore Partnerships",
+  },
+  {
+    label: "Commercial",
+    title: "Frame the deal before terms",
+    href: "/commercial",
+    description:
+      "Clarify asset, sponsor, capital stack, risk, and execution strategy for commercial borrowers, operators, and investors.",
+    cta: "Review Commercial Strategy",
+  },
+  {
+    label: "Learn",
+    title: "Research the strategy",
+    href: "/learn",
+    description:
+      "Read educational guides on concessions, buydowns, FHA, VA, jumbo, HELOCs, DSCR, refinance timing, and commercial lending.",
+    cta: "Open Learn Hub",
+  },
+  {
+    label: "Videos",
+    title: "Watch the playbook in motion",
+    href: "/videos",
+    description:
+      "Browse short-form mortgage education, market updates, agent content, buyer explainers, and future video landing pages.",
+    cta: "Watch Video Hub",
   },
 ];
 
 const strategyPillars = [
   {
     tag: "SCOUT",
-    title: "Read the field",
-    body: "Market conditions, lender tendencies, and your leverage—mapped before you act.",
+    title: "Diagnose the scenario",
+    body: "Clarify borrower goals, loan options, property context, market conditions, and timing before the conversation becomes reactive.",
   },
   {
     tag: "PLAN",
-    title: "Design the sequence",
-    body: "Every document, deadline, and decision ordered like a game plan, not a checklist.",
+    title: "Structure the path",
+    body: "Organize payment, cash-to-close, documentation, credits, risk areas, and next steps into a decision framework people can understand.",
   },
   {
     tag: "EXECUTE",
-    title: "Run the play",
-    body: "Submission becomes execution. No surprises. No scrambling at the buzzer.",
+    title: "Move with context",
+    body: "Use education and preparation to support cleaner buyer conversations, better agent alignment, and more confident lending decisions.",
+  },
+];
+
+const authorityStats = [
+  { value: "9", label: "Licensed states" },
+  { value: "2", label: "Residential + commercial" },
+  { value: "1", label: "Education-first platform" },
+];
+
+const authorityProof = [
+  {
+    label: "Mortgage Advisory",
+    title: "Strategy-led lending guidance",
+    body: "The platform is built around practical mortgage advisory work: borrower readiness, payment design, loan structure, and transaction timing.",
+  },
+  {
+    label: "Development Lens",
+    title: "Real estate development perspective",
+    body: "The Loan Playbook connects financing decisions to the real estate asset, not just the application checklist.",
+  },
+  {
+    label: "Partnership Review",
+    title: "Compliance-aware growth",
+    body: "Agent and brokerage concepts are framed around education, documented value, disclosures, and RESPA/state/licensing review.",
   },
 ];
 
@@ -96,38 +147,38 @@ export default function Home() {
           />
           <div className="relative z-10 flex flex-col">
           <p className="hero-enter hero-enter-d1 relative mb-8 font-mono text-xs tracking-[0.4em] text-[#7c3aed] uppercase">
-            Strategy Lab · Season One
+            Mortgage Strategy Platform
           </p>
           <h1 className="hero-enter hero-enter-d2 hero-headline-glow relative max-w-5xl text-[clamp(2.75rem,8vw,5.5rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-white">
-            Win the loan
+            Make the loan
             <br />
-            <span className="text-zinc-500">before you apply.</span>
+            <span className="text-zinc-500">make sense.</span>
           </h1>
           <p className="hero-enter hero-enter-d3 relative mt-10 max-w-xl text-lg leading-relaxed text-zinc-400 md:mt-12 md:text-xl">
             The Loan Playbook is a mortgage strategy, education, and media
-            platform for buyers, real estate agents, and partners who want
-            lending decisions explained before the pressure starts.
+            platform for buyers, agents, and real estate firms that want lending
+            decisions explained before the pressure starts.
           </p>
           <div className="hero-enter hero-enter-d4 relative mt-14 flex flex-col gap-4 sm:flex-row sm:items-center md:mt-16">
             <a
               href="#cta"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              Enter the Playbook
+              Request a Strategy Call
             </a>
             <a
-              href="#strategy"
+              href="#paths"
               className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
             >
-              See the Framework
+              Choose Your Path
             </a>
           </div>
           <StatRow
             className="hero-enter hero-enter-d5 relative mt-24 md:mt-28"
             stats={[
-              { value: "3", label: "Core phases" },
-              { value: "1", label: "Unified playbook" },
-              { value: "0", label: "Template guesswork" },
+              { value: "3", label: "Audiences" },
+              { value: "2", label: "Residential + commercial" },
+              { value: "9", label: "Licensed states" },
             ]}
           />
           </div>
@@ -150,12 +201,12 @@ export default function Home() {
           >
             <div data-parallax="0.04">
               <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                The Problem
+                Why It Exists
               </p>
               <h2 className="reveal-item mt-5 text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                Most borrowers
+                Most mortgage content
                 <br />
-                play without a plan.
+                skips the strategy.
               </h2>
             </div>
             <div
@@ -163,23 +214,67 @@ export default function Home() {
               className="flex flex-col justify-center space-y-9 text-lg leading-relaxed text-zinc-400 md:space-y-10"
             >
               <p className="reveal-item">
-                The lending process often gives people documents, deadlines,
-                and rate noise before it gives them context. Buyers need a way
-                to understand readiness, structure, and timing before the market
-                creates pressure.
+                Borrowers, agents, and firms are often handed rates, documents,
+                and deadlines before anyone explains the real strategy:
+                readiness, structure, timing, and risk.
               </p>
               <p className="reveal-item">
-                That&apos;s how strong applicants lose on timing, weak files
-                slip through unprepared, and everyone feels like they&apos;re
-                reacting instead of directing.
+                The Loan Playbook turns mortgage complexity into practical
+                education, media, and decision frameworks that can support
+                consumer conversations and real estate partnerships.
               </p>
               <p className="reveal-item border-l-2 border-[#5b21b6] pl-7 text-white transition-[border-color] duration-[var(--duration-hover)] ease-[var(--ease-soft)] hover:border-[#7c3aed]">
-                The Loan Playbook exists because better education, stronger
-                preparation, and clearer strategy can improve the conversation
-                long before underwriting opens a file.
+                The difference is context. Instead of selling a quote, the
+                platform helps people understand the decisions behind the loan.
               </p>
             </div>
           </RevealGroup>
+          <div className="section-bridge-bottom" aria-hidden />
+        </section>
+
+        {/* Authority */}
+        <section className="section-flow relative border-t border-zinc-900/40">
+          <div className="section-bridge-top" aria-hidden />
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <RevealGroup
+              stagger={120}
+              className="grid gap-12 md:grid-cols-[0.85fr_1.15fr] md:gap-20"
+            >
+              <div>
+                <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
+                  Credibility
+                </p>
+                <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
+                  Built from mortgage advisory, real estate, and media.
+                </h2>
+              </div>
+              <div className="flex flex-col justify-center">
+                <p className="reveal-item text-lg leading-relaxed text-zinc-400">
+                  The Loan Playbook combines experienced mortgage guidance,
+                  real estate development perspective, residential and
+                  commercial strategy, multi-state licensing, and
+                  compliance-aware partnership thinking into one education-first
+                  platform.
+                </p>
+                <StatRow className="reveal-item mt-12" stats={authorityStats} />
+              </div>
+            </RevealGroup>
+
+            <RevealGroup
+              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3 md:gap-8"
+              stagger={120}
+            >
+              {authorityProof.map((item) => (
+                <FeatureCard
+                  key={item.label}
+                  label={item.label}
+                  title={item.title}
+                  body={item.body}
+                  className="card-lift border border-zinc-900/80"
+                />
+              ))}
+            </RevealGroup>
+          </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
@@ -197,21 +292,21 @@ export default function Home() {
             >
               <div data-parallax="0.035">
                 <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                  The Strategy
+                  The Framework
                 </p>
                 <h2 className="reveal-item mt-5 max-w-2xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                  A three-phase system
+                  A clear system for
                   <br />
-                  built like a war room.
+                  better mortgage decisions.
                 </h2>
               </div>
               <p
                 className="reveal-item max-w-md text-zinc-500"
                 data-parallax="0.025"
               >
-                Borrow the discipline of elite sports analysis: scout, plan,
-                execute. Applied to the most consequential financial move most
-                people will ever make.
+                Every scenario gets translated into three practical moves:
+                diagnose the situation, structure the path, and move with
+                context.
               </p>
             </RevealGroup>
 
@@ -264,8 +359,9 @@ export default function Home() {
                 Choose Your Path
               </p>
               <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                Every borrower runs
-                <br />a different offense.
+                Start where
+                <br />
+                you are.
               </h2>
             </RevealGroup>
 
@@ -274,9 +370,9 @@ export default function Home() {
               stagger={150}
             >
               {paths.map((path) => (
-                  <a
+                  <Link
                     key={path.label}
-                    href="#cta"
+                    href={path.href}
                     className="reveal-item card-lift group relative flex h-full flex-col border border-zinc-900/80 bg-[#050505] p-9 md:p-11"
                   >
                     <div
@@ -287,25 +383,22 @@ export default function Home() {
                       }}
                       aria-hidden
                     />
-                    <span className="relative font-mono text-5xl font-semibold tracking-tighter text-zinc-900 transition-all duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:text-[#5b21b6]/50">
+                    <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
                       {path.label}
                     </span>
                     <h3 className="relative mt-7 text-2xl font-semibold text-white transition-transform duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-0.5">
                       {path.title}
                     </h3>
-                    <p className="relative mt-2 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
-                      {path.subtitle}
-                    </p>
                     <p className="relative mt-5 flex-1 leading-relaxed text-zinc-500 transition-[color] duration-[var(--duration-hover)] group-hover:text-zinc-400">
                       {path.description}
                     </p>
                     <span className="relative mt-10 inline-flex items-center gap-2 text-sm font-medium text-white opacity-0 transition-all duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-1 group-hover:opacity-100">
-                      Select path
+                      {path.cta}
                       <span className="text-[#7c3aed]" aria-hidden>
                         →
                       </span>
                     </span>
-                  </a>
+                  </Link>
               ))}
             </RevealGroup>
           </div>
@@ -322,21 +415,21 @@ export default function Home() {
             >
               <div data-parallax="0.025">
                 <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                  Content Hub
+                  Education Engine
                 </p>
                 <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                  Education, media,
+                  Content that routes
                   <br />
-                  and partner resources.
+                  to the next decision.
                 </h2>
               </div>
               <p
                 className="reveal-item max-w-md text-zinc-500"
                 data-parallax="0.02"
               >
-                The Loan Playbook now connects the Learn hub, video platform,
-                agent and partner systems, and Broadview Lending resources into
-                one educational media structure.
+                Articles, videos, agent resources, partner conversations, and
+                external lending education work together so visitors can move
+                from interest to an informed next step.
               </p>
             </RevealGroup>
 
@@ -363,7 +456,7 @@ export default function Home() {
                       {item.body}
                     </p>
                     <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] group-hover:text-white">
-                      Open resource
+                      Open destination
                       <span className="text-[#7c3aed]" aria-hidden>
                         →
                       </span>
@@ -385,7 +478,7 @@ export default function Home() {
                       {item.body}
                     </p>
                     <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] group-hover:text-white">
-                      Explore lane
+                      Explore destination
                       <span className="text-[#7c3aed]" aria-hidden>
                         →
                       </span>
@@ -424,21 +517,22 @@ export default function Home() {
                 />
                 <RevealGroup className="relative" stagger={110}>
                   <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                    Ready
+                    Next Step
                   </p>
                   <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-6xl">
-                    Stop guessing.
+                    Get mortgage strategy
                     <br />
-                    Start running the playbook.
+                    before the pressure starts.
                   </h2>
                   <p className="reveal-item mt-8 max-w-lg text-lg leading-relaxed text-zinc-400 md:mt-10">
-                    Get early access to the strategy system: buyer education,
-                    mortgage explainers, social content themes, and partnership
-                    resources built around compliant lending conversations.
+                    Tell us what you are trying to solve: buying, refinancing,
+                    agent support, brokerage partnership, commercial strategy,
+                    or content education. We will route the conversation from
+                    there.
                   </p>
                   <LeadCaptureForm
-                    formType="Newsletter Signup"
-                    submitLabel="Request Access"
+                    formType="Buyer Strategy Call"
+                    submitLabel="Request Strategy Follow-Up"
                   />
                   <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
                     Educational content only · No rate quote or loan commitment

@@ -63,8 +63,8 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
           eyebrow="Learn / Strategy Guide"
           title={article.title}
           lead={article.intro}
-          focusLabel="Preview Status"
-          focus="This is an initial SEO article template for launch planning. It is educational only and should be reviewed before publication."
+          focusLabel="Education Note"
+          focus="This guide is for mortgage education and strategy discussion only. Program availability, borrower qualifications, property details, and underwriting guidelines determine what may be available."
           visual="multi-strategy"
         >
           <StatRow
@@ -87,7 +87,7 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
             <SectionHeader
               eyebrow="Key Takeaways"
               title="The strategy in plain English."
-              lead="These placeholder notes establish the article structure. Final launch content should be reviewed for accuracy, program availability, and compliance."
+              lead="Use these points to understand the decision before comparing options, writing an offer, or assuming a structure fits."
             />
             <RevealGroup
               className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3"

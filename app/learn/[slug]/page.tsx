@@ -30,6 +30,11 @@ export async function generateMetadata({
   return {
     title: `${article.title} | The Loan Playbook`,
     description: article.description,
+    openGraph: {
+      title: `${article.title} | The Loan Playbook`,
+      description: article.description,
+      type: "article",
+    },
   };
 }
 
