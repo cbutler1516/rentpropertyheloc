@@ -7,7 +7,6 @@ import {
 } from "./components/conversion-cta";
 import { HeroVideo } from "./components/hero-video";
 import { StatRow } from "./components/design-system";
-import { HeroMotionLayer } from "./components/hero-motion-layer";
 import { PageAmbient } from "./components/page-ambient";
 import { RevealGroup } from "./components/reveal-group";
 import { SiteNav } from "./components/site-nav";
@@ -98,7 +97,6 @@ export default function Home() {
             src="/videos/loan-playbook-football-hero.mp4"
             loading="eager"
           />
-          <HeroMotionLayer />
           <div className="relative z-10 flex flex-col">
           <p className="hero-enter hero-enter-d1 relative mb-8 font-mono text-xs tracking-[0.4em] text-[#7c3aed] uppercase">
             Strategy Lab · Season One
