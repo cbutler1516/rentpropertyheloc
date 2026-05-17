@@ -13,10 +13,14 @@ export function SocialLinkGrid({
       className={`social-link-grid mt-14 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2 lg:grid-cols-3 ${className}`}
       stagger={70}
     >
-      {links.map((link) => {
-        const isPending = link.status === "todo";
-        const content = (
-          <>
+      {links.map((link) => (
+          <a
+            key={link.platform}
+            href={link.href}
+            target="_blank"
+            rel="noreferrer"
+            className="reveal-item group relative bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a]"
+          >
             <div
               className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#5b21b6]/0 to-transparent opacity-0 transition-opacity duration-[var(--duration-hover)] group-hover:opacity-100 group-hover:from-[#5b21b6]/[0.06]"
               aria-hidden
@@ -25,11 +29,6 @@ export function SocialLinkGrid({
               <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
                 {link.platform}
               </p>
-              {isPending ? (
-                <span className="font-mono text-[9px] tracking-[0.22em] text-zinc-700 uppercase">
-                  Handle pending
-                </span>
-              ) : null}
             </div>
             <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.02em] text-white">
               {link.label}
@@ -38,31 +37,11 @@ export function SocialLinkGrid({
               {link.description}
             </p>
             <span className="relative mt-8 inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] text-zinc-600 uppercase transition-colors duration-[var(--duration-hover)] group-hover:text-[#7c3aed]">
-              {isPending ? "Destination pending" : "Open destination"}
+              Open destination
               <span aria-hidden>→</span>
             </span>
-          </>
-        );
-
-        return isPending ? (
-          <div
-            key={link.platform}
-            className="reveal-item group relative bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a]"
-          >
-            {content}
-          </div>
-        ) : (
-          <a
-            key={link.platform}
-            href={link.href}
-            target="_blank"
-            rel="noreferrer"
-            className="reveal-item group relative bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a]"
-          >
-            {content}
           </a>
-        );
-      })}
+      ))}
     </RevealGroup>
   );
 }

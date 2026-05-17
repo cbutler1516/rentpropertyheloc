@@ -2,6 +2,7 @@
 
 import type { VideoContent } from "../lib/content-sources";
 import { trackEvent } from "../lib/analytics-events";
+import { TrackedLink } from "./tracked-link";
 
 export function VideoCard({ video }: { video: VideoContent }) {
   const trackVideoClick = () => {
@@ -61,7 +62,7 @@ export function VideoCard({ video }: { video: VideoContent }) {
           </p>
           {video.status === "todo" ? (
             <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-zinc-600">
-              Link pending
+              Video URL pending
             </span>
           ) : (
             <a
@@ -77,6 +78,19 @@ export function VideoCard({ video }: { video: VideoContent }) {
               </span>
             </a>
           )}
+          {video.relatedArticleHref ? (
+            <TrackedLink
+              href={video.relatedArticleHref}
+              location="video_card_related_article"
+              label={video.relatedArticleLabel ?? "Read related guide"}
+              className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] hover:text-white"
+            >
+              {video.relatedArticleLabel ?? "Read related guide"}
+              <span className="text-[#7c3aed]" aria-hidden>
+                →
+              </span>
+            </TrackedLink>
+          ) : null}
         </div>
       </div>
     </article>

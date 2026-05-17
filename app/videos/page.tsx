@@ -49,19 +49,24 @@ const featuredVideo = videoSections
 
 const landingPageSystem = [
   {
-    label: "Article",
-    title: "Turn the topic into search content",
-    body: "Every video concept can become a Learn article, FAQ cluster, or landing page that supports buyer education and organic discovery.",
+    label: "01 / Short Video",
+    title: "Start with a single useful mortgage idea",
+    body: "A short TikTok, Reel, or Short introduces one clear topic: concessions, buydowns, pre-approval quality, payment design, or market context.",
   },
   {
-    label: "Shorts",
-    title: "Cut the lesson into social formats",
-    body: "A single mortgage strategy can become a TikTok, Reel, Short, carousel, newsletter blurb, and agent talking point.",
+    label: "02 / Article",
+    title: "Expand it into a searchable Learn guide",
+    body: "The same topic becomes an SEO article, FAQ cluster, buyer guide, or agent resource that gives the video a deeper destination.",
   },
   {
-    label: "CTA",
-    title: "Route viewers into compliant next steps",
-    body: "Content should guide people toward education, strategy calls, or partner conversations without implying rates, approval, or commitments.",
+    label: "03 / Landing Page",
+    title: "Route the audience to the right next step",
+    body: "Visitors move from social content to a focused page for buyers, agents, partners, commercial borrowers, or related education.",
+  },
+  {
+    label: "04 / Strategy Call",
+    title: "Invite a compliant conversation",
+    body: "When someone is ready, the content path leads to a consultation or partnership inquiry without implying rates, approval, or commitments.",
   },
 ];
 
@@ -238,8 +243,8 @@ export default function VideosPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Social Destinations"
-              title="Every publishing lane has a place in the content system."
-              lead="Placeholder URLs are marked until exact handles are connected. Each destination is treated as educational media, not a rate quote or commitment to lend."
+              title="Every publishing lane now points to the real Loan Playbook channels."
+              lead="Each destination is treated as educational media and a path into deeper articles, landing pages, and compliant conversations."
             />
             <SocialLinkGrid />
           </div>
@@ -255,7 +260,7 @@ export default function VideosPage() {
               lead="The video hub is not just a gallery. It is a production map for SEO articles, social clips, landing pages, agent resources, and newsletter content."
             />
             <RevealGroup
-              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3 md:gap-8"
+              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 md:gap-8 lg:grid-cols-4"
               stagger={120}
             >
               {landingPageSystem.map((item) => (
