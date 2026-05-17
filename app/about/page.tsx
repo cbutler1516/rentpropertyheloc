@@ -15,6 +15,7 @@ export default function AboutPage() {
       lead="The Loan Playbook exists to make borrowing more legible, more intentional, and less reactive."
       focus="Most borrowers are handed tasks. Few are handed context. The Loan Playbook is built around the belief that better context creates better decisions."
       strategyVisual="tennis-about"
+      heroVideoSrc="/videos/loan-playbook-tennis-about.mp4"
       sections={[
         {
           label: "01 / Belief",

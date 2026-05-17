@@ -15,6 +15,7 @@ export default function StrategyPage() {
       lead="The Loan Playbook organizes lending into a strategy system: fewer assumptions, stronger files, and better timing."
       focus="The framework is intentionally simple. Every loan move can be understood through three disciplines: read the conditions, design the file, and execute with control."
       strategyVisual="multi-strategy"
+      heroVideoSrc="/videos/loan-playbook-tennis-about.mp4"
       sections={[
         {
           label: "Scout",

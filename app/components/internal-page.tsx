@@ -17,6 +17,7 @@ type InternalPageProps = {
   lead: string;
   focus: string;
   strategyVisual?: SportsStrategyVariant;
+  heroVideoSrc?: string;
   sections: Array<{
     label: string;
     title: string;
@@ -35,6 +36,7 @@ export function InternalPage({
   lead,
   focus,
   strategyVisual,
+  heroVideoSrc,
   sections,
   closing,
   extraSections,
@@ -68,6 +70,7 @@ export function InternalPage({
           lead={lead}
           focus={focus}
           visual={strategyVisual}
+          videoSrc={heroVideoSrc}
         />
 
         <section className="section-flow section-matte relative border-y border-zinc-900/40">

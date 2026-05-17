@@ -19,6 +19,7 @@ export default function CommercialPage() {
       lead="For investors, operators, and builders who need a sharper framework for capital, collateral, and execution risk."
       focus="Commercial files are judged through a different lens. The playbook clarifies the asset, the operator, the capital stack, and the story behind the transaction."
       strategyVisual="golf-commercial"
+      heroVideoSrc="/videos/loan-playbook-commercial-golf.mp4"
       sections={[
         {
           label: "01 / Asset",

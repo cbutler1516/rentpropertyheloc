@@ -65,6 +65,46 @@ body {
   );
 }
 
+/* ── Cinematic hero video layer ── */
+
+.hero-video-layer {
+  position: absolute;
+  inset: -1px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(1.015);
+  transition:
+    opacity 1.4s var(--ease-premium),
+    transform 1.8s var(--ease-premium);
+}
+
+.hero-video-layer[data-ready="true"] {
+  opacity: 0.48;
+  transform: scale(1);
+}
+
+.hero-video-layer[data-hidden="true"] {
+  display: none;
+}
+
+.hero-video-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.78) contrast(1.08) brightness(0.68);
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 5, 5, 0.96) 0%, rgba(5, 5, 5, 0.84) 38%, rgba(5, 5, 5, 0.46) 66%, rgba(5, 5, 5, 0.82) 100%),
+    linear-gradient(180deg, rgba(5, 5, 5, 0.74) 0%, rgba(5, 5, 5, 0.28) 42%, rgba(5, 5, 5, 0.94) 100%),
+    radial-gradient(ellipse 64% 58% at 74% 44%, rgba(124, 58, 237, 0.12), transparent 62%);
+}
+
 .glow-orb {
   animation: glow-pulse 8s ease-in-out infinite;
 }
@@ -1777,6 +1817,10 @@ body {
     transform: none !important;
   }
 
+  .hero-video-layer {
+    display: none;
+  }
+
   .hero-routes {
     opacity: 0.25;
   }
@@ -3052,6 +3096,20 @@ body {
 }
 
 @media (max-width: 767px) {
+  .hero-video-layer[data-ready="true"] {
+    opacity: 0.26;
+  }
+
+  .hero-video-media {
+    filter: saturate(0.65) contrast(1.02) brightness(0.54);
+  }
+
+  .hero-video-overlay {
+    background:
+      linear-gradient(180deg, rgba(5, 5, 5, 0.92) 0%, rgba(5, 5, 5, 0.74) 46%, rgba(5, 5, 5, 0.96) 100%),
+      linear-gradient(90deg, rgba(5, 5, 5, 0.94) 0%, rgba(5, 5, 5, 0.72) 100%);
+  }
+
   .internal-strategy-visual {
     opacity: 0.42;
   }
@@ -3090,6 +3148,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .reveal-item,
+  .hero-video-layer,
   .sports-strategy-glow,
   .sports-route,
   .sports-dotted-route,
@@ -3097,6 +3156,10 @@ body {
   .sports-marker {
     animation: none;
     transition: none;
+  }
+
+  .hero-video-layer {
+    display: none;
   }
 }
 

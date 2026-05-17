@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { HeroVideo } from "./hero-video";
 import { RevealGroup } from "./reveal-group";
 import {
   SportsStrategyLayer,
@@ -32,6 +33,7 @@ export function PageHero({
   title,
   lead,
   visual,
+  videoSrc,
   focusLabel = "Current Focus",
   focus,
   children,
@@ -41,6 +43,7 @@ export function PageHero({
   title: ReactNode;
   lead: ReactNode;
   visual?: SportsStrategyVariant;
+  videoSrc?: string;
   focusLabel?: string;
   focus?: ReactNode;
   children?: ReactNode;
@@ -52,6 +55,7 @@ export function PageHero({
         className,
       )}
     >
+      {videoSrc ? <HeroVideo src={videoSrc} /> : null}
       {visual ? (
         <StrategyVisual variant={visual} className="internal-strategy-visual" />
       ) : null}
