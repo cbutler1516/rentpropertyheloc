@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FooterBrand } from "./components/brand";
 import { ComplianceFooter } from "./components/compliance-footer";
 import { HeroVideo } from "./components/hero-video";
+import { LeadCaptureForm } from "./components/lead-capture-form";
 import { StatRow } from "./components/design-system";
 import { PageAmbient } from "./components/page-ambient";
 import { RevealGroup } from "./components/reveal-group";
@@ -435,23 +436,10 @@ export default function Home() {
                     mortgage explainers, social content themes, and partnership
                     resources built around compliant lending conversations.
                   </p>
-                  <form className="reveal-item mt-12 flex max-w-md flex-col gap-4 sm:flex-row md:mt-14">
-                    <label htmlFor="email" className="sr-only">
-                      Email address
-                    </label>
-                    <input
-                      id="email"
-                      type="email"
-                      placeholder="you@email.com"
-                      className="input-glow h-14 flex-1 border border-zinc-800 bg-[#050505] px-5 text-white transition-all duration-[var(--duration-hover)] placeholder:text-zinc-600 outline-none focus:border-[#7c3aed]/60"
-                    />
-                    <button
-                      type="button"
-                      className="btn-primary h-14 shrink-0 bg-[#5b21b6] px-8 text-sm font-medium tracking-wide text-white hover:bg-[#6d28d9]"
-                    >
-                      Request Access
-                    </button>
-                  </form>
+                  <LeadCaptureForm
+                    formType="Newsletter Signup"
+                    submitLabel="Request Access"
+                  />
                   <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
                     Educational content only · No rate quote or loan commitment
                   </p>

@@ -7,6 +7,7 @@ import {
   SectionHeader,
   StatRow,
 } from "./design-system";
+import { LeadCaptureForm } from "./lead-capture-form";
 import { PageAmbient } from "./page-ambient";
 import { RevealGroup } from "./reveal-group";
 import { SiteNav } from "./site-nav";
@@ -179,7 +180,12 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
             { href: "/learn", label: "Back to Learn", variant: "primary" },
             { href: "/videos", label: "Explore Video Topics" },
           ]}
-        />
+        >
+          <LeadCaptureForm
+            formType="Buyer Strategy Call"
+            submitLabel="Request Strategy Follow-Up"
+          />
+        </CTASection>
       </main>
 
       <footer className="relative z-10 border-t border-zinc-900/60 py-10">
