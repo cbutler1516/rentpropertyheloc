@@ -6,57 +6,46 @@ import { LeadCaptureForm } from "./components/lead-capture-form";
 import { FeatureCard, StatRow } from "./components/design-system";
 import { PageAmbient } from "./components/page-ambient";
 import { RevealGroup } from "./components/reveal-group";
+import {
+  SchedulingCTASection,
+  SchedulingLink,
+} from "./components/scheduling-cta";
 import { SiteNav } from "./components/site-nav";
-import { homeHubLinks } from "./lib/content-sources";
+import { VideoEmbedCard } from "./components/video-embed-card";
+import { featuredVideoEmbedGroups } from "./lib/video-embeds";
 
 const paths = [
   {
-    label: "Buyers",
-    title: "Plan before you apply",
+    label: "Home Buyers",
+    title: "Understand your options before you start shopping.",
     href: "/buyers",
     description:
-      "Understand readiness, payment design, loan options, cash-to-close, and offer strategy before the market creates pressure.",
-    cta: "Start Buyer Strategy",
+      "For buyers who want clear guidance on readiness, payment, cash-to-close, loan options, and offer preparation. Start with education, then move into a consultation when you are ready.",
+    cta: "Start Your Home Buying Strategy",
   },
   {
-    label: "Agents",
-    title: "Support better buyer conversations",
+    label: "Real Estate Agents",
+    title: "Help clients win with smarter financing strategy.",
     href: "/agents",
     description:
-      "Use lending education, market context, and compliant co-marketing support to help buyers move with more clarity.",
-    cta: "View Agent Platform",
+      "For agents who need buyer education, lending context, and compliant co-marketing support that makes financing easier to explain.",
+    cta: "Explore Agent Partnerships",
   },
   {
-    label: "Partners",
-    title: "Build firm-level education infrastructure",
+    label: "Managing Brokers / Partners",
+    title: "Build a compliant mortgage partnership ecosystem.",
     href: "/partners",
     description:
-      "Explore buyer readiness, compliant lead-generation pathways, agent adoption, and media support for brokerages and teams.",
-    cta: "Explore Partnerships",
+      "For brokerage leaders, team owners, and firms evaluating buyer readiness, agent adoption, education infrastructure, and partnership models.",
+    cta: "Schedule a Broker Conversation",
   },
   {
-    label: "Commercial",
-    title: "Frame the deal before terms",
+    label: "Commercial / Investors",
+    title: "Structure financing with a capital-markets mindset.",
     href: "/commercial",
     description:
-      "Clarify asset, sponsor, capital stack, risk, and execution strategy for commercial borrowers, operators, and investors.",
-    cta: "Review Commercial Strategy",
-  },
-  {
-    label: "Learn",
-    title: "Research the strategy",
-    href: "/learn",
-    description:
-      "Read educational guides on concessions, buydowns, FHA, VA, jumbo, HELOCs, DSCR, refinance timing, and commercial lending.",
-    cta: "Open Learn Hub",
-  },
-  {
-    label: "Videos",
-    title: "Watch the playbook in motion",
-    href: "/videos",
-    description:
-      "Browse short-form mortgage education, market updates, agent content, buyer explainers, and future video landing pages.",
-    cta: "Watch Video Hub",
+      "For investors, operators, and commercial borrowers who need to clarify asset, sponsor, capital stack, risk, and execution path.",
+    cta: "Review Commercial Financing Options",
   },
 ];
 
@@ -86,19 +75,62 @@ const authorityStats = [
 
 const authorityProof = [
   {
-    label: "Mortgage Advisory",
-    title: "Strategy-led lending guidance",
-    body: "The platform is built around practical mortgage advisory work: borrower readiness, payment design, loan structure, and transaction timing.",
+    label: "Education First",
+    title: "Guidance before pressure",
+    body: "The platform starts with context, definitions, and tradeoffs before anyone is pushed toward an application or transaction decision.",
   },
   {
-    label: "Development Lens",
-    title: "Real estate development perspective",
-    body: "The Loan Playbook connects financing decisions to the real estate asset, not just the application checklist.",
+    label: "Multi-State Lending",
+    title: "Licensed across key markets",
+    body: "Licensing and program availability vary, but the platform is built around multi-state residential lending conversations.",
   },
   {
-    label: "Partnership Review",
-    title: "Compliance-aware growth",
+    label: "Residential + Commercial",
+    title: "One lens across different deal types",
+    body: "The same discipline applies to buyer readiness, refinance timing, investment property, and commercial structure.",
+  },
+  {
+    label: "Strategy-Focused",
+    title: "More than rate comparison",
+    body: "Payment, cash, timing, property, borrower profile, and risk are treated as a connected decision system.",
+  },
+  {
+    label: "Media Ecosystem",
+    title: "Education built for modern attention",
+    body: "Articles, video, social content, and partner resources give mortgage education more than one path to reach people.",
+  },
+  {
+    label: "Compliance Aware",
+    title: "Partnerships with guardrails",
     body: "Agent and brokerage concepts are framed around education, documented value, disclosures, and RESPA/state/licensing review.",
+  },
+];
+
+const founderHighlights = [
+  "Experienced mortgage advisor",
+  "Former real estate development background",
+  "Residential and commercial strategy",
+  "Capital-markets mindset",
+  "Education-first media platform",
+  "Licensed multi-state lending context",
+];
+
+const homepageVideoProof = featuredVideoEmbedGroups[0]?.videos.slice(0, 3) ?? [];
+
+const educationLinks = [
+  {
+    label: "Learn",
+    title: "Read buyer guides and financing explainers.",
+    body: "Explore seller concessions, buydowns, jumbo loans, HELOC strategy, refinance timing, FHA, VA, DSCR, and commercial lending topics.",
+    href: "/learn",
+    cta: "Read Buyer Guides",
+  },
+  {
+    label: "Videos",
+    title: "Watch mortgage strategy videos.",
+    body: "Browse short-form explainers, market context, agent education, buyer topics, and future long-form video modules.",
+    href: "/videos",
+    cta: "Watch Mortgage Strategy Videos",
   },
 ];
 
@@ -164,19 +196,19 @@ export default function Home() {
               href="#cta"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              Request a Strategy Call
+              Book a Consultation
             </a>
             <a
               href="#paths"
               className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
             >
-              Choose Your Path
+              See Who We Help
             </a>
           </div>
           <StatRow
             className="hero-enter hero-enter-d5 relative mt-24 md:mt-28"
             stats={[
-              { value: "3", label: "Audiences" },
+              { value: "4", label: "Audience paths" },
               { value: "2", label: "Residential + commercial" },
               { value: "9", label: "Licensed states" },
             ]}
@@ -185,7 +217,7 @@ export default function Home() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        {/* Problem */}
+        {/* What It Is */}
         <section
           id="problem"
           className="section-flow section-matte relative border-t border-zinc-900/40 backdrop-blur-sm"
@@ -201,12 +233,12 @@ export default function Home() {
           >
             <div data-parallax="0.04">
               <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                Why It Exists
+                What It Is
               </p>
               <h2 className="reveal-item mt-5 text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                Most mortgage content
+                Mortgage guidance
                 <br />
-                skips the strategy.
+                with a clear next step.
               </h2>
             </div>
             <div
@@ -214,25 +246,163 @@ export default function Home() {
               className="flex flex-col justify-center space-y-9 text-lg leading-relaxed text-zinc-400 md:space-y-10"
             >
               <p className="reveal-item">
-                Borrowers, agents, and firms are often handed rates, documents,
-                and deadlines before anyone explains the real strategy:
-                readiness, structure, timing, and risk.
+                The Loan Playbook helps people understand mortgage decisions
+                before they become urgent: buying, refinancing, commercial
+                financing, agent education, and brokerage partnerships.
               </p>
               <p className="reveal-item">
-                The Loan Playbook turns mortgage complexity into practical
-                education, media, and decision frameworks that can support
-                consumer conversations and real estate partnerships.
+                It combines advisory guidance, educational articles, video
+                explainers, and partnership resources into one premium platform
+                for every side of real estate.
               </p>
               <p className="reveal-item border-l-2 border-[#5b21b6] pl-7 text-white transition-[border-color] duration-[var(--duration-hover)] ease-[var(--ease-soft)] hover:border-[#7c3aed]">
-                The difference is context. Instead of selling a quote, the
-                platform helps people understand the decisions behind the loan.
+                Start with the audience path that fits you, then move into the
+                right guide, video, consultation, or partnership conversation.
               </p>
             </div>
           </RevealGroup>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        {/* Authority */}
+        {/* Who We Help */}
+        <section
+          id="paths"
+          className="section-flow section-matte relative border-t border-zinc-900/40 backdrop-blur-sm"
+        >
+          <div className="section-bridge-top" aria-hidden />
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#5b21b6]/[0.04] to-transparent"
+            aria-hidden
+          />
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <RevealGroup stagger={120}>
+              <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
+                Who We Help
+              </p>
+              <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
+                Mortgage strategy
+                <br />
+                for every stage.
+              </h2>
+              <p className="reveal-item mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500">
+                Pick the role that best matches your situation. Each path leads
+                to focused resources and a clear next conversation.
+              </p>
+            </RevealGroup>
+
+            <RevealGroup
+              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 md:gap-8 lg:grid-cols-4"
+              stagger={150}
+            >
+              {paths.map((path) => (
+                  <Link
+                    key={path.label}
+                    href={path.href}
+                    className="reveal-item card-lift group relative flex h-full flex-col border border-zinc-900/80 bg-[#050505] p-9 md:p-11"
+                  >
+                    <div
+                      className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[var(--duration-hover)] group-hover:opacity-100"
+                      style={{
+                        background:
+                          "radial-gradient(ellipse at top left, rgba(91, 33, 182, 0.12), transparent 60%)",
+                      }}
+                      aria-hidden
+                    />
+                    <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
+                      {path.label}
+                    </span>
+                    <h3 className="relative mt-7 text-2xl font-semibold text-white transition-transform duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-0.5">
+                      {path.title}
+                    </h3>
+                    <p className="relative mt-5 flex-1 leading-relaxed text-zinc-500 transition-[color] duration-[var(--duration-hover)] group-hover:text-zinc-400">
+                      {path.description}
+                    </p>
+                    <span className="relative mt-10 inline-flex items-center gap-2 text-sm font-medium text-white transition-all duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-1">
+                      {path.cta}
+                      <span className="text-[#7c3aed]" aria-hidden>
+                        →
+                      </span>
+                    </span>
+                  </Link>
+              ))}
+            </RevealGroup>
+          </div>
+          <div className="section-bridge-bottom" aria-hidden />
+        </section>
+
+        {/* Founder Authority */}
+        <section className="section-flow relative border-t border-zinc-900/40">
+          <div className="section-bridge-top" aria-hidden />
+          <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[0.82fr_1.18fr] md:gap-16 md:px-10">
+            <RevealGroup
+              className="relative overflow-hidden border border-zinc-900/80 bg-[#050505] p-6 md:p-8"
+              stagger={100}
+            >
+              <div className="reveal-item relative aspect-[4/5] overflow-hidden border border-zinc-900/80 bg-[#080808]">
+                <div
+                  className="playbook-grid pointer-events-none absolute inset-0 opacity-25"
+                  aria-hidden
+                />
+                <div
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#7c3aed]/15 via-transparent to-black/50"
+                  aria-hidden
+                />
+                <div className="relative flex h-full flex-col justify-between p-6">
+                  <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
+                    Founder Profile
+                  </p>
+                  <div>
+                    <p className="font-mono text-[10px] tracking-[0.22em] text-zinc-600 uppercase">
+                      Portrait placeholder
+                    </p>
+                    <h3 className="mt-4 max-w-xs text-3xl font-semibold tracking-[-0.03em] text-white">
+                      Mortgage strategy, real estate context, and media.
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </RevealGroup>
+
+            <RevealGroup className="flex flex-col justify-center" stagger={120}>
+              <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
+                Authority
+              </p>
+              <h2 className="reveal-item mt-5 max-w-4xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-6xl">
+                A mortgage platform built with a developer&apos;s eye and an advisor&apos;s discipline.
+              </h2>
+              <p className="reveal-item mt-8 max-w-3xl text-lg leading-relaxed text-zinc-400">
+                The Loan Playbook is shaped by hands-on mortgage advisory work,
+                real estate development experience, residential and commercial
+                strategy, and a capital-markets mindset. The goal is not to make
+                lending louder. It is to make the decisions more legible.
+              </p>
+              <div className="reveal-item mt-10 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2">
+                {founderHighlights.map((item) => (
+                  <div key={item} className="bg-[#050505] p-4">
+                    <p className="font-mono text-[10px] tracking-[0.18em] text-zinc-500 uppercase">
+                      {item}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <div className="reveal-item mt-10 flex flex-col gap-4 sm:flex-row">
+                <Link
+                  href="/about"
+                  className="btn-ghost inline-flex h-14 w-fit items-center justify-center border border-zinc-800 px-8 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
+                >
+                  Learn More
+                </Link>
+                <SchedulingLink
+                  type="buyer"
+                  className="btn-primary inline-flex h-14 w-fit items-center justify-center bg-white px-8 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
+                />
+              </div>
+            </RevealGroup>
+          </div>
+          <div className="section-bridge-bottom" aria-hidden />
+        </section>
+
+        {/* Why Different */}
         <section className="section-flow relative border-t border-zinc-900/40">
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
@@ -242,19 +412,17 @@ export default function Home() {
             >
               <div>
                 <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                  Credibility
+                  Why We&apos;re Different
                 </p>
                 <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                  Built from mortgage advisory, real estate, and media.
+                  Advisory experience, real estate context, and education-first media.
                 </h2>
               </div>
               <div className="flex flex-col justify-center">
                 <p className="reveal-item text-lg leading-relaxed text-zinc-400">
-                  The Loan Playbook combines experienced mortgage guidance,
-                  real estate development perspective, residential and
-                  commercial strategy, multi-state licensing, and
-                  compliance-aware partnership thinking into one education-first
-                  platform.
+                  The platform is built for practical decision-making: buyer
+                  readiness, agent conversations, commercial structure,
+                  multi-state lending, and compliance-aware partnerships.
                 </p>
                 <StatRow className="reveal-item mt-12" stats={authorityStats} />
               </div>
@@ -278,7 +446,7 @@ export default function Home() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        {/* Strategy */}
+        {/* Framework */}
         <section id="strategy" className="section-flow relative">
           <div className="section-bridge-top" aria-hidden />
           <div
@@ -292,10 +460,10 @@ export default function Home() {
             >
               <div data-parallax="0.035">
                 <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                  The Framework
+                  How It Works
                 </p>
                 <h2 className="reveal-item mt-5 max-w-2xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                  A clear system for
+                  A simple framework for
                   <br />
                   better mortgage decisions.
                 </h2>
@@ -304,9 +472,8 @@ export default function Home() {
                 className="reveal-item max-w-md text-zinc-500"
                 data-parallax="0.025"
               >
-                Every scenario gets translated into three practical moves:
-                diagnose the situation, structure the path, and move with
-                context.
+                The process stays simple: diagnose the scenario, structure the
+                options, then move into the right resource or conversation.
               </p>
             </RevealGroup>
 
@@ -343,69 +510,7 @@ export default function Home() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        {/* Choose Your Path */}
-        <section
-          id="paths"
-          className="section-flow section-matte relative border-t border-zinc-900/40 backdrop-blur-sm"
-        >
-          <div className="section-bridge-top" aria-hidden />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#5b21b6]/[0.04] to-transparent"
-            aria-hidden
-          />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <RevealGroup stagger={120}>
-              <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                Choose Your Path
-              </p>
-              <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                Start where
-                <br />
-                you are.
-              </h2>
-            </RevealGroup>
-
-            <RevealGroup
-              className="mt-20 grid gap-7 md:mt-28 md:grid-cols-3 md:gap-8"
-              stagger={150}
-            >
-              {paths.map((path) => (
-                  <Link
-                    key={path.label}
-                    href={path.href}
-                    className="reveal-item card-lift group relative flex h-full flex-col border border-zinc-900/80 bg-[#050505] p-9 md:p-11"
-                  >
-                    <div
-                      className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[var(--duration-hover)] group-hover:opacity-100"
-                      style={{
-                        background:
-                          "radial-gradient(ellipse at top left, rgba(91, 33, 182, 0.12), transparent 60%)",
-                      }}
-                      aria-hidden
-                    />
-                    <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                      {path.label}
-                    </span>
-                    <h3 className="relative mt-7 text-2xl font-semibold text-white transition-transform duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-0.5">
-                      {path.title}
-                    </h3>
-                    <p className="relative mt-5 flex-1 leading-relaxed text-zinc-500 transition-[color] duration-[var(--duration-hover)] group-hover:text-zinc-400">
-                      {path.description}
-                    </p>
-                    <span className="relative mt-10 inline-flex items-center gap-2 text-sm font-medium text-white opacity-0 transition-all duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-1 group-hover:opacity-100">
-                      {path.cta}
-                      <span className="text-[#7c3aed]" aria-hidden>
-                        →
-                      </span>
-                    </span>
-                  </Link>
-              ))}
-            </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
-        {/* Content Hub */}
+        {/* Learn + Videos */}
         <section className="section-flow relative border-t border-zinc-900/40">
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
@@ -415,77 +520,51 @@ export default function Home() {
             >
               <div data-parallax="0.025">
                 <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                  Education Engine
+                  Learn + Videos
                 </p>
                 <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                  Content that routes
+                  Start with education.
                   <br />
-                  to the next decision.
+                  Move with confidence.
                 </h2>
               </div>
               <p
                 className="reveal-item max-w-md text-zinc-500"
                 data-parallax="0.02"
               >
-                Articles, videos, agent resources, partner conversations, and
-                external lending education work together so visitors can move
-                from interest to an informed next step.
+                Not ready to talk yet? Use the Learn hub and video library to
+                understand mortgage topics before choosing a consultation or
+                partnership conversation.
               </p>
             </RevealGroup>
 
             <RevealGroup
-              className="mt-16 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:mt-20 md:grid-cols-5"
+              className="mt-16 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:mt-20 md:grid-cols-2"
               stagger={90}
             >
-              {homeHubLinks.map((item) =>
-                item.external ? (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="reveal-item group relative flex min-h-[18rem] flex-col bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a]"
-                  >
-                    <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                      {item.label}
+              {educationLinks.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="reveal-item group relative flex min-h-[18rem] flex-col bg-[#050505] p-8 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a] md:p-10"
+                >
+                  <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
+                    {item.label}
+                  </span>
+                  <h3 className="relative mt-6 text-3xl font-semibold tracking-[-0.03em] text-white">
+                    {item.title}
+                  </h3>
+                  <p className="relative mt-5 flex-1 leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
+                    {item.body}
+                  </p>
+                  <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] group-hover:text-white">
+                    {item.cta}
+                    <span className="text-[#7c3aed]" aria-hidden>
+                      →
                     </span>
-                    <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.02em] text-white">
-                      {item.title}
-                    </h3>
-                    <p className="relative mt-5 flex-1 leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
-                      {item.body}
-                    </p>
-                    <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] group-hover:text-white">
-                      Open destination
-                      <span className="text-[#7c3aed]" aria-hidden>
-                        →
-                      </span>
-                    </span>
-                  </a>
-                ) : (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className="reveal-item group relative flex min-h-[18rem] flex-col bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a]"
-                  >
-                    <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                      {item.label}
-                    </span>
-                    <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.02em] text-white">
-                      {item.title}
-                    </h3>
-                    <p className="relative mt-5 flex-1 leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
-                      {item.body}
-                    </p>
-                    <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] group-hover:text-white">
-                      Explore destination
-                      <span className="text-[#7c3aed]" aria-hidden>
-                        →
-                      </span>
-                    </span>
-                  </Link>
-                ),
-              )}
+                  </span>
+                </Link>
+              ))}
             </RevealGroup>
             <p className="mt-8 max-w-2xl font-mono text-[10px] tracking-[0.18em] text-zinc-700 uppercase">
               Educational resources only. Content does not imply loan approval,
@@ -494,6 +573,47 @@ export default function Home() {
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
+
+        {/* Media Proof */}
+        <section className="section-flow section-matte relative border-y border-zinc-900/40">
+          <div className="section-bridge-top" aria-hidden />
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#5b21b6]/[0.035] via-transparent to-transparent"
+            aria-hidden
+          />
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <RevealGroup
+              stagger={120}
+              className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-14"
+            >
+              <div>
+                <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
+                  Featured Mortgage Strategy Videos
+                </p>
+                <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
+                  Proof that this is a media platform, not a static brochure.
+                </h2>
+              </div>
+              <p className="reveal-item max-w-md text-zinc-500">
+                TikTok, Instagram, and YouTube embed slots are ready for approved
+                content. Until live post URLs are connected, each module stays a
+                clean placeholder.
+              </p>
+            </RevealGroup>
+
+            <RevealGroup
+              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3 md:gap-8"
+              stagger={120}
+            >
+              {homepageVideoProof.map((video) => (
+                <VideoEmbedCard key={`${video.platform}-${video.title}`} video={video} />
+              ))}
+            </RevealGroup>
+          </div>
+          <div className="section-bridge-bottom" aria-hidden />
+        </section>
+
+        <SchedulingCTASection type="buyer" />
 
         {/* CTA */}
         <section id="cta" className="section-flow relative">
@@ -517,22 +637,21 @@ export default function Home() {
                 />
                 <RevealGroup className="relative" stagger={110}>
                   <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                    Next Step
+                    Start the Conversation
                   </p>
                   <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-6xl">
-                    Get mortgage strategy
+                    Tell us what
                     <br />
-                    before the pressure starts.
+                    you&apos;re working on.
                   </h2>
                   <p className="reveal-item mt-8 max-w-lg text-lg leading-relaxed text-zinc-400 md:mt-10">
-                    Tell us what you are trying to solve: buying, refinancing,
-                    agent support, brokerage partnership, commercial strategy,
-                    or content education. We will route the conversation from
-                    there.
+                    Whether you are buying a home, supporting clients, exploring
+                    a brokerage partnership, or reviewing a commercial scenario,
+                    we&apos;ll follow up to learn more about your goals.
                   </p>
                   <LeadCaptureForm
                     formType="Buyer Strategy Call"
-                    submitLabel="Request Strategy Follow-Up"
+                    submitLabel="Start the Conversation"
                   />
                   <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
                     Educational content only · No rate quote or loan commitment

@@ -15,6 +15,7 @@ import {
 } from "../components/design-system";
 import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
+import { SchedulingCTASection } from "../components/scheduling-cta";
 import { SiteNav } from "../components/site-nav";
 
 export const metadata: Metadata = {
@@ -167,7 +168,7 @@ export default function PartnersPage() {
               href="/agents"
               className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
             >
-              View Agent Platform
+              Explore Agent Partnerships
             </Link>
           </div>
           <StatRow
@@ -357,6 +358,7 @@ export default function PartnersPage() {
         <div id="partnership-conversation">
           <ConversionCTA {...conversionCtas.brokerPartnership} />
         </div>
+        <SchedulingCTASection type="broker" />
       </main>
 
       <footer className="relative z-10 border-t border-zinc-900/60 py-10">

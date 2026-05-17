@@ -4,6 +4,7 @@ import {
   conversionCtas,
 } from "../components/conversion-cta";
 import { InternalPage } from "../components/internal-page";
+import { SchedulingCTASection } from "../components/scheduling-cta";
 
 export const metadata: Metadata = {
   title: "Commercial | The Loan Playbook",
@@ -41,7 +42,12 @@ export default function CommercialPage() {
         title: "Make the deal legible.",
         body: "The commercial path is built around clarity: show the asset, explain the operator, and structure the financing with intention.",
       }}
-      extraSections={<ConversionCTA {...conversionCtas.commercialReview} />}
+      extraSections={
+        <>
+          <ConversionCTA {...conversionCtas.commercialReview} />
+          <SchedulingCTASection type="commercial" />
+        </>
+      }
     />
   );
 }

@@ -31,31 +31,31 @@ export function ConversionCTA({
 export const conversionCtas = {
   buyerStrategy: {
     eyebrow: "Buyer Strategy Call",
-    title: "Map the mortgage strategy before the search gets loud.",
+    title: "Get buyer guidance before the search gets serious.",
     body: "For buyers who want to discuss readiness, cash-to-close, payment design, loan options, and next steps without treating education as a loan approval.",
     formType: "Buyer Strategy Call" as const,
-    submitLabel: "Request Buyer Strategy Call",
+    submitLabel: "Book a Buyer Consultation",
   },
   agentPartnership: {
     eyebrow: "Agent Partnership Conversation",
     title: "Build better financing conversations for your buyers.",
     body: "For agents who want compliant education, media support, market context, and buyer-readiness workflows.",
     formType: "Agent Partnership Conversation" as const,
-    submitLabel: "Request Agent Conversation",
+    submitLabel: "Explore Agent Partnerships",
   },
   brokerPartnership: {
     eyebrow: "Managing Broker Partnership",
     title: "Explore a firm-level lending education platform.",
     body: "For managing brokers and firm owners evaluating agent adoption, compliant lead generation, co-branded education, and media infrastructure.",
     formType: "Managing Broker Partnership" as const,
-    submitLabel: "Request Broker Discovery",
+    submitLabel: "Schedule a Broker Conversation",
   },
   commercialReview: {
     eyebrow: "Commercial Scenario Review",
-    title: "Make the deal legible before chasing terms.",
+    title: "Review the financing structure before chasing terms.",
     body: "For investors and operators who want to frame asset, sponsor, capital stack, and execution risk before a commercial lending conversation.",
     formType: "Commercial Scenario Review" as const,
-    submitLabel: "Request Scenario Review",
+    submitLabel: "Review Commercial Financing Options",
   },
   newsletter: {
     eyebrow: "Content / Newsletter Signup",

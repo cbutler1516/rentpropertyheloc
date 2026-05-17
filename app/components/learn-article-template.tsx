@@ -183,7 +183,7 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
         >
           <LeadCaptureForm
             formType="Buyer Strategy Call"
-            submitLabel="Request Strategy Follow-Up"
+            submitLabel="Get Buyer Guidance"
           />
         </CTASection>
       </main>

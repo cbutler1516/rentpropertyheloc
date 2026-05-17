@@ -17,7 +17,9 @@ import { RevealGroup } from "../components/reveal-group";
 import { SiteNav } from "../components/site-nav";
 import { SocialLinkGrid } from "../components/social-link-grid";
 import { VideoCard } from "../components/video-card";
+import { VideoEmbedCard } from "../components/video-embed-card";
 import { videoSections } from "../lib/content-sources";
+import { featuredVideoEmbedGroups } from "../lib/video-embeds";
 
 export const metadata: Metadata = {
   title: "Videos | The Loan Playbook",
@@ -164,6 +166,36 @@ export default function VideosPage() {
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
+
+        {featuredVideoEmbedGroups.map((group, index) => (
+          <section
+            key={group.eyebrow}
+            className={`section-flow relative ${
+              index % 2 === 1 ? "section-matte border-y border-zinc-900/40" : ""
+            }`}
+          >
+            <div className="section-bridge-top" aria-hidden />
+            <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+              <SectionHeader
+                eyebrow={group.eyebrow}
+                title={group.title}
+                lead={group.lead}
+              />
+              <RevealGroup
+                className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 lg:grid-cols-3"
+                stagger={120}
+              >
+                {group.videos.map((video) => (
+                  <VideoEmbedCard
+                    key={`${group.eyebrow}-${video.platform}-${video.title}`}
+                    video={video}
+                  />
+                ))}
+              </RevealGroup>
+            </div>
+            <div className="section-bridge-bottom" aria-hidden />
+          </section>
+        ))}
 
         {videoSections.map((section, index) => (
           <section

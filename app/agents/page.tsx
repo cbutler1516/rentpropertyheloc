@@ -15,6 +15,7 @@ import {
 } from "../components/design-system";
 import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
+import { SchedulingCTASection } from "../components/scheduling-cta";
 import { SiteNav } from "../components/site-nav";
 
 export const metadata: Metadata = {
@@ -352,6 +353,7 @@ export default function AgentsPage() {
         <div id="agent-strategy">
           <ConversionCTA {...conversionCtas.agentPartnership} />
         </div>
+        <SchedulingCTASection type="agent" />
       </main>
 
       <footer className="relative z-10 border-t border-zinc-900/60 py-10">
