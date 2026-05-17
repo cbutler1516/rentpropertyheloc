@@ -5,11 +5,16 @@ import { useEffect, useRef, useState } from "react";
 type HeroVideoProps = {
   src: string;
   className?: string;
+  loading?: "eager" | "lazy";
 };
 
-export function HeroVideo({ src, className = "" }: HeroVideoProps) {
+export function HeroVideo({
+  src,
+  className = "",
+  loading = "lazy",
+}: HeroVideoProps) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [canLoad, setCanLoad] = useState(false);
+  const [canLoad, setCanLoad] = useState(loading === "eager");
   const [isReady, setIsReady] = useState(false);
   const [hasError, setHasError] = useState(false);
 
@@ -26,6 +31,11 @@ export function HeroVideo({ src, className = "" }: HeroVideoProps) {
       return;
     }
 
+    if (loading === "eager") {
+      setCanLoad(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry?.isIntersecting) return;
@@ -37,7 +47,7 @@ export function HeroVideo({ src, className = "" }: HeroVideoProps) {
 
     observer.observe(root);
     return () => observer.disconnect();
-  }, []);
+  }, [loading]);
 
   return (
     <div
@@ -54,7 +64,8 @@ export function HeroVideo({ src, className = "" }: HeroVideoProps) {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload={loading === "eager" ? "auto" : "metadata"}
+          onLoadedData={() => setIsReady(true)}
           onCanPlay={() => setIsReady(true)}
           onError={() => setHasError(true)}
         >
