@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { FooterBrand } from "./components/brand";
 import { ComplianceFooter } from "./components/compliance-footer";
 import { HeroVideo } from "./components/hero-video";
@@ -11,6 +10,7 @@ import {
   SchedulingLink,
 } from "./components/scheduling-cta";
 import { SiteNav } from "./components/site-nav";
+import { TrackedAnchor, TrackedLink } from "./components/tracked-link";
 import { VideoEmbedCard } from "./components/video-embed-card";
 import { featuredVideoEmbedGroups } from "./lib/video-embeds";
 
@@ -192,18 +192,20 @@ export default function Home() {
             decisions explained before the pressure starts.
           </p>
           <div className="hero-enter hero-enter-d4 relative mt-14 flex flex-col gap-4 sm:flex-row sm:items-center md:mt-16">
-            <a
+            <TrackedAnchor
               href="#cta"
+              location="homepage_hero"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
               Book a Consultation
-            </a>
-            <a
+            </TrackedAnchor>
+            <TrackedAnchor
               href="#paths"
+              location="homepage_hero"
               className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
             >
               See Who We Help
-            </a>
+            </TrackedAnchor>
           </div>
           <StatRow
             className="hero-enter hero-enter-d5 relative mt-24 md:mt-28"
@@ -295,9 +297,11 @@ export default function Home() {
               stagger={150}
             >
               {paths.map((path) => (
-                  <Link
+                  <TrackedLink
                     key={path.label}
                     href={path.href}
+                    location="homepage_audience_path"
+                    label={path.cta}
                     className="reveal-item card-lift group relative flex h-full flex-col border border-zinc-900/80 bg-[#050505] p-9 md:p-11"
                   >
                     <div
@@ -323,7 +327,7 @@ export default function Home() {
                         →
                       </span>
                     </span>
-                  </Link>
+                  </TrackedLink>
               ))}
             </RevealGroup>
           </div>
@@ -386,12 +390,13 @@ export default function Home() {
                 ))}
               </div>
               <div className="reveal-item mt-10 flex flex-col gap-4 sm:flex-row">
-                <Link
+                <TrackedLink
                   href="/about"
+                  location="homepage_authority"
                   className="btn-ghost inline-flex h-14 w-fit items-center justify-center border border-zinc-800 px-8 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
                 >
                   Learn More
-                </Link>
+                </TrackedLink>
                 <SchedulingLink
                   type="buyer"
                   className="btn-primary inline-flex h-14 w-fit items-center justify-center bg-white px-8 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
@@ -543,9 +548,11 @@ export default function Home() {
               stagger={90}
             >
               {educationLinks.map((item) => (
-                <Link
+                <TrackedLink
                   key={item.label}
                   href={item.href}
+                  location="homepage_education"
+                  label={item.cta}
                   className="reveal-item group relative flex min-h-[18rem] flex-col bg-[#050505] p-8 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a] md:p-10"
                 >
                   <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
@@ -563,7 +570,7 @@ export default function Home() {
                       →
                     </span>
                   </span>
-                </Link>
+                </TrackedLink>
               ))}
             </RevealGroup>
             <p className="mt-8 max-w-2xl font-mono text-[10px] tracking-[0.18em] text-zinc-700 uppercase">

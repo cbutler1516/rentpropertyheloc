@@ -1,8 +1,30 @@
+"use client";
+
 import type { VideoEmbedPlaceholder } from "../lib/video-embeds";
+import { trackEvent } from "../lib/analytics-events";
 
 export function VideoEmbedCard({ video }: { video: VideoEmbedPlaceholder }) {
+  const trackVideoClick = () => {
+    trackEvent("video_embed_interaction", {
+      platform: video.platform,
+      category: video.category,
+      video_title: video.title,
+    });
+  };
+
   return (
-    <article className="reveal-item card-lift group relative flex h-full flex-col overflow-hidden border border-zinc-900/80 bg-[#050505]">
+    <article
+      className="reveal-item card-lift group relative flex h-full flex-col overflow-hidden border border-zinc-900/80 bg-[#050505]"
+      role="button"
+      tabIndex={0}
+      onClick={trackVideoClick}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          trackVideoClick();
+        }
+      }}
+    >
       <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#5b21b6]/0 via-transparent to-transparent opacity-0 transition-opacity duration-[var(--duration-hover)] group-hover:opacity-100 group-hover:from-[#5b21b6]/[0.07]"
         aria-hidden

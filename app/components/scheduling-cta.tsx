@@ -1,4 +1,5 @@
 import { CTASection } from "./design-system";
+import { TrackedBookingAnchor } from "./tracked-link";
 
 type SchedulingType =
   | "buyer"
@@ -64,9 +65,14 @@ export function SchedulingLink({
   if (!href) return null;
 
   return (
-    <a href={href} target="_blank" rel="noreferrer" className={className}>
+    <TrackedBookingAnchor
+      href={href}
+      className={className}
+      bookingType={type}
+      label={schedulingConfigs[type].label}
+    >
       {schedulingConfigs[type].label}
-    </a>
+    </TrackedBookingAnchor>
   );
 }
 
@@ -82,14 +88,14 @@ export function SchedulingCTASection({ type }: { type: SchedulingType }) {
       title={config.title}
       body={config.body}
     >
-      <a
+      <TrackedBookingAnchor
         href={href}
-        target="_blank"
-        rel="noreferrer"
         className="reveal-item btn-primary mt-10 inline-flex h-14 w-fit items-center justify-center bg-white px-8 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
+        bookingType={type}
+        label={config.label}
       >
         {config.label}
-      </a>
+      </TrackedBookingAnchor>
     </CTASection>
   );
 }

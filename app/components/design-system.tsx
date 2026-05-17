@@ -6,6 +6,7 @@ import {
   SportsStrategyLayer,
   type SportsStrategyVariant,
 } from "./sports-strategy-layer";
+import { TrackedLink } from "./tracked-link";
 
 type Action = {
   label: string;
@@ -262,9 +263,10 @@ export function CTASection({
           {actions?.length ? (
             <div className="reveal-item mt-10 flex flex-wrap gap-4">
               {actions.map((action) => (
-                <Link
+                <TrackedLink
                   key={`${action.href}-${action.label}`}
                   href={action.href}
+                  location="cta_section"
                   className={cn(
                     "inline-flex h-14 w-fit items-center justify-center px-8 text-sm font-medium tracking-wide",
                     action.variant === "primary"
@@ -273,7 +275,7 @@ export function CTASection({
                   )}
                 >
                   {action.label}
-                </Link>
+                </TrackedLink>
               ))}
             </div>
           ) : null}

@@ -1,4 +1,5 @@
 import Script from "next/script";
+import { AnalyticsPageView } from "./analytics-page-view";
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
 const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
@@ -8,6 +9,8 @@ const tikTokPixelId = process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID;
 export function Analytics() {
   return (
     <>
+      <AnalyticsPageView />
+
       {gtmId ? (
         <>
           <Script
@@ -49,7 +52,7 @@ export function Analytics() {
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', ${JSON.stringify(gaId)});
+                gtag('config', ${JSON.stringify(gaId)}, { send_page_view: false });
               `,
             }}
           />
@@ -71,7 +74,6 @@ export function Analytics() {
               s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
               fbq('init', ${JSON.stringify(metaPixelId)});
-              fbq('track', 'PageView');
             `,
           }}
         />
@@ -94,7 +96,6 @@ export function Analytics() {
                 var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;
                 var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
                 ttq.load(${JSON.stringify(tikTokPixelId)});
-                ttq.page();
               }(window, document, 'ttq');
             `,
           }}

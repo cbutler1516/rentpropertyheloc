@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState, type FormEvent } from "react";
+import { trackLeadSubmit } from "../lib/analytics-events";
 
 export type LeadFormType =
   | "Buyer Strategy Call"
@@ -64,6 +65,11 @@ export function LeadCaptureForm({ formType, submitLabel }: LeadCaptureFormProps)
           "NEXT_PUBLIC_LEAD_FORM_ENDPOINT is not set. Simulating lead capture success in preview mode.",
         );
         await new Promise((resolve) => window.setTimeout(resolve, 450));
+        trackLeadSubmit({
+          formType,
+          role: payload.role,
+          page: payload.page,
+        });
         setSubmitState("success");
         form.reset();
         return;
@@ -81,6 +87,11 @@ export function LeadCaptureForm({ formType, submitLabel }: LeadCaptureFormProps)
         throw new Error(`Lead form request failed with ${response.status}`);
       }
 
+      trackLeadSubmit({
+        formType,
+        role: payload.role,
+        page: payload.page,
+      });
       setSubmitState("success");
       form.reset();
     } catch (error) {

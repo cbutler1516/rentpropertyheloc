@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { FooterBrand } from "../components/brand";
 import { ComplianceFooter } from "../components/compliance-footer";
 import {
@@ -16,6 +15,11 @@ import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
 import { SiteNav } from "../components/site-nav";
 import { SocialLinkGrid } from "../components/social-link-grid";
+import {
+  TrackedAnchor,
+  TrackedButton,
+  TrackedLink,
+} from "../components/tracked-link";
 import { VideoCard } from "../components/video-card";
 import { VideoEmbedCard } from "../components/video-embed-card";
 import { videoSections } from "../lib/content-sources";
@@ -112,18 +116,20 @@ export default function VideosPage() {
           videoSrc="/videos/loan-playbook-videos-media-studio.mp4"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
-            <a
+            <TrackedAnchor
               href="#tiktok"
+              location="videos_hero"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
               Browse Video Lanes
-            </a>
-            <Link
+            </TrackedAnchor>
+            <TrackedLink
               href="/learn"
+              location="videos_hero"
               className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
             >
               Explore Learn Hub
-            </Link>
+            </TrackedLink>
           </div>
           <StatRow
             className="reveal-item mt-20"
@@ -149,13 +155,14 @@ export default function VideosPage() {
                 aria-label="Video category filters"
               >
                 {videoFilters.map((filter) => (
-                  <button
+                  <TrackedButton
                     key={filter}
-                    type="button"
+                    eventName="video_filter_click"
+                    payload={{ filter }}
                     className="border border-zinc-900 bg-[#050505] px-4 py-3 font-mono text-[10px] tracking-[0.2em] text-zinc-600 uppercase transition-colors duration-[var(--duration-hover)] hover:border-[#7c3aed]/40 hover:text-zinc-300"
                   >
                     {filter}
-                  </button>
+                  </TrackedButton>
                 ))}
               </div>
               <p className="mt-5 font-mono text-[10px] tracking-[0.18em] text-zinc-700 uppercase">

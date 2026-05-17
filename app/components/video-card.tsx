@@ -1,6 +1,18 @@
+"use client";
+
 import type { VideoContent } from "../lib/content-sources";
+import { trackEvent } from "../lib/analytics-events";
 
 export function VideoCard({ video }: { video: VideoContent }) {
+  const trackVideoClick = () => {
+    trackEvent("video_card_interaction", {
+      platform: video.platform,
+      category: video.category,
+      video_title: video.title,
+      status: video.status ?? "planned",
+    });
+  };
+
   return (
     <article className="reveal-item card-lift group relative flex h-full flex-col overflow-hidden border border-zinc-900/80 bg-[#050505]">
       <div
@@ -56,6 +68,7 @@ export function VideoCard({ video }: { video: VideoContent }) {
               href={video.ctaHref}
               target="_blank"
               rel="noreferrer"
+              onClick={trackVideoClick}
               className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] hover:text-white"
             >
               {video.ctaLabel}
