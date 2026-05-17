@@ -1,10 +1,6 @@
 import Link from "next/link";
 import { FooterBrand } from "./components/brand";
 import { ComplianceFooter } from "./components/compliance-footer";
-import {
-  ConversionCTA,
-  conversionCtas,
-} from "./components/conversion-cta";
 import { HeroVideo } from "./components/hero-video";
 import { StatRow } from "./components/design-system";
 import { PageAmbient } from "./components/page-ambient";
@@ -405,8 +401,6 @@ export default function Home() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        <ConversionCTA {...conversionCtas.newsletter} />
-
         {/* CTA */}
         <section id="cta" className="section-flow relative">
           <div className="section-bridge-top" aria-hidden />
@@ -452,7 +446,7 @@ export default function Home() {
                       className="input-glow h-14 flex-1 border border-zinc-800 bg-[#050505] px-5 text-white transition-all duration-[var(--duration-hover)] placeholder:text-zinc-600 outline-none focus:border-[#7c3aed]/60"
                     />
                     <button
-                      type="submit"
+                      type="button"
                       className="btn-primary h-14 shrink-0 bg-[#5b21b6] px-8 text-sm font-medium tracking-wide text-white hover:bg-[#6d28d9]"
                     >
                       Request Access

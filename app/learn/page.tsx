@@ -101,18 +101,21 @@ const latestArticles = [
     title: "How seller concessions change buyer strategy",
     excerpt:
       "A practical look at credits, cash-to-close, payment design, and negotiation tradeoffs.",
+    href: "/learn/seller-concessions",
   },
   {
     label: "Explainer",
     title: "What a 2-1 buydown actually solves",
     excerpt:
       "When temporary payment relief helps, when it distracts, and how buyers should evaluate it.",
+    href: "/learn/2-1-buydowns",
   },
   {
     label: "Framework",
     title: "Refinance timing is a strategy decision",
     excerpt:
       "Rate movement matters, but so do break-even periods, cash flow, debt goals, and future flexibility.",
+    href: "/learn/refinance-timing",
   },
 ];
 
@@ -347,7 +350,7 @@ export default function LearnPage() {
                   label={article.label}
                   title={article.title}
                   excerpt={article.excerpt}
-                  href="#"
+                  href={article.href}
                 />
               ))}
             </RevealGroup>

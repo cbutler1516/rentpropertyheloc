@@ -35,7 +35,7 @@ export function ConversionCTA({
   body,
   submitLabel,
   fields = defaultFields,
-  note = "Front-end placeholder only. No information is submitted yet.",
+  note = "Preview form. Submission wiring will be connected before launch.",
 }: ConversionCTAProps) {
   return (
     <CTASection eyebrow={eyebrow} title={title} body={body}>
@@ -72,31 +72,31 @@ export const conversionCtas = {
   buyerStrategy: {
     eyebrow: "Buyer Strategy Call",
     title: "Map the mortgage strategy before the search gets loud.",
-    body: "A front-end placeholder for buyers who want to discuss readiness, cash-to-close, payment design, loan options, and next steps without treating education as a loan approval.",
+    body: "For buyers who want to discuss readiness, cash-to-close, payment design, loan options, and next steps without treating education as a loan approval.",
     submitLabel: "Request Buyer Strategy Call",
   },
   agentPartnership: {
     eyebrow: "Agent Partnership Conversation",
     title: "Build better financing conversations for your buyers.",
-    body: "A front-end placeholder for agents who want compliant education, media support, market context, and buyer-readiness workflows.",
+    body: "For agents who want compliant education, media support, market context, and buyer-readiness workflows.",
     submitLabel: "Request Agent Conversation",
   },
   brokerPartnership: {
     eyebrow: "Managing Broker Partnership",
     title: "Explore a firm-level lending education platform.",
-    body: "A front-end placeholder for managing brokers and firm owners evaluating agent adoption, compliant lead generation, co-branded education, and media infrastructure.",
+    body: "For managing brokers and firm owners evaluating agent adoption, compliant lead generation, co-branded education, and media infrastructure.",
     submitLabel: "Request Broker Discovery",
   },
   commercialReview: {
     eyebrow: "Commercial Scenario Review",
     title: "Make the deal legible before chasing terms.",
-    body: "A front-end placeholder for investors and operators who want to frame asset, sponsor, capital stack, and execution risk before a commercial lending conversation.",
+    body: "For investors and operators who want to frame asset, sponsor, capital stack, and execution risk before a commercial lending conversation.",
     submitLabel: "Request Scenario Review",
   },
   newsletter: {
     eyebrow: "Content / Newsletter Signup",
     title: "Follow the mortgage strategy media engine.",
-    body: "A front-end placeholder for educational updates, social video drops, article launches, and Broadview Lending content imports. No rates, quotes, or loan approvals.",
+    body: "For educational updates, social video drops, article launches, and Broadview Lending content imports. No rates, quotes, or loan approvals.",
     submitLabel: "Join Content List",
   },
 };

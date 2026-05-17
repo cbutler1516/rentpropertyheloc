@@ -141,7 +141,10 @@ export default function VideosPage() {
                 title="A hero slot for the next flagship video."
                 lead="Use this module for the most important current explainer, featured campaign, or launch video before the deeper category lanes."
               />
-              <div className="mt-10 flex flex-wrap gap-3">
+              <div
+                className="mt-10 flex flex-wrap gap-3"
+                aria-label="Video category filters"
+              >
                 {videoFilters.map((filter) => (
                   <button
                     key={filter}

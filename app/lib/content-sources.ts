@@ -29,8 +29,8 @@ export type HubLink = {
   external?: boolean;
 };
 
-const TODO_VIDEO_URL = "https://example.com/TODO-video-url";
-const TODO_EMBED_URL = "https://example.com/TODO-embed-url";
+const TODO_VIDEO_URL = "/videos";
+const TODO_EMBED_URL = "Embed URL pending";
 
 export const videoSections: Array<{
   id: string;

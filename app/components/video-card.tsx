@@ -47,17 +47,23 @@ export function VideoCard({ video }: { video: VideoContent }) {
           <p className="font-mono text-[9px] tracking-[0.2em] text-zinc-700 uppercase">
             Embed placeholder: {video.embedUrl}
           </p>
-          <a
-            href={video.ctaHref}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] hover:text-white"
-          >
-            {video.ctaLabel}
-            <span className="text-[#7c3aed]" aria-hidden>
-              →
+          {video.status === "todo" ? (
+            <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-zinc-600">
+              Link pending
             </span>
-          </a>
+          ) : (
+            <a
+              href={video.ctaHref}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] hover:text-white"
+            >
+              {video.ctaLabel}
+              <span className="text-[#7c3aed]" aria-hidden>
+                →
+              </span>
+            </a>
+          )}
         </div>
       </div>
     </article>
