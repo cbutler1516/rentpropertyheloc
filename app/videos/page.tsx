@@ -107,6 +107,7 @@ export default function VideosPage() {
           focusLabel="Content System"
           focus="The video hub turns mortgage education into repeatable, compliance-aware formats for TikTok, Instagram Reels, Facebook Reels, YouTube Shorts, long-form explainers, and future AI/Sora creative concepts."
           visual="basketball-agents"
+          videoSrc="/videos/loan-playbook-videos-media-studio.mp4"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <a

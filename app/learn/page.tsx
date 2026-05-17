@@ -150,6 +150,7 @@ export default function LearnPage() {
           focusLabel="Editorial System"
           focus="This is the strategy library: loan programs, offer structure, buyer readiness, agent education, commercial finance, Broadview Lending article imports, and market context translated into useful decisions."
           visual="multi-strategy"
+          videoSrc="/videos/loan-playbook-learn-film-room.mp4"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <a

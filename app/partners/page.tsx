@@ -154,6 +154,7 @@ export default function PartnersPage() {
           focusLabel="Executive Thesis"
           focus="This is a platform for firm-level lending strategy: better buyer preparation, stronger agent tools, premium content infrastructure, and partnership models reviewed through the right compliance lens."
           visual="golf-commercial"
+          videoSrc="/videos/loan-playbook-commercial-golf.mp4"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <a
