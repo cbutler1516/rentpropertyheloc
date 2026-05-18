@@ -4,9 +4,11 @@ import { RevealGroup } from "./reveal-group";
 export function SocialLinkGrid({
   links = socialLinks,
   className = "",
+  ctaLabel = "Open destination",
 }: {
   links?: SocialLink[];
   className?: string;
+  ctaLabel?: string;
 }) {
   return (
     <RevealGroup
@@ -37,7 +39,7 @@ export function SocialLinkGrid({
               {link.description}
             </p>
             <span className="relative mt-8 inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] text-zinc-600 uppercase transition-colors duration-[var(--duration-hover)] group-hover:text-[#7c3aed]">
-              Open destination
+              {ctaLabel}
               <span aria-hidden>→</span>
             </span>
           </a>

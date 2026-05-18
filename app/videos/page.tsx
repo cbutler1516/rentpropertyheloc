@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FooterBrand } from "../components/brand";
 import { ComplianceFooter } from "../components/compliance-footer";
+import { FooterSocialLinks } from "../components/footer-social-links";
 import {
   ConversionCTA,
   conversionCtas,
@@ -14,7 +15,8 @@ import {
 import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
 import { SiteNav } from "../components/site-nav";
-import { SocialLinkGrid } from "../components/social-link-grid";
+import { SocialFollowSection } from "../components/social-follow-section";
+import { SocialPostCard } from "../components/social-post-card";
 import {
   TrackedAnchor,
   TrackedButton,
@@ -22,6 +24,7 @@ import {
 } from "../components/tracked-link";
 import { VideoCard } from "../components/video-card";
 import { videoSections, type VideoContent } from "../lib/content-sources";
+import { socialPosts } from "../lib/social-posts";
 
 export const metadata: Metadata = {
   title: "Videos | The Loan Playbook",
@@ -46,6 +49,7 @@ const allVideos = videoSections.flatMap((section) => section.videos);
 const featuredVideo = allVideos.find(
   (video) => video.title === "Mortgage strategy in one clear idea",
 );
+const curatedSocialPosts = socialPosts.slice(0, 5);
 
 const categorizedVideoLanes: Array<{
   id: string;
@@ -323,6 +327,26 @@ export default function VideosPage() {
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
+              eyebrow="Curated Social Posts"
+              title="One embed. The rest stays cinematic."
+              lead="Curated cards keep the hub fast today and prepare each post for its own landing page later."
+            />
+            <RevealGroup
+              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 md:gap-8 lg:grid-cols-5"
+              stagger={90}
+            >
+              {curatedSocialPosts.map((post) => (
+                <SocialPostCard key={post.slug} post={post} />
+              ))}
+            </RevealGroup>
+          </div>
+          <div className="section-bridge-bottom" aria-hidden />
+        </section>
+
+        <section className="section-flow relative">
+          <div className="section-bridge-top" aria-hidden />
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <SectionHeader
               eyebrow="Browse By Category"
               title="Choose a lane."
               lead="Buyer lessons, mortgage clips, market updates, agent content, and creative experiments."
@@ -353,18 +377,12 @@ export default function VideosPage() {
           <VideoLane key={lane.id} lane={lane} index={index} />
         ))}
 
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
-          <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <SectionHeader
-              eyebrow="Social Destinations"
-              title="Real channels, one media system."
-              lead="Each destination routes back to deeper education."
-            />
-            <SocialLinkGrid />
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
+        <SocialFollowSection
+          eyebrow="Social Destinations"
+          title="Real channels, one media system."
+          lead="Follow the main profiles now. Individual post pages are ready as URLs and transcripts are added."
+          showFlywheel={false}
+        />
 
         <section className="section-flow relative">
           <div className="section-bridge-top" aria-hidden />
@@ -400,6 +418,7 @@ export default function VideosPage() {
           <FooterBrand />
           <span>© {new Date().getFullYear()} The Loan Playbook</span>
         </div>
+        <FooterSocialLinks />
         <ComplianceFooter />
       </footer>
     </div>

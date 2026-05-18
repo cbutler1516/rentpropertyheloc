@@ -12,6 +12,7 @@ export function VideoCard({
   compact?: boolean;
 }) {
   const hasEmbed = video.embedUrl !== "Embed URL pending";
+  const showEmbed = hasEmbed && !compact;
   const isPublished = video.status === "published";
   const description =
     compact && video.description.length > 132
@@ -33,7 +34,7 @@ export function VideoCard({
         aria-hidden
       />
       <div className="relative aspect-[4/5] border-b border-zinc-900/80 bg-[#080808] p-5 md:aspect-[9/11]">
-        {hasEmbed ? (
+        {showEmbed ? (
           <iframe
             src={video.embedUrl}
             title={`${video.title} TikTok embed`}
@@ -56,7 +57,7 @@ export function VideoCard({
               <div className="flex items-center justify-between gap-4 font-mono text-[10px] tracking-[0.24em] text-[#7c3aed] uppercase">
                 <span>{video.category}</span>
                 <span className="text-zinc-600">
-                  {video.status === "todo" ? "TODO" : "Planned"}
+                  {isPublished ? "Curated" : video.status === "todo" ? "TODO" : "Planned"}
                 </span>
               </div>
               <div>
@@ -92,7 +93,11 @@ export function VideoCard({
         </p>
         <div className="mt-7 border-t border-zinc-900/80 pt-5">
           <p className="font-mono text-[9px] tracking-[0.2em] text-zinc-700 uppercase">
-            {hasEmbed ? "TikTok embed connected" : `Embed placeholder: ${video.embedUrl}`}
+            {hasEmbed
+              ? compact
+                ? "Curated card / embed on featured view"
+                : "TikTok embed connected"
+              : `Embed placeholder: ${video.embedUrl}`}
           </p>
           {!isPublished ? (
             <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-zinc-600">

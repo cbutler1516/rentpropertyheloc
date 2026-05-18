@@ -1,5 +1,6 @@
 import { FooterBrand } from "./components/brand";
 import { ComplianceFooter } from "./components/compliance-footer";
+import { FooterSocialLinks } from "./components/footer-social-links";
 import { HeroVideo } from "./components/hero-video";
 import { LeadCaptureForm } from "./components/lead-capture-form";
 import { StatRow } from "./components/design-system";
@@ -7,6 +8,7 @@ import { PageAmbient } from "./components/page-ambient";
 import { RevealGroup } from "./components/reveal-group";
 import { SchedulingLink } from "./components/scheduling-cta";
 import { SiteNav } from "./components/site-nav";
+import { SocialFollowSection } from "./components/social-follow-section";
 import { TrackedAnchor, TrackedLink } from "./components/tracked-link";
 import { VideoEmbedCard } from "./components/video-embed-card";
 import { featuredVideoEmbedGroups } from "./lib/video-embeds";
@@ -301,6 +303,11 @@ export default function Home() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
+        <SocialFollowSection
+          title="Follow The Loan Playbook."
+          lead="Short video, deeper guide, strategy call. Follow the main channels as the media system grows."
+        />
+
         {/* Authority */}
         <section className="section-flow section-matte relative border-y border-zinc-900/40">
           <div className="section-bridge-top" aria-hidden />
@@ -423,6 +430,7 @@ export default function Home() {
           <FooterBrand />
           <span>© {new Date().getFullYear()} The Loan Playbook</span>
         </div>
+        <FooterSocialLinks />
         <ComplianceFooter />
       </footer>
     </div>
