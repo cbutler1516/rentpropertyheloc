@@ -12,30 +12,30 @@ export default function StrategyPage() {
     <InternalPage
       eyebrow="The Framework"
       title="Scout the field. Build the sequence. Run the play."
-      lead="The Loan Playbook organizes lending into a strategy system: fewer assumptions, stronger files, and better timing."
-      focus="The framework is intentionally simple. Every loan move can be understood through three disciplines: read the conditions, design the file, and execute with control."
+      lead="A simple operating system for lending decisions."
+      focus="Read the conditions. Design the file. Execute with control."
       strategyVisual="multi-strategy"
       heroVideoSrc="/videos/loan-playbook-tennis-about.mp4"
       sections={[
         {
           label: "Scout",
           title: "Read the field",
-          body: "Before choosing a loan path, understand market conditions, borrower constraints, lender preferences, and timing pressure.",
+          body: "Understand conditions, constraints, preferences, and timing.",
         },
         {
           label: "Plan",
           title: "Design the sequence",
-          body: "The strongest lending process has order. Documents, cash, credit, property, and underwriting risk should be sequenced before submission.",
+          body: "Sequence documents, cash, credit, property, and risk before submission.",
         },
         {
           label: "Execute",
           title: "Control the move",
-          body: "Execution is calm when the strategy is already built. The file moves with intention instead of reacting to every request.",
+          body: "Move with intention instead of reacting to every request.",
         },
       ]}
       closing={{
         title: "Strategy is the operating system.",
-        body: "Whether the borrower is buying, refinancing, investing, or scaling, the same discipline applies: know the field before entering it.",
+        body: "Buying, refinancing, investing, or scaling: know the field first.",
       }}
     />
   );

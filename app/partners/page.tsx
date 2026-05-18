@@ -28,17 +28,17 @@ const problemAreas = [
   {
     label: "01 / Readiness",
     title: "Growth depends on cleaner buyer conversations",
-    body: "Brokerage growth is harder when agents are forced to manage financing confusion late in the transaction. Buyers need stronger context before urgency affects confidence.",
+    body: "Growth is harder when financing confusion appears late.",
   },
   {
     label: "02 / Content",
     title: "Education has become a business-development channel",
-    body: "Teams need modern mortgage strategy content that supports trust, client education, and agent authority without feeling generic or promotional.",
+    body: "Teams need useful education that does not feel generic.",
   },
   {
     label: "03 / Execution",
     title: "Financing friction affects the whole brand",
-    body: "Late-stage surprises, weak expectations, and unclear loan structure can affect the client experience well beyond a single transaction.",
+    body: "Weak expectations affect more than one transaction.",
   },
 ];
 
@@ -46,22 +46,22 @@ const platformPillars = [
   {
     step: "Education",
     title: "Co-branded buyer education",
-    body: "Premium lending explainers, readiness frameworks, and financing strategy content that brokerages can use to support agents and clients.",
+    body: "Premium explainers and readiness frameworks for agents and clients.",
   },
   {
     step: "Media",
     title: "Mortgage strategy content engine",
-    body: "Short-form and editorial concepts built around market context, buyer decision-making, affordability, and transaction preparation.",
+    body: "Short-form and editorial concepts built around real buyer decisions.",
   },
   {
     step: "Lead Gen",
     title: "Compliant lead-generation pathways",
-    body: "Buyer-facing strategy conversations, content pathways, and readiness prompts designed to create compliant intake without pressuring the relationship.",
+    body: "Content pathways and readiness prompts for compliant intake.",
   },
   {
     step: "Adoption",
     title: "Agent adoption support",
-    body: "A platform agents can understand quickly: clear talking points, simple frameworks, and useful buyer preparation tools.",
+    body: "Clear talking points, simple frameworks, and useful buyer tools.",
   },
 ];
 
@@ -69,17 +69,17 @@ const brokerValue = [
   {
     label: "Agent Tools",
     title: "A stronger advisory layer for the field",
-    body: "Agents get a sharper way to frame financing strategy, readiness, and offer confidence without becoming mortgage technicians.",
+    body: "Agents frame readiness and offer confidence without becoming lenders.",
   },
   {
     label: "Client Experience",
     title: "Buyers feel prepared earlier",
-    body: "The firm benefits when buyers understand their financing path before showings, negotiations, and contract deadlines raise the stakes.",
+    body: "Buyers understand the path before deadlines raise the stakes.",
   },
   {
     label: "Differentiation",
     title: "A more modern finance partnership story",
-    body: "Brokerages can position lending education as part of a premium client experience, not a back-office handoff.",
+    body: "Lending education becomes part of the client experience.",
   },
 ];
 
@@ -87,22 +87,22 @@ const partnershipModels = [
   {
     label: "Co-Marketing",
     title: "Education-led campaigns",
-    body: "Co-branded buyer education, market explainers, and social content built around strategy and readiness rather than rate promotion.",
+    body: "Co-branded education and social content built around readiness.",
   },
   {
     label: "Lead Generation",
     title: "Buyer strategy pathways",
-    body: "Content and consultation flows that invite buyers into clearer financing conversations, with appropriate disclosures and compliance review.",
+    body: "Consultation flows with appropriate disclosures and review.",
   },
   {
     label: "Platform Enablement",
     title: "Agent education infrastructure",
-    body: "Training topics, office-hours concepts, and practical frameworks that help teams speak more confidently about financing strategy.",
+    body: "Training topics and frameworks teams can use quickly.",
   },
   {
     label: "Strategic Relationships",
     title: "Firm-level lending conversations",
-    body: "A structured way to evaluate lending collaboration, service standards, education needs, and compliant business-development opportunities.",
+    body: "A structured review of collaboration, service, education, and compliance.",
   },
 ];
 
@@ -110,17 +110,17 @@ const platformEconomics = [
   {
     label: "Cost of Confusion",
     title: "Reduce avoidable friction",
-    body: "A better education layer can lower the operational cost of unclear buyer expectations, repeated explanations, and late-stage financing surprises.",
+    body: "A better education layer reduces repeated explanations.",
   },
   {
     label: "Content Leverage",
     title: "Turn expertise into repeatable media",
-    body: "Articles, short-form videos, and buyer guides can support agent adoption and compliant marketing without recreating the same explanation every week.",
+    body: "Articles, videos, and guides turn expertise into repeatable media.",
   },
   {
     label: "Measured Opportunity",
     title: "Evaluate value without compensation promises",
-    body: "Platform economics should be reviewed around approved services, documented scope, compliance requirements, and measurable education outcomes, not transaction steering.",
+    body: "Evaluate approved services, documented scope, compliance, and outcomes.",
   },
 ];
 
@@ -150,10 +150,10 @@ export default function PartnersPage() {
       <main className="relative z-10">
         <PageHero
           eyebrow="Brokerage Partnership Platform"
-          title="A modern lending partnership platform for real estate firms."
-          lead="The Loan Playbook helps managing brokers, firm owners, and team leaders build a more strategic finance layer around agent adoption, buyer readiness, education, and compliant partnership conversations."
+          title="A modern lending platform for real estate firms."
+          lead="Buyer readiness, agent adoption, education, and compliant partnership conversations."
           focusLabel="Executive Thesis"
-          focus="This is a platform for firm-level lending strategy: better buyer preparation, stronger agent tools, premium content infrastructure, and partnership models reviewed through the right compliance lens."
+          focus="Firm-level education, agent tools, premium content, and partnership models reviewed through the right compliance lens."
           visual="golf-commercial"
           videoSrc="/videos/loan-playbook-commercial-golf.mp4"
         >
@@ -162,7 +162,7 @@ export default function PartnersPage() {
               href="#partnership-conversation"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              Explore a Partnership Conversation
+              Start Partnership Review
             </a>
             <Link
               href="/agents"
@@ -190,8 +190,8 @@ export default function PartnersPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Brokerage Growth Problem"
-              title="Brokerages need better financing clarity before transactions are at risk."
-              lead="Agents are expected to advise buyers through a market where financing decisions shape confidence, offer strategy, and execution. Most firms do not have a modern education layer built for that moment."
+              title="Better financing clarity, earlier."
+              lead="Most firms do not have a modern education layer for the moments financing matters most."
             />
 
             <RevealGroup
@@ -216,8 +216,8 @@ export default function PartnersPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="The Platform"
-              title="Education, media, compliant lead generation, buyer strategy, and agent adoption."
-              lead="The Loan Playbook is designed as an operating layer around real estate finance conversations. It gives leadership a clearer way to support agents without turning lending into a sales script."
+              title="Education, media, lead paths, and adoption."
+              lead="A clearer way to support agents without turning lending into a sales script."
             />
 
             <RevealGroup
@@ -246,8 +246,8 @@ export default function PartnersPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Broker Value"
-              title="A better finance layer can become a firm-level advantage."
-              lead="The value is not just lender access. It is stronger tools for agents, a better client experience for buyers, and a more differentiated advisory standard for the firm."
+              title="A finance layer can become a firm advantage."
+              lead="Stronger tools for agents. A clearer experience for buyers."
             />
 
             <RevealGroup

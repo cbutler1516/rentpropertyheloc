@@ -28,17 +28,17 @@ const whyAgentsNeedStrategy = [
   {
     label: "01 / Buyer Signal",
     title: "Pre-approval is not the full picture",
-    body: "A letter can confirm access to financing. It does not always explain readiness, risk, structure, cash timing, or whether the buyer understands the next move.",
+    body: "A letter does not explain readiness, risk, cash timing, or next moves.",
   },
   {
     label: "02 / Market Pace",
     title: "Financing questions now shape strategy",
-    body: "Rates, credits, seller concessions, buydowns, liquidity, and underwriting timing all influence how a buyer competes and how an agent advises.",
+    body: "Rates, credits, concessions, liquidity, and timing shape the offer.",
   },
   {
     label: "03 / Trust",
     title: "Clients remember who gave them context",
-    body: "Modern agents win by helping buyers think clearly before emotion and deadlines take over. Better lending strategy strengthens the entire advisory experience.",
+    body: "Clear financing context makes the entire advisory experience stronger.",
   },
 ];
 
@@ -46,17 +46,17 @@ const readinessSteps = [
   {
     step: "Scout",
     title: "Map the buyer profile",
-    body: "Income, credit, cash, timing, debt, goals, and risk areas are organized into a clear borrower readout before the transaction is live.",
+    body: "Organize income, credit, cash, timing, debt, goals, and risk early.",
   },
   {
     step: "Plan",
     title: "Build the financing sequence",
-    body: "The buyer understands what needs to happen first, what can wait, and which decisions affect purchase power, offer strength, and closing confidence.",
+    body: "Clarify what happens first and what affects offer strength.",
   },
   {
     step: "Execute",
     title: "Enter the market prepared",
-    body: "When the right property appears, the buyer already knows the financing playbook instead of learning it under pressure.",
+    body: "The buyer knows the plan before the property appears.",
   },
 ];
 
@@ -64,17 +64,17 @@ const contentSupport = [
   {
     label: "Education Engine",
     title: "Borrower education agents can actually use",
-    body: "Short-form explainers, strategic talking points, and buyer-facing frameworks designed to make financing feel clear without turning the agent into a lender.",
+    body: "Short explainers and buyer-facing frameworks agents can use.",
   },
   {
     label: "Co-Branded Media",
     title: "Compliance-aware co-marketing support",
-    body: "Premium, practical mortgage strategy content that can support newsletters, social posts, buyer consults, open house follow-ups, and agent education campaigns with appropriate review.",
+    body: "Premium content for newsletters, social, consults, and follow-up.",
   },
   {
     label: "Local Authority",
     title: "A sharper way to show market fluency",
-    body: "The platform helps agents speak to financing trends, affordability shifts, and buyer strategy in a way that feels intelligent, modern, and client-first.",
+    body: "A modern way to discuss financing trends and buyer decisions.",
   },
 ];
 
@@ -82,22 +82,22 @@ const marketIntelligence = [
   {
     label: "Rate Environment",
     title: "Translate market movement",
-    body: "Turn changing rate conditions into simple buyer strategy: timing, payment sensitivity, lock discussions, and realistic decision ranges.",
+    body: "Translate rate movement into timing, payment, and lock context.",
   },
   {
     label: "Offer Structure",
     title: "Connect financing to negotiation",
-    body: "Clarify how credits, buydowns, cash reserves, appraisal risk, and closing timelines affect offer construction and seller confidence.",
+    body: "Connect credits, buydowns, reserves, risk, and timelines to the offer.",
   },
   {
     label: "Buyer Psychology",
     title: "Reduce hesitation with context",
-    body: "Help buyers understand what is changing, what is controllable, and what should be decided before they are emotionally attached to a home.",
+    body: "Separate what is changing from what the buyer controls.",
   },
   {
     label: "Execution Risk",
     title: "See friction before it becomes urgent",
-    body: "Identify weak points in documentation, timing, assets, and loan structure early enough to protect momentum later.",
+    body: "Find weak points before they slow the file.",
   },
 ];
 
@@ -134,10 +134,10 @@ export default function AgentsPage() {
       <main className="relative z-10">
         <PageHero
           eyebrow="Agent Partnership Platform"
-          title="A sharper lending strategy layer for modern agents."
-          lead="The Loan Playbook helps real estate professionals educate buyers, clarify financing decisions, and build a cleaner path from first conversation to closing."
+          title="A sharper lending layer for modern agents."
+          lead="Help buyers understand financing before the transaction gets loud."
           focusLabel="Platform Thesis"
-          focus="This is not a recruiting pitch or transactional sales script. It is a buyer-readiness, mortgage education, and compliant co-marketing support system designed to make the agent relationship more strategic over time."
+          focus="Buyer readiness, mortgage education, and compliant co-marketing support without the sales-script feel."
           visual="basketball-agents"
           videoSrc="/videos/loan-playbook-basketball-agents.mp4"
         >
@@ -146,7 +146,7 @@ export default function AgentsPage() {
               href="#agent-strategy"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              Start a Strategy Conversation
+              Start Agent Conversation
             </a>
             <Link
               href="/strategy"
@@ -175,7 +175,7 @@ export default function AgentsPage() {
             <SectionHeader
               eyebrow="Why It Matters"
               title="Modern agents need more than a pre-approval letter."
-              lead="Financing now shapes buyer confidence, negotiation strategy, offer quality, and transaction flow. The agent who can frame those decisions earlier creates a calmer client experience."
+              lead="Financing shapes confidence, offer quality, and transaction flow."
             />
 
             <RevealGroup
@@ -201,7 +201,7 @@ export default function AgentsPage() {
             <SectionHeader
               eyebrow="Buyer Readiness System"
               title="Prepare the buyer before the market gets emotional."
-              lead="The platform turns lending preparation into a structured sequence buyers can understand before they are negotiating, competing, or reacting to deadlines."
+              lead="A simple sequence buyers can understand before pressure arrives."
             />
 
             <RevealGroup

@@ -56,7 +56,7 @@ export function PageHero({
         className,
       )}
     >
-      {videoSrc ? <HeroVideo src={videoSrc} /> : null}
+      {videoSrc ? <HeroVideo src={videoSrc} loading="eager" /> : null}
       {visual && !videoSrc ? (
         <StrategyVisual variant={visual} className="internal-strategy-visual" />
       ) : null}

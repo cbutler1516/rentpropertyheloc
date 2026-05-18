@@ -27,71 +27,17 @@ const featuredPlaybooks = [
   {
     label: "Buyer Playbook",
     title: "First-time buyer strategy",
-    body: "A structured path for readiness, pre-approval quality, payment clarity, cash planning, and offer confidence before the search gets serious.",
+    body: "Readiness, payment clarity, cash planning, and offer confidence.",
   },
   {
     label: "Offer Strategy",
     title: "Seller concessions and buydowns",
-    body: "How credits, temporary buydowns, closing costs, and payment strategy can change the economics of a purchase offer.",
+    body: "Credits, buydowns, closing costs, and payment tradeoffs.",
   },
   {
     label: "Loan Structure",
     title: "Choosing the right loan lane",
-    body: "A practical framework for FHA, VA, conventional, jumbo, DSCR, refinance, HELOC, and commercial lending decisions.",
-  },
-];
-
-const buyerStrategy = [
-  {
-    label: "Readiness",
-    title: "Know the file before the lender does",
-    body: "Income, credit, cash, debt, and timing all tell a story. Better buyers understand that story before the market creates pressure.",
-  },
-  {
-    label: "Offer Prep",
-    title: "Finance strategy affects negotiation",
-    body: "Loan type, reserves, credits, contingencies, and timeline can all influence how strong an offer feels to the other side.",
-  },
-  {
-    label: "Payment Design",
-    title: "The monthly payment is engineered",
-    body: "Rate, price, taxes, insurance, buydowns, credits, and down payment choices should be understood as one system.",
-  },
-];
-
-const agentStrategy = [
-  {
-    label: "Client Education",
-    title: "Better context creates calmer buyers",
-    body: "Agents can use lending education to help clients understand readiness, constraints, payment movement, and transaction timing.",
-  },
-  {
-    label: "Market Content",
-    title: "Financing is now part of the media strategy",
-    body: "Mortgage strategy topics give agents useful, practical content that supports trust without turning their feed into rate advertising.",
-  },
-  {
-    label: "Transaction Flow",
-    title: "Prepared buyers move cleaner",
-    body: "Better financing expectations can reduce confusion between pre-approval, offer, underwriting, and closing.",
-  },
-];
-
-const commercialStrategy = [
-  {
-    label: "Asset",
-    title: "Read the collateral",
-    body: "Commercial lending begins with the asset: income, use case, condition, market, tenant profile, and exit strategy.",
-  },
-  {
-    label: "Sponsor",
-    title: "Position the borrower story",
-    body: "Liquidity, experience, reserves, guarantees, and operational strength help shape how a deal is understood.",
-  },
-  {
-    label: "Structure",
-    title: "Capital stack before speed",
-    body: "Debt, equity, cash flow, timeline, and risk should be structured around the business plan, not forced after the fact.",
+    body: "FHA, VA, conventional, jumbo, DSCR, refinance, HELOC, and commercial.",
   },
 ];
 
@@ -146,9 +92,9 @@ export default function LearnPage() {
         <PageHero
           eyebrow="Education Hub"
           title="Mortgage strategy, translated."
-          lead="The Loan Playbook organizes mortgage education into SEO-ready playbooks, topic guides, article templates, and social-content themes for buyers, agents, and partners."
+          lead="Guides, videos, and topic hubs for clearer lending decisions."
           focusLabel="Editorial System"
-          focus="This is the strategy library: loan programs, offer structure, buyer readiness, agent education, commercial finance, Broadview Lending article imports, and market context translated into useful decisions."
+          focus="Loan programs, offer structure, readiness, agent education, commercial finance, and market context."
           visual="multi-strategy"
           videoSrc="/videos/loan-playbook-learn-film-room.mp4"
         >
@@ -188,8 +134,8 @@ export default function LearnPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Featured Playbooks"
-              title="Start with the strategy that shapes the decision."
-              lead="Each playbook is designed to become a landing page, article cluster, video series, and buyer-facing explanation over time."
+              title="Start with the decision."
+              lead="Each playbook can become a guide, video, or landing page."
             />
 
             <RevealGroup
@@ -215,8 +161,8 @@ export default function LearnPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Popular Topics"
-              title="High-intent mortgage topics, organized for search and clarity."
-              lead="The hub is built to scale into SEO landing pages, social explainers, buyer guides, and advisor-ready content."
+              title="High-intent topics, organized."
+              lead="Built for search, social, buyer guides, and advisor-ready content."
             />
 
             <RevealGroup
@@ -249,96 +195,13 @@ export default function LearnPage() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
-          <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <SectionHeader
-              eyebrow="Buyer Strategy"
-              title="Education for buyers who want to move before pressure arrives."
-              lead="Buyer content should help people understand readiness, structure, payment, and timing before they are emotionally attached to a home."
-            />
-
-            <RevealGroup
-              className="mt-16 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:mt-20 md:grid-cols-3"
-              stagger={120}
-            >
-              {buyerStrategy.map((item) => (
-                <FeatureCard
-                  key={item.label}
-                  label={item.label}
-                  title={item.title}
-                  body={item.body}
-                />
-              ))}
-            </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
-        <section className="section-flow relative">
-          <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <SectionHeader
-              eyebrow="Agent Strategy"
-              title="Content that helps agents educate without sounding generic."
-              lead="Agent education topics translate lending complexity into clearer client conversations, social content, and transaction preparation."
-            />
-
-            <RevealGroup
-              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3 md:gap-8"
-              stagger={130}
-            >
-              {agentStrategy.map((item) => (
-                <FeatureCard
-                  key={item.label}
-                  label={item.label}
-                  title={item.title}
-                  body={item.body}
-                  className="card-lift border border-zinc-900/80"
-                />
-              ))}
-            </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
-          <div className="section-bridge-top" aria-hidden />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#5b21b6]/[0.03] via-transparent to-transparent"
-            aria-hidden
-          />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <SectionHeader
-              eyebrow="Commercial Strategy"
-              title="Commercial finance education for structure-first decisions."
-              lead="Commercial content should help operators, investors, and advisors understand the deal before chasing terms."
-            />
-
-            <RevealGroup
-              className="mt-16 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:mt-20 md:grid-cols-3"
-              stagger={120}
-            >
-              {commercialStrategy.map((item) => (
-                <FeatureCard
-                  key={item.label}
-                  label={item.label}
-                  title={item.title}
-                  body={item.body}
-                />
-              ))}
-            </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
         <section className="section-flow relative">
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Latest Articles"
-              title="Editorial placeholders for the education engine."
-              lead="These article slots establish the content system now and can become full posts, landing pages, or video scripts as the hub grows."
+              title="First guides in the library."
+              lead="Article pages that can expand into videos, landing pages, and scripts."
             />
 
             <RevealGroup
@@ -368,8 +231,8 @@ export default function LearnPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="From Broadview Lending"
-              title="External education sources prepared for future imports."
-              lead="These placeholders are based on Broadview Lending blog topics and are ready for manual import workflows later. They remain clearly educational and do not imply rates, approval, or a commitment to lend."
+              title="Related external resources."
+              lead="Broadview topics prepared for future import. Educational only."
             />
             <RevealGroup
               className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 lg:grid-cols-3"
@@ -403,8 +266,8 @@ export default function LearnPage() {
 
         <CTASection
           eyebrow="Build Your Loan Playbook"
-          title="Turn mortgage information into a strategy system."
-          body="Start with the core playbooks, then build buyer education, agent content, video topics, Broadview imports, and commercial strategy pages around the decisions people actually need to make."
+          title="Turn information into action."
+          body="Start with a guide, then move into video, buyer education, or a conversation."
           actions={[
             {
               href: "/buyers",

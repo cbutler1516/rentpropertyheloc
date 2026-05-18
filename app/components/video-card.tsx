@@ -1,12 +1,22 @@
 "use client";
 
-import type { VideoContent } from "../lib/content-sources";
 import { trackEvent } from "../lib/analytics-events";
+import type { VideoContent } from "../lib/content-sources";
 import { TrackedLink } from "./tracked-link";
 
-export function VideoCard({ video }: { video: VideoContent }) {
+export function VideoCard({
+  video,
+  compact = false,
+}: {
+  video: VideoContent;
+  compact?: boolean;
+}) {
   const hasEmbed = video.embedUrl !== "Embed URL pending";
   const isPublished = video.status === "published";
+  const description =
+    compact && video.description.length > 132
+      ? `${video.description.slice(0, 126).trim()}...`
+      : video.description;
   const trackVideoClick = () => {
     trackEvent("video_card_interaction", {
       platform: video.platform,
@@ -22,7 +32,7 @@ export function VideoCard({ video }: { video: VideoContent }) {
         className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#5b21b6]/0 via-transparent to-transparent opacity-0 transition-opacity duration-[var(--duration-hover)] group-hover:opacity-100 group-hover:from-[#5b21b6]/[0.08]"
         aria-hidden
       />
-      <div className="relative aspect-[9/14] border-b border-zinc-900/80 bg-[#080808] p-5">
+      <div className="relative aspect-[4/5] border-b border-zinc-900/80 bg-[#080808] p-5 md:aspect-[9/11]">
         {hasEmbed ? (
           <iframe
             src={video.embedUrl}
@@ -66,15 +76,19 @@ export function VideoCard({ video }: { video: VideoContent }) {
           </div>
         ) : null}
       </div>
-      <div className="relative flex flex-1 flex-col p-7">
+      <div className={`relative flex flex-1 flex-col ${compact ? "p-6" : "p-7"}`}>
         <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
           {video.platform}
         </p>
-        <h3 className="mt-5 text-2xl font-semibold tracking-[-0.02em] text-white">
+        <h3
+          className={`${compact ? "mt-4 text-xl" : "mt-5 text-2xl"} font-semibold tracking-[-0.02em] text-white`}
+        >
           {video.title}
         </h3>
-        <p className="mt-5 flex-1 leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
-          {video.description}
+        <p
+          className={`${compact ? "mt-4 text-sm" : "mt-5"} flex-1 leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400`}
+        >
+          {description}
         </p>
         <div className="mt-7 border-t border-zinc-900/80 pt-5">
           <p className="font-mono text-[9px] tracking-[0.2em] text-zinc-700 uppercase">

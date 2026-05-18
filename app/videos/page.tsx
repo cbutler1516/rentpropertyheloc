@@ -21,9 +21,7 @@ import {
   TrackedLink,
 } from "../components/tracked-link";
 import { VideoCard } from "../components/video-card";
-import { VideoEmbedCard } from "../components/video-embed-card";
-import { videoSections } from "../lib/content-sources";
-import { featuredVideoEmbedGroups } from "../lib/video-embeds";
+import { videoSections, type VideoContent } from "../lib/content-sources";
 
 export const metadata: Metadata = {
   title: "Videos | The Loan Playbook",
@@ -43,47 +41,220 @@ const videoFilters = [
   "AI / Sora",
 ];
 
-const featuredVideo = videoSections
-  .flatMap((section) => section.videos)
-  .find((video) => video.title === "What buyers misunderstand about pre-approval");
+const allVideos = videoSections.flatMap((section) => section.videos);
+
+const featuredVideo = allVideos.find(
+  (video) => video.title === "Mortgage strategy in one clear idea",
+);
+
+const categorizedVideoLanes: Array<{
+  id: string;
+  title: string;
+  intro: string;
+  videos: VideoContent[];
+}> = [
+  {
+    id: "buyer-education",
+    title: "Buyer Education",
+    intro: "Payment, readiness, credits, and cash-to-close before pressure.",
+    videos: allVideos.filter((video) =>
+      ["Buyer Education", "Buyer education", "Buyer readiness"].includes(
+        video.category,
+      ),
+    ),
+  },
+  {
+    id: "mortgage-strategy",
+    title: "Mortgage Strategy",
+    intro: "Loan structure, buydowns, concessions, and payment design.",
+    videos: allVideos.filter((video) =>
+      [
+        "Mortgage Strategy",
+        "Short-form mortgage play",
+        "Offer strategy",
+        "Strategy explainer",
+        "Featured play",
+        "Long-form explainer",
+      ].includes(video.category),
+    ),
+  },
+  {
+    id: "market-updates",
+    title: "Market Updates",
+    intro: "Market context without panic or rate-chasing.",
+    videos: allVideos.filter((video) =>
+      ["Market Update", "Market update"].includes(video.category),
+    ),
+  },
+  {
+    id: "agent-strategy",
+    title: "Agent Strategy",
+    intro: "Cleaner financing conversations for agents and buyers.",
+    videos: allVideos.filter((video) =>
+      ["Agent Strategy", "Agent education"].includes(video.category),
+    ),
+  },
+  {
+    id: "creative-ai-marketing",
+    title: "Creative / AI Marketing",
+    intro: "Cinematic systems for premium mortgage education.",
+    videos: allVideos.filter((video) =>
+      ["Creative / AI Marketing", "AI / Sora"].includes(video.category),
+    ),
+  },
+].map((lane) => ({
+  ...lane,
+  videos: lane.videos.filter((video) => video.title !== featuredVideo?.title),
+}));
 
 const landingPageSystem = [
   {
     label: "01 / Short Video",
-    title: "Start with a single useful mortgage idea",
-    body: "A short TikTok, Reel, or Short introduces one clear topic: concessions, buydowns, pre-approval quality, payment design, or market context.",
+    title: "A short clip earns attention",
+    body: "One useful mortgage idea in a short format.",
   },
   {
     label: "02 / Article",
-    title: "Expand it into a searchable Learn guide",
-    body: "The same topic becomes an SEO article, FAQ cluster, buyer guide, or agent resource that gives the video a deeper destination.",
+    title: "A Learn article gives it depth",
+    body: "The topic becomes a guide, FAQ, or buyer resource.",
   },
   {
     label: "03 / Landing Page",
-    title: "Route the audience to the right next step",
-    body: "Visitors move from social content to a focused page for buyers, agents, partners, commercial borrowers, or related education.",
+    title: "A focused page routes the viewer",
+    body: "The viewer moves into the right path.",
   },
   {
     label: "04 / Strategy Call",
-    title: "Invite a compliant conversation",
-    body: "When someone is ready, the content path leads to a consultation or partnership inquiry without implying rates, approval, or commitments.",
+    title: "A consultation becomes the next move",
+    body: "When ready, the path leads to a compliant conversation.",
   },
 ];
 
-function VideoGrid({
-  videos,
-}: {
-  videos: (typeof videoSections)[number]["videos"];
-}) {
+function FeaturedVideoSection({ video }: { video?: VideoContent }) {
+  if (!video) return null;
+
+  const hasEmbed = video.embedUrl !== "Embed URL pending";
+  const description =
+    video.description.length > 150
+      ? `${video.description.slice(0, 144).trim()}...`
+      : video.description;
+
   return (
-    <RevealGroup
-      className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3 md:gap-8"
-      stagger={130}
+    <section
+      id="featured-video"
+      className="section-flow section-matte relative border-y border-zinc-900/40"
     >
-      {videos.map((video) => (
-        <VideoCard key={`${video.platform}-${video.title}`} video={video} />
-      ))}
-    </RevealGroup>
+      <div className="section-bridge-top" aria-hidden />
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#5b21b6]/[0.04] via-transparent to-transparent"
+        aria-hidden
+      />
+      <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[0.92fr_1.08fr] md:items-center md:gap-16 md:px-10">
+        <RevealGroup
+          className="relative overflow-hidden border border-zinc-900/80 bg-[#050505] p-4 md:p-6"
+          stagger={100}
+        >
+          <div className="reveal-item relative aspect-[9/12] overflow-hidden bg-[#080808] md:aspect-[9/10]">
+            {hasEmbed ? (
+              <iframe
+                src={video.embedUrl}
+                title={`${video.title} TikTok embed`}
+                className="absolute inset-0 h-full w-full border-0"
+                allow="encrypted-media; fullscreen; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+            ) : (
+              <div className="relative flex h-full flex-col justify-between p-6">
+                <div
+                  className="playbook-grid pointer-events-none absolute inset-0 opacity-25"
+                  aria-hidden
+                />
+                <p className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
+                  Featured video placeholder
+                </p>
+                <p className="relative font-mono text-[10px] tracking-[0.22em] text-zinc-600 uppercase">
+                  Embed URL pending
+                </p>
+              </div>
+            )}
+          </div>
+        </RevealGroup>
+
+        <RevealGroup className="flex flex-col justify-center" stagger={120}>
+          <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
+            {video.category}
+          </p>
+          <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-white md:mt-6 md:text-6xl">
+            {video.title}
+          </h2>
+          <p className="reveal-item mt-8 max-w-2xl text-lg leading-relaxed text-zinc-400 md:text-xl">
+            {description}
+          </p>
+          <div className="reveal-item mt-10 flex flex-col gap-4 sm:flex-row">
+            <TrackedAnchor
+              href={video.ctaHref}
+              target="_blank"
+              rel="noreferrer"
+              location="videos_featured"
+              label="Open on TikTok"
+              className="btn-primary inline-flex h-14 w-fit items-center justify-center bg-white px-8 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
+            >
+              Open on TikTok
+            </TrackedAnchor>
+            {video.relatedArticleHref ? (
+              <TrackedLink
+                href={video.relatedArticleHref}
+                location="videos_featured"
+                label={video.relatedArticleLabel ?? "Read full breakdown"}
+                className="btn-ghost inline-flex h-14 w-fit items-center justify-center border border-zinc-800 px-8 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
+              >
+                {video.relatedArticleLabel ?? "Read Full Breakdown"}
+              </TrackedLink>
+            ) : null}
+          </div>
+        </RevealGroup>
+      </div>
+      <div className="section-bridge-bottom" aria-hidden />
+    </section>
+  );
+}
+
+function VideoLane({
+  lane,
+  index,
+}: {
+  lane: (typeof categorizedVideoLanes)[number];
+  index: number;
+}) {
+  if (!lane.videos.length) return null;
+
+  return (
+    <section
+      id={lane.id}
+      className={`section-flow relative ${
+        index % 2 === 1 ? "section-matte border-y border-zinc-900/40" : ""
+      }`}
+    >
+      <div className="section-bridge-top" aria-hidden />
+      <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+        <SectionHeader eyebrow="Video Lane" title={lane.title} lead={lane.intro} />
+        <RevealGroup
+          className="mt-10 grid gap-7 md:-mx-10 md:flex md:snap-x md:gap-8 md:overflow-x-auto md:px-10 md:pb-4"
+          stagger={100}
+        >
+          {lane.videos.map((video) => (
+            <div
+              key={`${lane.id}-${video.platform}-${video.title}`}
+              className="md:min-w-[21rem] md:snap-start lg:min-w-[23rem]"
+            >
+              <VideoCard video={video} compact />
+            </div>
+          ))}
+        </RevealGroup>
+      </div>
+      <div className="section-bridge-bottom" aria-hidden />
+    </section>
   );
 }
 
@@ -114,15 +285,15 @@ export default function VideosPage() {
         <PageHero
           eyebrow="Video + Social Hub"
           title="Watch the playbook in motion."
-          lead="A premium social media hub for short-form mortgage plays, educational explainers, market updates, agent support, buyer education, and future long-form strategy videos."
+          lead="Short-form mortgage education, market context, agent support, and future long-form video."
           focusLabel="Content System"
-          focus="The video hub turns mortgage education into repeatable, compliance-aware formats for TikTok, Instagram Reels, Facebook Reels, YouTube Shorts, long-form explainers, and future AI/Sora creative concepts."
+          focus="Repeatable, compliance-aware formats for TikTok, Reels, Shorts, explainers, and future AI creative."
           visual="basketball-agents"
           videoSrc="/videos/loan-playbook-videos-media-studio.mp4"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <TrackedAnchor
-              href="#tiktok"
+              href="#buyer-education"
               location="videos_hero"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
@@ -141,101 +312,45 @@ export default function VideosPage() {
             stats={[
               { value: "6", label: "Destinations" },
               { value: "9", label: "Content lanes" },
-              { value: "0", label: "Live APIs yet" },
+              { value: "5", label: "Live TikToks" },
             ]}
           />
         </PageHero>
 
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
+        <FeaturedVideoSection video={featuredVideo} />
+
+        <section className="section-flow relative">
           <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[0.85fr_1.15fr] md:px-10">
-            <div>
-              <SectionHeader
-                eyebrow="Featured Module"
-                title="A hero slot for the next flagship video."
-                lead="Use this module for the most important current explainer, featured campaign, or launch video before the deeper category lanes."
-              />
-              <div
-                className="mt-10 flex flex-wrap gap-3"
-                aria-label="Video category filters"
-              >
-                {videoFilters.map((filter) => (
-                  <TrackedButton
-                    key={filter}
-                    eventName="video_filter_click"
-                    payload={{ filter }}
-                    className="border border-zinc-900 bg-[#050505] px-4 py-3 font-mono text-[10px] tracking-[0.2em] text-zinc-600 uppercase transition-colors duration-[var(--duration-hover)] hover:border-[#7c3aed]/40 hover:text-zinc-300"
-                  >
-                    {filter}
-                  </TrackedButton>
-                ))}
-              </div>
-              <p className="mt-5 font-mono text-[10px] tracking-[0.18em] text-zinc-700 uppercase">
-                Filter UI placeholder only. No client-side filtering yet.
-              </p>
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <SectionHeader
+              eyebrow="Browse By Category"
+              title="Choose a lane."
+              lead="Buyer lessons, mortgage clips, market updates, agent content, and creative experiments."
+            />
+            <div
+              className="mt-10 flex flex-wrap gap-3"
+              aria-label="Video category filters"
+            >
+              {videoFilters.map((filter) => (
+                <TrackedButton
+                  key={filter}
+                  eventName="video_filter_click"
+                  payload={{ filter }}
+                  className="border border-zinc-900 bg-[#050505] px-4 py-3 font-mono text-[10px] tracking-[0.2em] text-zinc-600 uppercase transition-colors duration-[var(--duration-hover)] hover:border-[#7c3aed]/40 hover:text-zinc-300"
+                >
+                  {filter}
+                </TrackedButton>
+              ))}
             </div>
-            {featuredVideo ? <VideoCard video={featuredVideo} /> : null}
+            <p className="mt-5 font-mono text-[10px] tracking-[0.18em] text-zinc-700 uppercase">
+              Category controls are prepared for future filtering.
+            </p>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        {featuredVideoEmbedGroups.map((group, index) => (
-          <section
-            key={group.eyebrow}
-            className={`section-flow relative ${
-              index % 2 === 1 ? "section-matte border-y border-zinc-900/40" : ""
-            }`}
-          >
-            <div className="section-bridge-top" aria-hidden />
-            <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-              <SectionHeader
-                eyebrow={group.eyebrow}
-                title={group.title}
-                lead={group.lead}
-              />
-              <RevealGroup
-                className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 lg:grid-cols-3"
-                stagger={120}
-              >
-                {group.videos.map((video) => (
-                  <VideoEmbedCard
-                    key={`${group.eyebrow}-${video.platform}-${video.title}`}
-                    video={video}
-                  />
-                ))}
-              </RevealGroup>
-            </div>
-            <div className="section-bridge-bottom" aria-hidden />
-          </section>
-        ))}
-
-        {videoSections.map((section, index) => (
-          <section
-            key={section.id}
-            id={section.id}
-            className={`section-flow relative ${
-              index % 2 === 0
-                ? "section-matte border-y border-zinc-900/40"
-                : ""
-            }`}
-          >
-            <div className="section-bridge-top" aria-hidden />
-            {index % 2 === 0 ? (
-              <div
-                className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#5b21b6]/[0.035] via-transparent to-transparent"
-                aria-hidden
-              />
-            ) : null}
-            <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-              <SectionHeader
-                eyebrow={section.eyebrow}
-                title={section.title}
-                lead={section.lead}
-              />
-              <VideoGrid videos={section.videos} />
-            </div>
-            <div className="section-bridge-bottom" aria-hidden />
-          </section>
+        {categorizedVideoLanes.map((lane, index) => (
+          <VideoLane key={lane.id} lane={lane} index={index} />
         ))}
 
         <section className="section-flow section-matte relative border-y border-zinc-900/40">
@@ -243,8 +358,8 @@ export default function VideosPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Social Destinations"
-              title="Every publishing lane now points to the real Loan Playbook channels."
-              lead="Each destination is treated as educational media and a path into deeper articles, landing pages, and compliant conversations."
+              title="Real channels, one media system."
+              lead="Each destination routes back to deeper education."
             />
             <SocialLinkGrid />
           </div>
@@ -256,8 +371,8 @@ export default function VideosPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Video To Landing Page"
-              title="Turn every useful video into a deeper education asset."
-              lead="The video hub is not just a gallery. It is a production map for SEO articles, social clips, landing pages, agent resources, and newsletter content."
+              title="Every useful clip gets a next step."
+              lead="A production map for articles, landing pages, resources, and newsletter content."
             />
             <RevealGroup
               className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 md:gap-8 lg:grid-cols-4"

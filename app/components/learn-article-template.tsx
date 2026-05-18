@@ -31,7 +31,9 @@ function ArticleList({
             <p className="font-mono text-[10px] tracking-[0.22em] text-zinc-700 uppercase">
               {String(index + 1).padStart(2, "0")}
             </p>
-            <p className="mt-3 leading-relaxed text-zinc-400">{item}</p>
+            <p className="mt-3 text-sm leading-relaxed text-zinc-400 md:text-base">
+              {item}
+            </p>
           </div>
         ))}
       </div>
@@ -64,7 +66,7 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
           title={article.title}
           lead={article.intro}
           focusLabel="Education Note"
-          focus="This guide is for mortgage education and strategy discussion only. Program availability, borrower qualifications, property details, and underwriting guidelines determine what may be available."
+          focus="Educational only. Program availability, borrower qualifications, property details, and underwriting guidelines determine what may be available."
           visual="multi-strategy"
         >
           <StatRow
@@ -86,8 +88,8 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Key Takeaways"
-              title="The strategy in plain English."
-              lead="Use these points to understand the decision before comparing options, writing an offer, or assuming a structure fits."
+              title="The idea, fast."
+              lead="Scan the decision before comparing options or assuming a structure fits."
             />
             <RevealGroup
               className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3"
@@ -98,7 +100,6 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
                   key={takeaway}
                   label={`Takeaway ${String(index + 1).padStart(2, "0")}`}
                   title={takeaway}
-                  body="Educational context only. Program rules, borrower qualifications, property details, and applicable law determine what is available."
                   className="card-lift border border-zinc-900/80"
                 />
               ))}
@@ -164,7 +165,7 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
                 </h2>
                 <p className="mt-5 leading-relaxed text-zinc-500">
                   {article.videoDescription ??
-                    "Future embed placeholder for a short educational video connected to this article topic."}
+                    "Future short-form video connected to this topic."}
                 </p>
               </div>
             </div>
