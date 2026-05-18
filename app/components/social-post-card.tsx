@@ -3,6 +3,11 @@ import { MediaThumbnail } from "./media-thumbnail";
 import { TrackedAnchor, TrackedLink } from "./tracked-link";
 
 export function SocialPostCard({ post }: { post: SocialPost }) {
+  const platformCta =
+    post.cta.label.toLowerCase() === "watch"
+      ? `Watch on ${post.platform}`
+      : post.cta.label;
+
   return (
     <article className="reveal-item card-lift group relative flex h-full flex-col overflow-hidden border border-zinc-900/80 bg-[#050505] shadow-[0_24px_80px_rgba(0,0,0,0.22)]">
       <MediaThumbnail
@@ -27,9 +32,10 @@ export function SocialPostCard({ post }: { post: SocialPost }) {
             href={`/social/${post.slug}`}
             location="social_post_card"
             label="View post page"
+            eventType="thumbnail"
             className="inline-flex items-center gap-2 text-sm font-medium text-white"
           >
-            View
+            View Clip Page
             <span className="text-[#7c3aed]" aria-hidden>
               →
             </span>
@@ -40,9 +46,11 @@ export function SocialPostCard({ post }: { post: SocialPost }) {
             rel="noreferrer"
             location="social_post_card"
             label={post.cta.label}
+            eventType="social"
+            platform={post.platform}
             className="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 transition-colors duration-[var(--duration-hover)] hover:text-white"
           >
-            {post.cta.label}
+            {platformCta}
             <span className="text-[#7c3aed]" aria-hidden>
               →
             </span>

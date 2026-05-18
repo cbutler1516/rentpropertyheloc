@@ -9,6 +9,8 @@ export type MoneyFunnel = {
   ogDescription?: string;
   heroLead: string;
   heroFocus?: string;
+  thumbnailSrc?: string;
+  thumbnailFocalPoint?: string;
   videoSlug: string;
   videoTitle?: string;
   videoLead?: string;
@@ -59,6 +61,7 @@ export const moneyFunnels = {
       "Understand how seller credits may support payment relief, cash to close, and negotiation strategy before writing an offer.",
     heroLead: "Most buyers do not realize what sellers can contribute.",
     heroFocus: "Payment relief. Cash to close. Offer leverage.",
+    thumbnailSrc: "/thumbnails/seller-concessions.jpg",
     videoSlug: "buyer-readiness-before-search",
     videoTitle: "A credit may beat a price cut.",
     videoLead: "Start with the payment story, then structure the ask.",
@@ -135,6 +138,7 @@ export const moneyFunnels = {
       "Understand how temporary payment relief works, who may fund it, and when buyers and agents should consider the structure.",
     heroLead: "The payment buyers qualify for is not always the payment they want.",
     heroFocus: "Temporary relief. Gradual transition. Long-term payment clarity.",
+    thumbnailSrc: "/thumbnails/two-one-buydown.jpg",
     videoSlug: "mortgage-strategy-clear-idea",
     videoTitle: "Can the first-year payment breathe?",
     videoLead: "A buydown can help only when the future payment still makes sense.",
@@ -208,6 +212,7 @@ export const moneyFunnels = {
       "Review refinance timing through payment, costs, equity, cash flow, HELOC alternatives, and long-term flexibility.",
     heroLead: "Rate movement is only part of the equation.",
     heroFocus: "Payment. Equity. Cash flow. Timing.",
+    thumbnailSrc: "/thumbnails/refinance-timing.jpg",
     videoSlug: "market-context-without-noise",
     videoTitle: "Rates moved. Now what?",
     videoLead: "A refinance should solve a real problem, not react to a headline.",
@@ -288,6 +293,7 @@ export const moneyFunnels = {
       "Understand how a HELOC may support flexibility, liquidity, renovations, debt restructuring, and equity strategy without replacing the entire mortgage.",
     heroLead: "Sometimes the smartest move is leaving the first mortgage alone.",
     heroFocus: "Equity access. Liquidity. Payment strategy.",
+    thumbnailSrc: "/thumbnails/heloc-strategy.jpg",
     videoSlug: "creative-mortgage-media-test",
     videoTitle: "Sometimes leave the first mortgage alone.",
     videoLead: "Flexibility matters, but secured debt still needs structure.",
@@ -366,6 +372,7 @@ export const moneyFunnels = {
     description:
       "A concise agent financing playbook funnel for buyer readiness, financing context, offer conversations, and agent education.",
     heroLead: "The buyer who understands payment moves differently.",
+    thumbnailSrc: "/thumbnails/agent-financing-playbook.jpg",
     videoSlug: "agent-financing-conversation",
     takeaways: [
       "Pre-approval is not the whole story.",

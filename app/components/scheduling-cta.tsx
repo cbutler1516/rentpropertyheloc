@@ -87,6 +87,7 @@ export function SchedulingCTASection({ type }: { type: SchedulingType }) {
       eyebrow={config.eyebrow}
       title={config.title}
       body={config.body}
+      analyticsSection="booking_cta"
     >
       <TrackedBookingAnchor
         href={href}

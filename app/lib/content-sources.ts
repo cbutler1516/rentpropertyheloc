@@ -61,6 +61,7 @@ export const videoSections: Array<{
         description:
           "Payment and cash clarity before the search gets emotional.",
         thumbnailLabel: "Live TikTok",
+        thumbnailSrc: "/thumbnails/buyer-readiness.jpg",
         embedUrl: tiktokEmbedUrl("7637204481389726990"),
         ctaHref: "https://www.tiktok.com/@theloanplaybook/video/7637204481389726990",
         ctaLabel: "Watch",
@@ -75,6 +76,7 @@ export const videoSections: Array<{
         description:
           "A clearer way to think about payment before the offer.",
         thumbnailLabel: "Live TikTok",
+        thumbnailSrc: "/thumbnails/two-one-buydown.jpg",
         embedUrl: tiktokEmbedUrl("7608394728236780814"),
         ctaHref: "https://www.tiktok.com/@theloanplaybook/video/7608394728236780814",
         ctaLabel: "Watch",
@@ -89,6 +91,7 @@ export const videoSections: Array<{
         description:
           "Payment, timing, and confidence after the market moves.",
         thumbnailLabel: "Live TikTok",
+        thumbnailSrc: "/thumbnails/refinance-timing.jpg",
         embedUrl: tiktokEmbedUrl("7598267421841050894"),
         ctaHref: "https://www.tiktok.com/@theloanplaybook/video/7598267421841050894",
         ctaLabel: "Watch",
@@ -103,6 +106,7 @@ export const videoSections: Array<{
         description:
           "A better financing conversation before the offer.",
         thumbnailLabel: "Live TikTok",
+        thumbnailSrc: "/thumbnails/agent-financing-playbook.jpg",
         embedUrl: tiktokEmbedUrl("7584678562507132215"),
         ctaHref: "https://www.tiktok.com/@theloanplaybook/video/7584678562507132215",
         ctaLabel: "Watch",
@@ -117,6 +121,7 @@ export const videoSections: Array<{
         description:
           "Premium media energy for serious mortgage education.",
         thumbnailLabel: "Live TikTok",
+        thumbnailSrc: "/thumbnails/heloc-strategy.jpg",
         embedUrl: tiktokEmbedUrl("7584525269541686558"),
         ctaHref: "https://www.tiktok.com/@theloanplaybook/video/7584525269541686558",
         ctaLabel: "Watch",

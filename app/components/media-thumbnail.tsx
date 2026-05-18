@@ -86,7 +86,7 @@ export function MediaThumbnail({
         <div
           className="absolute inset-0 bg-cover opacity-90 transition duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:scale-[1.03] group-hover:opacity-100"
           style={{
-            backgroundImage: `url(${thumbnailSrc})`,
+            backgroundImage: `url(${thumbnailSrc}), ${treatment.background}`,
             backgroundPosition: thumbnailFocalPoint,
           }}
           aria-hidden

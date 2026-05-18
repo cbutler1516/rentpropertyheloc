@@ -1,5 +1,6 @@
 import { socialLinks, type SocialLink } from "../lib/social-links";
 import { RevealGroup } from "./reveal-group";
+import { TrackedAnchor } from "./tracked-link";
 
 export function SocialLinkGrid({
   links = socialLinks,
@@ -16,11 +17,15 @@ export function SocialLinkGrid({
       stagger={70}
     >
       {links.map((link) => (
-          <a
+          <TrackedAnchor
             key={link.platform}
             href={link.href}
             target="_blank"
             rel="noreferrer"
+            location="social_link_grid"
+            label={link.label}
+            eventType="social"
+            platform={link.platform}
             className="reveal-item group relative bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a]"
           >
             <div
@@ -42,7 +47,7 @@ export function SocialLinkGrid({
               {ctaLabel}
               <span aria-hidden>→</span>
             </span>
-          </a>
+          </TrackedAnchor>
       ))}
     </RevealGroup>
   );

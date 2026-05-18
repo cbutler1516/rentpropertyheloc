@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState, type FormEvent } from "react";
-import { trackLeadSubmit } from "../lib/analytics-events";
+import { trackLeadFormStart, trackLeadSubmit } from "../lib/analytics-events";
 
 export type LeadFormType =
   | "Buyer Strategy Call"
@@ -29,6 +29,17 @@ export function LeadCaptureForm({ formType, submitLabel }: LeadCaptureFormProps)
   const formId = useId();
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [hasTrackedStart, setHasTrackedStart] = useState(false);
+
+  function trackFormStart() {
+    if (hasTrackedStart) return;
+
+    setHasTrackedStart(true);
+    trackLeadFormStart({
+      formType,
+      page: typeof window !== "undefined" ? window.location.href : "",
+    });
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -109,6 +120,8 @@ export function LeadCaptureForm({ formType, submitLabel }: LeadCaptureFormProps)
     <form
       className="reveal-item mt-10 grid gap-4 md:grid-cols-2"
       onSubmit={onSubmit}
+      onFocusCapture={trackFormStart}
+      data-analytics-section="lead_capture"
     >
       <input
         type="text"

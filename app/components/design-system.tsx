@@ -230,12 +230,14 @@ export function CTASection({
   actions,
   children,
   className,
+  analyticsSection,
 }: BaseProps & {
   eyebrow?: ReactNode;
   title: ReactNode;
   body: ReactNode;
   actions?: Action[];
   children?: ReactNode;
+  analyticsSection?: string;
 }) {
   return (
     <section
@@ -243,6 +245,7 @@ export function CTASection({
         "relative mx-auto w-full max-w-7xl px-6 py-28 md:px-10 md:py-36",
         className,
       )}
+      data-analytics-section={analyticsSection}
     >
       <RevealGroup
         className="grid gap-10 border-t border-zinc-900/80 pt-10 md:grid-cols-[0.9fr_1.1fr] md:gap-20 md:pt-14"

@@ -6,7 +6,49 @@ import {
   trackBookingClick,
   trackCtaClick,
   trackEvent,
+  trackRelatedGuideClick,
+  trackSocialOutboundClick,
+  trackThumbnailClick,
+  trackVideoClick,
 } from "../lib/analytics-events";
+
+type TrackableClickType = "cta" | "related_guide" | "social" | "thumbnail" | "video";
+
+function trackClickByType({
+  eventType = "cta",
+  href,
+  label,
+  location,
+  platform,
+}: {
+  eventType?: TrackableClickType;
+  href: string;
+  label: string;
+  location?: string;
+  platform?: string;
+}) {
+  if (eventType === "related_guide") {
+    trackRelatedGuideClick({ label, href, location });
+    return;
+  }
+
+  if (eventType === "social") {
+    trackSocialOutboundClick({ platform, label, href, location });
+    return;
+  }
+
+  if (eventType === "thumbnail") {
+    trackThumbnailClick({ label, href, location });
+    return;
+  }
+
+  if (eventType === "video") {
+    trackVideoClick({ label, href, location });
+    return;
+  }
+
+  trackCtaClick({ label, href, location });
+}
 
 export function TrackedLink({
   href,
@@ -14,12 +56,14 @@ export function TrackedLink({
   className = "",
   location,
   label,
+  eventType,
 }: {
   href: string;
   children: ReactNode;
   className?: string;
   location?: string;
   label?: string;
+  eventType?: TrackableClickType;
 }) {
   const trackingLabel =
     label ?? (typeof children === "string" ? children : "Link click");
@@ -29,7 +73,8 @@ export function TrackedLink({
       href={href}
       className={className}
       onClick={() =>
-        trackCtaClick({
+        trackClickByType({
+          eventType,
           label: trackingLabel,
           href,
           location,
@@ -49,6 +94,8 @@ export function TrackedAnchor({
   label,
   target,
   rel,
+  eventType,
+  platform,
 }: {
   href: string;
   children: ReactNode;
@@ -57,6 +104,8 @@ export function TrackedAnchor({
   label?: string;
   target?: string;
   rel?: string;
+  eventType?: TrackableClickType;
+  platform?: string;
 }) {
   const trackingLabel =
     label ?? (typeof children === "string" ? children : "Link click");
@@ -68,10 +117,12 @@ export function TrackedAnchor({
       rel={rel}
       className={className}
       onClick={() =>
-        trackCtaClick({
+        trackClickByType({
+          eventType,
           label: trackingLabel,
           href,
           location,
+          platform,
         })
       }
     >

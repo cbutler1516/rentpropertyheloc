@@ -79,7 +79,10 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
           />
         </PageHero>
 
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
+        <section
+          className="section-flow section-matte relative border-y border-zinc-900/40"
+          data-analytics-section="featured_guides"
+        >
           <div className="section-bridge-top" aria-hidden />
           <div
             className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#5b21b6]/[0.035] via-transparent to-transparent"
@@ -123,7 +126,10 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
+        <section
+          className="section-flow section-matte relative border-y border-zinc-900/40"
+          data-analytics-section="featured_video"
+        >
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto grid w-full max-w-7xl gap-8 px-6 md:grid-cols-[0.9fr_1.1fr] md:px-10">
             <ArticleList
@@ -177,6 +183,7 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
           eyebrow="Next Move"
           title={article.ctaTitle}
           body={article.ctaBody}
+          analyticsSection="lead_capture"
           actions={[
             { href: "/learn", label: "Back to Learn", variant: "primary" },
             { href: "/videos", label: "Explore Video Topics" },

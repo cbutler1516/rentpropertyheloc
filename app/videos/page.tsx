@@ -119,6 +119,7 @@ function FeaturedVideoSection({ video }: { video?: VideoContent }) {
     <section
       id="featured-video"
       className="section-flow section-matte relative border-y border-zinc-900/40"
+      data-analytics-section="featured_video"
     >
       <div className="section-bridge-top" aria-hidden />
       <div
@@ -157,7 +158,7 @@ function FeaturedVideoSection({ video }: { video?: VideoContent }) {
 
         <RevealGroup className="flex flex-col justify-center" stagger={120}>
           <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-            {video.category}
+            Featured Now / {video.category}
           </p>
           <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-white md:mt-6 md:text-6xl">
             {video.title}
@@ -172,18 +173,20 @@ function FeaturedVideoSection({ video }: { video?: VideoContent }) {
               rel="noreferrer"
               location="videos_featured"
               label="Open on TikTok"
+              eventType="video"
               className="btn-primary inline-flex h-14 w-fit items-center justify-center bg-white px-8 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              Watch
+              Watch on TikTok
             </TrackedAnchor>
             {video.relatedArticleHref ? (
               <TrackedLink
                 href={video.relatedArticleHref}
                 location="videos_featured"
                 label={video.relatedArticleLabel ?? "Read full breakdown"}
+                eventType="related_guide"
                 className="btn-ghost inline-flex h-14 w-fit items-center justify-center border border-zinc-800 px-8 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
               >
-                Read
+                Open Guide
               </TrackedLink>
             ) : null}
           </div>
@@ -206,6 +209,7 @@ function VideoLane({
   return (
     <section
       id={lane.id}
+      data-analytics-section={`social_lane_${lane.id}`}
       className={`section-flow relative ${
         index % 2 === 1 ? "section-matte border-y border-zinc-900/40" : ""
       }`}
@@ -278,16 +282,19 @@ export default function VideosPage() {
 
         <FeaturedVideoSection video={featuredVideo} />
 
-        <section className="section-flow relative">
+        <section
+          className="section-flow relative"
+          data-analytics-section="social_lanes"
+        >
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
-              eyebrow="Curated Posts"
-              title="One embed. Clean cards."
-              lead="Fast today. Landing pages ready next."
+              eyebrow="Recently Added"
+              title="Fresh clips."
+              lead="TikTok-first cards with guide paths."
             />
             <RevealGroup
-              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 md:gap-8 lg:grid-cols-5"
+              className="mt-12 grid gap-7 md:mt-16 md:grid-cols-2 md:gap-8 lg:grid-cols-5"
               stagger={90}
             >
               {curatedSocialPosts.map((post) => (

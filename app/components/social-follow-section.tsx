@@ -40,7 +40,10 @@ export function SocialFollowSection({
   showHubLink?: boolean;
 }) {
   return (
-    <section className="section-flow section-matte relative border-y border-zinc-900/40">
+    <section
+      className="section-flow section-matte relative border-y border-zinc-900/40"
+      data-analytics-section="social_lanes"
+    >
       <div className="section-bridge-top" aria-hidden />
       <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#5b21b6]/[0.035] via-transparent to-transparent"

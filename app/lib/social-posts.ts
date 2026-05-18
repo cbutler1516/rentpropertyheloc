@@ -39,6 +39,7 @@ export const socialPosts: SocialPost[] = [
     topic: "Buyer readiness",
     category: "Buyer Education",
     thumbnail: "Live TikTok",
+    thumbnailSrc: "/thumbnails/buyer-readiness.jpg",
     shortSummary:
       "Payment and cash clarity before the search gets emotional.",
     relatedLearnArticle: {
@@ -62,6 +63,7 @@ export const socialPosts: SocialPost[] = [
     topic: "Mortgage structure",
     category: "Mortgage Strategy",
     thumbnail: "Live TikTok",
+    thumbnailSrc: "/thumbnails/two-one-buydown.jpg",
     shortSummary:
       "A clearer way to think about payment before the offer.",
     relatedLearnArticle: {
@@ -85,6 +87,7 @@ export const socialPosts: SocialPost[] = [
     topic: "Market context",
     category: "Market Update",
     thumbnail: "Live TikTok",
+    thumbnailSrc: "/thumbnails/refinance-timing.jpg",
     shortSummary:
       "Payment, timing, and confidence after the market moves.",
     relatedLearnArticle: {
@@ -108,6 +111,7 @@ export const socialPosts: SocialPost[] = [
     topic: "Agent education",
     category: "Agent Strategy",
     thumbnail: "Live TikTok",
+    thumbnailSrc: "/thumbnails/agent-financing-playbook.jpg",
     shortSummary:
       "A better financing conversation before the offer.",
     relatedLearnArticle: {
@@ -131,6 +135,7 @@ export const socialPosts: SocialPost[] = [
     topic: "Creative media",
     category: "Creative / AI Marketing",
     thumbnail: "Live TikTok",
+    thumbnailSrc: "/thumbnails/heloc-strategy.jpg",
     shortSummary:
       "Premium media energy for serious mortgage education.",
     relatedLearnArticle: {

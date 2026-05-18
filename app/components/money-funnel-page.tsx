@@ -83,7 +83,10 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
           </div>
         </PageHero>
 
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
+        <section
+          className="section-flow section-matte relative border-y border-zinc-900/40"
+          data-analytics-section="featured_video"
+        >
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[0.9fr_1.1fr] md:items-center md:gap-16 md:px-10">
             <RevealGroup
@@ -106,8 +109,10 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                     category={featuredPost?.category ?? funnel.eyebrow}
                     platform={featuredPost?.platform}
                     thumbnailLabel="Featured"
-                    thumbnailSrc={featuredPost?.thumbnailSrc}
-                    thumbnailFocalPoint={featuredPost?.thumbnailFocalPoint}
+                    thumbnailSrc={featuredPost?.thumbnailSrc ?? funnel.thumbnailSrc}
+                    thumbnailFocalPoint={
+                      featuredPost?.thumbnailFocalPoint ?? funnel.thumbnailFocalPoint
+                    }
                     runtime={featuredPost?.runtime}
                     className="h-full"
                   />
@@ -128,6 +133,7 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                   rel="noreferrer"
                   location={`${funnel.slug}_featured_video`}
                   label={featuredPost.cta.label}
+                  eventType="video"
                   className="btn-ghost reveal-item mt-8 inline-flex h-14 w-fit items-center justify-center border border-zinc-800 px-8 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
                 >
                   Watch
@@ -260,7 +266,11 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        <section id="funnel-cta" className="section-flow relative">
+        <section
+          id="funnel-cta"
+          className="section-flow relative"
+          data-analytics-section="lead_capture"
+        >
           <div className="section-bridge-top" aria-hidden />
           <div className="mx-auto w-full max-w-7xl px-6 md:px-10">
             <div className="cta-panel group relative overflow-hidden border border-zinc-900/80 bg-[#0a0a0a] px-8 py-16 md:px-16 md:py-20">
@@ -301,7 +311,10 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
+        <section
+          className="section-flow section-matte relative border-y border-zinc-900/40"
+          data-analytics-section="featured_guides"
+        >
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[1fr_1fr] md:gap-16 md:px-10">
             <div>
@@ -313,6 +326,7 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                     href={guide.href}
                     location={`${funnel.slug}_related_guides`}
                     label={guide.title}
+                    eventType="related_guide"
                     className="reveal-item group bg-[#050505] p-6"
                   >
                     <p className="font-mono text-[10px] tracking-[0.24em] text-[#7c3aed] uppercase">
@@ -334,6 +348,7 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                     href={`/social/${post.slug}`}
                     location={`${funnel.slug}_related_videos`}
                     label={post.title}
+                    eventType="thumbnail"
                     className="reveal-item group bg-[#050505] p-6"
                   >
                     <p className="font-mono text-[10px] tracking-[0.24em] text-[#7c3aed] uppercase">

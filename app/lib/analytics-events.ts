@@ -2,6 +2,21 @@
 
 type AnalyticsPayload = Record<string, string | number | boolean | null | undefined>;
 
+export const analyticsEvents = {
+  bookingClick: "booking_click",
+  ctaClick: "cta_click",
+  formStart: "form_start",
+  leadSubmit: "lead_submit",
+  mediaClick: "media_click",
+  pageView: "page_view",
+  relatedGuideClick: "related_guide_click",
+  scrollDepth: "scroll_depth",
+  sectionView: "section_view",
+  socialOutboundClick: "social_outbound_click",
+  thumbnailClick: "thumbnail_click",
+  videoClick: "video_click",
+} as const;
+
 declare global {
   interface Window {
     dataLayer?: Array<Record<string, unknown>>;
@@ -47,12 +62,12 @@ export function trackPageView(path: string) {
 
   window.dataLayer = window.dataLayer ?? [];
   window.dataLayer.push({
-    event: "page_view",
+    event: analyticsEvents.pageView,
     page_path: path,
     page_location: pageLocation,
   });
 
-  window.gtag?.("event", "page_view", {
+  window.gtag?.("event", analyticsEvents.pageView, {
     page_path: path,
     page_location: pageLocation,
   });
@@ -66,9 +81,19 @@ export function trackLeadSubmit(payload: {
   role?: string;
   page?: string;
 }) {
-  trackEvent("lead_submit", {
+  trackEvent(analyticsEvents.leadSubmit, {
     form_type: payload.formType,
     role: payload.role,
+    source_page: payload.page,
+  });
+}
+
+export function trackLeadFormStart(payload: {
+  formType: string;
+  page?: string;
+}) {
+  trackEvent(analyticsEvents.formStart, {
+    form_type: payload.formType,
     source_page: payload.page,
   });
 }
@@ -78,7 +103,7 @@ export function trackBookingClick(payload: {
   label: string;
   href: string;
 }) {
-  trackEvent("booking_click", {
+  trackEvent(analyticsEvents.bookingClick, {
     booking_type: payload.bookingType,
     cta_label: payload.label,
     destination: payload.href,
@@ -90,8 +115,70 @@ export function trackCtaClick(payload: {
   href: string;
   location?: string;
 }) {
-  trackEvent("cta_click", {
+  trackEvent(analyticsEvents.ctaClick, {
     cta_label: payload.label,
+    destination: payload.href,
+    cta_location: payload.location,
+  });
+}
+
+export function trackScrollDepth(depth: 25 | 50 | 75 | 100) {
+  trackEvent(analyticsEvents.scrollDepth, {
+    scroll_depth: depth,
+  });
+}
+
+export function trackSectionView(sectionId: string) {
+  trackEvent(analyticsEvents.sectionView, {
+    section_id: sectionId,
+  });
+}
+
+export function trackVideoClick(payload: {
+  label: string;
+  href: string;
+  location?: string;
+}) {
+  trackEvent(analyticsEvents.videoClick, {
+    media_label: payload.label,
+    destination: payload.href,
+    media_location: payload.location,
+  });
+}
+
+export function trackThumbnailClick(payload: {
+  label: string;
+  href: string;
+  location?: string;
+}) {
+  trackEvent(analyticsEvents.thumbnailClick, {
+    media_label: payload.label,
+    destination: payload.href,
+    media_location: payload.location,
+  });
+}
+
+export function trackSocialOutboundClick(payload: {
+  platform?: string;
+  label: string;
+  href: string;
+  location?: string;
+}) {
+  trackEvent(analyticsEvents.socialOutboundClick, {
+    platform: payload.platform,
+    cta_label: payload.label,
+    destination: payload.href,
+    cta_location: payload.location,
+  });
+}
+
+export function trackRelatedGuideClick(payload: {
+  label: string;
+  href: string;
+  location?: string;
+}) {
+  trackEvent(analyticsEvents.relatedGuideClick, {
+    guide_label: payload.label,
     destination: payload.href,
     cta_location: payload.location,
   });
