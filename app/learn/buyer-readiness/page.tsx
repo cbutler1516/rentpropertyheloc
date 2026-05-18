@@ -12,35 +12,25 @@ import { TrackedAnchor, TrackedLink } from "../../components/tracked-link";
 import { getSocialPostBySlug } from "../../lib/social-posts";
 
 export const metadata: Metadata = {
-  title: "Buyer Readiness | The Loan Playbook",
+  title: "Buyer Readiness Strategy | The Loan Playbook",
   description:
-    "A concise buyer readiness landing page for understanding payment, cash to close, offer strategy, loan options, and timeline before the home search.",
+    "Know your payment, cash to close, loan options, and timeline before the home search gets serious.",
   openGraph: {
     title: "Before you search, know your number.",
     description:
-      "Understand the numbers and next steps before the home search gets serious.",
+      "Most buyers start too late. Build the number, file, and next move before touring homes.",
     type: "article",
   },
 };
 
 const buyerReadinessVideo = getSocialPostBySlug("buyer-readiness-before-search");
 
-const buyerMistakes = [
-  {
-    label: "01",
-    title: "Shopping before knowing payment",
-    body: "A price range is not the same as a monthly number.",
-  },
-  {
-    label: "02",
-    title: "Underestimating cash to close",
-    body: "Down payment, costs, credits, and reserves all matter.",
-  },
-  {
-    label: "03",
-    title: "Waiting too long to prepare",
-    body: "The best file is built before the offer.",
-  },
+const buyerAnxiety = [
+  "Shopping before understanding payment",
+  "Underestimating cash to close",
+  "Focusing only on rate",
+  "Waiting too long",
+  "Touring homes before a plan",
 ];
 
 const clarityItems = [
@@ -55,18 +45,24 @@ const howItWorks = [
   {
     label: "Step 01",
     title: "Share the goal",
-    body: "Tell us where you are trying to buy and when.",
+    body: "Where, when, and what you want the payment to feel like.",
   },
   {
     label: "Step 02",
-    title: "Review the numbers",
-    body: "Clarify payment, cash, and loan fit.",
+    title: "Build the number",
+    body: "Payment, cash, options, and timing.",
   },
   {
     label: "Step 03",
-    title: "Build the next move",
-    body: "Leave with a cleaner buyer path.",
+    title: "Make the move",
+    body: "Shop with a cleaner path.",
   },
+];
+
+const trustSignals = [
+  "Licensed multi-state lending context",
+  "Residential + commercial experience",
+  "Education-first approach",
 ];
 
 const relatedGuides = [
@@ -110,9 +106,9 @@ export default function BuyerReadinessPage() {
         <PageHero
           eyebrow="Buyer Readiness"
           title="Before you search, know your number."
-          lead="A concise buyer path for payment, cash, offer strength, loan options, and timing."
+          lead="Most buyers start too late. Start with payment, cash, and timing."
           focusLabel="Start Here"
-          focus="Know the number. Build the file. Shop with context."
+          focus="The payment matters more than the price."
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <TrackedAnchor
@@ -122,21 +118,17 @@ export default function BuyerReadinessPage() {
             >
               Start Your Buyer Strategy
             </TrackedAnchor>
-            <SchedulingLink
-              type="buyer"
-              className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
-            />
           </div>
         </PageHero>
 
         <section className="section-flow section-matte relative border-y border-zinc-900/40">
           <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[0.9fr_1.1fr] md:items-center md:gap-16 md:px-10">
+          <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[0.86fr_1.14fr] md:items-center md:gap-16 md:px-10">
             <RevealGroup
-              className="relative overflow-hidden border border-zinc-900/80 bg-[#050505] p-4 md:p-6"
+              className="relative overflow-hidden border border-zinc-900/80 bg-[#050505] p-3 md:p-5"
               stagger={90}
             >
-              <div className="reveal-item relative aspect-[9/12] overflow-hidden bg-[#080808]">
+              <div className="reveal-item relative aspect-[9/11] overflow-hidden bg-[#080808] md:aspect-[9/10]">
                 {buyerReadinessVideo?.embedUrl ? (
                   <iframe
                     src={buyerReadinessVideo.embedUrl}
@@ -168,11 +160,10 @@ export default function BuyerReadinessPage() {
                 Watch First
               </p>
               <h2 className="reveal-item mt-5 text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                A short clip. A clearer start.
+                Know the first move.
               </h2>
-              <p className="reveal-item mt-6 max-w-xl text-lg leading-relaxed text-zinc-500">
-                Start with the idea, then use this page to organize the next
-                conversation.
+              <p className="reveal-item mt-6 max-w-md text-lg leading-relaxed text-zinc-500">
+                One idea before the search gets emotional.
               </p>
               {buyerReadinessVideo ? (
                 <TrackedAnchor
@@ -195,25 +186,22 @@ export default function BuyerReadinessPage() {
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
-              eyebrow="Common Mistakes"
-              title="What slows buyers down."
-              lead="The search gets easier when the numbers are understood first."
+              eyebrow="Buyer Anxiety"
+              title="What buyers usually get wrong."
+              lead="The search feels different when the number is real."
             />
             <RevealGroup
-              className="mt-14 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:grid-cols-3"
-              stagger={110}
+              className="mt-14 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2 lg:grid-cols-5"
+              stagger={70}
             >
-              {buyerMistakes.map((mistake) => (
-                <article key={mistake.label} className="reveal-item bg-[#050505] p-8">
+              {buyerAnxiety.map((item, index) => (
+                <article key={item} className="reveal-item bg-[#050505] p-7">
                   <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                    {mistake.label}
+                    {String(index + 1).padStart(2, "0")}
                   </p>
-                  <h3 className="mt-6 text-2xl font-semibold tracking-[-0.02em] text-white">
-                    {mistake.title}
+                  <h3 className="mt-5 text-xl font-semibold tracking-[-0.02em] text-white">
+                    {item}
                   </h3>
-                  <p className="mt-5 leading-relaxed text-zinc-500">
-                    {mistake.body}
-                  </p>
                 </article>
               ))}
             </RevealGroup>
@@ -225,9 +213,9 @@ export default function BuyerReadinessPage() {
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[0.8fr_1.2fr] md:gap-16 md:px-10">
             <SectionHeader
-              eyebrow="What We Clarify"
-              title="The five numbers and moves that matter."
-              lead="No rate quotes here. Just the buyer context you need before shopping."
+              eyebrow="Clarify"
+              title="The number behind the search."
+              lead="No rate quote. Just the inputs that shape the next move."
             />
             <RevealGroup
               className="grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2 lg:grid-cols-5"
@@ -253,17 +241,16 @@ export default function BuyerReadinessPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="How It Works"
-              title="Simple, visual, direct."
-              lead="A short path from early questions to a cleaner buying plan."
+              title="Simple path. Clearer buyer."
             />
             <RevealGroup
-              className="mt-14 grid gap-7 md:grid-cols-3 md:gap-8"
+              className="mt-12 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:grid-cols-3"
               stagger={100}
             >
               {howItWorks.map((step) => (
                 <article
                   key={step.label}
-                  className="reveal-item card-lift border border-zinc-900/80 bg-[#050505] p-8"
+                  className="reveal-item bg-[#050505] p-7 md:p-8"
                 >
                   <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
                     {step.label}
@@ -275,6 +262,21 @@ export default function BuyerReadinessPage() {
                     {step.body}
                   </p>
                 </article>
+              ))}
+            </RevealGroup>
+            <RevealGroup
+              className="mt-10 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:grid-cols-3"
+              stagger={80}
+            >
+              {trustSignals.map((signal) => (
+                <div key={signal} className="reveal-item bg-[#050505] p-6">
+                  <p className="font-mono text-[10px] tracking-[0.24em] text-[#7c3aed] uppercase">
+                    Trust
+                  </p>
+                  <p className="mt-4 text-sm leading-relaxed text-zinc-400">
+                    {signal}
+                  </p>
+                </div>
               ))}
             </RevealGroup>
           </div>
@@ -301,12 +303,16 @@ export default function BuyerReadinessPage() {
                   Know your number before the search.
                 </h2>
                 <p className="reveal-item mt-8 max-w-xl text-lg leading-relaxed text-zinc-400">
-                  Send the basics. We&apos;ll follow up about readiness, payment,
-                  cash to close, loan options, and timeline.
+                  Send the basics. We&apos;ll help you frame payment, cash, options,
+                  and timing.
                 </p>
                 <LeadCaptureForm
                   formType="Buyer Strategy Call"
                   submitLabel="Start Your Buyer Strategy"
+                />
+                <SchedulingLink
+                  type="buyer"
+                  className="btn-ghost reveal-item mt-5 inline-flex h-12 w-fit items-center justify-center border border-zinc-800 px-7 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
                 />
                 <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
                   Educational content only · No rate quote or loan commitment
@@ -322,11 +328,11 @@ export default function BuyerReadinessPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Related Guides"
-              title="Go deeper before you write the offer."
-              lead="Three guides that make the buyer conversation sharper."
+              title="Read next."
+              lead="Go deeper before the offer."
             />
             <RevealGroup
-              className="mt-14 grid gap-7 md:grid-cols-3 md:gap-8"
+              className="mt-12 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:grid-cols-3"
               stagger={100}
             >
               {relatedGuides.map((guide) => (
@@ -335,15 +341,15 @@ export default function BuyerReadinessPage() {
                   href={guide.href}
                   location="buyer_readiness_related_guides"
                   label={guide.title}
-                  className="reveal-item card-lift group border border-zinc-900/80 bg-[#050505] p-8"
+                  className="reveal-item group bg-[#050505] p-7"
                 >
                   <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
                     {guide.label}
                   </p>
-                  <h3 className="mt-6 text-2xl font-semibold tracking-[-0.02em] text-white">
+                  <h3 className="mt-5 text-2xl font-semibold tracking-[-0.02em] text-white">
                     {guide.title}
                   </h3>
-                  <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] group-hover:text-white">
+                  <span className="mt-7 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] group-hover:text-white">
                     Read Guide
                     <span className="text-[#7c3aed]" aria-hidden>
                       →
