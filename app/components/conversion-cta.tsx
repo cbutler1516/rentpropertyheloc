@@ -16,7 +16,7 @@ export function ConversionCTA({
   body,
   submitLabel,
   formType,
-  note = "Preview form. Submission wiring will be connected before launch.",
+  note = "Educational only. Not a loan application.",
 }: ConversionCTAProps) {
   return (
     <CTASection eyebrow={eyebrow} title={title} body={body}>
@@ -31,36 +31,36 @@ export function ConversionCTA({
 export const conversionCtas = {
   buyerStrategy: {
     eyebrow: "Buyer Strategy Call",
-    title: "Get buyer guidance before the search gets serious.",
-    body: "Discuss readiness, payment, cash-to-close, loan options, and next steps.",
+    title: "Know your number first.",
+    body: "Readiness, payment, cash, options, next steps.",
     formType: "Buyer Strategy Call" as const,
     submitLabel: "Book a Buyer Consultation",
   },
   agentPartnership: {
     eyebrow: "Agent Partnership Conversation",
-    title: "Build better financing conversations for your buyers.",
-    body: "Education, media support, market context, and buyer-readiness workflows.",
+    title: "Help buyers move clearer.",
+    body: "Education, media, market context, buyer readiness.",
     formType: "Agent Partnership Conversation" as const,
     submitLabel: "Explore Agent Partnerships",
   },
   brokerPartnership: {
     eyebrow: "Managing Broker Partnership",
-    title: "Explore a firm-level lending education platform.",
-    body: "Agent adoption, compliant lead paths, co-branded education, and media infrastructure.",
+    title: "Build a cleaner finance layer.",
+    body: "Adoption, lead paths, education, media infrastructure.",
     formType: "Managing Broker Partnership" as const,
     submitLabel: "Schedule a Broker Conversation",
   },
   commercialReview: {
     eyebrow: "Commercial Scenario Review",
-    title: "Review the financing structure before chasing terms.",
-    body: "Frame asset, sponsor, capital stack, and execution risk before lender conversations.",
+    title: "Make the deal legible.",
+    body: "Asset, sponsor, capital stack, execution risk.",
     formType: "Commercial Scenario Review" as const,
     submitLabel: "Review Commercial Financing Options",
   },
   newsletter: {
     eyebrow: "Content / Newsletter Signup",
     title: "Follow the media engine.",
-    body: "Education updates, video drops, article launches, and Broadview imports. No rates, quotes, or approvals.",
+    body: "Video drops, article launches, education updates.",
     formType: "Newsletter Signup" as const,
     submitLabel: "Join Content List",
   },

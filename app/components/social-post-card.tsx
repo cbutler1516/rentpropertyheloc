@@ -32,7 +32,7 @@ export function SocialPostCard({ post }: { post: SocialPost }) {
         <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
           {post.topic}
         </p>
-        <p className="mt-5 flex-1 leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
+        <p className="mt-5 flex-1 text-sm leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
           {post.shortSummary}
         </p>
         <div className="mt-7 grid gap-3 border-t border-zinc-900/80 pt-5">
@@ -42,7 +42,7 @@ export function SocialPostCard({ post }: { post: SocialPost }) {
             label="View post page"
             className="inline-flex items-center gap-2 text-sm font-medium text-white"
           >
-            View Post Page
+            View
             <span className="text-[#7c3aed]" aria-hidden>
               →
             </span>

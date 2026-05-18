@@ -9,7 +9,6 @@ import {
   FeatureCard,
   PageHero,
   SectionHeader,
-  StatRow,
 } from "../components/design-system";
 import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
@@ -91,10 +90,10 @@ export default function LearnPage() {
       <main className="relative z-10">
         <PageHero
           eyebrow="Education Hub"
-          title="Mortgage strategy, translated."
-          lead="Guides, videos, and topic hubs for clearer lending decisions."
-          focusLabel="Editorial System"
-          focus="Loan programs, offer structure, readiness, agent education, commercial finance, and market context."
+          title="Mortgage, translated."
+          lead="Guides and videos for clearer lending decisions."
+          focusLabel="Start"
+          focus="Read the move before you make it."
           visual="multi-strategy"
           videoSrc="/videos/loan-playbook-learn-film-room.mp4"
         >
@@ -105,21 +104,7 @@ export default function LearnPage() {
             >
               Explore Playbooks
             </a>
-            <Link
-              href="/videos"
-              className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
-            >
-              Watch Videos
-            </Link>
           </div>
-          <StatRow
-            className="reveal-item mt-20"
-            stats={[
-              { value: "9", label: "SEO topics" },
-              { value: "3", label: "Strategy lanes" },
-              { value: "1", label: "Learning hub" },
-            ]}
-          />
         </PageHero>
 
         <section
@@ -135,7 +120,7 @@ export default function LearnPage() {
             <SectionHeader
               eyebrow="Featured Playbooks"
               title="Start with the decision."
-              lead="Each playbook can become a guide, video, or landing page."
+              lead="Choose the decision first."
             />
 
             <RevealGroup
@@ -161,8 +146,8 @@ export default function LearnPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Popular Topics"
-              title="High-intent topics, organized."
-              lead="Built for search, social, buyer guides, and advisor-ready content."
+              title="Topics, organized."
+              lead="Search-ready. Buyer-friendly."
             />
 
             <RevealGroup
@@ -176,7 +161,7 @@ export default function LearnPage() {
                   className="reveal-item group bg-[#050505] p-6 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a]"
                 >
                   <p className="font-mono text-[10px] tracking-[0.24em] text-[#7c3aed] uppercase">
-                    SEO Article
+                    Guide
                   </p>
                   <h2 className="mt-4 text-xl font-semibold tracking-[-0.02em] text-white">
                     {topic.title}
@@ -201,7 +186,7 @@ export default function LearnPage() {
             <SectionHeader
               eyebrow="Latest Articles"
               title="First guides in the library."
-              lead="Article pages that can expand into videos, landing pages, and scripts."
+              lead="Start here, then go deeper."
             />
 
             <RevealGroup
@@ -232,7 +217,7 @@ export default function LearnPage() {
             <SectionHeader
               eyebrow="From Broadview Lending"
               title="Related external resources."
-              lead="Broadview topics prepared for future import. Educational only."
+              lead="Educational only."
             />
             <RevealGroup
               className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 lg:grid-cols-3"
@@ -251,14 +236,6 @@ export default function LearnPage() {
               >
                 Visit Broadview Blog
               </a>
-              <a
-                href="https://www.broadviewlending.com"
-                target="_blank"
-                rel="noreferrer"
-                className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
-              >
-                Broadview Lending
-              </a>
             </div>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
@@ -267,14 +244,13 @@ export default function LearnPage() {
         <CTASection
           eyebrow="Build Your Loan Playbook"
           title="Turn information into action."
-          body="Start with a guide, then move into video, buyer education, or a conversation."
+          body="Read first. Move when ready."
           actions={[
             {
               href: "/buyers",
               label: "Build Your Loan Playbook",
               variant: "primary",
             },
-            { href: "/videos", label: "Explore Video Topics" },
           ]}
         />
       </main>

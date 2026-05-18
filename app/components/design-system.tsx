@@ -52,7 +52,7 @@ export function PageHero({
   return (
     <section
       className={cn(
-        "relative mx-auto w-full max-w-7xl px-6 pb-24 pt-20 md:px-10 md:pb-32 md:pt-28",
+        "relative mx-auto w-full max-w-7xl px-6 pb-28 pt-20 md:px-10 md:pb-36 md:pt-28",
         className,
       )}
     >
@@ -67,14 +67,14 @@ export function PageHero({
         <h1 className="reveal-item mt-6 text-[clamp(2.6rem,6vw,5rem)] leading-[0.96] font-semibold tracking-[-0.04em] text-white">
           {title}
         </h1>
-        <p className="reveal-item mt-8 max-w-2xl text-lg leading-relaxed text-zinc-400 md:text-xl">
+        <p className="reveal-item mt-7 max-w-xl text-lg leading-relaxed text-zinc-400 md:text-xl">
           {lead}
         </p>
         {children}
       </RevealGroup>
 
       {focus ? (
-        <div className="relative z-10 mt-16 border-t border-zinc-900/80 pt-8 md:mt-20 md:pt-10">
+        <div className="relative z-10 mt-14 border-t border-zinc-900/80 pt-8 md:mt-20 md:pt-10">
           <RevealGroup
             className="grid gap-8 md:grid-cols-[0.7fr_1.3fr] md:gap-16"
             stagger={120}
@@ -82,7 +82,7 @@ export function PageHero({
             <p className="reveal-item font-mono text-[10px] tracking-[0.32em] text-zinc-600 uppercase">
               {focusLabel}
             </p>
-            <p className="reveal-item max-w-3xl text-2xl leading-snug tracking-[-0.02em] text-zinc-200 md:text-3xl">
+            <p className="reveal-item max-w-2xl text-2xl leading-snug tracking-[-0.02em] text-zinc-200 md:text-3xl">
               {focus}
             </p>
           </RevealGroup>
@@ -122,7 +122,7 @@ export function SectionHeader({
         {title}
       </h2>
       {lead ? (
-        <p className="reveal-item mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500">
+        <p className="reveal-item mt-5 max-w-xl text-base leading-relaxed text-zinc-500 md:text-lg">
           {lead}
         </p>
       ) : null}
@@ -145,7 +145,7 @@ export function FeatureCard({
   return (
     <article
       className={cn(
-        "reveal-item group relative h-full bg-[#050505] p-8 transition-[background-color] duration-[var(--duration-hover)] ease-[var(--ease-soft)] hover:bg-[#0a0a0a] md:p-10",
+        "reveal-item group relative h-full bg-[#050505] p-7 transition-[background-color] duration-[var(--duration-hover)] ease-[var(--ease-soft)] hover:bg-[#0a0a0a] md:p-9",
         className,
       )}
     >
@@ -158,11 +158,11 @@ export function FeatureCard({
           {label}
         </p>
       ) : null}
-      <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.02em] text-white">
+      <h3 className="relative mt-5 text-2xl font-semibold tracking-[-0.02em] text-white">
         {title}
       </h3>
       {body ? (
-        <p className="relative mt-5 leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
+        <p className="relative mt-4 text-sm leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400 md:text-base">
           {body}
         </p>
       ) : null}
@@ -190,7 +190,7 @@ export function ProcessStep({
       label={step}
       title={title}
       body={body}
-      className={cn("md:p-11", className)}
+        className={cn("md:p-9", className)}
     />
   );
 }
@@ -240,7 +240,7 @@ export function CTASection({
   return (
     <section
       className={cn(
-        "relative mx-auto w-full max-w-7xl px-6 py-24 md:px-10 md:py-32",
+        "relative mx-auto w-full max-w-7xl px-6 py-28 md:px-10 md:py-36",
         className,
       )}
     >
@@ -257,7 +257,7 @@ export function CTASection({
           </h2>
         </div>
         <div className="flex flex-col justify-center">
-          <p className="reveal-item text-lg leading-relaxed text-zinc-400">
+          <p className="reveal-item max-w-xl text-base leading-relaxed text-zinc-400 md:text-lg">
             {body}
           </p>
           {actions?.length ? (

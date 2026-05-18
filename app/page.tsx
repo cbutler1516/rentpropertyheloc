@@ -6,17 +6,13 @@ import { LeadCaptureForm } from "./components/lead-capture-form";
 import { StatRow } from "./components/design-system";
 import { PageAmbient } from "./components/page-ambient";
 import { RevealGroup } from "./components/reveal-group";
-import { SchedulingLink } from "./components/scheduling-cta";
 import { SiteNav } from "./components/site-nav";
-import { SocialFollowSection } from "./components/social-follow-section";
 import { TrackedAnchor, TrackedLink } from "./components/tracked-link";
-import { VideoEmbedCard } from "./components/video-embed-card";
-import { featuredVideoEmbedGroups } from "./lib/video-embeds";
 
 const paths = [
   {
     label: "Home Buyers",
-    title: "Understand your options before you start shopping.",
+    title: "Know your number first.",
     href: "/buyers",
     description:
       "Readiness, payment, cash-to-close, loan options, and offer prep in one clear path.",
@@ -24,7 +20,7 @@ const paths = [
   },
   {
     label: "Real Estate Agents",
-    title: "Help clients win with smarter financing strategy.",
+    title: "Give buyers clearer context.",
     href: "/agents",
     description:
       "Buyer education and lending context agents can use in real conversations.",
@@ -32,7 +28,7 @@ const paths = [
   },
   {
     label: "Managing Brokers / Partners",
-    title: "Build a compliant mortgage partnership ecosystem.",
+    title: "Build a cleaner finance layer.",
     href: "/partners",
     description:
       "Education infrastructure and compliant partnership paths for firms.",
@@ -40,7 +36,7 @@ const paths = [
   },
   {
     label: "Commercial / Investors",
-    title: "Structure financing with a capital-markets mindset.",
+    title: "Make the deal legible.",
     href: "/commercial",
     description:
       "Asset, sponsor, capital stack, risk, and execution path made legible.",
@@ -63,20 +59,18 @@ const founderHighlights = [
   "Licensed multi-state lending context",
 ];
 
-const homepageVideoProof = featuredVideoEmbedGroups[0]?.videos.slice(0, 3) ?? [];
-
 const educationLinks = [
   {
     label: "Learn",
     title: "Read the guides.",
-    body: "Seller concessions, buydowns, jumbo, HELOC, refinance timing, FHA, VA, DSCR, and commercial topics.",
+    body: "Seller concessions, buydowns, jumbo, HELOC, and refinance timing.",
     href: "/learn",
     cta: "Read Buyer Guides",
   },
   {
     label: "Videos",
     title: "Watch the clips.",
-    body: "Short-form explainers, market context, agent education, buyer topics, and long-form video modules.",
+    body: "Short-form explainers, market context, and buyer education.",
     href: "/videos",
     cta: "Watch Videos",
   },
@@ -127,7 +121,7 @@ export default function Home() {
           />
           <div className="relative z-10 flex flex-col">
           <p className="hero-enter hero-enter-d1 relative mb-8 font-mono text-xs tracking-[0.4em] text-[#7c3aed] uppercase">
-            Mortgage Strategy Platform
+            Mortgage Media Platform
           </p>
           <h1 className="hero-enter hero-enter-d2 hero-headline-glow relative max-w-5xl text-[clamp(2.75rem,8vw,5.5rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-white">
             Make the loan
@@ -135,33 +129,17 @@ export default function Home() {
             <span className="text-zinc-500">make sense.</span>
           </h1>
           <p className="hero-enter hero-enter-d3 relative mt-10 max-w-xl text-lg leading-relaxed text-zinc-400 md:mt-12 md:text-xl">
-            The Loan Playbook is a mortgage strategy, education, and media
-            platform for buyers, agents, and real estate firms.
+            Mortgage guidance and media for buyers, agents, and real estate firms.
           </p>
           <div className="hero-enter hero-enter-d4 relative mt-14 flex flex-col gap-4 sm:flex-row sm:items-center md:mt-16">
             <TrackedAnchor
-              href="#cta"
+              href="#paths"
               location="homepage_hero"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              Book a Consultation
-            </TrackedAnchor>
-            <TrackedAnchor
-              href="#paths"
-              location="homepage_hero"
-              className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
-            >
-              See Who We Help
+              Find Your Path
             </TrackedAnchor>
           </div>
-          <StatRow
-            className="hero-enter hero-enter-d5 relative mt-24 md:mt-28"
-            stats={[
-              { value: "4", label: "Audience paths" },
-              { value: "2", label: "Residential + commercial" },
-              { value: "9", label: "Licensed states" },
-            ]}
-          />
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
@@ -185,7 +163,7 @@ export default function Home() {
                 Pick your lane.
               </h2>
               <p className="reveal-item mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500">
-                Four paths. Clear resources. Better next moves.
+                Four paths. One clear next move.
               </p>
             </RevealGroup>
 
@@ -253,7 +231,7 @@ export default function Home() {
                 className="reveal-item max-w-md text-zinc-500"
                 data-parallax="0.02"
               >
-                Short videos create the spark. Guides add the context.
+                Watch first. Go deeper when ready.
               </p>
             </RevealGroup>
 
@@ -291,22 +269,9 @@ export default function Home() {
               Educational resources only. Content does not imply loan approval,
               rate availability, or a commitment to lend.
             </p>
-            <RevealGroup
-              className="mt-14 grid gap-7 md:mt-16 md:grid-cols-3 md:gap-8"
-              stagger={120}
-            >
-              {homepageVideoProof.map((video) => (
-                <VideoEmbedCard key={`${video.platform}-${video.title}`} video={video} />
-              ))}
-            </RevealGroup>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
-
-        <SocialFollowSection
-          title="Follow The Loan Playbook."
-          lead="Short video, deeper guide, strategy call. Follow the main channels as the media system grows."
-        />
 
         {/* Authority */}
         <section className="section-flow section-matte relative border-y border-zinc-900/40">
@@ -350,8 +315,8 @@ export default function Home() {
                 Shaped like media.
               </h2>
               <p className="reveal-item mt-8 max-w-2xl text-lg leading-relaxed text-zinc-400">
-                Mortgage advisory work, development context, commercial finance,
-                and education-first publishing in one platform.
+                Advisory work, development context, commercial finance, and
+                education-first media.
               </p>
               <StatRow className="reveal-item mt-10" stats={authorityStats} />
               <div className="reveal-item mt-10 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2">
@@ -371,10 +336,6 @@ export default function Home() {
                 >
                   Learn More
                 </TrackedLink>
-                <SchedulingLink
-                  type="buyer"
-                  className="btn-primary inline-flex h-14 w-fit items-center justify-center bg-white px-8 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
-                />
               </div>
             </RevealGroup>
           </div>
@@ -409,8 +370,7 @@ export default function Home() {
                     Start the conversation.
                   </h2>
                   <p className="reveal-item mt-8 max-w-lg text-lg leading-relaxed text-zinc-400 md:mt-10">
-                    Tell us the audience, goal, and timeline. We&apos;ll follow up
-                    with the right next step.
+                    Tell us the audience, goal, and timeline.
                   </p>
                   <LeadCaptureForm
                     formType="Buyer Strategy Call"

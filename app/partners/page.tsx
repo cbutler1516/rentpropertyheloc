@@ -50,7 +50,7 @@ const platformPillars = [
   },
   {
     step: "Media",
-    title: "Mortgage strategy content engine",
+    title: "Mortgage media engine",
     body: "Short-form and editorial concepts built around real buyer decisions.",
   },
   {
@@ -106,24 +106,6 @@ const partnershipModels = [
   },
 ];
 
-const platformEconomics = [
-  {
-    label: "Cost of Confusion",
-    title: "Reduce avoidable friction",
-    body: "A better education layer reduces repeated explanations.",
-  },
-  {
-    label: "Content Leverage",
-    title: "Turn expertise into repeatable media",
-    body: "Articles, videos, and guides turn expertise into repeatable media.",
-  },
-  {
-    label: "Measured Opportunity",
-    title: "Evaluate value without compensation promises",
-    body: "Evaluate approved services, documented scope, compliance, and outcomes.",
-  },
-];
-
 export default function PartnersPage() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
@@ -150,10 +132,10 @@ export default function PartnersPage() {
       <main className="relative z-10">
         <PageHero
           eyebrow="Brokerage Partnership Platform"
-          title="A modern lending platform for real estate firms."
-          lead="Buyer readiness, agent adoption, education, and compliant partnership conversations."
+          title="A cleaner finance layer for firms."
+          lead="Readiness, adoption, education, and compliant partnership paths."
           focusLabel="Executive Thesis"
-          focus="Firm-level education, agent tools, premium content, and partnership models reviewed through the right compliance lens."
+          focus="Education. Agent tools. Premium content. Compliance review."
           visual="golf-commercial"
           videoSrc="/videos/loan-playbook-commercial-golf.mp4"
         >
@@ -168,7 +150,7 @@ export default function PartnersPage() {
               href="/agents"
               className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
             >
-              Explore Agent Partnerships
+              Agent Platform
             </Link>
           </div>
           <StatRow
@@ -190,8 +172,8 @@ export default function PartnersPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Brokerage Growth Problem"
-              title="Better financing clarity, earlier."
-              lead="Most firms do not have a modern education layer for the moments financing matters most."
+              title="Clarity, earlier."
+              lead="Most firms lack a modern finance education layer."
             />
 
             <RevealGroup
@@ -216,8 +198,8 @@ export default function PartnersPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="The Platform"
-              title="Education, media, lead paths, and adoption."
-              lead="A clearer way to support agents without turning lending into a sales script."
+              title="Education, media, lead paths, adoption."
+              lead="Support agents without a sales script."
             />
 
             <RevealGroup
@@ -274,8 +256,8 @@ export default function PartnersPage() {
             <div className="grid gap-14 md:grid-cols-[0.82fr_1.18fr] md:gap-20">
               <SectionHeader
                 eyebrow="Partnership Models"
-                title="Flexible structures for education-led growth and lending strategy."
-                lead="Partnership design depends on RESPA, state, licensing, company-specific compliance, market needs, and business objectives. The conversation starts with structure, not promises."
+                title="Structure before promises."
+                lead="Review the model before activating the channel."
               />
 
               <RevealGroup
@@ -296,32 +278,6 @@ export default function PartnersPage() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        <section className="section-flow relative">
-          <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <SectionHeader
-              eyebrow="Platform Economics"
-              title="A partnership should create operational value without promising compensation."
-              lead="The business case is education infrastructure, agent enablement, content leverage, compliant intake, and a better client experience. Any structure should be documented and reviewed before launch."
-            />
-            <RevealGroup
-              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3 md:gap-8"
-              stagger={130}
-            >
-              {platformEconomics.map((item) => (
-                <FeatureCard
-                  key={item.label}
-                  label={item.label}
-                  title={item.title}
-                  body={item.body}
-                  className="card-lift border border-zinc-900/80"
-                />
-              ))}
-            </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
         <section className="section-flow section-matte relative border-y border-zinc-900/40">
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
@@ -334,20 +290,12 @@ export default function PartnersPage() {
               </p>
               <div>
                 <h2 className="reveal-item text-3xl font-semibold tracking-[-0.03em] text-white md:text-5xl">
-                  Partnership structure must be reviewed before it is activated.
+                  Review before launch.
                 </h2>
                 <p className="reveal-item mt-8 text-lg leading-relaxed text-zinc-400">
-                  Any co-marketing, lead generation, education platform, or
-                  partnership structure should be reviewed for RESPA, state,
-                  licensing, company-specific compliance, and
-                  transaction-specific requirements. The Loan Playbook is
-                  structured around education, compliant services, and approved
-                  business-development activity, not transaction steering.
-                </p>
-                <p className="reveal-item mt-6 text-sm leading-relaxed text-zinc-600">
-                  Structures should be documented and approved before launch by
-                  the appropriate legal, licensing, and company-level review
-                  process.
+                  Co-marketing, lead generation, education, and partnership
+                  structures should be reviewed for RESPA, state, licensing,
+                  company-specific, and transaction-specific requirements.
                 </p>
               </div>
             </RevealGroup>

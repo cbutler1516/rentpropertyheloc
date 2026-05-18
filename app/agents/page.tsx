@@ -78,29 +78,6 @@ const contentSupport = [
   },
 ];
 
-const marketIntelligence = [
-  {
-    label: "Rate Environment",
-    title: "Translate market movement",
-    body: "Translate rate movement into timing, payment, and lock context.",
-  },
-  {
-    label: "Offer Structure",
-    title: "Connect financing to negotiation",
-    body: "Connect credits, buydowns, reserves, risk, and timelines to the offer.",
-  },
-  {
-    label: "Buyer Psychology",
-    title: "Reduce hesitation with context",
-    body: "Separate what is changing from what the buyer controls.",
-  },
-  {
-    label: "Execution Risk",
-    title: "See friction before it becomes urgent",
-    body: "Find weak points before they slow the file.",
-  },
-];
-
 const transactionOutcomes = [
   "Cleaner buyer expectations before showings begin.",
   "Stronger financing conversations before offers are written.",
@@ -134,10 +111,10 @@ export default function AgentsPage() {
       <main className="relative z-10">
         <PageHero
           eyebrow="Agent Partnership Platform"
-          title="A sharper lending layer for modern agents."
-          lead="Help buyers understand financing before the transaction gets loud."
+          title="Help buyers move clearer."
+          lead="Financing context before pressure."
           focusLabel="Platform Thesis"
-          focus="Buyer readiness, mortgage education, and compliant co-marketing support without the sales-script feel."
+          focus="Buyer readiness. Premium education. No sales-script feel."
           visual="basketball-agents"
           videoSrc="/videos/loan-playbook-basketball-agents.mp4"
         >
@@ -152,7 +129,7 @@ export default function AgentsPage() {
               href="/strategy"
               className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
             >
-              View the Framework
+              View Framework
             </Link>
           </div>
           <StatRow
@@ -174,8 +151,8 @@ export default function AgentsPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Why It Matters"
-              title="Modern agents need more than a pre-approval letter."
-              lead="Financing shapes confidence, offer quality, and transaction flow."
+              title="More than a pre-approval letter."
+              lead="Financing shapes confidence, offers, and flow."
             />
 
             <RevealGroup
@@ -200,8 +177,8 @@ export default function AgentsPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Buyer Readiness System"
-              title="Prepare the buyer before the market gets emotional."
-              lead="A simple sequence buyers can understand before pressure arrives."
+              title="Prepare before pressure."
+              lead="A simple buyer sequence."
             />
 
             <RevealGroup
@@ -230,8 +207,8 @@ export default function AgentsPage() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Media + Education Engine"
-              title="Co-branded content without generic mortgage noise."
-              lead="Agents need useful material that makes them sound more strategic, not templated. The Loan Playbook supports education-led marketing that feels premium and client-first."
+              title="Useful content. Less mortgage noise."
+              lead="Premium education agents can actually use."
             />
 
             <RevealGroup
@@ -252,31 +229,6 @@ export default function AgentsPage() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        <section className="section-flow relative">
-          <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <div className="grid gap-14 md:grid-cols-[0.85fr_1.15fr] md:gap-20">
-              <SectionHeader
-                eyebrow="Market Intelligence"
-                title="Financing strategy belongs inside the market conversation."
-                lead="The platform helps agents connect market conditions to buyer decisions in a way that feels calm, informed, and practical."
-              />
-
-              <RevealGroup className="grid gap-px border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2">
-                {marketIntelligence.map((item) => (
-                  <FeatureCard
-                    key={item.label}
-                    label={item.label}
-                    title={item.title}
-                    body={item.body}
-                  />
-                ))}
-              </RevealGroup>
-            </div>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
         <section className="section-flow section-matte relative border-y border-zinc-900/40">
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
@@ -289,12 +241,10 @@ export default function AgentsPage() {
                   Transaction Quality
                 </p>
                 <h2 className="reveal-item mt-5 text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                  Cleaner files create cleaner transactions.
+                  Cleaner files. Cleaner transactions.
                 </h2>
                 <p className="reveal-item mt-8 max-w-2xl text-lg leading-relaxed text-zinc-500">
-                  Stronger buyer readiness does not remove complexity. It makes
-                  complexity visible earlier, so the agent can protect momentum
-                  instead of managing avoidable confusion later.
+                  Make complexity visible earlier.
                 </p>
               </div>
 
@@ -309,41 +259,6 @@ export default function AgentsPage() {
                     </p>
                   </div>
                 ))}
-              </div>
-            </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
-        <section className="section-flow relative">
-          <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <RevealGroup
-              className="grid gap-12 border-t border-zinc-900/80 pt-12 md:grid-cols-[0.8fr_1.2fr] md:gap-20 md:pt-16"
-              stagger={130}
-            >
-              <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                Partnership Philosophy
-              </p>
-              <div>
-                <h2 className="reveal-item max-w-4xl text-4xl font-semibold tracking-[-0.03em] text-white md:text-5xl">
-                  Built for long-term real estate relationships, not one-off lead capture.
-                </h2>
-                <div className="mt-10 grid gap-8 text-lg leading-relaxed text-zinc-400 md:grid-cols-2">
-                  <p className="reveal-item">
-                    The Loan Playbook is designed to become a strategic layer
-                    around the agent relationship: education before urgency,
-                    clarity before pressure, and consistent borrower support
-                    long after the first conversation.
-                  </p>
-                  <p className="reveal-item">
-                    The partnership model is intentionally quiet and high-trust.
-                    It supports the agent&apos;s brand, gives buyers better
-                    context, and keeps co-marketing or lead-generation concepts
-                    subject to RESPA, state, licensing, and company-specific
-                    compliance review.
-                  </p>
-                </div>
               </div>
             </RevealGroup>
           </div>
