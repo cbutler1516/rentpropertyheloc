@@ -26,10 +26,12 @@ Current events:
 - `cta_click`
 - `booking_click`
 - `form_start`
+- `micro_conversion`
 - `lead_submit`
 - `video_click`
 - `thumbnail_click`
 - `social_outbound_click`
+- `sticky_cta_click`
 - `related_guide_click`
 
 Scroll and section behavior is handled by `app/components/behavior-analytics.tsx`. Section visibility only tracks elements marked with `data-analytics-section`.
@@ -41,7 +43,10 @@ Use `TrackedLink`, `TrackedAnchor`, and `TrackedBookingAnchor` for clickable UI.
 - `video`
 - `thumbnail`
 - `social`
+- `sticky_cta`
 - `related_guide`
 - `cta`
 
 For new visibility tracking, add a concise `data-analytics-section` value to the section. Keep values stable and generic, such as `featured_video`, `lead_capture`, `booking_cta`, `featured_guides`, or `social_lanes`.
+
+Use `MicroOptIn` for email-only micro-conversions such as buyer prep tips, market updates, homeowner strategy updates, or agent financing insights. Keep the payload limited to the destination endpoint and analytics limited to intent/type metadata.

@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import { FooterBrand } from "./brand";
 import { ComplianceFooter } from "./compliance-footer";
 import { FooterSocialLinks } from "./footer-social-links";
-import { LeadCaptureForm } from "./lead-capture-form";
+import { LeadCaptureForm, type LeadIntent } from "./lead-capture-form";
 import { MediaThumbnail } from "./media-thumbnail";
+import { MicroOptIn } from "./micro-opt-in";
 import { PageHero, SectionHeader } from "./design-system";
 import { PageAmbient } from "./page-ambient";
 import { RevealGroup } from "./reveal-group";
 import { SchedulingLink } from "./scheduling-cta";
 import { SiteNav } from "./site-nav";
+import { StickyMobileCta } from "./sticky-mobile-cta";
 import { TrackedAnchor, TrackedLink } from "./tracked-link";
 import type { MoneyFunnel } from "../lib/money-funnels";
 import { getSocialPostBySlug, type SocialPost } from "../lib/social-posts";
@@ -39,14 +41,51 @@ export function createMoneyFunnelMetadata(funnel: MoneyFunnel): Metadata {
   };
 }
 
+function getFunnelIntent(funnel: MoneyFunnel): LeadIntent {
+  if (funnel.formType === "Homeowner Strategy Review") return "homeowner";
+  if (funnel.formType === "Agent Partnership Conversation") return "agent";
+  if (funnel.formType === "Commercial Scenario Review") return "commercial";
+
+  return "buyer";
+}
+
+function getMicroOptInCopy(intent: LeadIntent) {
+  if (intent === "homeowner") {
+    return {
+      title: "Get homeowner strategy updates.",
+      body: "Refi, HELOC, equity, and payment timing notes.",
+      submitLabel: "Get Updates",
+      optInType: "Homeowner Strategy Updates",
+    };
+  }
+
+  if (intent === "agent") {
+    return {
+      title: "Get agent financing insights.",
+      body: "Buyer conversation ideas and financing context.",
+      submitLabel: "Get Insights",
+      optInType: "Agent Financing Insights",
+    };
+  }
+
+  return {
+    title: "Get buyer prep tips.",
+    body: "Payment, cash, and offer prep notes.",
+    submitLabel: "Get Tips",
+    optInType: "Buyer Prep Tips",
+  };
+}
+
 export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
   const featuredPost = getSocialPostBySlug(funnel.videoSlug);
   const relatedPosts = funnel.relatedSocialSlugs
     .map((slug) => getSocialPostBySlug(slug))
     .filter((post): post is SocialPost => Boolean(post));
+  const leadIntent = getFunnelIntent(funnel);
+  const optIn = getMicroOptInCopy(leadIntent);
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
+    <div className="relative min-h-screen overflow-x-hidden bg-[#050505] pb-24 text-white md:pb-0">
       <PageAmbient enableParallax={false} />
       <div
         className="playbook-grid pointer-events-none fixed inset-0 z-0 opacity-30"
@@ -295,6 +334,7 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                 <LeadCaptureForm
                   formType={funnel.formType}
                   submitLabel={funnel.ctaLabel}
+                  intent={leadIntent}
                 />
                 {funnel.bookingType ? (
                   <SchedulingLink
@@ -303,7 +343,7 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                   />
                 ) : null}
                 <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
-                  Educational content only · No rate quote or loan commitment
+                  Strategy-first · Education-first · No-pressure guidance
                 </p>
               </RevealGroup>
             </div>
@@ -361,6 +401,16 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                 ))}
               </RevealGroup>
             </div>
+            <div className="md:col-span-2">
+              <MicroOptIn
+                title={optIn.title}
+                body={optIn.body}
+                submitLabel={optIn.submitLabel}
+                optInType={optIn.optInType}
+                intent={leadIntent}
+                location={`${funnel.slug}_related_content`}
+              />
+            </div>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
@@ -400,6 +450,12 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
         <FooterSocialLinks />
         <ComplianceFooter />
       </footer>
+      <StickyMobileCta
+        href="#funnel-cta"
+        label={funnel.ctaLabel}
+        eyebrow={funnel.eyebrow}
+        location={`${funnel.slug}_mobile_sticky`}
+      />
     </div>
   );
 }

@@ -6,6 +6,7 @@ export const analyticsEvents = {
   bookingClick: "booking_click",
   ctaClick: "cta_click",
   formStart: "form_start",
+  microConversion: "micro_conversion",
   leadSubmit: "lead_submit",
   mediaClick: "media_click",
   pageView: "page_view",
@@ -13,6 +14,7 @@ export const analyticsEvents = {
   scrollDepth: "scroll_depth",
   sectionView: "section_view",
   socialOutboundClick: "social_outbound_click",
+  stickyCtaClick: "sticky_cta_click",
   thumbnailClick: "thumbnail_click",
   videoClick: "video_click",
 } as const;
@@ -78,11 +80,13 @@ export function trackPageView(path: string) {
 
 export function trackLeadSubmit(payload: {
   formType: string;
+  leadIntent?: string;
   role?: string;
   page?: string;
 }) {
   trackEvent(analyticsEvents.leadSubmit, {
     form_type: payload.formType,
+    lead_intent: payload.leadIntent,
     role: payload.role,
     source_page: payload.page,
   });
@@ -90,11 +94,25 @@ export function trackLeadSubmit(payload: {
 
 export function trackLeadFormStart(payload: {
   formType: string;
+  leadIntent?: string;
   page?: string;
 }) {
   trackEvent(analyticsEvents.formStart, {
     form_type: payload.formType,
+    lead_intent: payload.leadIntent,
     source_page: payload.page,
+  });
+}
+
+export function trackMicroConversion(payload: {
+  optInType: string;
+  leadIntent: string;
+  location?: string;
+}) {
+  trackEvent(analyticsEvents.microConversion, {
+    opt_in_type: payload.optInType,
+    lead_intent: payload.leadIntent,
+    cta_location: payload.location,
   });
 }
 
@@ -179,6 +197,18 @@ export function trackRelatedGuideClick(payload: {
 }) {
   trackEvent(analyticsEvents.relatedGuideClick, {
     guide_label: payload.label,
+    destination: payload.href,
+    cta_location: payload.location,
+  });
+}
+
+export function trackStickyCtaClick(payload: {
+  label: string;
+  href: string;
+  location?: string;
+}) {
+  trackEvent(analyticsEvents.stickyCtaClick, {
+    cta_label: payload.label,
     destination: payload.href,
     cta_location: payload.location,
   });

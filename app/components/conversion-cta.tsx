@@ -34,7 +34,7 @@ export const conversionCtas = {
     title: "Know your number first.",
     body: "Readiness, payment, cash, options, next steps.",
     formType: "Buyer Strategy Call" as const,
-    submitLabel: "Book a Buyer Consultation",
+    submitLabel: "Start Your Buyer Strategy",
   },
   agentPartnership: {
     eyebrow: "Agent Partnership Conversation",
@@ -62,6 +62,6 @@ export const conversionCtas = {
     title: "Follow the media engine.",
     body: "Video drops, article launches, education updates.",
     formType: "Newsletter Signup" as const,
-    submitLabel: "Join Content List",
+    submitLabel: "Get Market Updates",
   },
 };

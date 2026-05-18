@@ -3,13 +3,10 @@ import { FooterBrand } from "../components/brand";
 import { ComplianceFooter } from "../components/compliance-footer";
 import { FooterSocialLinks } from "../components/footer-social-links";
 import {
-  ConversionCTA,
-  conversionCtas,
-} from "../components/conversion-cta";
-import {
   PageHero,
   SectionHeader,
 } from "../components/design-system";
+import { MicroOptIn } from "../components/micro-opt-in";
 import { PageAmbient } from "../components/page-ambient";
 import { MediaThumbnail } from "../components/media-thumbnail";
 import { RevealGroup } from "../components/reveal-group";
@@ -331,7 +328,21 @@ export default function VideosPage() {
           showFlywheel={false}
         />
 
-        <ConversionCTA {...conversionCtas.newsletter} />
+        <section className="section-flow relative" data-analytics-section="micro_conversion">
+          <div className="section-bridge-top" aria-hidden />
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <MicroOptIn
+              eyebrow="Low-Friction Opt-In"
+              title="Get market updates."
+              body="Video drops, guide launches, and clean mortgage context."
+              submitLabel="Get Updates"
+              optInType="Market Updates"
+              intent="newsletter"
+              location="videos_market_updates"
+            />
+          </div>
+          <div className="section-bridge-bottom" aria-hidden />
+        </section>
       </main>
 
       <footer className="relative z-10 border-t border-zinc-900/60 py-10">

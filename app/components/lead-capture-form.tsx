@@ -5,14 +5,24 @@ import { trackLeadFormStart, trackLeadSubmit } from "../lib/analytics-events";
 
 export type LeadFormType =
   | "Buyer Strategy Call"
+  | "Homeowner Strategy Review"
   | "Agent Partnership Conversation"
   | "Managing Broker Partnership"
   | "Commercial Scenario Review"
   | "Newsletter Signup";
 
+export type LeadIntent =
+  | "buyer"
+  | "homeowner"
+  | "agent"
+  | "broker"
+  | "commercial"
+  | "newsletter";
+
 type LeadCaptureFormProps = {
   formType: LeadFormType;
   submitLabel: string;
+  intent?: LeadIntent;
 };
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
@@ -25,11 +35,26 @@ const roleOptions = [
   "Other",
 ];
 
-export function LeadCaptureForm({ formType, submitLabel }: LeadCaptureFormProps) {
+function getLeadIntent(formType: LeadFormType): LeadIntent {
+  if (formType === "Homeowner Strategy Review") return "homeowner";
+  if (formType === "Agent Partnership Conversation") return "agent";
+  if (formType === "Managing Broker Partnership") return "broker";
+  if (formType === "Commercial Scenario Review") return "commercial";
+  if (formType === "Newsletter Signup") return "newsletter";
+
+  return "buyer";
+}
+
+export function LeadCaptureForm({
+  formType,
+  submitLabel,
+  intent,
+}: LeadCaptureFormProps) {
   const formId = useId();
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [hasTrackedStart, setHasTrackedStart] = useState(false);
+  const leadIntent = intent ?? getLeadIntent(formType);
 
   function trackFormStart() {
     if (hasTrackedStart) return;
@@ -37,6 +62,7 @@ export function LeadCaptureForm({ formType, submitLabel }: LeadCaptureFormProps)
     setHasTrackedStart(true);
     trackLeadFormStart({
       formType,
+      leadIntent,
       page: typeof window !== "undefined" ? window.location.href : "",
     });
   }
@@ -58,6 +84,7 @@ export function LeadCaptureForm({ formType, submitLabel }: LeadCaptureFormProps)
 
     const payload = {
       formType,
+      leadIntent,
       name: String(formData.get("name") ?? ""),
       email: String(formData.get("email") ?? ""),
       phone: String(formData.get("phone") ?? ""),
@@ -78,6 +105,7 @@ export function LeadCaptureForm({ formType, submitLabel }: LeadCaptureFormProps)
         await new Promise((resolve) => window.setTimeout(resolve, 450));
         trackLeadSubmit({
           formType,
+          leadIntent,
           role: payload.role,
           page: payload.page,
         });
@@ -100,6 +128,7 @@ export function LeadCaptureForm({ formType, submitLabel }: LeadCaptureFormProps)
 
       trackLeadSubmit({
         formType,
+        leadIntent,
         role: payload.role,
         page: payload.page,
       });

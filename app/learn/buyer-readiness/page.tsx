@@ -3,11 +3,13 @@ import { FooterBrand } from "../../components/brand";
 import { ComplianceFooter } from "../../components/compliance-footer";
 import { FooterSocialLinks } from "../../components/footer-social-links";
 import { LeadCaptureForm } from "../../components/lead-capture-form";
+import { MicroOptIn } from "../../components/micro-opt-in";
 import { PageHero, SectionHeader } from "../../components/design-system";
 import { PageAmbient } from "../../components/page-ambient";
 import { RevealGroup } from "../../components/reveal-group";
 import { SchedulingLink } from "../../components/scheduling-cta";
 import { SiteNav } from "../../components/site-nav";
+import { StickyMobileCta } from "../../components/sticky-mobile-cta";
 import { TrackedAnchor, TrackedLink } from "../../components/tracked-link";
 import { getSocialPostBySlug } from "../../lib/social-posts";
 
@@ -85,7 +87,7 @@ const relatedGuides = [
 
 export default function BuyerReadinessPage() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
+    <div className="relative min-h-screen overflow-x-hidden bg-[#050505] pb-24 text-white md:pb-0">
       <PageAmbient enableParallax={false} />
       <div
         className="playbook-grid pointer-events-none fixed inset-0 z-0 opacity-30"
@@ -317,13 +319,14 @@ export default function BuyerReadinessPage() {
                 <LeadCaptureForm
                   formType="Buyer Strategy Call"
                   submitLabel="Start Your Buyer Strategy"
+                  intent="buyer"
                 />
                 <SchedulingLink
                   type="buyer"
                   className="btn-ghost reveal-item mt-5 inline-flex h-12 w-fit items-center justify-center border border-zinc-800 px-7 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
                 />
                 <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
-                  Educational content only · No rate quote or loan commitment
+                  Strategy-first · Education-first · No-pressure guidance
                 </p>
               </RevealGroup>
             </div>
@@ -370,6 +373,16 @@ export default function BuyerReadinessPage() {
                 </TrackedLink>
               ))}
             </RevealGroup>
+            <div className="mt-10">
+              <MicroOptIn
+                title="Get buyer prep tips."
+                body="Payment, cash-to-close, and offer prep notes."
+                submitLabel="Get Tips"
+                optInType="Buyer Prep Tips"
+                intent="buyer"
+                location="buyer_readiness_related_guides"
+              />
+            </div>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
@@ -383,6 +396,12 @@ export default function BuyerReadinessPage() {
         <FooterSocialLinks />
         <ComplianceFooter />
       </footer>
+      <StickyMobileCta
+        href="#buyer-strategy"
+        label="Start Strategy"
+        eyebrow="Buyer Readiness"
+        location="buyer_readiness_mobile_sticky"
+      />
     </div>
   );
 }

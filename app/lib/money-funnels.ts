@@ -264,7 +264,7 @@ export const moneyFunnels = {
     ctaLabel: "Review Refinance Timing",
     ctaTitle: "Do not reset the loan on a headline.",
     ctaBody: "Send the scenario. We will help frame payment, equity, cash flow, and fit.",
-    formType: "Buyer Strategy Call",
+    formType: "Homeowner Strategy Review",
     bookingType: "buyer",
     relatedGuides: [
       { label: "Guide", title: "HELOC strategy", href: "/learn/heloc-strategy" },
@@ -347,7 +347,7 @@ export const moneyFunnels = {
     ctaLabel: "Understand HELOC Options",
     ctaTitle: "Use equity without losing flexibility.",
     ctaBody: "Send the goal. We will help compare access, payment, flexibility, and fit.",
-    formType: "Buyer Strategy Call",
+    formType: "Homeowner Strategy Review",
     bookingType: "buyer",
     relatedGuides: [
       { label: "Guide", title: "Refinance timing", href: "/learn/refinance-timing" },

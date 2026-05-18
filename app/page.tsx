@@ -4,6 +4,7 @@ import { FooterSocialLinks } from "./components/footer-social-links";
 import { HeroVideo } from "./components/hero-video";
 import { LeadCaptureForm } from "./components/lead-capture-form";
 import { MediaThumbnail } from "./components/media-thumbnail";
+import { MicroOptIn } from "./components/micro-opt-in";
 import { StatRow } from "./components/design-system";
 import { PageAmbient } from "./components/page-ambient";
 import { RevealGroup } from "./components/reveal-group";
@@ -379,6 +380,17 @@ export default function Home() {
               ))}
             </RevealGroup>
 
+            <div className="mt-8 max-w-2xl">
+              <MicroOptIn
+                title="Get buyer prep tips."
+                body="Payment, cash, and offer prep notes."
+                submitLabel="Get Tips"
+                optInType="Buyer Prep Tips"
+                intent="buyer"
+                location="homepage_featured_latest"
+              />
+            </div>
+
             <p className="mt-8 max-w-2xl font-mono text-[10px] tracking-[0.18em] text-zinc-700 uppercase">
               Educational resources only. Content does not imply loan approval,
               rate availability, or a commitment to lend.
@@ -493,6 +505,7 @@ export default function Home() {
                   <LeadCaptureForm
                     formType="Buyer Strategy Call"
                     submitLabel="Start the Conversation"
+                    intent="buyer"
                   />
                   <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
                     Educational content only · No rate quote or loan commitment

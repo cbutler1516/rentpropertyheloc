@@ -8,11 +8,18 @@ import {
   trackEvent,
   trackRelatedGuideClick,
   trackSocialOutboundClick,
+  trackStickyCtaClick,
   trackThumbnailClick,
   trackVideoClick,
 } from "../lib/analytics-events";
 
-type TrackableClickType = "cta" | "related_guide" | "social" | "thumbnail" | "video";
+type TrackableClickType =
+  | "cta"
+  | "related_guide"
+  | "social"
+  | "sticky_cta"
+  | "thumbnail"
+  | "video";
 
 function trackClickByType({
   eventType = "cta",
@@ -39,6 +46,11 @@ function trackClickByType({
 
   if (eventType === "thumbnail") {
     trackThumbnailClick({ label, href, location });
+    return;
+  }
+
+  if (eventType === "sticky_cta") {
+    trackStickyCtaClick({ label, href, location });
     return;
   }
 
