@@ -9,6 +9,7 @@ export type MoneyFunnel = {
   ogDescription?: string;
   heroLead: string;
   heroFocus?: string;
+  heroVideoSrc?: string;
   thumbnailSrc?: string;
   thumbnailFocalPoint?: string;
   videoSlug: string;
@@ -212,6 +213,7 @@ export const moneyFunnels = {
       "Review refinance timing through payment, costs, equity, cash flow, HELOC alternatives, and long-term flexibility.",
     heroLead: "Rate movement is only part of the equation.",
     heroFocus: "Payment. Equity. Cash flow. Timing.",
+    heroVideoSrc: "/videos/loan-playbook-learn-film-room.mp4",
     thumbnailSrc: "/thumbnails/refinance-timing.jpg",
     videoSlug: "market-context-without-noise",
     videoTitle: "Rates moved. Now what?",
@@ -293,6 +295,7 @@ export const moneyFunnels = {
       "Understand how a HELOC may support flexibility, liquidity, renovations, debt restructuring, and equity strategy without replacing the entire mortgage.",
     heroLead: "Sometimes the smartest move is leaving the first mortgage alone.",
     heroFocus: "Equity access. Liquidity. Payment strategy.",
+    heroVideoSrc: "/videos/loan-playbook-learn-film-room.mp4",
     thumbnailSrc: "/thumbnails/heloc-strategy.jpg",
     videoSlug: "creative-mortgage-media-test",
     videoTitle: "Sometimes leave the first mortgage alone.",

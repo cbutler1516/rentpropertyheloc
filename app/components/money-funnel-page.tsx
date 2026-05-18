@@ -109,6 +109,7 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
           lead={funnel.heroLead}
           focusLabel="Flow"
           focus={funnel.heroFocus ?? "Video -> landing page -> consultation."}
+          videoSrc={funnel.heroVideoSrc}
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <TrackedAnchor

@@ -19,6 +19,7 @@ export default function BuyersPage() {
       lead="For buyers who want clarity before the search gets loud."
       focus="Readiness, timing, leverage, and loan choices should be clear before the offer."
       strategyVisual="football-buyers"
+      heroVideoSrc="/videos/loan-playbook-football-hero.mp4"
       primaryCta={{ href: "#buyer-strategy", label: "Start Your Buyer Strategy" }}
       secondaryCta={{ href: "/videos", label: "Watch First" }}
       sections={[
