@@ -119,17 +119,11 @@ export default function AgentsPage() {
           videoSrc="/videos/loan-playbook-basketball-agents.mp4"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
-            <a
-              href="#agent-strategy"
+            <Link
+              href="/agents/financing-playbook"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              Start Agent Conversation
-            </a>
-            <Link
-              href="/strategy"
-              className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
-            >
-              View Framework
+              Agent Financing Playbook
             </Link>
           </div>
           <StatRow

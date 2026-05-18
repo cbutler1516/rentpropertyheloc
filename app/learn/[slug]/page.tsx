@@ -3,6 +3,13 @@ import { notFound } from "next/navigation";
 import { LearnArticleTemplate } from "../../components/learn-article-template";
 import { getLearnArticle, learnArticles } from "../../lib/learn-articles";
 
+const staticFunnelSlugs = new Set([
+  "seller-concessions",
+  "2-1-buydowns",
+  "refinance-timing",
+  "heloc-strategy",
+]);
+
 type LearnArticlePageProps = {
   params: Promise<{
     slug: string;
@@ -10,9 +17,11 @@ type LearnArticlePageProps = {
 };
 
 export function generateStaticParams() {
-  return learnArticles.map((article) => ({
-    slug: article.slug,
-  }));
+  return learnArticles
+    .filter((article) => !staticFunnelSlugs.has(article.slug))
+    .map((article) => ({
+      slug: article.slug,
+    }));
 }
 
 export async function generateMetadata({
