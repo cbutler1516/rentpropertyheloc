@@ -2,18 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { FooterBrand } from "../components/brand";
 import { ComplianceFooter } from "../components/compliance-footer";
-import { ExternalArticleCard } from "../components/external-article-card";
 import {
   ArticleCard,
   CTASection,
-  FeatureCard,
   PageHero,
   SectionHeader,
 } from "../components/design-system";
 import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
 import { SiteNav } from "../components/site-nav";
-import { broadviewArticles } from "../lib/content-sources";
 import { learnArticles } from "../lib/learn-articles";
 
 export const metadata: Metadata = {
@@ -21,24 +18,6 @@ export const metadata: Metadata = {
   description:
     "Mortgage education, SEO article hubs, buyer strategy guides, and Broadview Lending article import placeholders from The Loan Playbook.",
 };
-
-const featuredPlaybooks = [
-  {
-    label: "Buyer Playbook",
-    title: "First-time buyer strategy",
-    body: "Readiness, payment clarity, cash planning, and offer confidence.",
-  },
-  {
-    label: "Offer Strategy",
-    title: "Seller concessions and buydowns",
-    body: "Credits, buydowns, closing costs, and payment tradeoffs.",
-  },
-  {
-    label: "Loan Structure",
-    title: "Choosing the right loan lane",
-    body: "FHA, VA, conventional, jumbo, DSCR, refinance, HELOC, and commercial.",
-  },
-];
 
 const latestArticles = [
   {
@@ -99,55 +78,24 @@ export default function LearnPage() {
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <a
-              href="#featured-playbooks"
+              href="/learn/buyer-readiness"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              Explore Playbooks
+              Start Buyer Strategy
             </a>
           </div>
         </PageHero>
 
         <section
-          id="featured-playbooks"
+          id="popular-topics"
           className="section-flow section-matte relative border-y border-zinc-900/40"
         >
           <div className="section-bridge-top" aria-hidden />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#5b21b6]/[0.035] via-transparent to-transparent"
-            aria-hidden
-          />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
-              eyebrow="Featured Playbooks"
+              eyebrow="Choose A Guide"
               title="Start with the decision."
-              lead="Choose the decision first."
-            />
-
-            <RevealGroup
-              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3 md:gap-8"
-              stagger={130}
-            >
-              {featuredPlaybooks.map((playbook) => (
-                <FeatureCard
-                  key={playbook.label}
-                  label={playbook.label}
-                  title={playbook.title}
-                  body={playbook.body}
-                  className="card-lift border border-zinc-900/80"
-                />
-              ))}
-            </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
-        <section className="section-flow relative">
-          <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <SectionHeader
-              eyebrow="Popular Topics"
-              title="Topics, organized."
-              lead="Search-ready. Buyer-friendly."
+              lead="Pick the issue that is shaping the next move."
             />
 
             <RevealGroup
@@ -203,40 +151,6 @@ export default function LearnPage() {
                 />
               ))}
             </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
-          <div className="section-bridge-top" aria-hidden />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#5b21b6]/[0.035] via-transparent to-transparent"
-            aria-hidden
-          />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <SectionHeader
-              eyebrow="From Broadview Lending"
-              title="Related external resources."
-              lead="Educational only."
-            />
-            <RevealGroup
-              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 lg:grid-cols-3"
-              stagger={120}
-            >
-              {broadviewArticles.map((article) => (
-                <ExternalArticleCard key={article.title} article={article} />
-              ))}
-            </RevealGroup>
-            <div className="mt-12 flex flex-wrap gap-4">
-              <a
-                href="https://www.broadviewlending.com/blog"
-                target="_blank"
-                rel="noreferrer"
-                className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
-              >
-                Visit Broadview Blog
-              </a>
-            </div>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>

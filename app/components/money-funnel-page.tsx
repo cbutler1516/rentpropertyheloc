@@ -415,31 +415,6 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        <section className="relative mx-auto w-full max-w-7xl px-6 py-16 md:px-10 md:py-20">
-          <RevealGroup
-            className="grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:grid-cols-2"
-            stagger={80}
-          >
-            <div className="reveal-item bg-[#050505] p-7">
-              <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                Transcript
-              </p>
-              <p className="mt-5 text-sm leading-relaxed text-zinc-500">
-                {funnel.transcriptPlaceholder}
-              </p>
-            </div>
-            <div className="reveal-item bg-[#050505] p-7">
-              <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                FAQ Placeholder
-              </p>
-              <ul className="mt-5 grid gap-3 text-sm leading-relaxed text-zinc-500">
-                {funnel.faqPlaceholder.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </RevealGroup>
-        </section>
       </main>
 
       <footer className="relative z-10 border-t border-zinc-900/60 py-10">

@@ -16,6 +16,8 @@ export default function StrategyPage() {
       focus="Read the conditions. Design the file. Execute with control."
       strategyVisual="multi-strategy"
       heroVideoSrc="/videos/loan-playbook-tennis-about.mp4"
+      primaryCta={{ href: "/learn/buyer-readiness", label: "Start Your Strategy" }}
+      secondaryCta={{ href: "/learn", label: "Explore Guides" }}
       sections={[
         {
           label: "Scout",

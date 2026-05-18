@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { FooterBrand } from "../components/brand";
 import { ComplianceFooter } from "../components/compliance-footer";
 import {
@@ -9,13 +8,10 @@ import {
 import {
   FeatureCard,
   PageHero,
-  ProcessStep,
   SectionHeader,
-  StatRow,
 } from "../components/design-system";
 import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
-import { SchedulingCTASection } from "../components/scheduling-cta";
 import { SiteNav } from "../components/site-nav";
 
 export const metadata: Metadata = {
@@ -39,70 +35,6 @@ const problemAreas = [
     label: "03 / Execution",
     title: "Financing friction affects the whole brand",
     body: "Weak expectations affect more than one transaction.",
-  },
-];
-
-const platformPillars = [
-  {
-    step: "Education",
-    title: "Co-branded buyer education",
-    body: "Premium explainers and readiness frameworks for agents and clients.",
-  },
-  {
-    step: "Media",
-    title: "Mortgage media engine",
-    body: "Short-form and editorial concepts built around real buyer decisions.",
-  },
-  {
-    step: "Lead Gen",
-    title: "Compliant lead-generation pathways",
-    body: "Content pathways and readiness prompts for compliant intake.",
-  },
-  {
-    step: "Adoption",
-    title: "Agent adoption support",
-    body: "Clear talking points, simple frameworks, and useful buyer tools.",
-  },
-];
-
-const brokerValue = [
-  {
-    label: "Agent Tools",
-    title: "A stronger advisory layer for the field",
-    body: "Agents frame readiness and offer confidence without becoming lenders.",
-  },
-  {
-    label: "Client Experience",
-    title: "Buyers feel prepared earlier",
-    body: "Buyers understand the path before deadlines raise the stakes.",
-  },
-  {
-    label: "Differentiation",
-    title: "A more modern finance partnership story",
-    body: "Lending education becomes part of the client experience.",
-  },
-];
-
-const partnershipModels = [
-  {
-    label: "Co-Marketing",
-    title: "Education-led campaigns",
-    body: "Co-branded education and social content built around readiness.",
-  },
-  {
-    label: "Lead Generation",
-    title: "Buyer strategy pathways",
-    body: "Consultation flows with appropriate disclosures and review.",
-  },
-  {
-    label: "Platform Enablement",
-    title: "Agent education infrastructure",
-    body: "Training topics and frameworks teams can use quickly.",
-  },
-  {
-    label: "Strategic Relationships",
-    title: "Firm-level lending conversations",
-    body: "A structured review of collaboration, service, education, and compliance.",
   },
 ];
 
@@ -146,21 +78,7 @@ export default function PartnersPage() {
             >
               Start Partnership Review
             </a>
-            <Link
-              href="/agents"
-              className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
-            >
-              Agent Platform
-            </Link>
           </div>
-          <StatRow
-            className="reveal-item mt-20"
-            stats={[
-              { value: "01", label: "Adoption" },
-              { value: "02", label: "Readiness" },
-              { value: "03", label: "Compliance" },
-            ]}
-          />
         </PageHero>
 
         <section className="section-flow section-matte relative border-y border-zinc-900/40">
@@ -193,91 +111,6 @@ export default function PartnersPage() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        <section className="section-flow relative">
-          <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <SectionHeader
-              eyebrow="The Platform"
-              title="Education, media, lead paths, adoption."
-              lead="Support agents without a sales script."
-            />
-
-            <RevealGroup
-              className="mt-16 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:mt-20 md:grid-cols-4"
-              stagger={110}
-            >
-              {platformPillars.map((pillar) => (
-                <ProcessStep
-                  key={pillar.step}
-                  step={pillar.step}
-                  title={pillar.title}
-                  body={pillar.body}
-                />
-              ))}
-            </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
-          <div className="section-bridge-top" aria-hidden />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#5b21b6]/[0.035] via-transparent to-transparent"
-            aria-hidden
-          />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <SectionHeader
-              eyebrow="Broker Value"
-              title="A finance layer can become a firm advantage."
-              lead="Stronger tools for agents. A clearer experience for buyers."
-            />
-
-            <RevealGroup
-              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3 md:gap-8"
-              stagger={130}
-            >
-              {brokerValue.map((item) => (
-                <FeatureCard
-                  key={item.label}
-                  label={item.label}
-                  title={item.title}
-                  body={item.body}
-                  className="card-lift border border-zinc-900/80"
-                />
-              ))}
-            </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
-        <section className="section-flow relative">
-          <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <div className="grid gap-14 md:grid-cols-[0.82fr_1.18fr] md:gap-20">
-              <SectionHeader
-                eyebrow="Partnership Models"
-                title="Structure before promises."
-                lead="Review the model before activating the channel."
-              />
-
-              <RevealGroup
-                className="grid gap-px border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2"
-                stagger={120}
-              >
-                {partnershipModels.map((model) => (
-                  <FeatureCard
-                    key={model.label}
-                    label={model.label}
-                    title={model.title}
-                    body={model.body}
-                  />
-                ))}
-              </RevealGroup>
-            </div>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
         <section className="section-flow section-matte relative border-y border-zinc-900/40">
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
@@ -306,7 +139,6 @@ export default function PartnersPage() {
         <div id="partnership-conversation">
           <ConversionCTA {...conversionCtas.brokerPartnership} />
         </div>
-        <SchedulingCTASection type="broker" />
       </main>
 
       <footer className="relative z-10 border-t border-zinc-900/60 py-10">

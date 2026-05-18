@@ -150,14 +150,14 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
                 />
                 <div className="relative flex h-full flex-col justify-between">
                   <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                    Video placeholder
+                    Related Media
                   </p>
                   <div>
                     <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-[#7c3aed]/30 bg-[#7c3aed]/10">
                       <span className="h-0 w-0 border-y-[7px] border-l-[11px] border-y-transparent border-l-[#c4b5fd]/80" />
                     </div>
                     <p className="font-mono text-[10px] tracking-[0.22em] text-zinc-600 uppercase">
-                      Future embed area
+                      Watch-first format
                     </p>
                   </div>
                 </div>
@@ -171,7 +171,7 @@ export function LearnArticleTemplate({ article }: { article: LearnArticle }) {
                 </h2>
                 <p className="mt-5 leading-relaxed text-zinc-500">
                   {article.videoDescription ??
-                    "Future short-form video connected to this topic."}
+                    "Short-form video context connected to this topic."}
                 </p>
               </div>
             </div>

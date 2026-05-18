@@ -4,7 +4,6 @@ import {
   conversionCtas,
 } from "../components/conversion-cta";
 import { InternalPage } from "../components/internal-page";
-import { SchedulingCTASection } from "../components/scheduling-cta";
 
 export const metadata: Metadata = {
   title: "Buyers | The Loan Playbook",
@@ -20,6 +19,8 @@ export default function BuyersPage() {
       lead="For buyers who want clarity before the search gets loud."
       focus="Readiness, timing, leverage, and loan choices should be clear before the offer."
       strategyVisual="football-buyers"
+      primaryCta={{ href: "#buyer-strategy", label: "Start Your Buyer Strategy" }}
+      secondaryCta={{ href: "/videos", label: "Watch First" }}
       sections={[
         {
           label: "01 / Readiness",
@@ -42,10 +43,9 @@ export default function BuyersPage() {
         body: "Understand the field. Prepare the file. Enter with leverage.",
       }}
       extraSections={
-        <>
+        <div id="buyer-strategy">
           <ConversionCTA {...conversionCtas.buyerStrategy} />
-          <SchedulingCTASection type="buyer" />
-        </>
+        </div>
       }
     />
   );

@@ -10,6 +10,7 @@ import { PageAmbient } from "./page-ambient";
 import { RevealGroup } from "./reveal-group";
 import { SiteNav } from "./site-nav";
 import type { SportsStrategyVariant } from "./sports-strategy-layer";
+import { TrackedAnchor } from "./tracked-link";
 
 type InternalPageProps = {
   eyebrow: string;
@@ -28,6 +29,14 @@ type InternalPageProps = {
     body: string;
   };
   extraSections?: ReactNode;
+  primaryCta?: {
+    href: string;
+    label: string;
+  };
+  secondaryCta?: {
+    href: string;
+    label: string;
+  };
 };
 
 export function InternalPage({
@@ -40,6 +49,8 @@ export function InternalPage({
   sections,
   closing,
   extraSections,
+  primaryCta,
+  secondaryCta,
 }: InternalPageProps) {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
@@ -71,7 +82,30 @@ export function InternalPage({
           focus={focus}
           visual={strategyVisual}
           videoSrc={heroVideoSrc}
-        />
+        >
+          {primaryCta ? (
+            <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
+              <TrackedAnchor
+                href={primaryCta.href}
+                location="internal_page_hero"
+                label={primaryCta.label}
+                className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
+              >
+                {primaryCta.label}
+              </TrackedAnchor>
+              {secondaryCta ? (
+                <TrackedAnchor
+                  href={secondaryCta.href}
+                  location="internal_page_hero"
+                  label={secondaryCta.label}
+                  className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
+                >
+                  {secondaryCta.label}
+                </TrackedAnchor>
+              ) : null}
+            </div>
+          ) : null}
+        </PageHero>
 
         <section className="section-flow section-matte relative border-y border-zinc-900/40">
           <div className="section-bridge-top" aria-hidden />
@@ -99,11 +133,16 @@ export function InternalPage({
 
         {extraSections}
 
-        <CTASection
-          title={closing.title}
-          body={closing.body}
-          actions={[{ href: "/strategy", label: "View Strategy Framework" }]}
-        />
+        {primaryCta && !extraSections ? (
+          <CTASection
+            title={closing.title}
+            body={closing.body}
+            analyticsSection="lead_capture"
+            actions={[
+              { href: primaryCta.href, label: primaryCta.label, variant: "primary" },
+            ]}
+          />
+        ) : null}
       </main>
 
       <footer className="relative z-10 border-t border-zinc-900/60 py-10">

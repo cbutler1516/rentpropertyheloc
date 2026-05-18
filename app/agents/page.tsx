@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { FooterBrand } from "../components/brand";
 import { ComplianceFooter } from "../components/compliance-footer";
 import {
@@ -11,12 +10,11 @@ import {
   PageHero,
   ProcessStep,
   SectionHeader,
-  StatRow,
 } from "../components/design-system";
 import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
-import { SchedulingCTASection } from "../components/scheduling-cta";
 import { SiteNav } from "../components/site-nav";
+import { TrackedLink } from "../components/tracked-link";
 
 export const metadata: Metadata = {
   title: "Agents | The Loan Playbook",
@@ -60,31 +58,6 @@ const readinessSteps = [
   },
 ];
 
-const contentSupport = [
-  {
-    label: "Education Engine",
-    title: "Borrower education agents can actually use",
-    body: "Short explainers and buyer-facing frameworks agents can use.",
-  },
-  {
-    label: "Co-Branded Media",
-    title: "Compliance-aware co-marketing support",
-    body: "Premium content for newsletters, social, consults, and follow-up.",
-  },
-  {
-    label: "Local Authority",
-    title: "A sharper way to show market fluency",
-    body: "A modern way to discuss financing trends and buyer decisions.",
-  },
-];
-
-const transactionOutcomes = [
-  "Cleaner buyer expectations before showings begin.",
-  "Stronger financing conversations before offers are written.",
-  "Fewer surprises between contract, underwriting, and closing.",
-  "A more strategic handoff between agent, buyer, and lending team.",
-];
-
 export default function AgentsPage() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
@@ -119,21 +92,15 @@ export default function AgentsPage() {
           videoSrc="/videos/loan-playbook-basketball-agents.mp4"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
-            <Link
+            <TrackedLink
               href="/agents/financing-playbook"
+              location="agents_hero"
+              label="Agent Financing Playbook"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
               Agent Financing Playbook
-            </Link>
+            </TrackedLink>
           </div>
-          <StatRow
-            className="reveal-item mt-20"
-            stats={[
-              { value: "01", label: "Readiness" },
-              { value: "02", label: "Media" },
-              { value: "03", label: "Partnership" },
-            ]}
-          />
         </PageHero>
 
         <section className="section-flow section-matte relative border-y border-zinc-900/40">
@@ -192,77 +159,9 @@ export default function AgentsPage() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
-          <div className="section-bridge-top" aria-hidden />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#5b21b6]/[0.035] via-transparent to-transparent"
-            aria-hidden
-          />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <SectionHeader
-              eyebrow="Media + Education Engine"
-              title="Useful content. Less mortgage noise."
-              lead="Premium education agents can actually use."
-            />
-
-            <RevealGroup
-              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-3 md:gap-8"
-              stagger={130}
-            >
-              {contentSupport.map((item) => (
-                <FeatureCard
-                  key={item.label}
-                  label={item.label}
-                  title={item.title}
-                  body={item.body}
-                  className="card-lift border border-zinc-900/80"
-                />
-              ))}
-            </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
-          <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <RevealGroup
-              className="grid gap-12 md:grid-cols-[0.9fr_1.1fr] md:gap-20"
-              stagger={130}
-            >
-              <div>
-                <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                  Transaction Quality
-                </p>
-                <h2 className="reveal-item mt-5 text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                  Cleaner files. Cleaner transactions.
-                </h2>
-                <p className="reveal-item mt-8 max-w-2xl text-lg leading-relaxed text-zinc-500">
-                  Make complexity visible earlier.
-                </p>
-              </div>
-
-              <div className="reveal-item grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70">
-                {transactionOutcomes.map((outcome, index) => (
-                  <div key={outcome} className="bg-[#050505] p-7 md:p-8">
-                    <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                      Outcome {String(index + 1).padStart(2, "0")}
-                    </p>
-                    <p className="mt-4 text-xl leading-snug tracking-[-0.02em] text-zinc-200">
-                      {outcome}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
         <div id="agent-strategy">
           <ConversionCTA {...conversionCtas.agentPartnership} />
         </div>
-        <SchedulingCTASection type="agent" />
       </main>
 
       <footer className="relative z-10 border-t border-zinc-900/60 py-10">

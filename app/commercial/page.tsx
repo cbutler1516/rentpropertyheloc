@@ -4,7 +4,6 @@ import {
   conversionCtas,
 } from "../components/conversion-cta";
 import { InternalPage } from "../components/internal-page";
-import { SchedulingCTASection } from "../components/scheduling-cta";
 
 export const metadata: Metadata = {
   title: "Commercial | The Loan Playbook",
@@ -21,6 +20,10 @@ export default function CommercialPage() {
       focus="Clarify the asset, sponsor, capital stack, and execution risk before chasing terms."
       strategyVisual="golf-commercial"
       heroVideoSrc="/videos/loan-playbook-commercial-golf.mp4"
+      primaryCta={{
+        href: "#commercial-review",
+        label: "Review Commercial Financing Options",
+      }}
       sections={[
         {
           label: "01 / Asset",
@@ -43,10 +46,9 @@ export default function CommercialPage() {
         body: "Show the asset. Explain the operator. Structure with intention.",
       }}
       extraSections={
-        <>
+        <div id="commercial-review">
           <ConversionCTA {...conversionCtas.commercialReview} />
-          <SchedulingCTASection type="commercial" />
-        </>
+        </div>
       }
     />
   );

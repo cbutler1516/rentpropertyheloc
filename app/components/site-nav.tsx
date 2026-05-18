@@ -7,36 +7,37 @@ import { WordmarkLockup } from "./brand";
 
 const navItems = [
   {
-    href: "/learn",
-    label: "Learn",
-    description: "Education hub",
+    href: "/buyers",
+    label: "Buyers",
+    description: "Start with your number",
   },
   {
-    href: "/videos",
-    label: "Videos",
-    description: "Social strategy",
+    href: "/learn/refinance-timing",
+    label: "Homeowners",
+    description: "Review refinance timing",
   },
   {
     href: "/agents",
     label: "Agents",
-    description: "Agent platform",
+    description: "Financing clarity for clients",
   },
   {
-    href: "/partners",
-    label: "Partners",
-    description: "Brokerage platform",
+    href: "/videos",
+    label: "Videos",
+    description: "Watch first",
   },
   {
-    href: "/commercial",
-    label: "Commercial",
-    description: "Capital strategy",
-  },
-  {
-    href: "/about",
-    label: "About",
-    description: "The method",
+    href: "/learn",
+    label: "Learn",
+    description: "Read the guide",
   },
 ];
+
+const primaryNavCta = {
+  href: "/learn/buyer-readiness",
+  label: "Strategy Call",
+  description: "Start here",
+};
 
 function isActivePath(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -88,6 +89,13 @@ export function SiteNav() {
           })}
         </nav>
 
+        <Link
+          href={primaryNavCta.href}
+          className="hidden h-10 items-center justify-center rounded-full bg-white px-5 font-mono text-[10px] tracking-[0.18em] text-black uppercase transition-colors duration-[var(--duration-hover)] hover:bg-zinc-100 md:inline-flex"
+        >
+          {primaryNavCta.label}
+        </Link>
+
         <button
           type="button"
           className="nav-menu-trigger md:hidden"
@@ -108,7 +116,7 @@ export function SiteNav() {
         data-open={isOpen ? "true" : undefined}
       >
         <nav className="mx-auto grid w-full max-w-7xl gap-px px-6 pb-6">
-          {navItems.map((item) => {
+          {[...navItems, primaryNavCta].map((item) => {
             const active = isActivePath(pathname, item.href);
 
             return (

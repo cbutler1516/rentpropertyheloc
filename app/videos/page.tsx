@@ -15,7 +15,6 @@ import { SocialFollowSection } from "../components/social-follow-section";
 import { SocialPostCard } from "../components/social-post-card";
 import {
   TrackedAnchor,
-  TrackedButton,
   TrackedLink,
 } from "../components/tracked-link";
 import { VideoCard } from "../components/video-card";
@@ -27,14 +26,6 @@ export const metadata: Metadata = {
   description:
     "A social media hub for mortgage education videos, market updates, agent education, buyer education, and AI creative concepts from The Loan Playbook.",
 };
-
-const videoFilters = [
-  "TikTok",
-  "Shorts",
-  "Market",
-  "Agents",
-  "Buyers",
-];
 
 const allVideos = videoSections.flatMap((section) => section.videos);
 
@@ -300,21 +291,6 @@ export default function VideosPage() {
             </RevealGroup>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
-        <section className="relative mx-auto w-full max-w-7xl px-6 py-8 md:px-10 md:py-12">
-          <div className="flex flex-wrap gap-3" aria-label="Video category filters">
-            {videoFilters.map((filter) => (
-              <TrackedButton
-                key={filter}
-                eventName="video_filter_click"
-                payload={{ filter }}
-                className="border border-zinc-900 bg-[#050505] px-4 py-3 font-mono text-[10px] tracking-[0.2em] text-zinc-600 uppercase transition-colors duration-[var(--duration-hover)] hover:border-[#7c3aed]/40 hover:text-zinc-300"
-              >
-                {filter}
-              </TrackedButton>
-            ))}
-          </div>
         </section>
 
         {categorizedVideoLanes.map((lane, index) => (

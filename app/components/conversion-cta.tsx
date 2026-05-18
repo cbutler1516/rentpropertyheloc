@@ -19,7 +19,12 @@ export function ConversionCTA({
   note = "Educational only. Not a loan application.",
 }: ConversionCTAProps) {
   return (
-    <CTASection eyebrow={eyebrow} title={title} body={body}>
+    <CTASection
+      eyebrow={eyebrow}
+      title={title}
+      body={body}
+      analyticsSection="lead_capture"
+    >
       <LeadCaptureForm formType={formType} submitLabel={submitLabel} />
       <p className="reveal-item mt-5 font-mono text-[10px] tracking-[0.18em] text-zinc-600 uppercase">
         {note}

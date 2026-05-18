@@ -16,6 +16,8 @@ export default function AboutPage() {
       focus="Borrowers get tasks. The Loan Playbook gives context."
       strategyVisual="tennis-about"
       heroVideoSrc="/videos/loan-playbook-tennis-about.mp4"
+      primaryCta={{ href: "/learn/buyer-readiness", label: "Start Your Strategy" }}
+      secondaryCta={{ href: "/videos", label: "Watch First" }}
       sections={[
         {
           label: "01 / Belief",
