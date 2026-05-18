@@ -17,8 +17,8 @@ export function createMoneyFunnelMetadata(funnel: MoneyFunnel): Metadata {
     title: `${funnel.eyebrow} | The Loan Playbook`,
     description: funnel.description,
     openGraph: {
-      title: funnel.title,
-      description: funnel.description,
+      title: funnel.ogTitle ?? funnel.title,
+      description: funnel.ogDescription ?? funnel.description,
       type: "article",
     },
   };
@@ -54,7 +54,7 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
           title={funnel.title}
           lead={funnel.heroLead}
           focusLabel="Flow"
-          focus="Video -> landing page -> consultation."
+          focus={funnel.heroFocus ?? "Video -> landing page -> consultation."}
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <TrackedAnchor
@@ -105,8 +105,8 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
             <RevealGroup className="flex flex-col justify-center" stagger={110}>
               <SectionHeader
                 eyebrow="Watch First"
-                title={featuredPost?.title ?? "Featured video"}
-                lead={featuredPost?.shortSummary ?? "Video placeholder ready."}
+                title={funnel.videoTitle ?? featuredPost?.title ?? "Featured video"}
+                lead={funnel.videoLead ?? featuredPost?.shortSummary ?? "Video placeholder ready."}
               />
               {featuredPost ? (
                 <TrackedAnchor
@@ -129,9 +129,9 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
-              eyebrow="Takeaways"
-              title="Know the move."
-              lead="Quick points before the conversation."
+              eyebrow={funnel.takeawaysEyebrow ?? "Takeaways"}
+              title={funnel.takeawaysTitle ?? "Know the move."}
+              lead={funnel.takeawaysLead ?? "Quick points before the conversation."}
             />
             <RevealGroup
               className="mt-14 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2 lg:grid-cols-4"
@@ -156,9 +156,9 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[0.82fr_1.18fr] md:gap-16 md:px-10">
             <SectionHeader
-              eyebrow="Mistakes"
-              title="Avoid the obvious traps."
-              lead="Simple issues that create late friction."
+              eyebrow={funnel.mistakesEyebrow ?? "Mistakes"}
+              title={funnel.mistakesTitle ?? "Avoid the obvious traps."}
+              lead={funnel.mistakesLead ?? "Simple issues that create late friction."}
             />
             <RevealGroup className="grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70">
               {funnel.mistakes.map((mistake) => (
@@ -177,9 +177,9 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
-              eyebrow="Clarify"
-              title="What we organize."
-              lead="The core inputs behind the next move."
+              eyebrow={funnel.clarifiesEyebrow ?? "Clarify"}
+              title={funnel.clarifiesTitle ?? "What we organize."}
+              lead={funnel.clarifiesLead ?? "The core inputs behind the next move."}
             />
             <RevealGroup
               className="mt-12 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2 lg:grid-cols-5"
@@ -203,7 +203,11 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
         <section className="section-flow section-matte relative border-y border-zinc-900/40">
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <SectionHeader eyebrow="How It Works" title="Short path. Clear output." />
+            <SectionHeader
+              eyebrow={funnel.howItWorksEyebrow ?? "How It Works"}
+              title={funnel.howItWorksTitle ?? "Short path. Clear output."}
+              lead={funnel.howItWorksLead}
+            />
             <RevealGroup
               className="mt-12 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:grid-cols-3"
               stagger={90}
@@ -222,6 +226,23 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                 </article>
               ))}
             </RevealGroup>
+            {funnel.trustSignals?.length ? (
+              <RevealGroup
+                className="mt-10 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:grid-cols-3"
+                stagger={80}
+              >
+                {funnel.trustSignals.map((signal) => (
+                  <div key={signal} className="reveal-item bg-[#050505] p-6">
+                    <p className="font-mono text-[10px] tracking-[0.24em] text-[#7c3aed] uppercase">
+                      Guidance
+                    </p>
+                    <p className="mt-4 text-sm leading-relaxed text-zinc-400">
+                      {signal}
+                    </p>
+                  </div>
+                ))}
+              </RevealGroup>
+            ) : null}
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>

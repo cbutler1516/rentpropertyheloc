@@ -5,15 +5,33 @@ export type MoneyFunnel = {
   eyebrow: string;
   title: string;
   description: string;
+  ogTitle?: string;
+  ogDescription?: string;
   heroLead: string;
+  heroFocus?: string;
   videoSlug: string;
+  videoTitle?: string;
+  videoLead?: string;
   takeaways: string[];
+  takeawaysEyebrow?: string;
+  takeawaysTitle?: string;
+  takeawaysLead?: string;
   mistakes: string[];
+  mistakesEyebrow?: string;
+  mistakesTitle?: string;
+  mistakesLead?: string;
   clarifies: string[];
+  clarifiesEyebrow?: string;
+  clarifiesTitle?: string;
+  clarifiesLead?: string;
   howItWorks: Array<{
     title: string;
     body: string;
   }>;
+  howItWorksEyebrow?: string;
+  howItWorksTitle?: string;
+  howItWorksLead?: string;
+  trustSignals?: string[];
   ctaLabel: string;
   ctaTitle: string;
   ctaBody: string;
@@ -33,31 +51,62 @@ export const moneyFunnels = {
   sellerConcessions: {
     slug: "seller-concessions",
     eyebrow: "Seller Concessions",
-    title: "Use credits with a plan.",
+    title: "Lower the payment without lowering your offer.",
     description:
-      "A concise seller concessions funnel for understanding credits, cash to close, payment tradeoffs, and offer strategy.",
-    heroLead: "Credits can help. Structure decides whether they actually work.",
+      "A concise seller concessions funnel for understanding payment relief, cash to close, buyer affordability, and offer strategy.",
+    ogTitle: "Seller concessions can change the monthly payment.",
+    ogDescription:
+      "Understand how seller credits may support payment relief, cash to close, and negotiation strategy before writing an offer.",
+    heroLead: "Most buyers do not realize what sellers can contribute.",
+    heroFocus: "Payment relief. Cash to close. Offer leverage.",
     videoSlug: "buyer-readiness-before-search",
+    videoTitle: "Why credits matter before the offer",
+    videoLead: "Start with the payment story, then structure the ask.",
     takeaways: [
-      "Credits must fit program rules.",
-      "Cash to close matters more than headline price.",
-      "Unused credits can create friction.",
-      "Offer strength still matters.",
+      "Seller concessions are negotiated credits toward eligible buyer costs.",
+      "A credit can affect affordability more than buyers expect.",
+      "Agents can use credits to frame a stronger offer conversation.",
+      "Program rules decide what can actually be used.",
+      "Concessions matter most when cash and payment are tight.",
     ],
+    takeawaysEyebrow: "Buyer + Agent Lens",
+    takeawaysTitle: "What concessions actually do.",
+    takeawaysLead: "A credit is not magic. It is structure.",
     mistakes: [
-      "Asking for a credit without confirming limits.",
-      "Ignoring appraisal and seller motivation.",
-      "Treating credits like guaranteed cash back.",
+      "Assuming sellers cannot contribute.",
+      "Asking for a credit without checking limits.",
+      "Focusing only on rate.",
+      "Ignoring seller motivation.",
+      "Treating credits like cash back.",
     ],
-    clarifies: ["Credit limits", "Eligible costs", "Cash to close", "Payment", "Offer path"],
+    mistakesEyebrow: "Misconceptions",
+    mistakesTitle: "Where buyers get it wrong.",
+    mistakesLead: "The problem is usually structure, not the idea.",
+    clarifies: [
+      "Lower monthly payment",
+      "Reduce cash to close",
+      "Help buy down the rate",
+      "Improve affordability",
+    ],
+    clarifiesEyebrow: "Payment Impact",
+    clarifiesTitle: "How concessions can help.",
+    clarifiesLead: "No calculator. Just the practical levers.",
     howItWorks: [
-      { title: "Compare", body: "Credit, price, payment, and cash." },
-      { title: "Confirm", body: "Program rules and eligible costs." },
-      { title: "Write", body: "Structure the offer with context." },
+      { title: "Compare", body: "Price, payment, credit, and cash." },
+      { title: "Confirm", body: "Eligible costs and program limits." },
+      { title: "Negotiate", body: "Ask with a clear reason." },
+    ],
+    howItWorksEyebrow: "Negotiation Strategy",
+    howItWorksTitle: "Structure before the ask.",
+    howItWorksLead: "Buyers need the numbers. Agents need the story.",
+    trustSignals: [
+      "Education-first approach",
+      "Financing structure guidance",
+      "Strategy before touring or offers",
     ],
     ctaLabel: "Explore Seller Options",
-    ctaTitle: "Compare the credit before you write the offer.",
-    ctaBody: "Send the scenario. We will help frame the next move.",
+    ctaTitle: "Explore the credit before you write the offer.",
+    ctaBody: "Send the scenario. We will help frame payment, cash, and offer leverage.",
     formType: "Buyer Strategy Call",
     bookingType: "buyer",
     relatedGuides: [
@@ -66,11 +115,13 @@ export const moneyFunnels = {
       { label: "Guide", title: "Jumbo loans", href: "/learn/jumbo-loans" },
     ],
     relatedSocialSlugs: ["buyer-readiness-before-search", "mortgage-strategy-clear-idea"],
-    transcriptPlaceholder: "Transcript placeholder for seller concessions video.",
+    transcriptPlaceholder:
+      "Transcript placeholder for a seller concessions video covering payment relief, cash to close, and offer strategy.",
     faqPlaceholder: [
-      "What can seller credits pay for?",
-      "How much credit is allowed?",
-      "Is a credit better than a price cut?",
+      "What can seller concessions help pay for?",
+      "Can concessions lower the monthly payment?",
+      "When is a credit better than a price reduction?",
+      "What should agents confirm before writing the offer?",
     ],
   },
   twoOneBuydowns: {
