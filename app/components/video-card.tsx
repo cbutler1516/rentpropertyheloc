@@ -2,6 +2,7 @@
 
 import { trackEvent } from "../lib/analytics-events";
 import type { VideoContent } from "../lib/content-sources";
+import { MediaThumbnail } from "./media-thumbnail";
 import { TrackedLink } from "./tracked-link";
 
 export function VideoCard({
@@ -28,12 +29,12 @@ export function VideoCard({
   };
 
   return (
-    <article className="reveal-item card-lift group relative flex h-full flex-col overflow-hidden border border-zinc-900/80 bg-[#050505]">
+    <article className="reveal-item card-lift group relative flex h-full flex-col overflow-hidden border border-zinc-900/80 bg-[#050505] shadow-[0_24px_80px_rgba(0,0,0,0.22)]">
       <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#5b21b6]/0 via-transparent to-transparent opacity-0 transition-opacity duration-[var(--duration-hover)] group-hover:opacity-100 group-hover:from-[#5b21b6]/[0.08]"
         aria-hidden
       />
-      <div className="relative aspect-[4/5] border-b border-zinc-900/80 bg-[#080808] p-5 md:aspect-[9/11]">
+      <div className="relative aspect-[4/5] border-b border-zinc-900/80 bg-[#080808] md:aspect-[9/11]">
         {showEmbed ? (
           <iframe
             src={video.embedUrl}
@@ -44,32 +45,15 @@ export function VideoCard({
             loading="lazy"
           />
         ) : (
-          <>
-            <div
-              className="absolute inset-0 opacity-35"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(124, 58, 237, 0.18), transparent 45%), repeating-linear-gradient(0deg, rgba(255,255,255,0.04), rgba(255,255,255,0.04) 1px, transparent 1px, transparent 18px)",
-              }}
-              aria-hidden
-            />
-            <div className="relative flex h-full flex-col justify-between">
-              <div className="flex items-center justify-between gap-4 font-mono text-[10px] tracking-[0.24em] text-[#7c3aed] uppercase">
-                <span>{video.category}</span>
-                <span className="text-zinc-600">
-                  {isPublished ? "Curated" : video.status === "todo" ? "TODO" : "Planned"}
-                </span>
-              </div>
-              <div>
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-[#7c3aed]/30 bg-[#7c3aed]/10">
-                  <span className="h-0 w-0 border-y-[7px] border-l-[11px] border-y-transparent border-l-[#c4b5fd]/80" />
-                </div>
-                <p className="font-mono text-[10px] tracking-[0.22em] text-zinc-600 uppercase">
-                  {video.thumbnailLabel}
-                </p>
-              </div>
-            </div>
-          </>
+          <MediaThumbnail
+            title={video.title}
+            category={video.category}
+            platform={video.platform}
+            thumbnailLabel={isPublished ? "Curated" : video.thumbnailLabel}
+            thumbnailSrc={video.thumbnailSrc}
+            runtime={video.runtime}
+            className="h-full"
+          />
         )}
         {hasEmbed ? (
           <div className="pointer-events-none absolute top-5 left-5 rounded-full border border-black/40 bg-black/70 px-3 py-2 font-mono text-[9px] tracking-[0.2em] text-[#c4b5fd] uppercase backdrop-blur">
@@ -77,28 +61,21 @@ export function VideoCard({
           </div>
         ) : null}
       </div>
-      <div className={`relative flex flex-1 flex-col ${compact ? "p-6" : "p-7"}`}>
-        <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
+      <div className={`relative flex flex-1 flex-col ${compact ? "p-5" : "p-7"}`}>
+        <p className="font-mono text-[9px] tracking-[0.24em] text-[#7c3aed] uppercase">
           {video.platform}
         </p>
         <h3
-          className={`${compact ? "mt-4 text-xl" : "mt-5 text-2xl"} font-semibold tracking-[-0.02em] text-white`}
+          className={`${compact ? "mt-3 text-lg" : "mt-4 text-2xl"} font-semibold tracking-[-0.03em] text-white`}
         >
           {video.title}
         </h3>
-        <p
-          className={`${compact ? "mt-4 text-sm" : "mt-5"} flex-1 leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400`}
-        >
-          {description}
-        </p>
-        <div className="mt-7 border-t border-zinc-900/80 pt-5">
-          <p className="font-mono text-[9px] tracking-[0.2em] text-zinc-700 uppercase">
-            {hasEmbed
-              ? compact
-                ? "Curated card / embed on featured view"
-                : "TikTok embed connected"
-              : `Embed placeholder: ${video.embedUrl}`}
+        {!compact ? (
+          <p className="mt-4 flex-1 leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
+            {description}
           </p>
+        ) : null}
+        <div className="mt-6 border-t border-zinc-900/80 pt-4">
           {!isPublished ? (
             <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-zinc-600">
               Video URL pending
@@ -109,7 +86,7 @@ export function VideoCard({
               target="_blank"
               rel="noreferrer"
               onClick={trackVideoClick}
-              className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] hover:text-white"
+              className="inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] hover:text-white"
             >
               {video.ctaLabel}
               <span className="text-[#7c3aed]" aria-hidden>
@@ -122,7 +99,7 @@ export function VideoCard({
               href={video.relatedArticleHref}
               location="video_card_related_article"
               label={video.relatedArticleLabel ?? "Read related guide"}
-              className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] hover:text-white"
+              className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-zinc-500 transition-colors duration-[var(--duration-hover)] hover:text-white"
             >
               {video.relatedArticleLabel ?? "Read related guide"}
               <span className="text-[#7c3aed]" aria-hidden>

@@ -1,0 +1,16 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#050505"/>
+  <rect x="42" y="42" width="1116" height="546" rx="34" fill="#09090B" stroke="#18181B"/>
+  <circle cx="944" cy="128" r="260" fill="#5B21B6" fill-opacity="0.22"/>
+  <circle cx="228" cy="554" r="220" fill="#7C3AED" fill-opacity="0.14"/>
+  <path d="M96 168H1104" stroke="white" stroke-opacity="0.05"/>
+  <path d="M96 272H1104" stroke="white" stroke-opacity="0.05"/>
+  <path d="M96 376H1104" stroke="white" stroke-opacity="0.05"/>
+  <path d="M96 480H1104" stroke="white" stroke-opacity="0.05"/>
+  <rect x="96" y="96" width="92" height="92" rx="24" fill="#111113" stroke="#7C3AED" stroke-opacity="0.72"/>
+  <text x="126" y="156" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800" letter-spacing="-4">LP</text>
+  <text x="96" y="294" fill="#7C3AED" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="8">THE LOAN PLAYBOOK</text>
+  <text x="96" y="378" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="74" font-weight="800" letter-spacing="-5">Mortgage strategy</text>
+  <text x="96" y="452" fill="#A1A1AA" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700" letter-spacing="-3">built like premium media.</text>
+  <text x="96" y="532" fill="#71717A" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="500">Watch. Read. Make the next move with context.</text>
+</svg>

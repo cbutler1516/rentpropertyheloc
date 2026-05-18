@@ -19,7 +19,21 @@ export function createMoneyFunnelMetadata(funnel: MoneyFunnel): Metadata {
     openGraph: {
       title: funnel.ogTitle ?? funnel.title,
       description: funnel.ogDescription ?? funnel.description,
+      images: [
+        {
+          url: "/loan-playbook-social-preview.svg",
+          width: 1200,
+          height: 630,
+          alt: `${funnel.eyebrow} preview`,
+        },
+      ],
       type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: funnel.ogTitle ?? funnel.title,
+      description: funnel.ogDescription ?? funnel.description,
+      images: ["/loan-playbook-social-preview.svg"],
     },
   };
 }

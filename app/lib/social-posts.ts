@@ -8,6 +8,8 @@ export type SocialPost = {
   topic: string;
   category: string;
   thumbnail: string;
+  thumbnailSrc?: string;
+  runtime?: string;
   shortSummary: string;
   relatedLearnArticle?: {
     href: string;

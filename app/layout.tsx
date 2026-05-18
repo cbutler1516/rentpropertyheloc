@@ -14,9 +14,31 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.theloanplaybook.com"),
   title: "The Loan Playbook",
   description:
-    "A mortgage strategy, education, and media platform for buyers, real estate agents, and partnership teams.",
+    "A premium mortgage strategy and media platform for buyers, agents, and real estate partners.",
+  openGraph: {
+    title: "The Loan Playbook",
+    description:
+      "Mortgage strategy built like premium media. Watch, read, and make the next move with context.",
+    images: [
+      {
+        url: "/loan-playbook-social-preview.svg",
+        width: 1200,
+        height: 630,
+        alt: "The Loan Playbook social preview",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Loan Playbook",
+    description:
+      "Mortgage strategy built like premium media. Watch, read, and make the next move with context.",
+    images: ["/loan-playbook-social-preview.svg"],
+  },
   robots: {
     index: false,
     follow: false,
