@@ -54,13 +54,13 @@ export const moneyFunnels = {
     title: "Lower the payment without lowering your offer.",
     description:
       "A concise seller concessions funnel for understanding payment relief, cash to close, buyer affordability, and offer strategy.",
-    ogTitle: "Seller concessions can change the monthly payment.",
+    ogTitle: "A seller credit can change the monthly payment.",
     ogDescription:
       "Understand how seller credits may support payment relief, cash to close, and negotiation strategy before writing an offer.",
     heroLead: "Most buyers do not realize what sellers can contribute.",
     heroFocus: "Payment relief. Cash to close. Offer leverage.",
     videoSlug: "buyer-readiness-before-search",
-    videoTitle: "Why credits matter before the offer",
+    videoTitle: "A credit may beat a price cut.",
     videoLead: "Start with the payment story, then structure the ask.",
     takeaways: [
       "Seller concessions are negotiated credits toward eligible buyer costs.",
@@ -105,7 +105,7 @@ export const moneyFunnels = {
       "Strategy before touring or offers",
     ],
     ctaLabel: "Explore Seller Options",
-    ctaTitle: "Explore the credit before you write the offer.",
+    ctaTitle: "Use the credit with a plan.",
     ctaBody: "Send the scenario. We will help frame payment, cash, and offer leverage.",
     formType: "Buyer Strategy Call",
     bookingType: "buyer",
@@ -130,13 +130,13 @@ export const moneyFunnels = {
     title: "Create breathing room when rates feel high.",
     description:
       "A concise 2-1 buydown funnel for understanding temporary payment relief, seller credits, buyer affordability, and long-term payment planning.",
-    ogTitle: "2-1 buydowns can create early payment breathing room.",
+    ogTitle: "The first-year payment can breathe.",
     ogDescription:
       "Understand how temporary payment relief works, who may fund it, and when buyers and agents should consider the structure.",
     heroLead: "The payment buyers qualify for is not always the payment they want.",
     heroFocus: "Temporary relief. Gradual transition. Long-term payment clarity.",
     videoSlug: "mortgage-strategy-clear-idea",
-    videoTitle: "The payment path matters",
+    videoTitle: "Can the first-year payment breathe?",
     videoLead: "A buydown can help only when the future payment still makes sense.",
     takeaways: [
       "A 2-1 buydown temporarily lowers the payment.",
@@ -177,7 +177,7 @@ export const moneyFunnels = {
       "Long-term payment planning",
     ],
     ctaLabel: "Understand Buydown Options",
-    ctaTitle: "Understand the payment path before using a buydown.",
+    ctaTitle: "Know the future payment first.",
     ctaBody: "Send the scenario. We will help frame payment relief, credits, and fit.",
     formType: "Buyer Strategy Call",
     bookingType: "buyer",
@@ -203,13 +203,13 @@ export const moneyFunnels = {
     title: "The best refinance timing is not always obvious.",
     description:
       "A concise refinance timing funnel for evaluating payment strategy, rate movement, cash-flow flexibility, equity access, and long-term planning.",
-    ogTitle: "Rate movement is only part of refinance timing.",
+    ogTitle: "Rate movement is only part of the decision.",
     ogDescription:
       "Review refinance timing through payment, costs, equity, cash flow, HELOC alternatives, and long-term flexibility.",
     heroLead: "Rate movement is only part of the equation.",
     heroFocus: "Payment. Equity. Cash flow. Timing.",
     videoSlug: "market-context-without-noise",
-    videoTitle: "Market movement without the noise",
+    videoTitle: "Rates moved. Now what?",
     videoLead: "A refinance should solve a real problem, not react to a headline.",
     takeaways: [
       "A lower rate does not automatically mean better timing.",
@@ -257,7 +257,7 @@ export const moneyFunnels = {
       "Financing structure clarity",
     ],
     ctaLabel: "Review Refinance Timing",
-    ctaTitle: "Review the timing before you reset the loan.",
+    ctaTitle: "Do not reset the loan on a headline.",
     ctaBody: "Send the scenario. We will help frame payment, equity, cash flow, and fit.",
     formType: "Buyer Strategy Call",
     bookingType: "buyer",
@@ -283,13 +283,13 @@ export const moneyFunnels = {
     title: "Access flexibility without rebuilding the whole mortgage.",
     description:
       "A concise HELOC strategy funnel for understanding equity access, liquidity, payment strategy, first-mortgage preservation, and refinance alternatives.",
-    ogTitle: "Sometimes the smart move is leaving the first mortgage alone.",
+    ogTitle: "Your equity may be more useful than you think.",
     ogDescription:
       "Understand how a HELOC may support flexibility, liquidity, renovations, debt restructuring, and equity strategy without replacing the entire mortgage.",
     heroLead: "Sometimes the smartest move is leaving the first mortgage alone.",
     heroFocus: "Equity access. Liquidity. Payment strategy.",
     videoSlug: "creative-mortgage-media-test",
-    videoTitle: "Use equity with intent",
+    videoTitle: "Sometimes leave the first mortgage alone.",
     videoLead: "Flexibility matters, but secured debt still needs structure.",
     takeaways: [
       "A HELOC can preserve a low first mortgage.",
@@ -339,7 +339,7 @@ export const moneyFunnels = {
       "Advisory mindset",
     ],
     ctaLabel: "Understand HELOC Options",
-    ctaTitle: "Review the equity move before you use it.",
+    ctaTitle: "Use equity without losing flexibility.",
     ctaBody: "Send the goal. We will help compare access, payment, flexibility, and fit.",
     formType: "Buyer Strategy Call",
     bookingType: "buyer",
@@ -362,10 +362,10 @@ export const moneyFunnels = {
   agentFinancingPlaybook: {
     slug: "financing-playbook",
     eyebrow: "Agent Financing Playbook",
-    title: "Help buyers think clearer.",
+    title: "Help buyers make the move clearer.",
     description:
       "A concise agent financing playbook funnel for buyer readiness, financing context, offer conversations, and agent education.",
-    heroLead: "Better financing context creates cleaner client conversations.",
+    heroLead: "The buyer who understands payment moves differently.",
     videoSlug: "agent-financing-conversation",
     takeaways: [
       "Pre-approval is not the whole story.",

@@ -39,20 +39,20 @@ export function MediaThumbnail({
         />
       )}
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/10"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/45 to-black/5"
         aria-hidden
       />
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#5b21b6]/20 to-transparent opacity-70"
         aria-hidden
       />
-      <div className="relative flex h-full flex-col justify-between p-5">
+      <div className="relative flex h-full flex-col justify-between p-4 md:p-5">
         <div className="flex items-center justify-between gap-3">
-          <span className="rounded-full border border-white/10 bg-black/45 px-3 py-1.5 font-mono text-[9px] tracking-[0.2em] text-[#c4b5fd] uppercase backdrop-blur">
+          <span className="max-w-[70%] truncate rounded-full border border-white/10 bg-black/45 px-3 py-1.5 font-mono text-[8px] tracking-[0.18em] text-[#c4b5fd] uppercase backdrop-blur md:text-[9px]">
             {category}
           </span>
           {runtime ?? platform ? (
-            <span className="rounded-full border border-white/10 bg-black/45 px-3 py-1.5 font-mono text-[9px] tracking-[0.18em] text-zinc-400 uppercase backdrop-blur">
+            <span className="shrink-0 rounded-full border border-white/10 bg-black/45 px-3 py-1.5 font-mono text-[8px] tracking-[0.16em] text-zinc-400 uppercase backdrop-blur md:text-[9px]">
               {runtime ?? platform}
             </span>
           ) : null}
@@ -63,7 +63,7 @@ export function MediaThumbnail({
               {thumbnailLabel}
             </p>
           ) : null}
-          <h3 className="mt-3 max-w-xs text-2xl font-semibold leading-tight tracking-[-0.04em] text-white">
+          <h3 className="mt-3 max-w-xs text-[1.35rem] font-semibold leading-[1.02] tracking-[-0.04em] text-white md:text-2xl">
             {title}
           </h3>
         </div>

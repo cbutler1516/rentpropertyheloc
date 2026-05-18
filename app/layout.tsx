@@ -17,11 +17,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.theloanplaybook.com"),
   title: "The Loan Playbook",
   description:
-    "A premium mortgage strategy and media platform for buyers, agents, and real estate partners.",
+    "Know the move before you make it. Mortgage education packaged like premium media.",
   openGraph: {
     title: "The Loan Playbook",
     description:
-      "Mortgage strategy built like premium media. Watch, read, and make the next move with context.",
+      "Know the move before you make it. Watch, read, and make the next mortgage decision with context.",
     images: [
       {
         url: "/loan-playbook-social-preview.svg",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "The Loan Playbook",
     description:
-      "Mortgage strategy built like premium media. Watch, read, and make the next move with context.",
+      "Know the move before you make it. Watch, read, and make the next mortgage decision with context.",
     images: ["/loan-playbook-social-preview.svg"],
   },
   robots: {

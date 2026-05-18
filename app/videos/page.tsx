@@ -41,7 +41,7 @@ const videoFilters = [
 const allVideos = videoSections.flatMap((section) => section.videos);
 
 const featuredVideo = allVideos.find(
-  (video) => video.title === "Mortgage strategy in one clear idea",
+  (video) => video.title === "Most buyers focus on the wrong number.",
 );
 const curatedSocialPosts = socialPosts.slice(0, 5);
 
