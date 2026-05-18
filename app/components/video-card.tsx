@@ -51,6 +51,7 @@ export function VideoCard({
             platform={video.platform}
             thumbnailLabel={isPublished ? "Curated" : video.thumbnailLabel}
             thumbnailSrc={video.thumbnailSrc}
+            thumbnailFocalPoint={video.thumbnailFocalPoint}
             runtime={video.runtime}
             className="h-full"
           />

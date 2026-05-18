@@ -7,6 +7,7 @@ export type VideoContent = {
   description: string;
   thumbnailLabel: string;
   thumbnailSrc?: string;
+  thumbnailFocalPoint?: string;
   runtime?: string;
   embedUrl: string;
   ctaHref: string;

@@ -9,6 +9,7 @@ export type SocialPost = {
   category: string;
   thumbnail: string;
   thumbnailSrc?: string;
+  thumbnailFocalPoint?: string;
   runtime?: string;
   shortSummary: string;
   relatedLearnArticle?: {

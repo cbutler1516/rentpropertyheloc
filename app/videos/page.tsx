@@ -11,6 +11,7 @@ import {
   SectionHeader,
 } from "../components/design-system";
 import { PageAmbient } from "../components/page-ambient";
+import { MediaThumbnail } from "../components/media-thumbnail";
 import { RevealGroup } from "../components/reveal-group";
 import { SiteNav } from "../components/site-nav";
 import { SocialFollowSection } from "../components/social-follow-section";
@@ -126,10 +127,10 @@ function FeaturedVideoSection({ video }: { video?: VideoContent }) {
       />
       <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[0.92fr_1.08fr] md:items-center md:gap-16 md:px-10">
         <RevealGroup
-          className="relative overflow-hidden border border-zinc-900/80 bg-[#050505] p-4 md:p-6"
+          className="relative overflow-hidden border border-zinc-900/80 bg-[#050505] p-3 shadow-[0_32px_120px_rgba(0,0,0,0.35)] md:p-5"
           stagger={100}
         >
-          <div className="reveal-item relative aspect-[9/12] overflow-hidden bg-[#080808] md:aspect-[9/10]">
+          <div className="reveal-item relative aspect-[9/12] overflow-hidden border border-zinc-900/80 bg-[#080808] md:aspect-[9/10]">
             {hasEmbed ? (
               <iframe
                 src={video.embedUrl}
@@ -140,18 +141,16 @@ function FeaturedVideoSection({ video }: { video?: VideoContent }) {
                 loading="lazy"
               />
             ) : (
-              <div className="relative flex h-full flex-col justify-between p-6">
-                <div
-                  className="playbook-grid pointer-events-none absolute inset-0 opacity-25"
-                  aria-hidden
-                />
-                <p className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                  Featured video placeholder
-                </p>
-                <p className="relative font-mono text-[10px] tracking-[0.22em] text-zinc-600 uppercase">
-                  Embed URL pending
-                </p>
-              </div>
+              <MediaThumbnail
+                title={video.title}
+                category={video.category}
+                platform={video.platform}
+                thumbnailLabel="Featured"
+                thumbnailSrc={video.thumbnailSrc}
+                thumbnailFocalPoint={video.thumbnailFocalPoint}
+                runtime={video.runtime}
+                className="h-full"
+              />
             )}
           </div>
         </RevealGroup>
@@ -163,10 +162,10 @@ function FeaturedVideoSection({ video }: { video?: VideoContent }) {
           <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-white md:mt-6 md:text-6xl">
             {video.title}
           </h2>
-          <p className="reveal-item mt-8 max-w-2xl text-lg leading-relaxed text-zinc-400 md:text-xl">
+          <p className="reveal-item mt-7 max-w-xl text-lg leading-relaxed text-zinc-400">
             {description}
           </p>
-          <div className="reveal-item mt-10 flex flex-col gap-4 sm:flex-row">
+          <div className="reveal-item mt-9 flex flex-col gap-3 sm:flex-row">
             <TrackedAnchor
               href={video.ctaHref}
               target="_blank"

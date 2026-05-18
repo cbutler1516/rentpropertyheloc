@@ -11,6 +11,7 @@ export function SocialPostCard({ post }: { post: SocialPost }) {
         platform={post.platform}
         thumbnailLabel={post.thumbnail}
         thumbnailSrc={post.thumbnailSrc}
+        thumbnailFocalPoint={post.thumbnailFocalPoint}
         runtime={post.runtime}
         className="aspect-[4/5] border-b border-zinc-900/80"
       />

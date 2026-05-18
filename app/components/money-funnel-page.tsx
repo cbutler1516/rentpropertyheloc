@@ -3,6 +3,7 @@ import { FooterBrand } from "./brand";
 import { ComplianceFooter } from "./compliance-footer";
 import { FooterSocialLinks } from "./footer-social-links";
 import { LeadCaptureForm } from "./lead-capture-form";
+import { MediaThumbnail } from "./media-thumbnail";
 import { PageHero, SectionHeader } from "./design-system";
 import { PageAmbient } from "./page-ambient";
 import { RevealGroup } from "./reveal-group";
@@ -86,10 +87,10 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[0.9fr_1.1fr] md:items-center md:gap-16 md:px-10">
             <RevealGroup
-              className="relative overflow-hidden border border-zinc-900/80 bg-[#050505] p-4 md:p-6"
+              className="relative overflow-hidden border border-zinc-900/80 bg-[#050505] p-3 shadow-[0_32px_120px_rgba(0,0,0,0.35)] md:p-5"
               stagger={90}
             >
-              <div className="reveal-item relative aspect-[9/12] overflow-hidden bg-[#080808]">
+              <div className="reveal-item relative aspect-[9/12] overflow-hidden border border-zinc-900/80 bg-[#080808]">
                 {featuredPost?.embedUrl ? (
                   <iframe
                     src={featuredPost.embedUrl}
@@ -100,18 +101,16 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                     loading="lazy"
                   />
                 ) : (
-                  <div className="relative flex h-full flex-col justify-between p-6">
-                    <div
-                      className="playbook-grid pointer-events-none absolute inset-0 opacity-25"
-                      aria-hidden
-                    />
-                    <p className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                      Featured video
-                    </p>
-                    <p className="relative font-mono text-[10px] tracking-[0.22em] text-zinc-600 uppercase">
-                      Embed pending
-                    </p>
-                  </div>
+                  <MediaThumbnail
+                    title={funnel.videoTitle ?? featuredPost?.title ?? "Featured video"}
+                    category={featuredPost?.category ?? funnel.eyebrow}
+                    platform={featuredPost?.platform}
+                    thumbnailLabel="Featured"
+                    thumbnailSrc={featuredPost?.thumbnailSrc}
+                    thumbnailFocalPoint={featuredPost?.thumbnailFocalPoint}
+                    runtime={featuredPost?.runtime}
+                    className="h-full"
+                  />
                 )}
               </div>
             </RevealGroup>
