@@ -5,6 +5,8 @@ import { trackEvent } from "../lib/analytics-events";
 import { TrackedLink } from "./tracked-link";
 
 export function VideoCard({ video }: { video: VideoContent }) {
+  const hasEmbed = video.embedUrl !== "Embed URL pending";
+  const isPublished = video.status === "published";
   const trackVideoClick = () => {
     trackEvent("video_card_interaction", {
       platform: video.platform,
@@ -21,30 +23,48 @@ export function VideoCard({ video }: { video: VideoContent }) {
         aria-hidden
       />
       <div className="relative aspect-[9/14] border-b border-zinc-900/80 bg-[#080808] p-5">
-        <div
-          className="absolute inset-0 opacity-35"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(124, 58, 237, 0.18), transparent 45%), repeating-linear-gradient(0deg, rgba(255,255,255,0.04), rgba(255,255,255,0.04) 1px, transparent 1px, transparent 18px)",
-          }}
-          aria-hidden
-        />
-        <div className="relative flex h-full flex-col justify-between">
-          <div className="flex items-center justify-between gap-4 font-mono text-[10px] tracking-[0.24em] text-[#7c3aed] uppercase">
-            <span>{video.category}</span>
-            <span className="text-zinc-600">
-              {video.status === "todo" ? "TODO" : "Planned"}
-            </span>
-          </div>
-          <div>
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-[#7c3aed]/30 bg-[#7c3aed]/10">
-              <span className="h-0 w-0 border-y-[7px] border-l-[11px] border-y-transparent border-l-[#c4b5fd]/80" />
+        {hasEmbed ? (
+          <iframe
+            src={video.embedUrl}
+            title={`${video.title} TikTok embed`}
+            className="absolute inset-0 h-full w-full border-0"
+            allow="encrypted-media; fullscreen; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+          />
+        ) : (
+          <>
+            <div
+              className="absolute inset-0 opacity-35"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(124, 58, 237, 0.18), transparent 45%), repeating-linear-gradient(0deg, rgba(255,255,255,0.04), rgba(255,255,255,0.04) 1px, transparent 1px, transparent 18px)",
+              }}
+              aria-hidden
+            />
+            <div className="relative flex h-full flex-col justify-between">
+              <div className="flex items-center justify-between gap-4 font-mono text-[10px] tracking-[0.24em] text-[#7c3aed] uppercase">
+                <span>{video.category}</span>
+                <span className="text-zinc-600">
+                  {video.status === "todo" ? "TODO" : "Planned"}
+                </span>
+              </div>
+              <div>
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-[#7c3aed]/30 bg-[#7c3aed]/10">
+                  <span className="h-0 w-0 border-y-[7px] border-l-[11px] border-y-transparent border-l-[#c4b5fd]/80" />
+                </div>
+                <p className="font-mono text-[10px] tracking-[0.22em] text-zinc-600 uppercase">
+                  {video.thumbnailLabel}
+                </p>
+              </div>
             </div>
-            <p className="font-mono text-[10px] tracking-[0.22em] text-zinc-600 uppercase">
-              {video.thumbnailLabel}
-            </p>
+          </>
+        )}
+        {hasEmbed ? (
+          <div className="pointer-events-none absolute top-5 left-5 rounded-full border border-black/40 bg-black/70 px-3 py-2 font-mono text-[9px] tracking-[0.2em] text-[#c4b5fd] uppercase backdrop-blur">
+            {video.category}
           </div>
-        </div>
+        ) : null}
       </div>
       <div className="relative flex flex-1 flex-col p-7">
         <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
@@ -58,9 +78,9 @@ export function VideoCard({ video }: { video: VideoContent }) {
         </p>
         <div className="mt-7 border-t border-zinc-900/80 pt-5">
           <p className="font-mono text-[9px] tracking-[0.2em] text-zinc-700 uppercase">
-            Embed placeholder: {video.embedUrl}
+            {hasEmbed ? "TikTok embed connected" : `Embed placeholder: ${video.embedUrl}`}
           </p>
-          {video.status === "todo" ? (
+          {!isPublished ? (
             <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-zinc-600">
               Video URL pending
             </span>

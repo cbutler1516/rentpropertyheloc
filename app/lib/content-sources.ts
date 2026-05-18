@@ -11,7 +11,7 @@ export type VideoContent = {
   ctaLabel: string;
   relatedArticleHref?: string;
   relatedArticleLabel?: string;
-  status?: "planned" | "todo";
+  status?: "published" | "planned" | "todo";
 };
 
 export type ExternalArticle = {
@@ -34,6 +34,10 @@ export type HubLink = {
 const TODO_VIDEO_URL = "/videos";
 const TODO_EMBED_URL = "Embed URL pending";
 
+function tiktokEmbedUrl(videoId: string) {
+  return `https://www.tiktok.com/embed/v2/${videoId}`;
+}
+
 export const videoSections: Array<{
   id: string;
   eyebrow: string;
@@ -47,6 +51,76 @@ export const videoSections: Array<{
     title: "Short mortgage plays built for fast discovery.",
     lead: "TikTok slots are prepared for quick borrower education, myth-busting, and one-idea lending explainers.",
     videos: [
+      {
+        title: "Buyer readiness before the search starts",
+        platform: "TikTok",
+        category: "Buyer Education",
+        description:
+          "A published TikTok short introducing why buyers should understand the file, payment, and next steps before shopping gets serious.",
+        thumbnailLabel: "Live TikTok",
+        embedUrl: tiktokEmbedUrl("7637204481389726990"),
+        ctaHref: "https://www.tiktok.com/@theloanplaybook/video/7637204481389726990",
+        ctaLabel: "Watch on TikTok",
+        relatedArticleHref: "/learn/seller-concessions",
+        relatedArticleLabel: "Read buyer strategy guides",
+        status: "published",
+      },
+      {
+        title: "Mortgage strategy in one clear idea",
+        platform: "TikTok",
+        category: "Mortgage Strategy",
+        description:
+          "A published TikTok strategy clip designed to make one mortgage decision easier to understand without quoting rates or promising outcomes.",
+        thumbnailLabel: "Live TikTok",
+        embedUrl: tiktokEmbedUrl("7608394728236780814"),
+        ctaHref: "https://www.tiktok.com/@theloanplaybook/video/7608394728236780814",
+        ctaLabel: "Watch on TikTok",
+        relatedArticleHref: "/learn/2-1-buydowns",
+        relatedArticleLabel: "Read the 2-1 buydown guide",
+        status: "published",
+      },
+      {
+        title: "Market context without the noise",
+        platform: "TikTok",
+        category: "Market Update",
+        description:
+          "A published TikTok market-context slot for translating changing conditions into practical borrower and agent conversations.",
+        thumbnailLabel: "Live TikTok",
+        embedUrl: tiktokEmbedUrl("7598267421841050894"),
+        ctaHref: "https://www.tiktok.com/@theloanplaybook/video/7598267421841050894",
+        ctaLabel: "Watch on TikTok",
+        relatedArticleHref: "/learn/refinance-timing",
+        relatedArticleLabel: "Read the refinance timing guide",
+        status: "published",
+      },
+      {
+        title: "Agent-facing financing conversation",
+        platform: "TikTok",
+        category: "Agent Strategy",
+        description:
+          "A published TikTok clip for agents who want cleaner buyer conversations around financing readiness, expectations, and next steps.",
+        thumbnailLabel: "Live TikTok",
+        embedUrl: tiktokEmbedUrl("7584678562507132215"),
+        ctaHref: "https://www.tiktok.com/@theloanplaybook/video/7584678562507132215",
+        ctaLabel: "Watch on TikTok",
+        relatedArticleHref: "/learn/jumbo-loans",
+        relatedArticleLabel: "Read the jumbo loan guide",
+        status: "published",
+      },
+      {
+        title: "Creative mortgage media test",
+        platform: "TikTok",
+        category: "Creative / AI Marketing",
+        description:
+          "A published TikTok creative slot showing how mortgage education can feel more like premium media than generic rate advertising.",
+        thumbnailLabel: "Live TikTok",
+        embedUrl: tiktokEmbedUrl("7584525269541686558"),
+        ctaHref: "https://www.tiktok.com/@theloanplaybook/video/7584525269541686558",
+        ctaLabel: "Watch on TikTok",
+        relatedArticleHref: "/learn/heloc-strategy",
+        relatedArticleLabel: "Read the HELOC strategy guide",
+        status: "published",
+      },
       {
         title: "2-1 buydown in under 60 seconds",
         platform: "TikTok",
