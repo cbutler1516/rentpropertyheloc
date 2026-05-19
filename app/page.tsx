@@ -45,6 +45,13 @@ const paths = [
     description: "Asset, sponsor, structure, and next steps.",
     cta: "Review Commercial Options",
   },
+  {
+    label: "Browse Scenarios",
+    title: "Find your financing scenario.",
+    href: "/scenarios",
+    description: "Buyer, homeowner, agent, and commercial paths.",
+    cta: "Explore Scenarios",
+  },
 ];
 
 const authorityStats = [

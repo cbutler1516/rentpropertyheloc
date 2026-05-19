@@ -33,6 +33,16 @@ const navItems = [
     description: "Investor and operator scenarios",
   },
   {
+    href: "/scenarios",
+    label: "Scenarios",
+    description: "Borrower & agent paths",
+  },
+  {
+    href: "/geo",
+    label: "Markets",
+    description: "Washington local SEO",
+  },
+  {
     href: "/videos",
     label: "Videos",
     description: "Watch first",
