@@ -20,12 +20,15 @@ Central event helpers live in `app/lib/analytics-events.ts`.
 
 Current events:
 
+- `apply_page_view`
+- `apply_cta_click`
 - `page_view`
 - `scroll_depth` at 25, 50, 75, and 100 percent
 - `section_view` for marked sections
 - `cta_click`
 - `booking_click`
 - `form_start`
+- `funnel_to_application_click`
 - `micro_conversion`
 - `lead_submit`
 - `video_click`
@@ -40,6 +43,8 @@ Scroll and section behavior is handled by `app/components/behavior-analytics.tsx
 
 Use `TrackedLink`, `TrackedAnchor`, and `TrackedBookingAnchor` for clickable UI. Prefer the `eventType` prop when a click is more specific than a general CTA:
 
+- `apply_cta`
+- `funnel_apply`
 - `video`
 - `thumbnail`
 - `social`

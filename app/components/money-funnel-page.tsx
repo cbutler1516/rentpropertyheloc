@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ApplicationCta } from "./application-cta";
 import { FooterBrand } from "./brand";
 import { ComplianceFooter } from "./compliance-footer";
 import { FooterSocialLinks } from "./footer-social-links";
@@ -14,6 +15,12 @@ import { StickyMobileCta } from "./sticky-mobile-cta";
 import { TrackedAnchor, TrackedLink } from "./tracked-link";
 import type { MoneyFunnel } from "../lib/money-funnels";
 import { getSocialPostBySlug, type SocialPost } from "../lib/social-posts";
+
+const applicationCtaSlugs = new Set([
+  "seller-concessions",
+  "refinance-timing",
+  "heloc-strategy",
+]);
 
 export function createMoneyFunnelMetadata(funnel: MoneyFunnel): Metadata {
   return {
@@ -83,6 +90,7 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
     .filter((post): post is SocialPost => Boolean(post));
   const leadIntent = getFunnelIntent(funnel);
   const optIn = getMicroOptInCopy(leadIntent);
+  const showApplicationCta = applicationCtaSlugs.has(funnel.slug);
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] pb-24 text-white md:pb-0">
@@ -403,6 +411,16 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
               </RevealGroup>
             </div>
             <div className="md:col-span-2">
+              {showApplicationCta ? (
+                <div className="mb-10">
+                  <ApplicationCta
+                    location={`${funnel.slug}_application`}
+                    title="Ready for full review?"
+                    body="Start the secure application after you have the strategy context."
+                    label="Start Secure Application"
+                  />
+                </div>
+              ) : null}
               <MicroOptIn
                 title={optIn.title}
                 body={optIn.body}

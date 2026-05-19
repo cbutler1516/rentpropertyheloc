@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { WordmarkLockup } from "./brand";
+import { TrackedLink } from "./tracked-link";
 
 const navItems = [
   {
@@ -47,6 +48,12 @@ const primaryNavCta = {
   href: "/learn/buyer-readiness",
   label: "Strategy Call",
   description: "Start here",
+};
+
+const secondaryNavCta = {
+  href: "/apply",
+  label: "Apply",
+  description: "Secure application",
 };
 
 function isActivePath(pathname: string, href: string) {
@@ -99,12 +106,23 @@ export function SiteNav() {
           })}
         </nav>
 
-        <Link
-          href={primaryNavCta.href}
-          className="hidden h-10 items-center justify-center rounded-full bg-white px-5 font-mono text-[10px] tracking-[0.18em] text-black uppercase transition-colors duration-[var(--duration-hover)] hover:bg-zinc-100 md:inline-flex"
-        >
-          {primaryNavCta.label}
-        </Link>
+        <div className="hidden items-center gap-2 md:flex">
+          <TrackedLink
+            href={secondaryNavCta.href}
+            location="site_nav"
+            label={secondaryNavCta.label}
+            eventType="apply_cta"
+            className="inline-flex h-10 items-center justify-center rounded-full border border-zinc-800 px-4 font-mono text-[10px] tracking-[0.16em] text-zinc-300 uppercase transition-colors duration-[var(--duration-hover)] hover:border-[#7c3aed]/50 hover:text-white"
+          >
+            {secondaryNavCta.label}
+          </TrackedLink>
+          <Link
+            href={primaryNavCta.href}
+            className="inline-flex h-10 items-center justify-center rounded-full bg-white px-5 font-mono text-[10px] tracking-[0.18em] text-black uppercase transition-colors duration-[var(--duration-hover)] hover:bg-zinc-100"
+          >
+            {primaryNavCta.label}
+          </Link>
+        </div>
 
         <button
           type="button"
@@ -126,7 +144,7 @@ export function SiteNav() {
         data-open={isOpen ? "true" : undefined}
       >
         <nav className="mx-auto grid w-full max-w-7xl gap-px px-6 pb-6">
-          {[...navItems, primaryNavCta].map((item) => {
+          {navItems.map((item) => {
             const active = isActivePath(pathname, item.href);
 
             return (
@@ -143,6 +161,31 @@ export function SiteNav() {
               </Link>
             );
           })}
+          <TrackedLink
+            href={secondaryNavCta.href}
+            location="site_mobile_nav"
+            label={secondaryNavCta.label}
+            eventType="apply_cta"
+            className="nav-mobile-link"
+            onClick={() => setOpenPathname(null)}
+          >
+            <span>{secondaryNavCta.label}</span>
+            <span>{secondaryNavCta.description}</span>
+          </TrackedLink>
+          <Link
+            href={primaryNavCta.href}
+            className="nav-mobile-link"
+            aria-current={
+              isActivePath(pathname, primaryNavCta.href) ? "page" : undefined
+            }
+            data-active={
+              isActivePath(pathname, primaryNavCta.href) ? "true" : undefined
+            }
+            onClick={() => setOpenPathname(null)}
+          >
+            <span>{primaryNavCta.label}</span>
+            <span>{primaryNavCta.description}</span>
+          </Link>
         </nav>
       </div>
     </header>

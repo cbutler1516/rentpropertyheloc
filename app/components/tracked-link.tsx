@@ -3,6 +3,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import {
+  trackApplyCtaClick,
+  trackFunnelToApplicationClick,
   trackBookingClick,
   trackCtaClick,
   trackEvent,
@@ -14,7 +16,9 @@ import {
 } from "../lib/analytics-events";
 
 type TrackableClickType =
+  | "apply_cta"
   | "cta"
+  | "funnel_apply"
   | "related_guide"
   | "social"
   | "sticky_cta"
@@ -34,6 +38,16 @@ function trackClickByType({
   location?: string;
   platform?: string;
 }) {
+  if (eventType === "apply_cta") {
+    trackApplyCtaClick({ label, href, location });
+    return;
+  }
+
+  if (eventType === "funnel_apply") {
+    trackFunnelToApplicationClick({ label, href, location });
+    return;
+  }
+
   if (eventType === "related_guide") {
     trackRelatedGuideClick({ label, href, location });
     return;
@@ -69,6 +83,7 @@ export function TrackedLink({
   location,
   label,
   eventType,
+  onClick,
 }: {
   href: string;
   children: ReactNode;
@@ -76,6 +91,7 @@ export function TrackedLink({
   location?: string;
   label?: string;
   eventType?: TrackableClickType;
+  onClick?: () => void;
 }) {
   const trackingLabel =
     label ?? (typeof children === "string" ? children : "Link click");
@@ -84,14 +100,15 @@ export function TrackedLink({
     <Link
       href={href}
       className={className}
-      onClick={() =>
+      onClick={() => {
         trackClickByType({
           eventType,
           label: trackingLabel,
           href,
           location,
-        })
-      }
+        });
+        onClick?.();
+      }}
     >
       {children}
     </Link>

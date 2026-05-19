@@ -3,9 +3,12 @@
 type AnalyticsPayload = Record<string, string | number | boolean | null | undefined>;
 
 export const analyticsEvents = {
+  applyCtaClick: "apply_cta_click",
+  applyPageView: "apply_page_view",
   bookingClick: "booking_click",
   ctaClick: "cta_click",
   formStart: "form_start",
+  funnelToApplicationClick: "funnel_to_application_click",
   microConversion: "micro_conversion",
   leadSubmit: "lead_submit",
   mediaClick: "media_click",
@@ -112,6 +115,34 @@ export function trackMicroConversion(payload: {
   trackEvent(analyticsEvents.microConversion, {
     opt_in_type: payload.optInType,
     lead_intent: payload.leadIntent,
+    cta_location: payload.location,
+  });
+}
+
+export function trackApplyPageView() {
+  trackEvent(analyticsEvents.applyPageView);
+}
+
+export function trackApplyCtaClick(payload: {
+  label: string;
+  href: string;
+  location?: string;
+}) {
+  trackEvent(analyticsEvents.applyCtaClick, {
+    cta_label: payload.label,
+    destination: payload.href,
+    cta_location: payload.location,
+  });
+}
+
+export function trackFunnelToApplicationClick(payload: {
+  label: string;
+  href: string;
+  location?: string;
+}) {
+  trackEvent(analyticsEvents.funnelToApplicationClick, {
+    cta_label: payload.label,
+    destination: payload.href,
     cta_location: payload.location,
   });
 }

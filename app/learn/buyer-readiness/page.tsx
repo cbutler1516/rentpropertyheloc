@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ApplicationCta } from "../../components/application-cta";
 import { FooterBrand } from "../../components/brand";
 import { ComplianceFooter } from "../../components/compliance-footer";
 import { FooterSocialLinks } from "../../components/footer-social-links";
@@ -345,8 +346,16 @@ export default function BuyerReadinessPage() {
               title="Read next."
               lead="Go deeper before the offer."
             />
+            <div className="mt-10">
+              <ApplicationCta
+                location="buyer_readiness_application"
+                title="Ready for full pre-approval?"
+                body="Start the secure application when you are ready for a full mortgage review."
+                label="Continue With Full Pre-Approval"
+              />
+            </div>
             <RevealGroup
-              className="mt-12 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:grid-cols-3"
+              className="mt-10 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:grid-cols-3"
               stagger={100}
             >
               {relatedGuides.map((guide) => (
