@@ -24,6 +24,7 @@ export const licensedStates: LicensedState[] = [
   { name: "California", abbreviation: "CA" },
   { name: "Colorado", abbreviation: "CO" },
   { name: "Florida", abbreviation: "FL" },
+  { name: "Idaho", abbreviation: "ID" },
   { name: "Illinois", abbreviation: "IL" },
   { name: "Michigan", abbreviation: "MI" },
   { name: "Oregon", abbreviation: "OR" },

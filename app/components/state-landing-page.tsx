@@ -1,36 +1,21 @@
-import type { Metadata } from "next";
 import { FooterBrand } from "./brand";
 import { ComplianceFooter } from "./compliance-footer";
+import { ArticleCard, PageHero, SectionHeader } from "./design-system";
 import { FooterSocialLinks } from "./footer-social-links";
 import { LeadCaptureForm } from "./lead-capture-form";
-import { PageHero, SectionHeader } from "./design-system";
+import { LicensingTrust } from "./licensing-trust";
 import { PageAmbient } from "./page-ambient";
 import { RevealGroup } from "./reveal-group";
-import { LicensingTrust } from "./licensing-trust";
 import { RelatedContentRail } from "./related-content-rail";
 import { SiteNav } from "./site-nav";
 import { TrackedAnchor, TrackedLink } from "./tracked-link";
-import type { GeoMarket } from "../lib/geo-markets";
-import { getGeoMarketsByStateKey, getStateRouteForGeoMarket } from "../lib/geo-markets";
-import { getStateMarketByKey } from "../lib/state-markets";
+import { getGeoMarketsByStateKey } from "../lib/geo-markets";
+import type { StateMarket } from "../lib/state-markets";
 import { getScenarioFormType } from "../lib/scenario-registry";
 
-export function createGeoMetadata(market: GeoMarket): Metadata {
-  return {
-    title: `${market.title} | The Loan Playbook`,
-    description: market.description,
-    openGraph: {
-      title: market.title,
-      description: market.description,
-      type: "article",
-    },
-  };
-}
-
-export function GeoLandingPage({ market }: { market: GeoMarket }) {
-  const formType = getScenarioFormType(market.primaryAudience);
-  const stateRoute = getStateRouteForGeoMarket(market);
-  const stateMarket = getStateMarketByKey(market.stateKey);
+export function StateLandingPage({ market }: { market: StateMarket }) {
+  const metros = getGeoMarketsByStateKey(market.key);
+  const formType = getScenarioFormType("buyer");
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] pb-24 text-white md:pb-0">
@@ -43,31 +28,17 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
           eyebrow={`${market.regionLabel} / ${market.name}`}
           title={market.title}
           lead={market.heroLead}
-          focusLabel="Local Context"
+          focusLabel="State Strategy"
           focus={market.heroFocus}
           videoSrc="/videos/loan-playbook-commercial-golf.mp4"
         >
-          {stateRoute && stateMarket ? (
-            <div className="reveal-item mt-8 max-w-2xl space-y-4">
-              <LicensingTrust />
-              <TrackedLink
-                href={`/${stateRoute}`}
-                location={`geo_${market.slug}_state`}
-                label={`${stateMarket.name} overview`}
-                className="inline-flex text-sm font-medium text-zinc-400 hover:text-white"
-              >
-                ← {stateMarket.name} statewide strategy
-              </TrackedLink>
-            </div>
-          ) : (
-            <div className="reveal-item mt-8 max-w-2xl">
-              <LicensingTrust />
-            </div>
-          )}
+          <div className="reveal-item mt-8 max-w-2xl">
+            <LicensingTrust />
+          </div>
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <TrackedAnchor
-              href="#geo-cta"
-              location={`geo_${market.slug}_hero`}
+              href="#state-cta"
+              location={`state_${market.key}_hero`}
               label="Start Strategy Conversation"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
@@ -75,7 +46,7 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
             </TrackedAnchor>
             <TrackedAnchor
               href="/scenarios"
-              location={`geo_${market.slug}_hero`}
+              location={`state_${market.key}_hero`}
               label="Browse Scenarios"
               className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
             >
@@ -89,8 +60,8 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Local Context"
-              title={`What matters in ${market.name}.`}
-              lead="Geographic intent without generic filler—focused on financing decisions buyers and homeowners actually face."
+              title={`Financing considerations in ${market.name}.`}
+              lead="Market-specific strategy—not generic boilerplate. Focused on decisions buyers, homeowners, and agents actually face."
             />
             <RevealGroup
               className="mt-12 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:grid-cols-3"
@@ -105,19 +76,78 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
                 </article>
               ))}
             </RevealGroup>
-            {market.luxuryNote ? (
-              <p className="mt-10 max-w-3xl text-base leading-relaxed text-zinc-500">
-                {market.luxuryNote}
-              </p>
-            ) : null}
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
+
+        <section className="section-flow relative border-b border-zinc-900/40">
+          <div className="section-bridge-top" aria-hidden />
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <SectionHeader
+              eyebrow="Financing Paths"
+              title="Scenario relevance by topic."
+              lead="Jumbo, condo, first-time, and refinance themes—mapped to how this state actually buys."
+            />
+            <RevealGroup className="mt-12 grid gap-6 md:grid-cols-2" stagger={80}>
+              {market.financingHighlights.map((highlight) => (
+                <article
+                  key={highlight.label}
+                  className="reveal-item border border-zinc-900/80 bg-[#050505] p-8"
+                >
+                  <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
+                    {highlight.label}
+                  </p>
+                  <p className="mt-5 text-base leading-relaxed text-zinc-400">
+                    {highlight.detail}
+                  </p>
+                </article>
+              ))}
+            </RevealGroup>
+          </div>
+          <div className="section-bridge-bottom" aria-hidden />
+        </section>
+
+        {metros.length > 0 ? (
+          <section className="section-flow relative border-b border-zinc-900/40">
+            <div className="section-bridge-top" aria-hidden />
+            <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+              <SectionHeader
+                eyebrow="Major Markets"
+                title={`${market.name} metro strategy.`}
+                lead="Selective metro pages—depth over thin city spam. Each links to scenarios and local CTAs."
+              />
+              <RevealGroup
+                className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+                stagger={80}
+              >
+                {metros.map((metro) => (
+                  <ArticleCard
+                    key={metro.slug}
+                    label={metro.regionLabel}
+                    title={metro.name}
+                    excerpt={metro.heroLead}
+                    href={`/geo/${metro.slug}`}
+                  />
+                ))}
+              </RevealGroup>
+              <MarketsHubLink marketKey={market.key} />
+            </div>
+            <div className="section-bridge-bottom" aria-hidden />
+          </section>
+        ) : null}
 
         <RelatedContentRail
           title="Buyer scenarios"
           lead={`Common buyer paths in ${market.name}.`}
           scenarioSlugs={market.buyerScenarios}
+          videoSlugs={market.videoSlugs}
+          guideLinks={
+            market.guideHrefs?.map((guide) => ({
+              label: "Guide",
+              title: guide.label,
+              href: guide.href,
+            })) ?? []
+          }
         />
 
         <RelatedContentRail
@@ -132,20 +162,19 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
           scenarioSlugs={market.agentScenarios}
         />
 
-        {stateRoute ? (
+        {market.commercialScenarios && market.commercialScenarios.length > 0 ? (
           <RelatedContentRail
-            title="Statewide context"
-            lead="Broader licensing and market strategy for this state."
-            stateRouteSlugs={[stateRoute]}
-            geoSlugs={getGeoMarketsByStateKey(market.stateKey)
-              .filter((metro) => metro.slug !== market.slug)
-              .slice(0, 3)
-              .map((metro) => metro.slug)}
+            title="Commercial & investor"
+            lead="Strategy for investment and commercial-adjacent paths."
+            scenarioSlugs={market.commercialScenarios}
+            guideLinks={[
+              { label: "Commercial", title: "Commercial strategy hub", href: "/commercial" },
+            ]}
           />
         ) : null}
 
         <section
-          id="geo-cta"
+          id="state-cta"
           className="section-flow relative"
           data-analytics-section="lead_capture"
         >
@@ -161,10 +190,7 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
                 <LicensingTrust variant="banner" />
               </div>
             </div>
-            <LeadCaptureForm
-              formType={formType}
-              submitLabel="Start Strategy Conversation"
-            />
+            <LeadCaptureForm formType={formType} submitLabel="Start Strategy Conversation" />
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
@@ -178,6 +204,21 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
         <FooterSocialLinks />
         <ComplianceFooter />
       </footer>
+    </div>
+  );
+}
+
+function MarketsHubLink({ marketKey }: { marketKey: StateMarket["key"] }) {
+  return (
+    <div className="mt-10">
+      <TrackedLink
+        href="/geo"
+        location={`state_${marketKey}_metros`}
+        label="Browse all markets"
+        className="text-sm font-medium text-zinc-400 hover:text-white"
+      >
+        Browse all licensed markets →
+      </TrackedLink>
     </div>
   );
 }
@@ -197,3 +238,4 @@ function PageAtmosphere() {
     </>
   );
 }
+

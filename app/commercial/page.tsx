@@ -4,6 +4,7 @@ import {
   conversionCtas,
 } from "../components/conversion-cta";
 import { InternalPage } from "../components/internal-page";
+import { LicensedMarketsRail } from "../components/licensed-markets-rail";
 
 export const metadata: Metadata = {
   title: "Commercial | The Loan Playbook",
@@ -46,9 +47,16 @@ export default function CommercialPage() {
         body: "Show the asset. Explain the operator. Structure with intention.",
       }}
       extraSections={
-        <div id="commercial-review">
-          <ConversionCTA {...conversionCtas.commercialReview} />
-        </div>
+        <>
+          <LicensedMarketsRail
+            title="Licensed markets for investor strategy."
+            lead="Texas, Florida, Arizona, and other states where commercial-adjacent paths are common."
+            showMetros={false}
+          />
+          <div id="commercial-review">
+            <ConversionCTA {...conversionCtas.commercialReview} />
+          </div>
+        </>
       }
     />
   );

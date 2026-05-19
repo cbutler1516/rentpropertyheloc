@@ -1,8 +1,11 @@
 import type { ScenarioAudience } from "./scenario-registry";
+import type { StateMarketKey } from "./state-markets";
+import { stateMarkets } from "./state-markets";
 
 export type GeoMarket = {
   slug: string;
   name: string;
+  stateKey: StateMarketKey;
   regionLabel: string;
   title: string;
   description: string;
@@ -21,6 +24,7 @@ export const geoMarkets: GeoMarket[] = [
   {
     slug: "seattle",
     name: "Seattle",
+    stateKey: "washington",
     regionLabel: "Puget Sound",
     title: "Mortgage strategy for Seattle buyers and homeowners.",
     description:
@@ -46,6 +50,7 @@ export const geoMarkets: GeoMarket[] = [
   {
     slug: "bellevue",
     name: "Bellevue",
+    stateKey: "washington",
     regionLabel: "Eastside",
     title: "Mortgage strategy for Bellevue and Eastside buyers.",
     description:
@@ -67,6 +72,7 @@ export const geoMarkets: GeoMarket[] = [
   {
     slug: "kirkland",
     name: "Kirkland",
+    stateKey: "washington",
     regionLabel: "Eastside",
     title: "Mortgage strategy for Kirkland buyers and homeowners.",
     description:
@@ -87,6 +93,7 @@ export const geoMarkets: GeoMarket[] = [
   {
     slug: "tacoma",
     name: "Tacoma",
+    stateKey: "washington",
     regionLabel: "South Sound",
     title: "Mortgage strategy for Tacoma and South Sound buyers.",
     description:
@@ -105,73 +112,243 @@ export const geoMarkets: GeoMarket[] = [
     primaryAudience: "buyer",
   },
   {
-    slug: "green-lake",
-    name: "Green Lake",
-    regionLabel: "Seattle",
-    title: "Mortgage strategy for Green Lake and north Seattle buyers.",
+    slug: "scottsdale",
+    name: "Scottsdale",
+    stateKey: "arizona",
+    regionLabel: "Greater Phoenix",
+    title: "Mortgage strategy for Scottsdale and North Valley buyers.",
     description:
-      "Neighborhood-level financing context for Green Lake, Wallingford, and nearby Seattle pockets.",
-    heroLead: "Tight Seattle neighborhoods reward buyers who show up with a clear financing story.",
-    heroFocus: "Offer strength. Condo review. Payment clarity.",
+      "Luxury pockets, relocation, and jumbo financing context for Scottsdale-area purchases.",
+    heroLead:
+      "Scottsdale purchases often cross into jumbo territory—reserves and documentation should be ready early.",
+    heroFocus: "Jumbo pockets. Relocation. Second-home fit.",
     localContext: [
-      "Walkable neighborhoods with limited inventory and fast decisions.",
-      "Older condos and townhomes may need early warrantability review.",
-      "Move-up and buy-before-sell timing appears often.",
+      "North Scottsdale and Paradise Valley serve higher price bands with jumbo documentation pressure.",
+      "Relocation and second-home buyers are common.",
+      "Golf and resort-adjacent inventory can affect appraisal and insurance context.",
     ],
-    buyerScenarios: ["condo-financing", "buy-before-sell", "jumbo-buyers"],
-    homeownerScenarios: ["heloc-strategy", "refinance-timing"],
+    buyerScenarios: ["jumbo-buyers", "investment-property-strategy", "first-time-buyers"],
+    homeownerScenarios: ["refinance-timing", "heloc-strategy"],
     agentScenarios: ["agent-financing", "seller-concessions"],
-    searchPhrases: ["Green Lake mortgage", "north Seattle home loan"],
+    luxuryNote: "Treat Scottsdale luxury as a documentation and timing problem—not just a bigger loan amount.",
+    searchPhrases: ["Scottsdale mortgage advisor", "Scottsdale jumbo loan"],
     primaryAudience: "buyer",
   },
   {
-    slug: "washington-state",
-    name: "Washington State",
-    regionLabel: "Pacific Northwest",
-    title: "Washington State mortgage strategy and licensing context.",
+    slug: "phoenix",
+    name: "Phoenix",
+    stateKey: "arizona",
+    regionLabel: "Greater Phoenix",
+    title: "Mortgage strategy for Phoenix metro buyers and homeowners.",
     description:
-      "Multi-market guidance for Washington buyers, homeowners, agents, and investors.",
-    heroLead: "Washington markets differ by price point, inventory, and financing path.",
-    heroFocus: "Licensed context. Scenario fit. Clear next step.",
+      "Payment strategy, new construction, and relocation financing for Phoenix-area markets.",
+    heroLead:
+      "Phoenix metro growth pulls relocation buyers—align pre-approval and timeline before touring.",
+    heroFocus: "Relocation. Payment. New construction.",
     localContext: [
-      "Puget Sound, Eastside, and South Sound markets behave differently.",
-      "State licensing and program availability shape options.",
-      "Self-employed and jumbo paths are common across the state.",
+      "Suburban growth corridors compete with urban infill on different price paths.",
+      "New construction timelines affect rate-lock and closing planning.",
+      "Investor and second-home activity appears alongside owner-occupant demand.",
     ],
-    buyerScenarios: [
-      "first-time-buyers",
-      "self-employed-borrowers",
-      "jumbo-buyers",
-      "seller-concessions",
+    buyerScenarios: ["first-time-buyers", "2-1-buydowns", "investment-property-strategy"],
+    homeownerScenarios: ["refinance-timing", "heloc-vs-cash-out"],
+    agentScenarios: ["agent-financing"],
+    searchPhrases: ["Phoenix mortgage advisor", "Phoenix home loan strategy"],
+    primaryAudience: "buyer",
+  },
+  {
+    slug: "san-diego",
+    name: "San Diego",
+    stateKey: "california",
+    regionLabel: "Southern California",
+    title: "Mortgage strategy for San Diego buyers and homeowners.",
+    description:
+      "Coastal high-balance, condo, and complex-income financing for San Diego County markets.",
+    heroLead:
+      "San Diego purchases often combine coastal pricing with condo and jumbo documentation requirements.",
+    heroFocus: "Jumbo fit. Condo review. Self-employed paths.",
+    localContext: [
+      "Coastal and inland submarkets follow different price and inventory cycles.",
+      "Condo warrantability matters in urban and beach-adjacent inventory.",
+      "Military and relocation narratives are common across the county.",
     ],
+    buyerScenarios: ["jumbo-buyers", "condo-financing", "self-employed-borrowers", "physician-loans"],
+    homeownerScenarios: ["refinance-timing", "heloc-strategy"],
+    agentScenarios: ["agent-financing"],
+    searchPhrases: ["San Diego mortgage advisor", "San Diego jumbo loan"],
+    primaryAudience: "buyer",
+  },
+  {
+    slug: "orange-county",
+    name: "Orange County",
+    stateKey: "california",
+    regionLabel: "Southern California",
+    title: "Mortgage strategy for Orange County buyers and homeowners.",
+    description:
+      "High-balance and jumbo strategy for coastal and inland Orange County markets.",
+    heroLead:
+      "Orange County buyers frequently exceed conforming limits—structure financing before the offer window.",
+    heroFocus: "Jumbo documentation. Reserves. Offer strength.",
+    localContext: [
+      "Coastal and inland cities serve different buyer profiles and price bands.",
+      "Jumbo reserves and income documentation often gate otherwise strong offers.",
+      "Condo and townhome inventory benefits from early warrantability review.",
+    ],
+    buyerScenarios: ["jumbo-buyers", "condo-financing", "buy-before-sell", "self-employed-borrowers"],
+    homeownerScenarios: ["heloc-strategy", "refinance-timing"],
+    agentScenarios: ["agent-financing", "investment-property-strategy"],
+    luxuryNote: "Orange County luxury is often a jumbo documentation exercise—plan reserves early.",
+    searchPhrases: ["Orange County mortgage advisor", "Orange County jumbo loan"],
+    primaryAudience: "buyer",
+  },
+  {
+    slug: "austin",
+    name: "Austin",
+    stateKey: "texas",
+    regionLabel: "Central Texas",
+    title: "Mortgage strategy for Austin metro buyers and homeowners.",
+    description:
+      "Tech relocation, jumbo pockets, and new construction financing for Austin-area markets.",
+    heroLead:
+      "Austin’s mix of urban core, suburban growth, and jumbo pockets needs scenario-specific financing—not generic rate shopping.",
+    heroFocus: "Relocation. Jumbo core. New construction.",
+    localContext: [
+      "Inner-loop and Westlake-adjacent bands often cross conforming limits.",
+      "Corporate relocation drives tight timeline expectations.",
+      "New construction and master-planned communities are common in growth corridors.",
+    ],
+    buyerScenarios: ["jumbo-buyers", "self-employed-borrowers", "first-time-buyers", "buy-before-sell"],
+    homeownerScenarios: ["refinance-timing", "heloc-vs-cash-out"],
+    agentScenarios: ["agent-financing", "investment-property-strategy"],
+    searchPhrases: ["Austin mortgage advisor", "Austin jumbo loan strategy"],
+    primaryAudience: "buyer",
+  },
+  {
+    slug: "dallas",
+    name: "Dallas",
+    stateKey: "texas",
+    regionLabel: "North Texas",
+    title: "Mortgage strategy for Dallas and DFW buyers.",
+    description:
+      "DFW financing—jumbo, new construction, relocation, and payment strategy with local market context.",
+    heroLead:
+      "DFW spans many submarkets—financing should match the neighborhood, price band, and timeline.",
+    heroFocus: "DFW submarkets. Jumbo. New construction.",
+    localContext: [
+      "Preston Hollow and Park Cities pockets often need jumbo planning.",
+      "Suburban master-planned communities compete with urban infill on different paths.",
+      "Property tax context should inform true payment planning.",
+    ],
+    buyerScenarios: ["jumbo-buyers", "first-time-buyers", "investment-property-strategy"],
+    homeownerScenarios: ["refinance-timing", "heloc-strategy"],
+    agentScenarios: ["agent-financing"],
+    searchPhrases: ["Dallas mortgage advisor", "DFW home loan strategy"],
+    primaryAudience: "buyer",
+  },
+  {
+    slug: "houston",
+    name: "Houston",
+    stateKey: "texas",
+    regionLabel: "Gulf Coast",
+    title: "Mortgage strategy for Houston metro buyers and homeowners.",
+    description:
+      "Houston-area financing—flood and insurance context, jumbo, and investor strategy with licensed Texas context.",
+    heroLead:
+      "Houston deals benefit when financing, insurance, and flood context are framed before offer—not after inspection.",
+    heroFocus: "Insurance context. Jumbo. Investor fit.",
+    localContext: [
+      "Flood zone and insurance context can affect total housing cost and timing.",
+      "River Oaks and Memorial corridors often cross into jumbo territory.",
+      "Energy-sector income documentation appears frequently.",
+    ],
+    buyerScenarios: ["jumbo-buyers", "self-employed-borrowers", "investment-property-strategy"],
+    homeownerScenarios: ["refinance-timing", "heloc-vs-cash-out"],
+    agentScenarios: ["agent-financing"],
+    searchPhrases: ["Houston mortgage advisor", "Houston home loan strategy"],
+    primaryAudience: "buyer",
+  },
+  {
+    slug: "miami",
+    name: "Miami",
+    stateKey: "florida",
+    regionLabel: "South Florida",
+    title: "Mortgage strategy for Miami and South Florida buyers.",
+    description:
+      "Condo-heavy, high-rise, and jumbo financing context for Miami-Dade and South Florida markets.",
+    heroLead:
+      "Miami purchases often start with condo building review—financing should follow warrantability, not the other way around.",
+    heroFocus: "Condo diligence. Jumbo. Occupancy clarity.",
+    localContext: [
+      "High-rise and boutique condo inventory requires early association and warrantability review.",
+      "International and relocation buyer narratives are common.",
+      "Insurance and wind/hazard context affects total housing cost.",
+    ],
+    buyerScenarios: ["condo-financing", "jumbo-buyers", "investment-property-strategy"],
     homeownerScenarios: ["refinance-timing", "heloc-strategy"],
     agentScenarios: ["agent-financing", "investment-property-strategy"],
-    searchPhrases: ["Washington mortgage advisor", "Washington home loan strategy"],
+    searchPhrases: ["Miami mortgage advisor", "Miami condo loan strategy"],
     primaryAudience: "buyer",
   },
   {
-    slug: "luxury-jumbo",
-    name: "Luxury & Jumbo Markets",
-    regionLabel: "Pacific Northwest",
-    title: "Luxury and jumbo mortgage strategy in Washington.",
+    slug: "tampa",
+    name: "Tampa",
+    stateKey: "florida",
+    regionLabel: "Gulf Coast",
+    title: "Mortgage strategy for Tampa Bay buyers and homeowners.",
     description:
-      "Higher-balance financing, reserves, documentation, and offer strategy for luxury purchases.",
-    heroLead: "Luxury purchases fail quietly when documentation and reserves are late.",
-    heroFocus: "Jumbo fit. Reserves. Appraisal and offer risk.",
+      "Tampa Bay financing—condo, relocation, payment strategy, and refinance context.",
+    heroLead:
+      "Tampa Bay buyers balance waterfront pricing with payment-focused suburban corridors—scenario fit should be clear early.",
+    heroFocus: "Relocation. Condo paths. Payment planning.",
     localContext: [
-      "Bellevue, Kirkland, and Seattle luxury pockets share jumbo documentation pressure.",
-      "Physician and self-employed paths overlap with jumbo frequently.",
-      "Seller credits and buydowns still appear in higher price bands.",
+      "Waterfront and condo inventory may need warrantability and insurance review.",
+      "Relocation from higher-cost states is common.",
+      "Investor and second-home activity appears alongside owner-occupant demand.",
     ],
-    buyerScenarios: ["jumbo-buyers", "physician-loans", "condo-financing", "buy-before-sell"],
-    homeownerScenarios: ["heloc-strategy", "refinance-timing"],
-    agentScenarios: ["agent-financing", "jumbo-buyers"],
-    luxuryNote: "Treat luxury as a documentation and timing problem—not just a bigger loan amount.",
-    searchPhrases: ["jumbo loan Washington", "luxury home financing Seattle"],
+    buyerScenarios: ["condo-financing", "first-time-buyers", "investment-property-strategy"],
+    homeownerScenarios: ["refinance-timing", "heloc-strategy"],
+    agentScenarios: ["agent-financing"],
+    searchPhrases: ["Tampa mortgage advisor", "Tampa Bay home loan"],
+    primaryAudience: "buyer",
+  },
+  {
+    slug: "denver",
+    name: "Denver",
+    stateKey: "colorado",
+    regionLabel: "Front Range",
+    title: "Mortgage strategy for Denver metro buyers and homeowners.",
+    description:
+      "Front Range financing—condo, jumbo pockets, relocation, and refinance strategy for Denver-area markets.",
+    heroLead:
+      "Denver metro buyers navigate urban condo rules alongside suburban payment strategy in a relocation-heavy market.",
+    heroFocus: "Urban condo. Jumbo pockets. Relocation.",
+    localContext: [
+      "LoDo and Capitol Hill condos often need warrantability diligence.",
+      "Cherry Hills and central Denver bands cross conforming limits.",
+      "Relocation from coastal markets drives tight timeline expectations.",
+    ],
+    buyerScenarios: ["condo-financing", "jumbo-buyers", "first-time-buyers", "buy-before-sell"],
+    homeownerScenarios: ["refinance-timing", "heloc-vs-cash-out"],
+    agentScenarios: ["agent-financing"],
+    searchPhrases: ["Denver mortgage advisor", "Denver home loan strategy"],
     primaryAudience: "buyer",
   },
 ];
 
+const strategicMetroSlugs = new Set(stateMarkets.flatMap((state) => state.metroSlugs));
+
 export function getGeoMarketBySlug(slug: string) {
   return geoMarkets.find((market) => market.slug === slug);
+}
+
+export function getGeoMarketsByStateKey(stateKey: StateMarketKey) {
+  return geoMarkets.filter((market) => market.stateKey === stateKey);
+}
+
+export function getStrategicGeoMarkets() {
+  return geoMarkets.filter((market) => strategicMetroSlugs.has(market.slug));
+}
+
+export function getStateRouteForGeoMarket(market: GeoMarket) {
+  return stateMarkets.find((state) => state.key === market.stateKey)?.routeSlug;
 }

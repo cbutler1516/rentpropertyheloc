@@ -7,12 +7,14 @@ import {
   type ScenarioAudience,
 } from "../lib/scenario-registry";
 import { getSocialPostBySlug } from "../lib/social-posts";
+import { getStateMarketByRouteSlug } from "../lib/state-markets";
 
 type RelatedContentRailProps = {
   title?: string;
   lead?: string;
   scenarioSlugs?: string[];
   geoSlugs?: string[];
+  stateRouteSlugs?: string[];
   videoSlugs?: string[];
   guideLinks?: Array<{ label: string; title: string; href: string }>;
   audience?: ScenarioAudience;
@@ -23,6 +25,7 @@ export function RelatedContentRail({
   lead = "Scenarios, guides, and videos connected to this topic.",
   scenarioSlugs = [],
   geoSlugs = [],
+  stateRouteSlugs = [],
   videoSlugs = [],
   guideLinks = [],
   audience,
@@ -32,6 +35,9 @@ export function RelatedContentRail({
     .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry));
   const markets = geoSlugs
     .map((slug) => getGeoMarketBySlug(slug))
+    .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry));
+  const states = stateRouteSlugs
+    .map((slug) => getStateMarketByRouteSlug(slug))
     .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry));
   const videos = videoSlugs
     .map((slug) => getSocialPostBySlug(slug))
@@ -44,6 +50,7 @@ export function RelatedContentRail({
   const hasContent =
     scenarios.length > 0 ||
     markets.length > 0 ||
+    states.length > 0 ||
     videos.length > 0 ||
     guideLinks.length > 0 ||
     audienceScenarios.length > 0;
@@ -63,6 +70,15 @@ export function RelatedContentRail({
               title={scenario.title}
               excerpt={scenario.emotionalHook}
               href={scenario.href}
+            />
+          ))}
+          {states.map((state) => (
+            <ArticleCard
+              key={state.routeSlug}
+              label={`${state.name} · Licensed`}
+              title={`${state.name} mortgage strategy`}
+              excerpt={state.heroLead}
+              href={`/${state.routeSlug}`}
             />
           ))}
           {markets.map((market) => (

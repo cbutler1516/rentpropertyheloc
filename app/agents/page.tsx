@@ -14,6 +14,7 @@ import {
 import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
 import { SiteNav } from "../components/site-nav";
+import { LicensedMarketsRail } from "../components/licensed-markets-rail";
 import { TrackedLink } from "../components/tracked-link";
 
 export const metadata: Metadata = {
@@ -166,6 +167,11 @@ export default function AgentsPage() {
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
+
+        <LicensedMarketsRail
+          title="Local context for client conversations."
+          lead="Share state and metro pages when geography shapes the financing story."
+        />
 
         <div id="agent-strategy">
           <ConversionCTA {...conversionCtas.agentPartnership} />

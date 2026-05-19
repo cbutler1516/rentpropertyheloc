@@ -4,6 +4,7 @@ import {
   conversionCtas,
 } from "../components/conversion-cta";
 import { InternalPage } from "../components/internal-page";
+import { LicensedMarketsRail } from "../components/licensed-markets-rail";
 
 export const metadata: Metadata = {
   title: "Buyers | The Loan Playbook",
@@ -44,9 +45,15 @@ export default function BuyersPage() {
         body: "Understand the field. Prepare the file. Enter with leverage.",
       }}
       extraSections={
-        <div id="buyer-strategy">
-          <ConversionCTA {...conversionCtas.buyerStrategy} />
-        </div>
+        <>
+          <LicensedMarketsRail
+            title="Where we lend—and how we think locally."
+            lead="State and metro pages connect buyer scenarios to real market context."
+          />
+          <div id="buyer-strategy">
+            <ConversionCTA {...conversionCtas.buyerStrategy} />
+          </div>
+        </>
       }
     />
   );

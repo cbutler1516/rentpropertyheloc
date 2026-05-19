@@ -52,10 +52,17 @@ const paths = [
     description: "Buyer, homeowner, agent, and commercial paths.",
     cta: "Explore Scenarios",
   },
+  {
+    label: "Licensed Markets",
+    title: "State and metro strategy.",
+    href: "/geo",
+    description: "Washington, Arizona, California, Texas, Florida, and more.",
+    cta: "Explore Markets",
+  },
 ];
 
 const authorityStats = [
-  { value: "9", label: "Licensed states" },
+  { value: "10", label: "Licensed states" },
   { value: "2", label: "Residential + commercial" },
   { value: "1", label: "Strategy-first approach" },
 ];
