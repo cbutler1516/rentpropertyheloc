@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { JsonLd } from "../../components/json-ld";
 import { VideoLandingPage } from "../../components/video-landing-page";
 import { getHeroVideoBySlug, heroVideos } from "../../lib/hero-videos";
+import {
+  breadcrumbSchema,
+  videoObjectSchema,
+} from "../../lib/structured-data";
+import { buildPageMetadata } from "../../lib/site-seo";
 
 type VideoPageProps = {
   params: Promise<{ slug: string }>;
@@ -21,16 +27,12 @@ export async function generateMetadata({
     return { title: "Video | The Loan Playbook" };
   }
 
-  return {
-    title: `${post.title} | The Loan Playbook`,
-    description: post.expandedSummary,
-    openGraph: {
-      title: post.title,
-      description: post.expandedSummary,
-      url: `/videos/${post.slug}`,
-      type: "video.other",
-    },
-  };
+  return buildPageMetadata({
+    title: post.title,
+    description: post.shortSummary,
+    path: `/videos/${post.slug}`,
+    ogType: "article",
+  });
 }
 
 export default async function VideoPage({ params }: VideoPageProps) {
@@ -39,5 +41,23 @@ export default async function VideoPage({ params }: VideoPageProps) {
 
   if (!post) notFound();
 
-  return <VideoLandingPage post={post} />;
+  return (
+    <>
+      <JsonLd
+        data={[
+          videoObjectSchema({
+            name: post.title,
+            description: post.expandedSummary,
+            slug: post.slug,
+          }),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Videos", path: "/videos" },
+            { name: post.title, path: `/videos/${post.slug}` },
+          ]),
+        ]}
+      />
+      <VideoLandingPage post={post} />
+    </>
+  );
 }

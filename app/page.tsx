@@ -1,4 +1,13 @@
+import type { Metadata } from "next";
 import { FooterBrand } from "./components/brand";
+import { buildPageMetadata } from "./lib/site-seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Mortgage Strategy for Buyers, Homeowners & Investors",
+  description:
+    "Education-first mortgage guidance—videos, guides, and strategy intake for buyers, homeowners, agents, and investors. Licensed in multiple states; Puget Sound depth where it matters.",
+  path: "/",
+});
 import { ComplianceFooter } from "./components/compliance-footer";
 import { FooterSocialLinks } from "./components/footer-social-links";
 import { FounderAdvisorSection } from "./components/founder-advisor-section";
@@ -241,8 +250,8 @@ export default function Home() {
       </main>
 
       <StickyMobileCta
-        href="#cta"
-        label="Start Your Strategy"
+        href="/strategy-review"
+        label="Review Your Strategy"
         location="homepage_sticky"
       />
 

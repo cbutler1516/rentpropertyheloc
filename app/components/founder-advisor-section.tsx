@@ -22,10 +22,12 @@ export function FounderAdvisorSection({
   className = "",
 }: FounderAdvisorSectionProps) {
   const lead = getFounderLead(audience);
+  const localAudience =
+    audience === "commercial" || audience === "general"
+      ? "general"
+      : audience;
   const localSnippet = showLocalAuthority
-    ? getLocalAuthoritySnippet(
-        audience === "general" ? "general" : audience,
-      )
+    ? getLocalAuthoritySnippet(localAudience)
     : null;
 
   if (variant === "compact") {
@@ -84,6 +86,11 @@ export function FounderAdvisorSection({
               , powered by {founderProfile.lendingPartnerPoweredBy}.{" "}
               {founderProfile.region} · {founderProfile.focus}
             </p>
+            {founderProfile.operatorNote ? (
+              <p className="mt-4 text-sm leading-relaxed text-zinc-600">
+                {founderProfile.operatorNote}
+              </p>
+            ) : null}
             <Link
               href={founderProfile.aboutHref}
               className="mt-8 inline-flex text-sm font-medium text-zinc-300 hover:text-white"

@@ -40,8 +40,14 @@ Current events:
 - `sticky_cta_click`
 - `review_cta_click` for Google review links (`eventType="review"` on tracked anchors)
 - `related_guide_click`
+- `intake_funnel_start` when `/strategy-review` intake begins
+- `intake_funnel_step` on each step advance (`step_id`, `step_index`, `intake_goal`)
+- `intake_funnel_submit` on successful strategy intake
+- `intake_funnel_abandon` on page hide after start without submit
 
-Scroll and section behavior is handled by `app/components/behavior-analytics.tsx` on audience hubs, guides, learn, markets, videos, and the homepage. Section visibility only tracks elements marked with `data-analytics-section`.
+Scroll and section behavior is handled by `app/components/behavior-analytics.tsx` on audience hubs, guides, learn, markets, videos, strategy intake, and the homepage. Section visibility only tracks elements marked with `data-analytics-section`.
+
+Strategy intake payloads may include UTM parameters (`utm_source`, `utm_medium`, `utm_campaign`, `utm_content`) when present in the URL—map these in GTM for paid traffic attribution.
 
 ## Reporting hooks (GTM / GA4)
 

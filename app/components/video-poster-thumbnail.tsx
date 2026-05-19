@@ -24,7 +24,7 @@ export function VideoPosterThumbnail({
         src={videoSrc}
         muted
         playsInline
-        preload="metadata"
+        preload="none"
         className="absolute inset-0 h-full w-full object-cover"
         onLoadedMetadata={(event) => {
           const video = event.currentTarget;

@@ -6,11 +6,14 @@ import {
 import { InternalPage } from "../components/internal-page";
 import { LicensedMarketsRail } from "../components/licensed-markets-rail";
 
-export const metadata: Metadata = {
-  title: "Buyers | The Loan Playbook",
+import { buildPageMetadata } from "../lib/site-seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Buyer Mortgage Strategy",
   description:
-    "A strategic loan preparation experience for buyers who want clarity before they move.",
-};
+    "Payment, cash, and readiness before the search—jumbo, move-up, and Puget Sound buyer paths with multi-state licensing.",
+  path: "/buyers",
+});
 
 export default function BuyersPage() {
   return (

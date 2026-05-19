@@ -23,6 +23,10 @@ export const analyticsEvents = {
   videoEngagement: "video_engagement",
   formAbandonment: "form_abandonment",
   reviewCtaClick: "review_cta_click",
+  intakeFunnelStart: "intake_funnel_start",
+  intakeFunnelStep: "intake_funnel_step",
+  intakeFunnelSubmit: "intake_funnel_submit",
+  intakeFunnelAbandon: "intake_funnel_abandon",
 } as const;
 
 declare global {
@@ -271,6 +275,58 @@ export function trackReviewCtaClick(payload: {
     cta_label: payload.label,
     destination: payload.href,
     cta_location: payload.location,
+  });
+}
+
+export function trackIntakeFunnelStart(payload: {
+  goalId?: string;
+  page?: string;
+}) {
+  trackEvent(analyticsEvents.intakeFunnelStart, {
+    intake_goal: payload.goalId,
+    source_page: payload.page,
+  });
+}
+
+export function trackIntakeFunnelStep(payload: {
+  stepId: string;
+  stepIndex: number;
+  goalId?: string;
+  page?: string;
+}) {
+  trackEvent(analyticsEvents.intakeFunnelStep, {
+    step_id: payload.stepId,
+    step_index: payload.stepIndex,
+    intake_goal: payload.goalId,
+    source_page: payload.page,
+  });
+}
+
+export function trackIntakeFunnelSubmit(payload: {
+  goalId: string;
+  leadIntent: string;
+  formType: string;
+  page?: string;
+}) {
+  trackEvent(analyticsEvents.intakeFunnelSubmit, {
+    intake_goal: payload.goalId,
+    lead_intent: payload.leadIntent,
+    form_type: payload.formType,
+    source_page: payload.page,
+  });
+}
+
+export function trackIntakeFunnelAbandon(payload: {
+  goalId?: string;
+  stepId?: string;
+  stepIndex?: number;
+  page?: string;
+}) {
+  trackEvent(analyticsEvents.intakeFunnelAbandon, {
+    intake_goal: payload.goalId,
+    step_id: payload.stepId,
+    step_index: payload.stepIndex,
+    source_page: payload.page,
   });
 }
 

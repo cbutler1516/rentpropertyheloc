@@ -17,6 +17,7 @@ const behaviorPathPrefixes = [
   "/guides",
   "/markets",
   "/washington-mortgage",
+  "/strategy-review",
 ];
 
 function shouldTrackBehavior(pathname: string) {

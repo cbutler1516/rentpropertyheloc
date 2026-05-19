@@ -30,6 +30,7 @@ const corePages = [
   "/partners",
   "/social",
   "/strategy",
+  "/strategy-review",
   "/videos",
 ];
 

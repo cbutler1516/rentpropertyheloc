@@ -45,9 +45,9 @@ const navItems = [
 ];
 
 const primaryNavCta = {
-  href: "/learn/buyer-readiness",
-  label: "Strategy Call",
-  description: "Start here",
+  href: "/strategy-review",
+  label: "Review Your Strategy",
+  description: "Structured intake",
 };
 
 const secondaryNavCta = {

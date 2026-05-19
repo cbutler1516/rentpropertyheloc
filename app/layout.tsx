@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "./components/analytics";
+import { JsonLd } from "./components/json-ld";
+import { organizationSchema, webSiteSchema } from "./lib/structured-data";
+import {
+  DEFAULT_OG_IMAGE,
+  SITE_NAME,
+  siteRobots,
+} from "./lib/site-seo";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,38 +22,31 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.theloanplaybook.com"),
-  title: "The Loan Playbook",
+  title: SITE_NAME,
   description:
     "Know the move before you make it. Clear mortgage strategy for buyers, homeowners, agents, and investors.",
   openGraph: {
-    title: "The Loan Playbook",
+    title: SITE_NAME,
     description:
       "Know the move before you make it. Watch, read, and make the next mortgage decision with context.",
     images: [
       {
-        url: "/loan-playbook-social-preview.svg",
+        url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "The Loan Playbook social preview",
+        alt: `${SITE_NAME} social preview`,
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Loan Playbook",
+    title: SITE_NAME,
     description:
       "Know the move before you make it. Watch, read, and make the next mortgage decision with context.",
-    images: ["/loan-playbook-social-preview.svg"],
+    images: [DEFAULT_OG_IMAGE],
   },
-  robots: {
-    index: false,
-    follow: false,
-    googleBot: {
-      index: false,
-      follow: false,
-    },
-  },
+  robots: siteRobots(),
 };
 
 export default function RootLayout({
@@ -60,6 +60,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#050505] text-white">
+        <JsonLd data={[organizationSchema(), webSiteSchema()]} />
         {children}
         <Analytics />
       </body>
