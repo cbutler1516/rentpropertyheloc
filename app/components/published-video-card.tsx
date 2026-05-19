@@ -1,47 +1,47 @@
-import type { SocialPost } from "../lib/social-posts";
+import type { HeroVideo } from "../lib/hero-videos";
 import { withVideoThumbnail } from "../lib/video-thumbnails";
 import { TrackedAnchor, TrackedLink } from "./tracked-link";
 import { VideoCardThumbnail } from "./video-card-thumbnail";
 
-function getGuideLink(post: SocialPost) {
-  if (post.relatedLearnArticle) return post.relatedLearnArticle;
-  return post.relatedGuideHrefs?.[0] ?? null;
+function getGuideLink(video: HeroVideo) {
+  if (video.relatedLearnArticle) {
+    return video.relatedLearnArticle;
+  }
+  const guide = video.relatedGuideHrefs?.[0];
+  if (guide) return guide;
+  return null;
 }
 
-export function SocialPostCard({ post }: { post: SocialPost }) {
-  const video = withVideoThumbnail(post);
-  const guide = getGuideLink(video);
-  const showTikTok =
-    video.platform === "TikTok" &&
-    Boolean(video.postUrl && video.status === "published");
-
-  if (video.status !== "published") return null;
+export function PublishedVideoCard({ video }: { video: HeroVideo }) {
+  const post = withVideoThumbnail(video);
+  const guide = getGuideLink(post);
+  const showTikTok = post.platform === "TikTok" && Boolean(post.cta.href);
 
   return (
     <article className="reveal-item card-lift group relative flex h-full flex-col overflow-hidden border border-zinc-900/80 bg-[#050505] shadow-[0_24px_80px_rgba(0,0,0,0.22)]">
       <TrackedLink
-        href={`/videos/${video.slug}`}
-        location="social_post_card"
-        label={video.title}
+        href={`/videos/${post.slug}`}
+        location="published_video_card"
+        label={post.title}
         eventType="thumbnail"
         className="relative block"
       >
         <VideoCardThumbnail
-          video={video}
+          video={post}
           className="aspect-[4/5] border-b border-zinc-900/80"
         />
       </TrackedLink>
       <div className="relative flex flex-1 flex-col p-5 md:p-6">
         <p className="font-mono text-[9px] tracking-[0.24em] text-[#7c3aed] uppercase">
-          {video.topic}
+          {post.topic}
         </p>
         <p className="mt-3 flex-1 text-sm leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
-          {video.shortSummary}
+          {post.shortSummary}
         </p>
         <div className="mt-6 flex flex-col gap-2 border-t border-zinc-900/80 pt-4">
           <TrackedLink
-            href={`/videos/${video.slug}`}
-            location="social_post_card"
+            href={`/videos/${post.slug}`}
+            location="published_video_card"
             label="Watch Video"
             eventType="thumbnail"
             className="inline-flex items-center gap-2 text-sm font-medium text-white"
@@ -53,13 +53,13 @@ export function SocialPostCard({ post }: { post: SocialPost }) {
           </TrackedLink>
           {showTikTok ? (
             <TrackedAnchor
-              href={video.cta.href}
+              href={post.cta.href}
               target="_blank"
               rel="noreferrer"
-              location="social_post_card"
+              location="published_video_card"
               label="Watch on TikTok"
               eventType="video"
-              platform={video.platform}
+              platform={post.platform}
               className="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 transition-colors duration-[var(--duration-hover)] hover:text-white"
             >
               Watch on TikTok
@@ -71,8 +71,8 @@ export function SocialPostCard({ post }: { post: SocialPost }) {
           {guide ? (
             <TrackedLink
               href={guide.href}
-              location="social_post_card"
-              label="Read Guide"
+              location="published_video_card"
+              label={guide.label}
               eventType="related_guide"
               className="inline-flex items-center gap-2 text-sm font-medium text-zinc-500 transition-colors duration-[var(--duration-hover)] hover:text-white"
             >

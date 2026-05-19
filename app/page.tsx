@@ -84,16 +84,16 @@ export default function Home() {
           />
           <div className="relative z-10 flex flex-col">
             <p className="hero-enter hero-enter-d1 relative mb-6 font-mono text-xs tracking-[0.4em] text-[#7c3aed] uppercase">
-              Mortgage Strategy · Washington
+              Mortgage Strategy · Residential · Commercial
             </p>
             <h1 className="hero-enter hero-enter-d2 hero-headline-glow relative max-w-5xl text-[clamp(2.25rem,7vw,4.75rem)] leading-[0.96] font-semibold tracking-[-0.04em] text-white">
               Make the loan
               <br />
               <span className="text-zinc-500">make sense.</span>
             </h1>
-            <p className="hero-enter hero-enter-d3 relative mt-6 max-w-lg text-base leading-relaxed text-zinc-400 md:mt-8 md:max-w-xl md:text-lg">
-              Education-first guidance for buyers, homeowners, and agents in
-              Washington.
+            <p className="hero-enter hero-enter-d3 relative mt-6 max-w-lg text-base leading-relaxed text-zinc-400 md:mt-8 md:max-w-2xl md:text-lg">
+              Education-first mortgage guidance for buyers, homeowners, agents,
+              and real estate partners.
             </p>
             <div className="hero-enter hero-enter-d4 relative mt-8 flex flex-col gap-3 sm:flex-row sm:items-center md:mt-10">
               <TrackedAnchor
@@ -160,8 +160,11 @@ export default function Home() {
                 </TrackedLink>
               ))}
             </RevealGroup>
-            <p className="mt-10 text-center text-sm text-zinc-600">
-              Puget Sound depth:{" "}
+            <p className="mt-10 text-center text-sm text-zinc-500">
+              Based in Washington. Licensed in multiple states.
+            </p>
+            <p className="mt-4 text-center text-sm text-zinc-600">
+              Puget Sound expertise:{" "}
               <TrackedLink
                 href="/washington-mortgage"
                 location="homepage_local"
@@ -196,7 +199,7 @@ export default function Home() {
         <FeaturedContentSection
           surface="homepage"
           title="Start here"
-          lead="Three curated picks—video, guide, and local context."
+          lead="Three picks—video, guide, and market depth."
           eyebrow="Featured"
         />
 

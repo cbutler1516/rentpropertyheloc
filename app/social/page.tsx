@@ -9,13 +9,15 @@ import { SiteNav } from "../components/site-nav";
 import { SocialFollowSection } from "../components/social-follow-section";
 import { SocialPostCard } from "../components/social-post-card";
 import { TrackedAnchor, TrackedLink } from "../components/tracked-link";
-import { socialPosts } from "../lib/social-posts";
+import { getPublishedHeroVideos } from "../lib/hero-videos";
 
 export const metadata: Metadata = {
   title: "Social Channels | The Loan Playbook",
   description:
-    "The main social channels for The Loan Playbook, including TikTok, Instagram, Facebook, YouTube, LinkedIn, and post landing pages.",
+    "Follow The Loan Playbook on TikTok, Instagram, Facebook, YouTube, and LinkedIn—plus watch pages for every published video.",
 };
+
+const publishedVideos = getPublishedHeroVideos();
 
 export default function SocialHubPage() {
   return (
@@ -35,9 +37,9 @@ export default function SocialHubPage() {
         <PageHero
           eyebrow="Social Channels"
           title="Follow the playbook everywhere."
-          lead="Main profiles, short clips, and related guide paths."
+          lead="Short clips on social—and full watch pages when you want more context."
           focusLabel="Next Step"
-          focus="Watch quickly. Go deeper when ready."
+          focus="Watch quickly. Go deeper when you're ready."
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <TrackedAnchor
@@ -60,8 +62,9 @@ export default function SocialHubPage() {
         </PageHero>
 
         <SocialFollowSection
-          title="Main social profiles."
-          lead="TikTok, Instagram, Facebook, YouTube, and LinkedIn anchor the distribution system."
+          eyebrow="Follow The Loan Playbook"
+          title="Follow the channels."
+          lead="TikTok, Instagram, Facebook, YouTube, and LinkedIn."
           showFlywheel={false}
           showHubLink={false}
         />
@@ -70,15 +73,15 @@ export default function SocialHubPage() {
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
-              eyebrow="Post Landing Pages"
-              title="Curated posts, ready to scale."
-              lead="Each card can become its own page with transcript, related guide, thumbnail, CTA, and campaign copy."
+              eyebrow="Watch Pages"
+              title="Published videos"
+              lead="Each card opens a full page with the video, takeaways, and related guides."
             />
             <RevealGroup
-              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 md:gap-8 lg:grid-cols-5"
+              className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
               stagger={90}
             >
-              {socialPosts.map((post) => (
+              {publishedVideos.map((post) => (
                 <SocialPostCard key={post.slug} post={post} />
               ))}
             </RevealGroup>

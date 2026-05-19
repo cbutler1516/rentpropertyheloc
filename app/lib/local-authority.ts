@@ -60,7 +60,7 @@ export const localAuthorityHighlights: Record<string, LocalAuthorityHighlight> =
 
 const audienceSnippets: Record<LocalAuthorityAudience, string> = {
   general:
-    "Seattle, Bellevue, and the Eastside reward borrowers who show up with financing clarity early—especially for jumbo paths, tech income, and move-up timing.",
+    "Puget Sound expertise—Seattle, Bellevue, and the Eastside—for jumbo paths, tech income, and move-up timing, alongside multi-state residential and commercial strategy.",
   buyer:
     "In Seattle and on the Eastside, prepared buyers document income, reserves, and structure before offer week—not after they find the home.",
   homeowner:

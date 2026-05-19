@@ -13,7 +13,7 @@ export function SocialLinkGrid({
 }) {
   return (
     <RevealGroup
-      className={`social-link-grid mt-14 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2 lg:grid-cols-3 ${className}`}
+      className={`social-link-grid mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 ${className}`}
       stagger={70}
     >
       {links.map((link) => (
@@ -26,7 +26,7 @@ export function SocialLinkGrid({
             label={link.label}
             eventType="social"
             platform={link.platform}
-            className="reveal-item group relative bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a]"
+            className="reveal-item group relative border border-zinc-900/80 bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a]"
           >
             <div
               className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#5b21b6]/0 to-transparent opacity-0 transition-opacity duration-[var(--duration-hover)] group-hover:opacity-100 group-hover:from-[#5b21b6]/[0.06]"

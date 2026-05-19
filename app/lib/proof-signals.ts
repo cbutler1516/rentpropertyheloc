@@ -27,7 +27,7 @@ export const googleReviewSnippets = [
 export const whyClientsWorkWithUs = [
   "Education before rate quotes—context you can actually use.",
   "Residential and commercial paths under one strategic lens.",
-  "Washington depth: Seattle, Eastside, jumbo, and move-up sequencing.",
+  "Puget Sound depth and multi-state licensing—jumbo, Eastside, and move-up sequencing.",
   "Clear lending partnership through Broadview Lending.",
 ];
 
@@ -35,7 +35,7 @@ export const borrowerOutcomes = [
   {
     label: "Buyer readiness",
     outcome:
-      "Payment and cash-to-close clarity before touring competitive Puget Sound listings.",
+      "Payment and cash-to-close clarity before touring competitive listings.",
   },
   {
     label: "Move-up timing",

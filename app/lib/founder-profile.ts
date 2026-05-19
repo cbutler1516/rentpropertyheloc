@@ -4,7 +4,7 @@ export const founderProfile = {
   brand: "The Loan Playbook",
   lendingPartner: "Broadview Lending",
   lendingPartnerPoweredBy: "Barrett Financial Group",
-  region: "Seattle & Washington",
+  region: "Washington roots · multi-state licensing",
   focus:
     "Residential and commercial financing strategy—education-first, not rate-quote theater.",
   bullets: [
@@ -19,7 +19,7 @@ export type FounderAudience = "general" | "buyer" | "homeowner" | "agent";
 
 const audienceLeads: Record<FounderAudience, string> = {
   general:
-    "Strategy-first mortgage guidance for buyers, homeowners, and agents across Washington and licensed states.",
+    "Strategy-first mortgage guidance for buyers, homeowners, agents, and partners—licensed in multiple states, with Puget Sound depth where it matters.",
   buyer:
     "Helps Washington buyers prepare before the search—payment, documentation, and offer-ready structure.",
   homeowner:

@@ -76,6 +76,11 @@ export function MediaThumbnail({
   className = "",
 }: MediaThumbnailProps) {
   const treatment = getCategoryTreatment(category);
+  const internalLabelPattern =
+    /todo|pending|hero video|curated|thumbnail/i;
+  const showLabel =
+    Boolean(thumbnailLabel) &&
+    !(thumbnailSrc && internalLabelPattern.test(thumbnailLabel ?? ""));
 
   return (
     <div
@@ -129,7 +134,7 @@ export function MediaThumbnail({
           ) : null}
         </div>
         <div>
-          {thumbnailLabel ? (
+          {showLabel ? (
             <p className="font-mono text-[9px] tracking-[0.22em] text-zinc-500 uppercase">
               {thumbnailLabel}
             </p>

@@ -1,4 +1,5 @@
 import type { SocialPlatform } from "./social-links";
+import { getVideoThumbnailSrc } from "./video-thumbnails";
 
 export type SocialPostAudience = "buyer" | "homeowner" | "agent" | "commercial";
 
@@ -86,7 +87,8 @@ function heroBase(config: {
     title: config.title,
     topic: config.topic,
     category: config.category,
-    thumbnail: "Hero video",
+    thumbnail: "Video",
+    thumbnailSrc: getVideoThumbnailSrc(config.slug),
     shortSummary: config.shortSummary,
     expandedSummary: config.expandedSummary,
     audience: config.audience,
