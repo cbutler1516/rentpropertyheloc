@@ -3,62 +3,13 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { trackEvent } from '../lib/analytics-events';
-
-const createIcon = (label) =>
-  function Icon({ className = "", style = {} }) {
-    return (
-      <svg
-        aria-hidden
-        className={className}
-        style={style}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x="4" y="4" width="16" height="16" rx="4" opacity="0.12" />
-        <path d="M8 12h8" />
-        <path d="M12 8v8" opacity="0.65" />
-        <title>{label}</title>
-      </svg>
-    );
-  };
-
-const Calculator = createIcon("Calculator");
-const DollarSign = createIcon("Dollar sign");
-const Percent = createIcon("Percent");
-const Calendar = createIcon("Calendar");
-const TrendingUp = createIcon("Trending up");
-const Building = createIcon("Building");
-const PieChart = createIcon("Pie chart");
-const RefreshCw = createIcon("Refresh");
-const Banknote = createIcon("Banknote");
-const HardHat = createIcon("Hard hat");
-const Plus = createIcon("Plus");
-const Trash2 = createIcon("Trash");
-const Phone = createIcon("Phone");
-const Mail = createIcon("Mail");
-const Globe = createIcon("Globe");
-const MapPin = createIcon("Map pin");
-const FileText = createIcon("File text");
-const CalendarCheck = createIcon("Calendar check");
-const Info = createIcon("Info");
-const CheckCircle2 = createIcon("Check");
-const AlertCircle = createIcon("Alert");
-const Briefcase = createIcon("Briefcase");
-const RotateCcw = createIcon("Rotate");
-const ArrowUpDown = createIcon("Arrow up down");
-const Shield = createIcon("Shield");
-const Clock = createIcon("Clock");
-const Zap = createIcon("Zap");
-const Home = createIcon("Home");
-const Store = createIcon("Store");
-const Factory = createIcon("Factory");
-const Wrench = createIcon("Wrench");
-const Hammer = createIcon("Hammer");
-const Layers = createIcon("Layers");
+import {
+  Calculator, DollarSign, Percent, Calendar, TrendingUp, Building,
+  PieChart, RefreshCw, Banknote, HardHat, Plus, Trash2, Phone, Mail,
+  Globe, MapPin, FileText, CalendarCheck, Info,
+  CheckCircle2, AlertCircle, Briefcase, RotateCcw, ArrowUpDown, Shield, Clock,
+  Zap, Home, Store, Factory, Wrench, Hammer, Layers
+} from 'lucide-react';
 
 const ADVISOR = {
   name: "Chris Butler",
@@ -86,8 +37,8 @@ const ROUTING = {
 };
 
 const BARRETT = {
-  navy: '#152E63', navyDeep: '#0E1F42', navyHover: '#1F3F7A',
-  gold: '#C59E5E', goldSoft: '#E8D5A8', goldDeep: '#A8854A',
+  navy: '#18181B', navyDeep: '#050505', navyHover: '#27272A',
+  gold: '#7C3AED', goldSoft: '#DDD6FE', goldDeep: '#6D28D9',
   ink: '#0A1426', slate: '#475569', line: '#E2E8F0', surface: '#F8FAFC', white: '#FFFFFF',
   green: '#16A34A', amber: '#CA8A04', red: '#DC2626',
 };

@@ -55,14 +55,18 @@ export default function CommercialPage() {
                 href="/commercial/calculator"
                 location="commercial_calculator_feature"
                 label="Open Calculator"
-                className="card-lift group relative block overflow-hidden border border-zinc-900/80 bg-[#050505] p-8 md:p-10"
+                className="card-lift group relative block overflow-hidden border border-[#7c3aed]/25 bg-[#050505] p-8 shadow-[0_24px_90px_rgba(0,0,0,0.28)] md:p-10"
               >
                 <div
                   className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[var(--duration-hover)] group-hover:opacity-100"
                   style={{
                     background:
-                      "radial-gradient(ellipse at top left, rgba(91, 33, 182, 0.14), transparent 60%)",
+                      "radial-gradient(ellipse at top left, rgba(124, 58, 237, 0.22), transparent 58%)",
                   }}
+                  aria-hidden
+                />
+                <div
+                  className="pointer-events-none absolute right-[-8rem] bottom-[-10rem] h-72 w-72 rounded-full bg-[#7c3aed]/15 blur-[80px]"
                   aria-hidden
                 />
                 <p className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
@@ -72,8 +76,8 @@ export default function CommercialPage() {
                   Commercial Mortgage Calculator
                 </h2>
                 <p className="relative mt-6 max-w-3xl text-lg leading-relaxed text-zinc-500">
-                  Run DSCR, LTV, payment, bridge, development, SBA, and
-                  refinance scenarios before starting the conversation.
+                  Run DSCR, LTV, bridge, development, SBA, refinance, and
+                  payment scenarios before the first call.
                 </p>
                 <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-medium text-white transition-all duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-1">
                   Open Calculator

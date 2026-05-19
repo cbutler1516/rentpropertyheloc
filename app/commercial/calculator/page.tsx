@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CommercialCalculator from "../../components/commercial-calculator";
+import { CommercialCalculatorLoader } from "../../components/commercial-calculator-loader";
 import { CommercialCalculatorView } from "../../components/commercial-calculator-view";
 import { FooterBrand } from "../../components/brand";
 import { ComplianceFooter } from "../../components/compliance-footer";
@@ -26,6 +26,10 @@ export default function CommercialCalculatorPage() {
       />
       <div
         className="vignette pointer-events-none fixed inset-0 z-[1]"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none fixed top-24 left-1/2 z-[1] h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-[#7c3aed]/15 blur-[120px]"
         aria-hidden
       />
       <SiteNav />
@@ -67,8 +71,15 @@ export default function CommercialCalculatorPage() {
           id="calculator"
           className="relative mx-auto w-full max-w-7xl px-4 pb-20 md:px-6"
         >
-          <div className="overflow-hidden border border-zinc-900/80 bg-[#050505] shadow-[0_32px_120px_rgba(0,0,0,0.35)]">
-            <CommercialCalculator />
+          {/* TODO: Add the residential calculator in a separate phase after the commercial calculator deploys successfully. */}
+          <div className="relative overflow-hidden rounded-[1.75rem] border border-zinc-900/80 bg-[linear-gradient(135deg,rgba(124,58,237,0.16),rgba(5,5,5,0.96)_34%,rgba(24,24,27,0.98))] p-2 shadow-[0_32px_120px_rgba(0,0,0,0.5)] md:p-3">
+            <div
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(124,58,237,0.22),transparent_45%)]"
+              aria-hidden
+            />
+            <div className="relative overflow-hidden rounded-[1.25rem] border border-white/10">
+              <CommercialCalculatorLoader />
+            </div>
           </div>
           <p className="mx-auto mt-6 max-w-4xl px-2 text-center font-mono text-[10px] leading-relaxed tracking-[0.16em] text-zinc-600 uppercase">
             Calculations are estimates only and are not a commitment to lend.
