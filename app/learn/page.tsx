@@ -16,7 +16,7 @@ import { learnArticles } from "../lib/learn-articles";
 export const metadata: Metadata = {
   title: "Learn | The Loan Playbook",
   description:
-    "Mortgage education, SEO article hubs, buyer strategy guides, and Broadview Lending article import placeholders from The Loan Playbook.",
+    "Mortgage guides for payment clarity, buyer strategy, refinance timing, equity options, and financing decisions.",
 };
 
 const latestArticles = [

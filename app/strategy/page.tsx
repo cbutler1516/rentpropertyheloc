@@ -4,7 +4,7 @@ import { InternalPage } from "../components/internal-page";
 export const metadata: Metadata = {
   title: "Strategy | The Loan Playbook",
   description:
-    "The strategic framework behind The Loan Playbook: scout, plan, and execute.",
+    "Clear mortgage strategy before buying, refinancing, investing, or choosing a financing path.",
 };
 
 export default function StrategyPage() {

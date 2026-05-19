@@ -18,7 +18,7 @@ import { TrackedAnchor } from "../components/tracked-link";
 export const metadata: Metadata = {
   title: "Partners | The Loan Playbook",
   description:
-    "A modern real estate finance partnership platform for brokerage leaders, teams, and firm owners.",
+    "Mortgage partnership options for managing brokers, teams, brokerages, and firm owners.",
 };
 
 const problemAreas = [
@@ -64,7 +64,7 @@ export default function PartnersPage() {
 
       <main className="relative z-10">
         <PageHero
-          eyebrow="Brokerage Partnership Platform"
+          eyebrow="Brokerage Partnerships"
           title="A cleaner finance layer for firms."
           lead="For managing brokers, teams, brokerages, and firms exploring compliant partnership models."
           focusLabel="Partner Path"

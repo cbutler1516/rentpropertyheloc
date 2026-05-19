@@ -8,7 +8,7 @@ import { InternalPage } from "../components/internal-page";
 export const metadata: Metadata = {
   title: "Commercial | The Loan Playbook",
   description:
-    "A strategic lending framework for commercial borrowers, investors, and operators.",
+    "Commercial financing guidance for borrowers, investors, and operators who need the deal to read clearly.",
 };
 
 export default function CommercialPage() {

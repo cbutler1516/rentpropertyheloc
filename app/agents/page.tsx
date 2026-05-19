@@ -19,7 +19,7 @@ import { TrackedLink } from "../components/tracked-link";
 export const metadata: Metadata = {
   title: "Agents | The Loan Playbook",
   description:
-    "A mortgage strategy, education, compliant co-marketing, and media support platform for modern real estate agents.",
+    "Mortgage strategy and buyer support for agents who want clearer financing conversations.",
 };
 
 const whyAgentsNeedStrategy = [
@@ -83,7 +83,7 @@ export default function AgentsPage() {
 
       <main className="relative z-10">
         <PageHero
-          eyebrow="Agent Partnership Platform"
+          eyebrow="Agent Support"
           title="Help buyers move clearer."
           lead="For individual agents who want better lending strategy and buyer support."
           focusLabel="Agent Path"

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.theloanplaybook.com"),
   title: "The Loan Playbook",
   description:
-    "Know the move before you make it. Mortgage education packaged like premium media.",
+    "Know the move before you make it. Clear mortgage strategy for buyers, homeowners, agents, and investors.",
   openGraph: {
     title: "The Loan Playbook",
     description:

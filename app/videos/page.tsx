@@ -24,7 +24,7 @@ import { socialPosts } from "../lib/social-posts";
 export const metadata: Metadata = {
   title: "Videos | The Loan Playbook",
   description:
-    "A social media hub for mortgage education videos, market updates, agent education, buyer education, and AI creative concepts from The Loan Playbook.",
+    "Short mortgage videos for payment clarity, buyer support, market context, agent conversations, and next steps.",
 };
 
 const allVideos = videoSections.flatMap((section) => section.videos);
@@ -249,9 +249,9 @@ export default function VideosPage() {
 
       <main className="relative z-10">
         <PageHero
-          eyebrow="Video + Social Hub"
-          title="Mortgage media, curated."
-          lead="Short clips, featured guides, and social channels in one place."
+          eyebrow="Mortgage Videos"
+          title="Short clips. Clearer decisions."
+          lead="Quick mortgage context for buyers, homeowners, agents, and investors."
           focusLabel="Focus"
           focus="Short clips. Clearer decisions."
           visual="basketball-agents"

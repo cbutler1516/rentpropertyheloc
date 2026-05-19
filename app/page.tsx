@@ -3,54 +3,54 @@ import { ComplianceFooter } from "./components/compliance-footer";
 import { FooterSocialLinks } from "./components/footer-social-links";
 import { HeroVideo } from "./components/hero-video";
 import { LeadCaptureForm } from "./components/lead-capture-form";
-import { MediaThumbnail } from "./components/media-thumbnail";
-import { MicroOptIn } from "./components/micro-opt-in";
 import { StatRow } from "./components/design-system";
 import { PageAmbient } from "./components/page-ambient";
 import { RevealGroup } from "./components/reveal-group";
 import { SiteNav } from "./components/site-nav";
 import { TrackedAnchor, TrackedLink } from "./components/tracked-link";
-import { getSocialPostBySlug } from "./lib/social-posts";
 
 const paths = [
   {
-    label: "Home Buyers",
+    label: "Buy a Home",
     title: "Know your number first.",
-    href: "/buyers",
-    description:
-      "Readiness, payment, cash-to-close, loan options, and offer prep in one clear path.",
-    cta: "Start Buyer Path",
+    href: "/learn/buyer-readiness",
+    description: "Payment, cash, timing, and offer prep.",
+    cta: "Start Buyer Strategy",
   },
   {
-    label: "Real Estate Agents",
-    title: "Give buyers clearer context.",
+    label: "Lower My Payment",
+    title: "Review refinance timing.",
+    href: "/learn/refinance-timing",
+    description: "Payment, rate movement, cash flow, and fit.",
+    cta: "Review Timing",
+  },
+  {
+    label: "Use My Equity",
+    title: "Understand HELOC options.",
+    href: "/learn/heloc-strategy",
+    description: "Equity access without rebuilding the loan.",
+    cta: "Explore Equity",
+  },
+  {
+    label: "Grow My Real Estate Business",
+    title: "Support better buyer conversations.",
     href: "/agents",
-    description:
-      "Buyer education and lending context agents can use in real conversations.",
-    cta: "Explore Agent Path",
+    description: "For agents, teams, and partnership paths.",
+    cta: "Explore Agent Support",
   },
   {
-    label: "Managing Brokers / Partners",
-    title: "Build a cleaner finance layer.",
-    href: "/partners",
-    description:
-      "Education infrastructure and compliant partnership paths for firms.",
-    cta: "Explore Partner Path",
-  },
-  {
-    label: "Commercial / Investors",
+    label: "Commercial Financing",
     title: "Make the deal legible.",
     href: "/commercial",
-    description:
-      "Asset, sponsor, capital stack, risk, and execution path made legible.",
-    cta: "Review Commercial Financing Options",
+    description: "Asset, sponsor, structure, and next steps.",
+    cta: "Review Commercial Options",
   },
 ];
 
 const authorityStats = [
   { value: "9", label: "Licensed states" },
   { value: "2", label: "Residential + commercial" },
-  { value: "1", label: "Education-first platform" },
+  { value: "1", label: "Strategy-first approach" },
 ];
 
 const founderHighlights = [
@@ -58,60 +58,8 @@ const founderHighlights = [
   "Former real estate development background",
   "Residential and commercial strategy",
   "Capital-markets mindset",
-  "Education-first media platform",
+  "Clear financing guidance",
   "Licensed multi-state lending context",
-];
-
-const featuredVideo = getSocialPostBySlug("mortgage-strategy-clear-idea");
-const featuredSocialClip = getSocialPostBySlug("buyer-readiness-before-search");
-const latestMarketPost = getSocialPostBySlug("market-context-without-noise");
-
-const featuredGuides = [
-  {
-    label: "Featured Guide",
-    title: "Before you search, know your number.",
-    body: "Payment and cash-to-close clarity for early buyers.",
-    href: "/learn/buyer-readiness",
-    cta: "Read Guide",
-  },
-  {
-    label: "Buyer Strategy",
-    title: "Seller credits can change the math.",
-    body: "A cleaner way to think about concessions.",
-    href: "/learn/seller-concessions",
-    cta: "Explore",
-  },
-];
-
-const latestContent = [
-  {
-    label: "Latest TikTok",
-    title: featuredSocialClip?.title ?? "Before Zillow, know your number.",
-    href: featuredSocialClip ? `/social/${featuredSocialClip.slug}` : "/videos",
-    body: "Fresh short-form buyer education.",
-    cta: "View",
-  },
-  {
-    label: "Latest Guide",
-    title: "Buyer Readiness",
-    href: "/learn/buyer-readiness",
-    body: "Know the payment before the search.",
-    cta: "Read",
-  },
-  {
-    label: "Market Update",
-    title: latestMarketPost?.title ?? "Rates moved. What actually changes?",
-    href: latestMarketPost ? `/social/${latestMarketPost.slug}` : "/videos",
-    body: "Payment context without noise.",
-    cta: "Watch",
-  },
-  {
-    label: "Buyer Strategy",
-    title: "2-1 Buydowns",
-    href: "/learn/2-1-buydowns",
-    body: "Temporary payment relief, explained cleanly.",
-    cta: "Explore",
-  },
 ];
 
 export default function Home() {
@@ -159,7 +107,7 @@ export default function Home() {
           />
           <div className="relative z-10 flex flex-col">
           <p className="hero-enter hero-enter-d1 relative mb-8 font-mono text-xs tracking-[0.4em] text-[#7c3aed] uppercase">
-            Mortgage Media Platform
+            Mortgage Strategy
           </p>
           <h1 className="hero-enter hero-enter-d2 hero-headline-glow relative max-w-5xl text-[clamp(2.75rem,8vw,5.5rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-white">
             Make the loan
@@ -167,7 +115,7 @@ export default function Home() {
             <span className="text-zinc-500">make sense.</span>
           </h1>
           <p className="hero-enter hero-enter-d3 relative mt-10 max-w-xl text-lg leading-relaxed text-zinc-400 md:mt-12 md:text-xl">
-            Mortgage guidance and media for buyers, agents, and real estate firms.
+            Clear next steps for buyers, homeowners, agents, and commercial borrowers.
           </p>
           <div className="hero-enter hero-enter-d4 relative mt-14 flex flex-col gap-4 sm:flex-row sm:items-center md:mt-16">
             <TrackedAnchor
@@ -175,14 +123,14 @@ export default function Home() {
               location="homepage_hero"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              Find Your Path
+              Choose Your Path
             </TrackedAnchor>
           </div>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        {/* Who We Help */}
+        {/* Guided Paths */}
         <section
           id="paths"
           data-analytics-section="homepage_paths"
@@ -196,27 +144,29 @@ export default function Home() {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <RevealGroup stagger={120}>
               <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                Who We Help
+                Choose Your Direction
               </p>
               <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                Pick your lane.
+                What do you need to do?
               </h2>
               <p className="reveal-item mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500">
-                Four paths. One clear next move.
+                Pick the decision. We will point you to the next step.
               </p>
             </RevealGroup>
 
             <RevealGroup
-              className="mt-16 grid gap-7 md:mt-20 md:grid-cols-2 md:gap-8 lg:grid-cols-4"
+              className="mt-14 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:mt-20 md:grid-cols-2 lg:grid-cols-6"
               stagger={150}
             >
-              {paths.map((path) => (
+              {paths.map((path, index) => (
                   <TrackedLink
                     key={path.label}
                     href={path.href}
                     location="homepage_audience_path"
                     label={path.cta}
-                    className="reveal-item card-lift group relative flex h-full flex-col border border-zinc-900/80 bg-[#050505] p-9 md:p-11"
+                    className={`reveal-item group relative flex h-full min-h-[17rem] flex-col bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a] md:p-8 ${
+                      index === 0 ? "lg:col-span-2" : "lg:col-span-1"
+                    }`}
                   >
                     <div
                       className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[var(--duration-hover)] group-hover:opacity-100"
@@ -229,13 +179,13 @@ export default function Home() {
                     <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
                       {path.label}
                     </span>
-                    <h3 className="relative mt-7 text-2xl font-semibold text-white transition-transform duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-0.5">
+                    <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.03em] text-white transition-transform duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-0.5">
                       {path.title}
                     </h3>
-                    <p className="relative mt-5 flex-1 leading-relaxed text-zinc-500 transition-[color] duration-[var(--duration-hover)] group-hover:text-zinc-400">
+                    <p className="relative mt-4 flex-1 text-sm leading-relaxed text-zinc-500 transition-[color] duration-[var(--duration-hover)] group-hover:text-zinc-400">
                       {path.description}
                     </p>
-                    <span className="relative mt-10 inline-flex items-center gap-2 text-sm font-medium text-white transition-all duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-1">
+                    <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-medium text-white transition-all duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-1">
                       {path.cta}
                       <span className="text-[#7c3aed]" aria-hidden>
                         →
@@ -244,157 +194,6 @@ export default function Home() {
                   </TrackedLink>
               ))}
             </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
-
-        {/* Featured Content */}
-        <section
-          className="section-flow relative border-t border-zinc-900/40"
-          data-analytics-section="featured_guides"
-        >
-          <div className="section-bridge-top" aria-hidden />
-          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-            <RevealGroup
-              stagger={120}
-              className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-14"
-            >
-              <div data-parallax="0.025">
-                <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                  Featured / Latest
-                </p>
-                <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                  Watch.
-                  <br />
-                  Read.
-                  <br />
-                  Make the move.
-                </h2>
-              </div>
-              <p
-                className="reveal-item max-w-md text-zinc-500"
-                data-parallax="0.02"
-              >
-                Curated clips and guides. No feed clutter.
-              </p>
-            </RevealGroup>
-
-            <div className="mt-16 grid gap-7 md:mt-20 md:grid-cols-[1.15fr_0.85fr] md:gap-8">
-              {featuredVideo ? (
-                <TrackedLink
-                  href={`/social/${featuredVideo.slug}`}
-                  location="homepage_featured_content"
-                  label="View featured clip"
-                  eventType="thumbnail"
-                  className="card-lift group relative overflow-hidden border border-zinc-900/80 bg-[#050505] shadow-[0_32px_120px_rgba(0,0,0,0.28)]"
-                >
-                  <MediaThumbnail
-                    title={featuredVideo.title}
-                    category={featuredVideo.category}
-                    platform={featuredVideo.platform}
-                    thumbnailLabel="Featured Clip"
-                    thumbnailSrc={featuredVideo.thumbnailSrc}
-                    thumbnailFocalPoint={featuredVideo.thumbnailFocalPoint}
-                    runtime={featuredVideo.runtime}
-                    className="aspect-[16/12] border-b border-zinc-900/80 md:aspect-[16/10]"
-                  />
-                  <div className="p-7 md:p-9">
-                    <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                      Featured Video
-                    </p>
-                    <p className="mt-5 max-w-2xl text-lg leading-relaxed text-zinc-400">
-                      {featuredVideo.shortSummary}
-                    </p>
-                    <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white transition-transform duration-[var(--duration-hover)] group-hover:translate-x-1">
-                      Watch Clip
-                      <span className="text-[#7c3aed]" aria-hidden>
-                        →
-                      </span>
-                    </span>
-                  </div>
-                </TrackedLink>
-              ) : null}
-
-              <RevealGroup
-                className="grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70"
-                stagger={90}
-              >
-                {featuredGuides.map((item) => (
-                  <TrackedLink
-                    key={item.label}
-                    href={item.href}
-                    location="homepage_featured_guide"
-                    label={item.cta}
-                    eventType="related_guide"
-                    className="reveal-item group relative flex min-h-[15rem] flex-col bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a] md:p-8"
-                  >
-                    <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                      {item.label}
-                    </span>
-                    <h3 className="relative mt-5 text-2xl font-semibold tracking-[-0.03em] text-white">
-                      {item.title}
-                    </h3>
-                    <p className="relative mt-4 flex-1 leading-relaxed text-zinc-500 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
-                      {item.body}
-                    </p>
-                    <span className="relative mt-7 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] group-hover:text-white">
-                      {item.cta}
-                      <span className="text-[#7c3aed]" aria-hidden>
-                        →
-                      </span>
-                    </span>
-                  </TrackedLink>
-                ))}
-              </RevealGroup>
-            </div>
-
-            <RevealGroup
-              className="mt-8 grid gap-4 md:-mx-10 md:mt-10 md:flex md:snap-x md:gap-5 md:overflow-x-auto md:px-10 md:pb-3"
-              stagger={70}
-            >
-              {latestContent.map((item) => (
-                <TrackedLink
-                  key={item.label}
-                  href={item.href}
-                  location="homepage_latest_content"
-                  label={item.cta}
-                  eventType={item.label.includes("TikTok") ? "thumbnail" : "related_guide"}
-                  className="reveal-item group border border-zinc-900/80 bg-[#050505] p-5 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a] md:min-w-[17rem] md:snap-start"
-                >
-                  <span className="font-mono text-[9px] tracking-[0.24em] text-[#7c3aed] uppercase">
-                    {item.label}
-                  </span>
-                  <h3 className="mt-4 text-xl font-semibold tracking-[-0.03em] text-white">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-600 transition-colors duration-[var(--duration-hover)] group-hover:text-zinc-400">
-                    {item.body}
-                  </p>
-                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors duration-[var(--duration-hover)] group-hover:text-white">
-                    {item.cta}
-                    <span className="text-[#7c3aed]" aria-hidden>
-                      →
-                    </span>
-                  </span>
-                </TrackedLink>
-              ))}
-            </RevealGroup>
-
-            <div className="mt-8 max-w-2xl">
-              <MicroOptIn
-                title="Get buyer prep tips."
-                body="Payment, cash, and offer prep notes."
-                submitLabel="Get Tips"
-                optInType="Buyer Prep Tips"
-                intent="buyer"
-                location="homepage_featured_latest"
-              />
-            </div>
-
-            <p className="mt-8 max-w-2xl font-mono text-[10px] tracking-[0.18em] text-zinc-700 uppercase">
-              Educational resources only. Content does not imply loan approval,
-              rate availability, or a commitment to lend.
-            </p>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
@@ -425,7 +224,7 @@ export default function Home() {
                     Founder Profile
                   </p>
                   <h3 className="max-w-xs self-end text-3xl font-semibold tracking-[-0.03em] text-white">
-                    Mortgage, real estate, and media.
+                    Mortgage, real estate, and strategy.
                   </h3>
                 </div>
               </div>
@@ -438,11 +237,11 @@ export default function Home() {
               <h2 className="reveal-item mt-5 max-w-4xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-6xl">
                 Built by an advisor.
                 <br />
-                Shaped like media.
+                Focused on clarity.
               </h2>
               <p className="reveal-item mt-8 max-w-2xl text-lg leading-relaxed text-zinc-400">
                 Advisory work, development context, commercial finance, and
-                education-first media.
+                strategy-first guidance.
               </p>
               <StatRow className="reveal-item mt-10" stats={authorityStats} />
               <div className="reveal-item mt-10 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2">
@@ -460,7 +259,7 @@ export default function Home() {
                   location="homepage_authority"
                   className="btn-ghost inline-flex h-14 w-fit items-center justify-center border border-zinc-800 px-8 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
                 >
-                  Learn More
+                  About
                 </TrackedLink>
               </div>
             </RevealGroup>
@@ -500,15 +299,15 @@ export default function Home() {
                     Start the conversation.
                   </h2>
                   <p className="reveal-item mt-8 max-w-lg text-lg leading-relaxed text-zinc-400 md:mt-10">
-                    Tell us the audience, goal, and timeline.
+                    Tell us what you are trying to do next.
                   </p>
                   <LeadCaptureForm
                     formType="Buyer Strategy Call"
-                    submitLabel="Start the Conversation"
+                    submitLabel="Start Your Strategy"
                     intent="buyer"
                   />
                   <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
-                    Educational content only · No rate quote or loan commitment
+                    No-pressure guidance · No rate quote or loan commitment
                   </p>
                 </RevealGroup>
               </div>

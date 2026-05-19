@@ -28,8 +28,8 @@ const flywheelSteps = [
 
 export function SocialFollowSection({
   eyebrow = "Follow The Loan Playbook",
-  title = "Follow the media engine.",
-  lead = "Main channels now. Post pages next.",
+  title = "Follow for quick clarity.",
+  lead = "Short mortgage notes, clips, and guide updates.",
   showFlywheel = true,
   showHubLink = true,
 }: {
@@ -57,7 +57,7 @@ export function SocialFollowSection({
             location="social_follow_section"
             className="btn-ghost mt-8 inline-flex h-12 items-center justify-center border border-zinc-800 px-7 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
           >
-            Social Hub
+            Social Channels
           </TrackedLink>
         ) : null}
         <SocialLinkGrid links={mainSocialLinks} ctaLabel="Follow profile" />

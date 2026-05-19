@@ -64,8 +64,8 @@ export const conversionCtas = {
   },
   newsletter: {
     eyebrow: "Content / Newsletter Signup",
-    title: "Follow the media engine.",
-    body: "Video drops, article launches, education updates.",
+    title: "Get mortgage updates.",
+    body: "Market notes, buyer tips, and new guides.",
     formType: "Newsletter Signup" as const,
     submitLabel: "Get Market Updates",
   },

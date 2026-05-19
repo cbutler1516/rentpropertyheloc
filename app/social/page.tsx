@@ -12,9 +12,9 @@ import { TrackedAnchor, TrackedLink } from "../components/tracked-link";
 import { socialPosts } from "../lib/social-posts";
 
 export const metadata: Metadata = {
-  title: "Social Hub | The Loan Playbook",
+  title: "Social Channels | The Loan Playbook",
   description:
-    "The social media hub for The Loan Playbook, including TikTok, Instagram, Facebook, YouTube, LinkedIn, and future post landing pages.",
+    "The main social channels for The Loan Playbook, including TikTok, Instagram, Facebook, YouTube, LinkedIn, and post landing pages.",
 };
 
 export default function SocialHubPage() {
@@ -33,11 +33,11 @@ export default function SocialHubPage() {
 
       <main className="relative z-10">
         <PageHero
-          eyebrow="Social Hub"
+          eyebrow="Social Channels"
           title="Follow the playbook everywhere."
-          lead="The main profiles are live now. Individual post landing pages are ready to expand next."
-          focusLabel="Content Flywheel"
-          focus="Short video -> deeper guide -> strategy call."
+          lead="Main profiles, short clips, and related guide paths."
+          focusLabel="Next Step"
+          focus="Watch quickly. Go deeper when ready."
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <TrackedAnchor
@@ -54,7 +54,7 @@ export default function SocialHubPage() {
               location="social_hub_hero"
               className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
             >
-              Watch Video Hub
+              Watch Videos
             </TrackedLink>
           </div>
         </PageHero>
