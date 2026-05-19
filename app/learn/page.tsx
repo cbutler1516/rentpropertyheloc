@@ -77,12 +77,12 @@ export default function LearnPage() {
           videoSrc="/videos/loan-playbook-learn-film-room.mp4"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
-            <a
+            <Link
               href="/learn/buyer-readiness"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
               Start Buyer Strategy
-            </a>
+            </Link>
           </div>
         </PageHero>
 

@@ -5,6 +5,7 @@ import {
   loanOfficers,
   type LicensedState,
 } from "../lib/licensing";
+import { FooterResourceLinks } from "./footer-resource-links";
 
 type DisclosureBlockProps = {
   title: string;
@@ -40,6 +41,7 @@ export function LicensingGrid({
 export function ComplianceFooter() {
   return (
     <div className="compliance-footer" aria-label="Licensing and disclosures">
+      <FooterResourceLinks />
       <div className="compliance-footer-top">
         <div>
           <p className="compliance-kicker">Licensing + Disclosures</p>

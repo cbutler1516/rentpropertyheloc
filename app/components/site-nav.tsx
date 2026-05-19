@@ -30,17 +30,7 @@ const navItems = [
   {
     href: "/commercial",
     label: "Commercial",
-    description: "Investor and operator scenarios",
-  },
-  {
-    href: "/scenarios",
-    label: "Scenarios",
-    description: "Borrower & agent paths",
-  },
-  {
-    href: "/geo",
-    label: "Markets",
-    description: "Washington local SEO",
+    description: "Investor and operator paths",
   },
   {
     href: "/videos",
@@ -86,7 +76,7 @@ export function SiteNav() {
 
   return (
     <header className="nav-glass sticky top-0 z-50">
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4 md:px-10 md:py-5">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-6 py-4 md:gap-6 md:px-10 md:py-5 lg:gap-8">
         <Link
           href="/"
           className="nav-brand"
@@ -96,7 +86,7 @@ export function SiteNav() {
         </Link>
 
         <nav
-          className="hidden items-center gap-0.5 rounded-full border border-white/[0.06] bg-black/20 p-1 font-mono text-[10px] tracking-[0.12em] text-zinc-500 uppercase md:flex"
+          className="nav-primary hidden items-center gap-1 rounded-full border border-white/[0.06] bg-black/20 p-1.5 font-mono text-[10px] tracking-[0.12em] text-zinc-500 uppercase md:flex lg:gap-1.5 lg:p-2"
           aria-label="Primary navigation"
         >
           {navItems.map((item) => {
@@ -116,7 +106,7 @@ export function SiteNav() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="nav-cta-group hidden shrink-0 items-center gap-2.5 md:flex lg:gap-3">
           <TrackedLink
             href={secondaryNavCta.href}
             location="site_nav"

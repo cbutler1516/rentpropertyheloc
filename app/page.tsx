@@ -46,18 +46,18 @@ const paths = [
     cta: "Review Commercial Options",
   },
   {
-    label: "Browse Scenarios",
-    title: "Find your financing scenario.",
-    href: "/scenarios",
-    description: "Buyer, homeowner, agent, and commercial paths.",
-    cta: "Explore Scenarios",
+    label: "Buyer Guidance",
+    title: "Prepare before the offer.",
+    href: "/buyers",
+    description: "Readiness, timing, and financing clarity for your purchase.",
+    cta: "Start Buyer Guidance",
   },
   {
-    label: "Licensed Markets",
-    title: "State and metro strategy.",
-    href: "/geo",
-    description: "Washington, Arizona, California, Texas, Florida, and more.",
-    cta: "Explore Markets",
+    label: "Local Financing",
+    title: "Guidance for your market.",
+    href: "/washington-mortgage",
+    description: "State and metro context when geography shapes the decision.",
+    cta: "View Local Guidance",
   },
 ];
 
@@ -169,7 +169,7 @@ export default function Home() {
             </RevealGroup>
 
             <RevealGroup
-              className="mt-14 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:mt-20 md:grid-cols-2 lg:grid-cols-6"
+              className="mt-14 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:mt-20 md:grid-cols-2 lg:grid-cols-5"
               stagger={150}
             >
               {paths.map((path, index) => (
