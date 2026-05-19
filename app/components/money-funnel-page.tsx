@@ -415,9 +415,9 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                 <div className="mb-10">
                   <ApplicationCta
                     location={`${funnel.slug}_application`}
-                    title="Ready for full review?"
-                    body="Start the secure application after you have the strategy context."
-                    label="Start Secure Application"
+                    title="Ready for lender review?"
+                    body="Continue to the secure application through Broadview Lending, powered by Barrett Financial Group."
+                    label="Apply Through Broadview Lending"
                   />
                 </div>
               ) : null}

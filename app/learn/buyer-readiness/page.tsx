@@ -349,9 +349,9 @@ export default function BuyerReadinessPage() {
             <div className="mt-10">
               <ApplicationCta
                 location="buyer_readiness_application"
-                title="Ready for full pre-approval?"
-                body="Start the secure application when you are ready for a full mortgage review."
-                label="Continue With Full Pre-Approval"
+                title="Ready for full pre-approval review?"
+                body="Continue to the secure application through Broadview Lending, powered by Barrett Financial Group."
+                label="Apply Through Broadview Lending"
               />
             </div>
             <RevealGroup

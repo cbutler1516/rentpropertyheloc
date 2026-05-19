@@ -13,9 +13,9 @@ const applicationUrl =
   "https://broadviewlending.my1003app.com/1585236/register?time=1779152717351";
 
 const nextSteps = [
-  "You will leave The Loan Playbook and continue in a secure mortgage application portal.",
-  "The application collects the details needed for a full review.",
-  "If something is unclear, the strategy conversation can still happen alongside the application.",
+  "The Loan Playbook is the education and strategy layer.",
+  "Your mortgage application is handled through Broadview Lending, powered by Barrett Financial Group.",
+  "You will continue into the secure encrypted mortgage application portal.",
 ];
 
 const prepItems = [
@@ -27,7 +27,7 @@ const prepItems = [
 export const metadata: Metadata = {
   title: "Apply | The Loan Playbook",
   description:
-    "Start the secure mortgage application process through the Broadview Lending application portal.",
+    "Start the secure mortgage application process through Broadview Lending, powered by Barrett Financial Group.",
 };
 
 export default function ApplyPage() {
@@ -54,9 +54,9 @@ export default function ApplyPage() {
         <PageHero
           eyebrow="Secure Application"
           title="Ready to move forward?"
-          lead="Start the application when you are ready for a full mortgage review."
+          lead="Applications are handled through Broadview Lending, powered by Barrett Financial Group."
           focusLabel="What Happens"
-          focus="Strategy-first guidance stays available. The application simply starts the secure review."
+          focus="The Loan Playbook remains your strategy layer. Broadview Lending handles the secure mortgage application."
           videoSrc="/videos/loan-playbook-tennis-about.mp4"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
@@ -65,11 +65,11 @@ export default function ApplyPage() {
               target="_blank"
               rel="noreferrer"
               location="apply_hero"
-              label="Start Secure Application"
+              label="Apply Through Broadview Lending"
               eventType="apply_cta"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              Start Secure Application
+              Apply Through Broadview Lending
             </TrackedAnchor>
             <TrackedLink
               href="/learn/buyer-readiness"
@@ -88,7 +88,7 @@ export default function ApplyPage() {
             <SectionHeader
               eyebrow="Application Transition"
               title="You are moving into the secure portal."
-              lead="No iframe. No clutter. Just a clean handoff to the encrypted application experience."
+              lead="A clean handoff from The Loan Playbook to Broadview Lending's encrypted mortgage application experience."
             />
             <RevealGroup className="grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70">
               {nextSteps.map((step, index) => (
@@ -118,12 +118,13 @@ export default function ApplyPage() {
                   Secure + Guided
                 </p>
                 <h2 className="reveal-item mt-5 text-3xl font-semibold tracking-[-0.03em] text-white md:text-4xl">
-                  Encrypted application. No-pressure support.
+                  Broadview Lending handles the application.
                 </h2>
                 <p className="reveal-item mt-6 leading-relaxed text-zinc-500">
-                  The application portal is designed for full mortgage review.
-                  The Loan Playbook remains your strategy layer before, during,
-                  and after the application.
+                  Broadview Lending, powered by Barrett Financial Group, provides
+                  the secure application path and direct lending support. The
+                  Loan Playbook remains the strategy-first guide around the
+                  process.
                 </p>
               </RevealGroup>
 
@@ -150,14 +151,14 @@ export default function ApplyPage() {
                 target="_blank"
                 rel="noreferrer"
                 location="apply_body"
-                label="Start Secure Application"
+                label="Start Secure Mortgage Application"
                 eventType="apply_cta"
                 className="btn-primary inline-flex h-14 w-fit items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
               >
-                Start Secure Application
+                Start Secure Mortgage Application
               </TrackedAnchor>
               <p className="max-w-md font-mono text-[10px] leading-relaxed tracking-[0.16em] text-zinc-600 uppercase">
-                Secure portal · Strategy-first support · No-pressure guidance
+                Broadview Lending · Powered by Barrett Financial Group · Secure portal
               </p>
             </div>
           </div>

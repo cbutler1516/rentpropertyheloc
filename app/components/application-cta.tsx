@@ -10,13 +10,13 @@ type ApplicationCtaProps = {
 export function ApplicationCta({
   location,
   title = "Ready to move forward?",
-  body = "Continue to a secure mortgage application when you are ready for a full review.",
-  label = "Start Secure Application",
+  body = "Continue to the secure application through Broadview Lending, powered by Barrett Financial Group.",
+  label = "Apply Through Broadview Lending",
 }: ApplicationCtaProps) {
   return (
     <div className="reveal-item border border-zinc-900/80 bg-[#050505] p-6 md:p-7">
       <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-        High-Intent Next Step
+        Secure Application
       </p>
       <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em] text-white">
         {title}
