@@ -15,6 +15,9 @@ export const metadata: Metadata = {
 export default function CommercialPage() {
   return (
     <InternalPage
+      contentSurface="commercial"
+      featuredTitle="Featured for investors"
+      featuredLead="Structure-first guides and market context for commercial-adjacent paths."
       eyebrow="Commercial Strategy"
       title="Commercial lending rewards structure, not speed."
       lead="For investors and operators who need the deal to read clearly."

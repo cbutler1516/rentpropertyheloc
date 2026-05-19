@@ -14,7 +14,10 @@ import {
 import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
 import { SiteNav } from "../components/site-nav";
+import { FeaturedContentSection } from "../components/featured-content-section";
 import { LicensedMarketsRail } from "../components/licensed-markets-rail";
+import { StickyMobileCta } from "../components/sticky-mobile-cta";
+import { TrustStack } from "../components/trust-stack";
 import { TrackedLink } from "../components/tracked-link";
 
 export const metadata: Metadata = {
@@ -94,20 +97,20 @@ export default function AgentsPage() {
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <TrackedLink
-              href="/agents/financing-playbook"
-              location="agents_hero"
-              label="Explore Agent Playbook"
-              className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
-            >
-              Explore Agent Playbook
-            </TrackedLink>
-            <TrackedLink
               href="#agent-strategy"
               location="agents_hero"
               label="Talk With Our Team"
-              className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
+              className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
               Talk With Our Team
+            </TrackedLink>
+            <TrackedLink
+              href="/agents/financing-playbook"
+              location="agents_hero"
+              label="Agent playbook"
+              className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
+            >
+              Agent Playbook
             </TrackedLink>
           </div>
         </PageHero>
@@ -168,15 +171,29 @@ export default function AgentsPage() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
+        <FeaturedContentSection
+          surface="agents"
+          title="Featured for agents"
+          lead="Videos and guides that sharpen buyer conversations."
+        />
+
         <LicensedMarketsRail
           title="Local context for client conversations."
           lead="Share state and metro pages when geography shapes the financing story."
         />
 
+        <TrustStack audience="agent" />
+
         <div id="agent-strategy">
           <ConversionCTA {...conversionCtas.agentPartnership} />
         </div>
       </main>
+
+      <StickyMobileCta
+        href="#agent-strategy"
+        label="Talk With Our Team"
+        location="agents_sticky"
+      />
 
       <footer className="relative z-10 border-t border-zinc-900/60 py-10">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-6 font-mono text-[10px] tracking-widest text-zinc-600 uppercase md:flex-row md:items-center md:justify-between md:px-10">

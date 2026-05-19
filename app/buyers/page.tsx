@@ -15,14 +15,18 @@ export const metadata: Metadata = {
 export default function BuyersPage() {
   return (
     <InternalPage
+      contentSurface="buyers"
+      featuredTitle="Featured for buyers"
+      featuredLead="Videos, guides, and Puget Sound context before you write the offer."
       eyebrow="Buyer Strategy"
       title="Enter the market with a plan, not a guess."
       lead="For buyers who want clarity before the search gets loud."
       focus="Readiness, timing, leverage, and loan choices should be clear before the offer."
       strategyVisual="football-buyers"
       heroVideoSrc="/videos/loan-playbook-commercial-golf.mp4"
+      founderAudience="buyer"
       primaryCta={{ href: "#buyer-strategy", label: "Start Your Buyer Strategy" }}
-      secondaryCta={{ href: "/videos", label: "Watch First" }}
+      stickyCta={{ href: "#buyer-strategy", label: "Start Buyer Strategy" }}
       sections={[
         {
           label: "01 / Readiness",

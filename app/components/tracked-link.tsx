@@ -9,6 +9,7 @@ import {
   trackCtaClick,
   trackEvent,
   trackRelatedGuideClick,
+  trackReviewCtaClick,
   trackSocialOutboundClick,
   trackStickyCtaClick,
   trackThumbnailClick,
@@ -23,7 +24,8 @@ type TrackableClickType =
   | "social"
   | "sticky_cta"
   | "thumbnail"
-  | "video";
+  | "video"
+  | "review";
 
 function trackClickByType({
   eventType = "cta",
@@ -70,6 +72,11 @@ function trackClickByType({
 
   if (eventType === "video") {
     trackVideoClick({ label, href, location });
+    return;
+  }
+
+  if (eventType === "review") {
+    trackReviewCtaClick({ label, href, location });
     return;
   }
 

@@ -20,6 +20,9 @@ export const analyticsEvents = {
   stickyCtaClick: "sticky_cta_click",
   thumbnailClick: "thumbnail_click",
   videoClick: "video_click",
+  videoEngagement: "video_engagement",
+  formAbandonment: "form_abandonment",
+  reviewCtaClick: "review_cta_click",
 } as const;
 
 declare global {
@@ -242,5 +245,47 @@ export function trackStickyCtaClick(payload: {
     cta_label: payload.label,
     destination: payload.href,
     cta_location: payload.location,
+  });
+}
+
+export function trackFormAbandonment(payload: {
+  formType: string;
+  leadIntent?: string;
+  fieldsStarted?: number;
+  page?: string;
+}) {
+  trackEvent(analyticsEvents.formAbandonment, {
+    form_type: payload.formType,
+    lead_intent: payload.leadIntent,
+    fields_started: payload.fieldsStarted,
+    source_page: payload.page,
+  });
+}
+
+export function trackReviewCtaClick(payload: {
+  label: string;
+  href: string;
+  location?: string;
+}) {
+  trackEvent(analyticsEvents.reviewCtaClick, {
+    cta_label: payload.label,
+    destination: payload.href,
+    cta_location: payload.location,
+  });
+}
+
+export function trackVideoEngagement(payload: {
+  action: "play" | "pause" | "progress" | "complete";
+  label: string;
+  progressPercent?: number;
+  location?: string;
+  videoSrc?: string;
+}) {
+  trackEvent(analyticsEvents.videoEngagement, {
+    engagement_action: payload.action,
+    media_label: payload.label,
+    progress_percent: payload.progressPercent,
+    media_location: payload.location,
+    video_src: payload.videoSrc,
   });
 }

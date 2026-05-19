@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
 };
 
-const buyerReadinessVideo = getSocialPostBySlug("buyer-readiness-before-search");
+const buyerReadinessVideo = getSocialPostBySlug("buyer-preapproval-first-step");
 
 const buyerAnxiety = [
   "Shopping before understanding payment",

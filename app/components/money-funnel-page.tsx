@@ -13,8 +13,10 @@ import { SchedulingLink } from "./scheduling-cta";
 import { SiteNav } from "./site-nav";
 import { StickyMobileCta } from "./sticky-mobile-cta";
 import { TrackedAnchor, TrackedLink } from "./tracked-link";
+import { optInCopyByAudience } from "../lib/content-engine";
 import type { MoneyFunnel } from "../lib/money-funnels";
-import { getSocialPostBySlug, type SocialPost } from "../lib/social-posts";
+import type { HeroVideo } from "../lib/hero-videos";
+import { getSocialPostBySlug } from "../lib/social-posts";
 
 const applicationCtaSlugs = new Set([
   "seller-concessions",
@@ -57,37 +59,17 @@ function getFunnelIntent(funnel: MoneyFunnel): LeadIntent {
 }
 
 function getMicroOptInCopy(intent: LeadIntent) {
-  if (intent === "homeowner") {
-    return {
-      title: "Get homeowner strategy updates.",
-      body: "Refi, HELOC, equity, and payment timing notes.",
-      submitLabel: "Get Updates",
-      optInType: "Homeowner Strategy Updates",
-    };
-  }
-
-  if (intent === "agent") {
-    return {
-      title: "Get agent financing insights.",
-      body: "Buyer conversation ideas and financing context.",
-      submitLabel: "Get Insights",
-      optInType: "Agent Financing Insights",
-    };
-  }
-
-  return {
-    title: "Get buyer prep tips.",
-    body: "Payment, cash, and offer prep notes.",
-    submitLabel: "Get Tips",
-    optInType: "Buyer Prep Tips",
-  };
+  if (intent === "homeowner") return optInCopyByAudience.homeowner;
+  if (intent === "agent") return optInCopyByAudience.agent;
+  if (intent === "commercial") return optInCopyByAudience.commercial;
+  return optInCopyByAudience.buyer;
 }
 
 export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
   const featuredPost = getSocialPostBySlug(funnel.videoSlug);
   const relatedPosts = funnel.relatedSocialSlugs
     .map((slug) => getSocialPostBySlug(slug))
-    .filter((post): post is SocialPost => Boolean(post));
+    .filter((post): post is HeroVideo => Boolean(post));
   const leadIntent = getFunnelIntent(funnel);
   const optIn = getMicroOptInCopy(leadIntent);
   const showApplicationCta = applicationCtaSlugs.has(funnel.slug);
@@ -394,7 +376,7 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                 {relatedPosts.map((post) => (
                   <TrackedLink
                     key={post.slug}
-                    href={`/social/${post.slug}`}
+                    href={`/videos/${post.slug}`}
                     location={`${funnel.slug}_related_videos`}
                     label={post.title}
                     eventType="thumbnail"

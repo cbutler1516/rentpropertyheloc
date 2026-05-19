@@ -13,9 +13,9 @@ const navItems = [
     description: "Start with your number",
   },
   {
-    href: "/learn/refinance-timing",
+    href: "/homeowners",
     label: "Homeowners",
-    description: "Review refinance timing",
+    description: "Refinance, equity, and timing",
   },
   {
     href: "/agents",

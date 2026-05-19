@@ -62,6 +62,13 @@ export const conversionCtas = {
     formType: "Commercial Scenario Review" as const,
     submitLabel: "Talk Through a Scenario",
   },
+  homeownerStrategy: {
+    eyebrow: "Homeowner Strategy Review",
+    title: "Review timing before you react to headlines.",
+    body: "Refinance, HELOC, and equity paths framed around your household—not rate noise.",
+    formType: "Homeowner Strategy Review" as const,
+    submitLabel: "Review Refinance Timing",
+  },
   newsletter: {
     eyebrow: "Content / Newsletter Signup",
     title: "Get mortgage updates.",

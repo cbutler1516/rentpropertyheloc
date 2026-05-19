@@ -9,8 +9,13 @@ import { ComplianceFooter } from "./compliance-footer";
 import { PageAmbient } from "./page-ambient";
 import { RevealGroup } from "./reveal-group";
 import { SiteNav } from "./site-nav";
+import type { ContentSurface } from "../lib/content-engine";
 import type { SportsStrategyVariant } from "./sports-strategy-layer";
+import { FeaturedContentSection } from "./featured-content-section";
+import { StickyMobileCta } from "./sticky-mobile-cta";
+import { TrustStack } from "./trust-stack";
 import { TrackedAnchor } from "./tracked-link";
+import type { FounderAudience } from "../lib/founder-profile";
 
 type InternalPageProps = {
   eyebrow: string;
@@ -29,11 +34,20 @@ type InternalPageProps = {
     body: string;
   };
   extraSections?: ReactNode;
+  contentSurface?: ContentSurface;
+  featuredTitle?: string;
+  featuredLead?: string;
   primaryCta?: {
     href: string;
     label: string;
   };
   secondaryCta?: {
+    href: string;
+    label: string;
+  };
+  founderAudience?: FounderAudience;
+  showTrustStack?: boolean;
+  stickyCta?: {
     href: string;
     label: string;
   };
@@ -49,8 +63,14 @@ export function InternalPage({
   sections,
   closing,
   extraSections,
+  contentSurface,
+  featuredTitle,
+  featuredLead,
   primaryCta,
   secondaryCta,
+  founderAudience = "general",
+  showTrustStack = true,
+  stickyCta,
 }: InternalPageProps) {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
@@ -131,7 +151,17 @@ export function InternalPage({
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
+        {contentSurface ? (
+          <FeaturedContentSection
+            surface={contentSurface}
+            title={featuredTitle}
+            lead={featuredLead}
+          />
+        ) : null}
+
         {extraSections}
+
+        {showTrustStack ? <TrustStack audience={founderAudience} /> : null}
 
         {primaryCta && !extraSections ? (
           <CTASection
@@ -144,6 +174,14 @@ export function InternalPage({
           />
         ) : null}
       </main>
+
+      {stickyCta ? (
+        <StickyMobileCta
+          href={stickyCta.href}
+          label={stickyCta.label}
+          location="internal_page_sticky"
+        />
+      ) : null}
 
       <footer className="relative z-10 border-t border-zinc-900/60 py-10">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-6 font-mono text-[10px] tracking-widest text-zinc-600 uppercase md:flex-row md:items-center md:justify-between md:px-10">

@@ -22,6 +22,7 @@ const corePages = [
   "/agents/financing-playbook",
   "/apply",
   "/buyers",
+  "/homeowners",
   "/commercial",
   "/guides",
   "/learn",

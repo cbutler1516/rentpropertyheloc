@@ -1,7 +1,6 @@
 import Script from "next/script";
 import { AnalyticsPageView } from "./analytics-page-view";
 import { BehaviorAnalytics } from "./behavior-analytics";
-
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
 const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
 const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;

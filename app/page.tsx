@@ -1,86 +1,59 @@
 import { FooterBrand } from "./components/brand";
 import { ComplianceFooter } from "./components/compliance-footer";
 import { FooterSocialLinks } from "./components/footer-social-links";
+import { FounderAdvisorSection } from "./components/founder-advisor-section";
 import { HeroVideo } from "./components/hero-video";
+import { FeaturedContentSection } from "./components/featured-content-section";
 import { LeadCaptureForm } from "./components/lead-capture-form";
-import { StatRow } from "./components/design-system";
+import { ProofLayer } from "./components/proof-layer";
 import { PageAmbient } from "./components/page-ambient";
 import { RevealGroup } from "./components/reveal-group";
 import { SiteNav } from "./components/site-nav";
+import { StickyMobileCta } from "./components/sticky-mobile-cta";
 import { TrackedAnchor, TrackedLink } from "./components/tracked-link";
 
 const paths = [
   {
     label: "Buy a Home",
     title: "Know your number first.",
-    href: "/learn/buyer-readiness",
-    description: "Payment, cash, timing, and offer prep.",
+    href: "/buyers",
+    description: "Payment, cash, and timing before the search.",
     cta: "Start Buyer Strategy",
   },
   {
     label: "Lower My Payment",
     title: "Review refinance timing.",
-    href: "/learn/refinance-timing",
-    description: "Payment, rate movement, cash flow, and fit.",
+    href: "/homeowners",
+    description: "Break-even and cash flow—not rate panic.",
     cta: "Review Timing",
   },
   {
     label: "Use My Equity",
-    title: "Understand HELOC options.",
+    title: "Compare equity paths.",
     href: "/learn/heloc-strategy",
-    description: "Equity access without rebuilding the loan.",
+    description: "HELOC, cash-out, or hold—each solves a different problem.",
     cta: "Explore Equity",
   },
   {
-    label: "Grow My Real Estate Business",
-    title: "Support better buyer conversations.",
+    label: "Agent Support",
+    title: "Sharpen buyer conversations.",
     href: "/agents",
-    description: "For agents, teams, and partnership paths.",
-    cta: "Explore Agent Support",
+    description: "Financing context before the offer window.",
+    cta: "Agent Resources",
   },
   {
-    label: "Commercial Financing",
+    label: "Commercial",
     title: "Make the deal legible.",
     href: "/commercial",
     description: "Asset, sponsor, structure, and next steps.",
-    cta: "Review Commercial Options",
+    cta: "Commercial Review",
   },
-  {
-    label: "Buyer Guidance",
-    title: "Prepare before the offer.",
-    href: "/buyers",
-    description: "Readiness, timing, and financing clarity for your purchase.",
-    cta: "Start Buyer Guidance",
-  },
-  {
-    label: "Local Financing",
-    title: "Guidance for your market.",
-    href: "/washington-mortgage",
-    description: "State and metro context when geography shapes the decision.",
-    cta: "View Local Guidance",
-  },
-];
-
-const authorityStats = [
-  { value: "10", label: "Licensed states" },
-  { value: "2", label: "Residential + commercial" },
-  { value: "1", label: "Strategy-first approach" },
-];
-
-const founderHighlights = [
-  "Experienced mortgage advisor",
-  "Former real estate development background",
-  "Residential and commercial strategy",
-  "Capital-markets mindset",
-  "Clear financing guidance",
-  "Licensed multi-state lending context",
 ];
 
 export default function Home() {
   return (
-    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[#050505]">
+    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[#050505] pb-20 md:pb-0">
       <PageAmbient />
-      {/* Layered atmosphere */}
       <div
         className="playbook-grid playbook-grid-animated strategy-lines pointer-events-none fixed inset-0 z-0 opacity-50"
         aria-hidden
@@ -97,191 +70,140 @@ export default function Home() {
         className="glow-orb pointer-events-none fixed -top-32 left-1/2 z-[1] h-[480px] w-[640px] -translate-x-1/2 rounded-full bg-[#7c3aed]/15 blur-[120px]"
         aria-hidden
       />
-      <div
-        className="glow-orb-delayed pointer-events-none fixed right-[-10%] bottom-[15%] z-[1] h-[420px] w-[420px] rounded-full bg-[#4c1d95]/20 blur-[110px]"
-        aria-hidden
-      />
-      <div
-        className="ambient-drift pointer-events-none fixed bottom-0 left-[-5%] z-[1] h-[300px] w-[300px] rounded-full bg-[#5b21b6]/10 blur-[90px]"
-        aria-hidden
-      />
-      <div
-        className="scan-line pointer-events-none fixed inset-x-0 top-0 z-[2] h-px bg-gradient-to-r from-transparent via-[#7c3aed]/30 to-transparent"
-        aria-hidden
-      />
 
       <SiteNav />
 
       <main className="relative z-10 flex flex-1 flex-col">
-        {/* Hero */}
-        <section className="relative isolate mx-auto flex w-full max-w-7xl flex-col justify-center px-6 pb-32 pt-16 md:px-10 md:pb-44 md:pt-28">
+        <section
+          className="relative isolate mx-auto flex w-full max-w-7xl flex-col justify-center px-6 pb-20 pt-12 md:px-10 md:pb-28 md:pt-20"
+          data-analytics-section="homepage_hero"
+        >
           <HeroVideo
             src="/videos/loan-playbook-football-hero.mp4"
             loading="eager"
           />
           <div className="relative z-10 flex flex-col">
-          <p className="hero-enter hero-enter-d1 relative mb-8 font-mono text-xs tracking-[0.4em] text-[#7c3aed] uppercase">
-            Mortgage Strategy
-          </p>
-          <h1 className="hero-enter hero-enter-d2 hero-headline-glow relative max-w-5xl text-[clamp(2.75rem,8vw,5.5rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-white">
-            Make the loan
-            <br />
-            <span className="text-zinc-500">make sense.</span>
-          </h1>
-          <p className="hero-enter hero-enter-d3 relative mt-10 max-w-xl text-lg leading-relaxed text-zinc-400 md:mt-12 md:text-xl">
-            Clear next steps for buyers, homeowners, agents, and commercial borrowers.
-          </p>
-          <div className="hero-enter hero-enter-d4 relative mt-14 flex flex-col gap-4 sm:flex-row sm:items-center md:mt-16">
-            <TrackedAnchor
-              href="#paths"
-              location="homepage_hero"
-              className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
-            >
-              Choose Your Path
-            </TrackedAnchor>
-          </div>
+            <p className="hero-enter hero-enter-d1 relative mb-6 font-mono text-xs tracking-[0.4em] text-[#7c3aed] uppercase">
+              Mortgage Strategy · Washington
+            </p>
+            <h1 className="hero-enter hero-enter-d2 hero-headline-glow relative max-w-5xl text-[clamp(2.25rem,7vw,4.75rem)] leading-[0.96] font-semibold tracking-[-0.04em] text-white">
+              Make the loan
+              <br />
+              <span className="text-zinc-500">make sense.</span>
+            </h1>
+            <p className="hero-enter hero-enter-d3 relative mt-6 max-w-lg text-base leading-relaxed text-zinc-400 md:mt-8 md:max-w-xl md:text-lg">
+              Education-first guidance for buyers, homeowners, and agents in
+              Washington.
+            </p>
+            <div className="hero-enter hero-enter-d4 relative mt-8 flex flex-col gap-3 sm:flex-row sm:items-center md:mt-10">
+              <TrackedAnchor
+                href="#paths"
+                location="homepage_hero"
+                label="Choose Your Path"
+                className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
+              >
+                Choose Your Path
+              </TrackedAnchor>
+            </div>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        {/* Guided Paths */}
         <section
           id="paths"
           data-analytics-section="homepage_paths"
           className="section-flow section-matte relative border-t border-zinc-900/40 backdrop-blur-sm"
         >
           <div className="section-bridge-top" aria-hidden />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#5b21b6]/[0.04] to-transparent"
-            aria-hidden
-          />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <RevealGroup stagger={120}>
               <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                Choose Your Direction
+                Your next move
               </p>
               <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                What do you need to do?
+                What are you trying to do?
               </h2>
-              <p className="reveal-item mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500">
-                Pick the decision. We will point you to the next step.
+              <p className="reveal-item mt-4 max-w-xl text-base leading-relaxed text-zinc-500 md:text-lg">
+                One clear path—no calculator maze.
               </p>
             </RevealGroup>
 
             <RevealGroup
-              className="mt-14 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:mt-20 md:grid-cols-2 lg:grid-cols-5"
+              className="mt-10 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:mt-12 md:grid-cols-2 lg:grid-cols-5"
               stagger={150}
             >
               {paths.map((path, index) => (
-                  <TrackedLink
-                    key={path.label}
-                    href={path.href}
-                    location="homepage_audience_path"
-                    label={path.cta}
-                    className={`reveal-item group relative flex h-full min-h-[17rem] flex-col bg-[#050505] p-7 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a] md:p-8 ${
-                      index === 0 ? "lg:col-span-2" : "lg:col-span-1"
-                    }`}
-                  >
-                    <div
-                      className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[var(--duration-hover)] group-hover:opacity-100"
-                      style={{
-                        background:
-                          "radial-gradient(ellipse at top left, rgba(91, 33, 182, 0.12), transparent 60%)",
-                      }}
-                      aria-hidden
-                    />
-                    <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                      {path.label}
+                <TrackedLink
+                  key={path.label}
+                  href={path.href}
+                  location="homepage_audience_path"
+                  label={path.cta}
+                  className={`reveal-item group relative flex h-full min-h-[14rem] flex-col bg-[#050505] p-6 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a] md:min-h-[15rem] md:p-7 ${
+                    index === 0 ? "lg:col-span-2" : "lg:col-span-1"
+                  }`}
+                >
+                  <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
+                    {path.label}
+                  </span>
+                  <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.03em] text-white">
+                    {path.title}
+                  </h3>
+                  <p className="relative mt-4 flex-1 text-sm leading-relaxed text-zinc-500 group-hover:text-zinc-400">
+                    {path.description}
+                  </p>
+                  <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-medium text-white">
+                    {path.cta}
+                    <span className="text-[#7c3aed]" aria-hidden>
+                      →
                     </span>
-                    <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.03em] text-white transition-transform duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-0.5">
-                      {path.title}
-                    </h3>
-                    <p className="relative mt-4 flex-1 text-sm leading-relaxed text-zinc-500 transition-[color] duration-[var(--duration-hover)] group-hover:text-zinc-400">
-                      {path.description}
-                    </p>
-                    <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-medium text-white transition-all duration-[var(--duration-hover)] ease-[var(--ease-premium)] group-hover:translate-x-1">
-                      {path.cta}
-                      <span className="text-[#7c3aed]" aria-hidden>
-                        →
-                      </span>
-                    </span>
-                  </TrackedLink>
+                  </span>
+                </TrackedLink>
               ))}
             </RevealGroup>
+            <p className="mt-10 text-center text-sm text-zinc-600">
+              Puget Sound depth:{" "}
+              <TrackedLink
+                href="/washington-mortgage"
+                location="homepage_local"
+                label="Washington"
+                className="text-zinc-400 hover:text-white"
+              >
+                Washington
+              </TrackedLink>
+              {" · "}
+              <TrackedLink
+                href="/markets/seattle"
+                location="homepage_local"
+                label="Seattle"
+                className="text-zinc-400 hover:text-white"
+              >
+                Seattle
+              </TrackedLink>
+              {" · "}
+              <TrackedLink
+                href="/markets/bellevue"
+                location="homepage_local"
+                label="Bellevue"
+                className="text-zinc-400 hover:text-white"
+              >
+                Bellevue
+              </TrackedLink>
+            </p>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        {/* Authority */}
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
-          <div className="section-bridge-top" aria-hidden />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#5b21b6]/[0.035] via-transparent to-transparent"
-            aria-hidden
-          />
-          <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-6 md:grid-cols-[0.78fr_1.22fr] md:gap-16 md:px-10">
-            <RevealGroup
-              className="relative overflow-hidden border border-zinc-900/80 bg-[#050505] p-6 md:p-8"
-              stagger={100}
-            >
-              <div className="reveal-item relative aspect-[4/5] overflow-hidden border border-zinc-900/80 bg-[#080808]">
-                <div
-                  className="playbook-grid pointer-events-none absolute inset-0 opacity-25"
-                  aria-hidden
-                />
-                <div
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#7c3aed]/15 via-transparent to-black/50"
-                  aria-hidden
-                />
-                <div className="relative flex h-full flex-col justify-between p-6">
-                  <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
-                    Founder Profile
-                  </p>
-                  <h3 className="max-w-xs self-end text-3xl font-semibold tracking-[-0.03em] text-white">
-                    Mortgage, real estate, and strategy.
-                  </h3>
-                </div>
-              </div>
-            </RevealGroup>
+        <FeaturedContentSection
+          surface="homepage"
+          title="Start here"
+          lead="Three curated picks—video, guide, and local context."
+          eyebrow="Featured"
+        />
 
-            <RevealGroup className="flex flex-col justify-center" stagger={120}>
-              <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                Authority
-              </p>
-              <h2 className="reveal-item mt-5 max-w-4xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-6xl">
-                Built by an advisor.
-                <br />
-                Focused on clarity.
-              </h2>
-              <p className="reveal-item mt-8 max-w-2xl text-lg leading-relaxed text-zinc-400">
-                Advisory work, development context, commercial finance, and
-                strategy-first guidance.
-              </p>
-              <StatRow className="reveal-item mt-10" stats={authorityStats} />
-              <div className="reveal-item mt-10 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 sm:grid-cols-2">
-                {founderHighlights.map((item) => (
-                  <div key={item} className="bg-[#050505] p-4">
-                    <p className="font-mono text-[10px] tracking-[0.18em] text-zinc-500 uppercase">
-                      {item}
-                    </p>
-                  </div>
-                ))}
-              </div>
-              <div className="reveal-item mt-10 flex flex-col gap-4 sm:flex-row">
-                <TrackedLink
-                  href="/about"
-                  location="homepage_authority"
-                  className="btn-ghost inline-flex h-14 w-fit items-center justify-center border border-zinc-800 px-8 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
-                >
-                  About
-                </TrackedLink>
-              </div>
-            </RevealGroup>
-          </div>
-          <div className="section-bridge-bottom" aria-hidden />
-        </section>
+        <FounderAdvisorSection audience="general" />
 
-        {/* CTA */}
+        <ProofLayer />
+
         <section
           id="cta"
           className="section-flow relative"
@@ -289,45 +211,37 @@ export default function Home() {
         >
           <div className="section-bridge-top" aria-hidden />
           <div className="mx-auto w-full max-w-7xl px-6 md:px-10">
-              <div
-                data-parallax="0.03"
-                className="cta-panel group relative overflow-hidden border border-zinc-900/80 bg-[#0a0a0a] px-8 py-20 md:px-20 md:py-28"
-              >
-                <div
-                  className="playbook-grid playbook-grid-animated pointer-events-none absolute inset-0 opacity-30"
-                  aria-hidden
+            <div className="cta-panel group relative overflow-hidden border border-zinc-900/80 bg-[#0a0a0a] px-6 py-16 md:px-16 md:py-24">
+              <RevealGroup className="relative" stagger={110}>
+                <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
+                  Next step
+                </p>
+                <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
+                  Talk through your scenario.
+                </h2>
+                <p className="reveal-item mt-6 max-w-lg text-base leading-relaxed text-zinc-400 md:mt-8 md:text-lg">
+                  Share your goal and timeline. We respond with context—not a
+                  rate quote.
+                </p>
+                <LeadCaptureForm
+                  formType="Buyer Strategy Call"
+                  submitLabel="Start Your Strategy"
+                  intent="buyer"
                 />
-                <div
-                  className="cta-glow pointer-events-none absolute -top-1/2 left-1/2 h-full w-full -translate-x-1/2 rounded-full bg-[#5b21b6]/15 blur-[100px]"
-                  aria-hidden
-                />
-                <div
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#5b21b6]/12 via-transparent to-transparent"
-                  aria-hidden
-                />
-                <RevealGroup className="relative" stagger={110}>
-                  <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                    Start the Conversation
-                  </p>
-                  <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-6xl">
-                    Start the conversation.
-                  </h2>
-                  <p className="reveal-item mt-8 max-w-lg text-lg leading-relaxed text-zinc-400 md:mt-10">
-                    Tell us what you are trying to do next.
-                  </p>
-                  <LeadCaptureForm
-                    formType="Buyer Strategy Call"
-                    submitLabel="Start Your Strategy"
-                    intent="buyer"
-                  />
-                  <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
-                    No-pressure guidance · No rate quote or loan commitment
-                  </p>
-                </RevealGroup>
-              </div>
+                <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
+                  No-pressure guidance · Not a loan application
+                </p>
+              </RevealGroup>
+            </div>
           </div>
         </section>
       </main>
+
+      <StickyMobileCta
+        href="#cta"
+        label="Start Your Strategy"
+        location="homepage_sticky"
+      />
 
       <footer className="relative z-10 border-t border-zinc-900/60 py-12 md:py-14">
         <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-5 px-6 font-mono text-[10px] tracking-widest text-zinc-600 uppercase md:flex-row md:px-10">

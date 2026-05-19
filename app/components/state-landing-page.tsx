@@ -11,6 +11,7 @@ import { SiteNav } from "./site-nav";
 import { TrackedAnchor, TrackedLink } from "./tracked-link";
 import { getGeoMarketsByStateKey } from "../lib/geo-markets";
 import type { StateMarket } from "../lib/state-markets";
+import { getLocalAuthoritySnippet } from "../lib/local-authority";
 import { getScenarioFormType } from "../lib/scenario-registry";
 
 export function StateLandingPage({ market }: { market: StateMarket }) {
@@ -32,7 +33,12 @@ export function StateLandingPage({ market }: { market: StateMarket }) {
           focus={market.heroFocus}
           videoSrc="/videos/loan-playbook-commercial-golf.mp4"
         >
-          <div className="reveal-item mt-8 max-w-2xl">
+          <div className="reveal-item mt-8 max-w-2xl space-y-6">
+            {market.key === "washington" ? (
+              <p className="text-sm leading-relaxed text-zinc-500">
+                {getLocalAuthoritySnippet("general")}
+              </p>
+            ) : null}
             <LicensingTrust />
           </div>
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">

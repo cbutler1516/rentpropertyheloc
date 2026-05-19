@@ -1,7 +1,18 @@
 "use client";
 
-import { useId, useState, type FormEvent } from "react";
-import { trackLeadFormStart, trackLeadSubmit } from "../lib/analytics-events";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
+import {
+  trackFormAbandonment,
+  trackLeadFormStart,
+  trackLeadSubmit,
+} from "../lib/analytics-events";
 
 export type LeadFormType =
   | "Buyer Strategy Call"
@@ -53,13 +64,71 @@ export function LeadCaptureForm({
   const formId = useId();
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
-  const [hasTrackedStart, setHasTrackedStart] = useState(false);
+  const [fieldsStarted, setFieldsStarted] = useState(0);
+  const abandonmentTracked = useRef(false);
+  const hasTrackedStartRef = useRef(false);
+  const submitStateRef = useRef(submitState);
+  const fieldsStartedRef = useRef(0);
   const leadIntent = intent ?? getLeadIntent(formType);
 
-  function trackFormStart() {
-    if (hasTrackedStart) return;
+  useEffect(() => {
+    submitStateRef.current = submitState;
+  }, [submitState]);
 
-    setHasTrackedStart(true);
+  useEffect(() => {
+    fieldsStartedRef.current = fieldsStarted;
+  }, [fieldsStarted]);
+
+  function countStartedFields(form: HTMLFormElement) {
+    const names = ["name", "email", "phone", "role", "message"] as const;
+    return names.filter((name) => {
+      const field = form.elements.namedItem(name);
+      if (!field) return false;
+      const value =
+        field instanceof HTMLSelectElement
+          ? field.value
+          : field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement
+            ? field.value.trim()
+            : "";
+      return value.length > 0;
+    }).length;
+  }
+
+  const trackAbandonmentOnce = useCallback(
+    (form: HTMLFormElement | null) => {
+      if (
+        abandonmentTracked.current ||
+        !hasTrackedStartRef.current ||
+        submitStateRef.current !== "idle"
+      ) {
+        return;
+      }
+      abandonmentTracked.current = true;
+      const started = form ? countStartedFields(form) : fieldsStartedRef.current;
+      trackFormAbandonment({
+        formType,
+        leadIntent,
+        fieldsStarted: started,
+        page: typeof window !== "undefined" ? window.location.pathname : "",
+      });
+    },
+    [formType, leadIntent],
+  );
+
+  useEffect(() => {
+    function onPageHide() {
+      const form = document.getElementById(formId) as HTMLFormElement | null;
+      trackAbandonmentOnce(form);
+    }
+
+    window.addEventListener("pagehide", onPageHide);
+    return () => window.removeEventListener("pagehide", onPageHide);
+  }, [formId, trackAbandonmentOnce]);
+
+  function trackFormStart() {
+    if (hasTrackedStartRef.current) return;
+
+    hasTrackedStartRef.current = true;
     trackLeadFormStart({
       formType,
       leadIntent,
@@ -147,9 +216,18 @@ export function LeadCaptureForm({
 
   return (
     <form
-      className="reveal-item mt-10 grid gap-4 md:grid-cols-2"
+      id={formId}
+      className="reveal-item mt-8 grid gap-3 md:mt-10 md:grid-cols-2 md:gap-4"
       onSubmit={onSubmit}
-      onFocusCapture={trackFormStart}
+      onFocusCapture={(event) => {
+        trackFormStart();
+        const count = countStartedFields(event.currentTarget);
+        if (count > fieldsStarted) setFieldsStarted(count);
+      }}
+      onChange={(event) => {
+        const count = countStartedFields(event.currentTarget);
+        if (count > fieldsStarted) setFieldsStarted(count);
+      }}
       data-analytics-section="lead_capture"
     >
       <input

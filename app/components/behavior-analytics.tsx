@@ -6,12 +6,22 @@ import { trackScrollDepth, trackSectionView } from "../lib/analytics-events";
 
 const scrollMilestones = [25, 50, 75, 100] as const;
 
+const behaviorPathPrefixes = [
+  "/",
+  "/buyers",
+  "/homeowners",
+  "/agents",
+  "/commercial",
+  "/videos",
+  "/learn",
+  "/guides",
+  "/markets",
+  "/washington-mortgage",
+];
+
 function shouldTrackBehavior(pathname: string) {
-  return (
-    pathname === "/" ||
-    pathname === "/videos" ||
-    pathname === "/learn" ||
-    pathname.startsWith("/learn/")
+  return behaviorPathPrefixes.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );
 }
 
@@ -84,7 +94,7 @@ export function BehaviorAnalytics() {
           observer.unobserve(entry.target);
         });
       },
-      { rootMargin: "0px 0px -25% 0px", threshold: 0.35 },
+      { rootMargin: "0px 0px -20% 0px", threshold: 0.3 },
     );
 
     sections.forEach((section) => observer.observe(section));

@@ -19,7 +19,7 @@ import {
 } from "../components/tracked-link";
 import { VideoCard } from "../components/video-card";
 import { videoSections, type VideoContent } from "../lib/content-sources";
-import { socialPosts } from "../lib/social-posts";
+import { getPublishedHeroVideos } from "../lib/hero-videos";
 
 export const metadata: Metadata = {
   title: "Videos | The Loan Playbook",
@@ -32,7 +32,7 @@ const allVideos = videoSections.flatMap((section) => section.videos);
 const featuredVideo = allVideos.find(
   (video) => video.title === "Most buyers focus on the wrong number.",
 );
-const curatedSocialPosts = socialPosts.slice(0, 5);
+const curatedHeroVideos = getPublishedHeroVideos().slice(0, 4);
 
 const categorizedVideoLanes: Array<{
   id: string;
@@ -277,15 +277,15 @@ export default function VideosPage() {
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
-              eyebrow="Recently Added"
-              title="Fresh clips."
-              lead="TikTok-first cards with guide paths."
+              eyebrow="Curated"
+              title="Hero explainers."
+              lead="Premium landing pages—not the full video library."
             />
             <RevealGroup
-              className="mt-12 grid gap-7 md:mt-16 md:grid-cols-2 md:gap-8 lg:grid-cols-5"
+              className="mt-12 grid gap-7 md:mt-16 md:grid-cols-2 md:gap-8 lg:grid-cols-4"
               stagger={90}
             >
-              {curatedSocialPosts.map((post) => (
+              {curatedHeroVideos.map((post) => (
                 <SocialPostCard key={post.slug} post={post} />
               ))}
             </RevealGroup>

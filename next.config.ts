@@ -38,6 +38,31 @@ const nextConfig: NextConfig = {
         destination: "/markets",
         permanent: true,
       },
+      {
+        source: "/videos/buyer-readiness-before-search",
+        destination: "/videos/buyer-preapproval-first-step",
+        permanent: true,
+      },
+      {
+        source: "/videos/mortgage-strategy-clear-idea",
+        destination: "/videos/buyer-buydown-and-arm-options",
+        permanent: true,
+      },
+      {
+        source: "/videos/market-context-without-noise",
+        destination: "/videos/homeowner-refinance-break-even-roi",
+        permanent: true,
+      },
+      {
+        source: "/videos/agent-financing-conversation",
+        destination: "/videos/buyer-prequalified-vs-preapproved",
+        permanent: true,
+      },
+      {
+        source: "/videos/creative-mortgage-media-test",
+        destination: "/videos/market-strategy-over-rate-noise",
+        permanent: true,
+      },
     ];
   },
 };

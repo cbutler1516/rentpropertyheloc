@@ -29,13 +29,13 @@ export function SocialPostCard({ post }: { post: SocialPost }) {
         </p>
         <div className="mt-6 grid gap-3 border-t border-zinc-900/80 pt-4">
           <TrackedLink
-            href={`/social/${post.slug}`}
+            href={`/videos/${post.slug}`}
             location="social_post_card"
-            label="View post page"
+            label="View hero landing page"
             eventType="thumbnail"
             className="inline-flex items-center gap-2 text-sm font-medium text-white"
           >
-            View Clip Page
+            Watch Explainer
             <span className="text-[#7c3aed]" aria-hidden>
               →
             </span>

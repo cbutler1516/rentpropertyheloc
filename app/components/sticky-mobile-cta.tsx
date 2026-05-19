@@ -14,7 +14,7 @@ export function StickyMobileCta({
   location,
 }: StickyMobileCtaProps) {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-900/80 bg-[#050505]/95 px-4 py-3 backdrop-blur-xl md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-900/80 bg-[#050505]/95 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl md:hidden">
       <div className="mx-auto flex max-w-md items-center justify-between gap-4">
         <div>
           <p className="font-mono text-[9px] tracking-[0.22em] text-[#7c3aed] uppercase">
