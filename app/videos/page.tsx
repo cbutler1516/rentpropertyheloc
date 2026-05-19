@@ -252,8 +252,8 @@ export default function VideosPage() {
           eyebrow="Video + Social Hub"
           title="Mortgage media, curated."
           lead="Short clips, featured guides, and social channels in one place."
-          focusLabel="Flow"
-          focus="Watch -> read -> book."
+          focusLabel="Focus"
+          focus="Short clips. Clearer decisions."
           visual="basketball-agents"
           videoSrc="/videos/loan-playbook-videos-media-studio.mp4"
         >

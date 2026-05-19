@@ -22,7 +22,7 @@ export default function CommercialPage() {
       heroVideoSrc="/videos/loan-playbook-commercial-golf.mp4"
       primaryCta={{
         href: "#commercial-review",
-        label: "Review Commercial Financing Options",
+        label: "Review Commercial Options",
       }}
       sections={[
         {

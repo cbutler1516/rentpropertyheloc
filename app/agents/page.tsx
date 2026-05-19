@@ -85,9 +85,9 @@ export default function AgentsPage() {
         <PageHero
           eyebrow="Agent Partnership Platform"
           title="Help buyers move clearer."
-          lead="Financing context before pressure."
-          focusLabel="Platform Thesis"
-          focus="Buyer readiness. Premium education. No sales-script feel."
+          lead="For individual agents who want better lending strategy and buyer support."
+          focusLabel="Agent Path"
+          focus="Buyer readiness, financing context, and cleaner client conversations."
           visual="basketball-agents"
           videoSrc="/videos/loan-playbook-basketball-agents.mp4"
         >
@@ -95,10 +95,18 @@ export default function AgentsPage() {
             <TrackedLink
               href="/agents/financing-playbook"
               location="agents_hero"
-              label="Agent Financing Playbook"
+              label="Explore Agent Playbook"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              Agent Financing Playbook
+              Explore Agent Playbook
+            </TrackedLink>
+            <TrackedLink
+              href="#agent-strategy"
+              location="agents_hero"
+              label="Talk With Our Team"
+              className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
+            >
+              Talk With Our Team
             </TrackedLink>
           </div>
         </PageHero>
@@ -139,7 +147,7 @@ export default function AgentsPage() {
             <SectionHeader
               eyebrow="Buyer Readiness System"
               title="Prepare before pressure."
-              lead="A simple buyer sequence."
+              lead="For firm-level adoption, teams, or brokerage partnerships, use the Partners path."
             />
 
             <RevealGroup

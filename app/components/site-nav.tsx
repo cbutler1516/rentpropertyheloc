@@ -22,6 +22,16 @@ const navItems = [
     description: "Financing clarity for clients",
   },
   {
+    href: "/partners",
+    label: "Partners",
+    description: "Brokerages and teams",
+  },
+  {
+    href: "/commercial",
+    label: "Commercial",
+    description: "Investor and operator scenarios",
+  },
+  {
     href: "/videos",
     label: "Videos",
     description: "Watch first",
@@ -69,7 +79,7 @@ export function SiteNav() {
         </Link>
 
         <nav
-          className="hidden items-center gap-1 rounded-full border border-white/[0.06] bg-black/20 p-1 font-mono text-[10px] tracking-[0.18em] text-zinc-500 uppercase md:flex"
+          className="hidden items-center gap-0.5 rounded-full border border-white/[0.06] bg-black/20 p-1 font-mono text-[10px] tracking-[0.12em] text-zinc-500 uppercase md:flex"
           aria-label="Primary navigation"
         >
           {navItems.map((item) => {

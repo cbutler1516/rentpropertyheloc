@@ -44,14 +44,14 @@ export const conversionCtas = {
   agentPartnership: {
     eyebrow: "Agent Partnership Conversation",
     title: "Help buyers move clearer.",
-    body: "Education, media, market context, buyer readiness.",
+    body: "For individual agents who want stronger buyer financing conversations.",
     formType: "Agent Partnership Conversation" as const,
-    submitLabel: "Explore Agent Partnerships",
+    submitLabel: "Talk With Our Team",
   },
   brokerPartnership: {
     eyebrow: "Managing Broker Partnership",
     title: "Build a cleaner finance layer.",
-    body: "Adoption, lead paths, education, media infrastructure.",
+    body: "For managing brokers, teams, brokerages, and firms exploring compliant partnership models.",
     formType: "Managing Broker Partnership" as const,
     submitLabel: "Schedule a Broker Conversation",
   },
@@ -60,7 +60,7 @@ export const conversionCtas = {
     title: "Make the deal legible.",
     body: "Asset, sponsor, capital stack, execution risk.",
     formType: "Commercial Scenario Review" as const,
-    submitLabel: "Review Commercial Financing Options",
+    submitLabel: "Talk Through a Scenario",
   },
   newsletter: {
     eyebrow: "Content / Newsletter Signup",

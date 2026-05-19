@@ -13,6 +13,7 @@ import {
 import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
 import { SiteNav } from "../components/site-nav";
+import { TrackedAnchor } from "../components/tracked-link";
 
 export const metadata: Metadata = {
   title: "Partners | The Loan Playbook",
@@ -23,18 +24,18 @@ export const metadata: Metadata = {
 const problemAreas = [
   {
     label: "01 / Readiness",
-    title: "Growth depends on cleaner buyer conversations",
-    body: "Growth is harder when financing confusion appears late.",
+    title: "Firms need a clearer finance layer",
+    body: "Brokerage growth is harder when financing confusion appears late.",
   },
   {
     label: "02 / Content",
-    title: "Education has become a business-development channel",
-    body: "Teams need useful education that does not feel generic.",
+    title: "Teams need reusable education",
+    body: "Buyer-facing content should support advisors without feeling generic.",
   },
   {
     label: "03 / Execution",
-    title: "Financing friction affects the whole brand",
-    body: "Weak expectations affect more than one transaction.",
+    title: "Financing friction affects the brand",
+    body: "Weak expectations affect clients, agents, and leadership.",
   },
 ];
 
@@ -65,19 +66,21 @@ export default function PartnersPage() {
         <PageHero
           eyebrow="Brokerage Partnership Platform"
           title="A cleaner finance layer for firms."
-          lead="Readiness, adoption, education, and compliant partnership paths."
-          focusLabel="Executive Thesis"
-          focus="Education. Agent tools. Premium content. Compliance review."
+          lead="For managing brokers, teams, brokerages, and firms exploring compliant partnership models."
+          focusLabel="Partner Path"
+          focus="Firm-level education, agent adoption, lead paths, and compliance review."
           visual="golf-commercial"
           videoSrc="/videos/loan-playbook-commercial-golf.mp4"
         >
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
-            <a
+            <TrackedAnchor
               href="#partnership-conversation"
+              location="partners_hero"
+              label="Explore Partnership Options"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
-              Start Partnership Review
-            </a>
+              Explore Partnership Options
+            </TrackedAnchor>
           </div>
         </PageHero>
 
