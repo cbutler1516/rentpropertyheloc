@@ -45,12 +45,12 @@ export function StateLandingPage({ market }: { market: StateMarket }) {
               Start Strategy Conversation
             </TrackedAnchor>
             <TrackedAnchor
-              href="/scenarios"
+              href="/guides"
               location={`state_${market.key}_hero`}
-              label="Browse Scenarios"
+              label="Browse Financing Guides"
               className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
             >
-              Browse Scenarios
+              Browse Financing Guides
             </TrackedAnchor>
           </div>
         </PageHero>
@@ -85,7 +85,7 @@ export function StateLandingPage({ market }: { market: StateMarket }) {
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <SectionHeader
               eyebrow="Financing Paths"
-              title="Scenario relevance by topic."
+              title="Financing topics by situation."
               lead="Jumbo, condo, first-time, and refinance themes—mapped to how this state actually buys."
             />
             <RevealGroup className="mt-12 grid gap-6 md:grid-cols-2" stagger={80}>
@@ -114,7 +114,7 @@ export function StateLandingPage({ market }: { market: StateMarket }) {
               <SectionHeader
                 eyebrow="Major Markets"
                 title={`${market.name} metro strategy.`}
-                lead="Selective metro pages—depth over thin city spam. Each links to scenarios and local CTAs."
+                lead="Selective metro pages—depth over thin city spam. Each links to guides and local CTAs."
               />
               <RevealGroup
                 className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
@@ -126,7 +126,7 @@ export function StateLandingPage({ market }: { market: StateMarket }) {
                     label={metro.regionLabel}
                     title={metro.name}
                     excerpt={metro.heroLead}
-                    href={`/geo/${metro.slug}`}
+                    href={`/markets/${metro.slug}`}
                   />
                 ))}
               </RevealGroup>
@@ -137,7 +137,7 @@ export function StateLandingPage({ market }: { market: StateMarket }) {
         ) : null}
 
         <RelatedContentRail
-          title="Buyer scenarios"
+          title="Buyer guides"
           lead={`Common buyer paths in ${market.name}.`}
           scenarioSlugs={market.buyerScenarios}
           videoSlugs={market.videoSlugs}
@@ -151,7 +151,7 @@ export function StateLandingPage({ market }: { market: StateMarket }) {
         />
 
         <RelatedContentRail
-          title="Homeowner scenarios"
+          title="Homeowner guides"
           lead="Refinance, equity, and timing decisions."
           scenarioSlugs={market.homeownerScenarios}
         />
@@ -183,7 +183,7 @@ export function StateLandingPage({ market }: { market: StateMarket }) {
             <div>
               <SectionHeader
                 eyebrow="Next Step"
-                title={`Talk through a ${market.name} scenario.`}
+                title={`Talk through a ${market.name} financing goal.`}
                 lead="Send the goal, property type, and timeline. We will help frame the next move."
               />
               <div className="mt-8">
@@ -212,7 +212,7 @@ function MarketsHubLink({ marketKey }: { marketKey: StateMarket["key"] }) {
   return (
     <div className="mt-10">
       <TrackedLink
-        href="/geo"
+        href="/markets"
         location={`state_${marketKey}_metros`}
         label="Browse all markets"
         className="text-sm font-medium text-zinc-400 hover:text-white"

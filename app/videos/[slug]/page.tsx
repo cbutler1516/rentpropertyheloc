@@ -175,7 +175,7 @@ export default async function VideoLandingPage({ params }: VideoPageProps) {
 
         {relatedScenario ? (
           <RelatedContentRail
-            title="Related scenario"
+            title="Related guide"
             lead="A structured path for this topic."
             scenarioSlugs={[relatedScenario.slug]}
           />

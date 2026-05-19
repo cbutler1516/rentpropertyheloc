@@ -48,7 +48,7 @@ export default function BuyersPage() {
         <>
           <LicensedMarketsRail
             title="Where we lend—and how we think locally."
-            lead="State and metro pages connect buyer scenarios to real market context."
+            lead="State and metro pages connect buyer guides to real market context."
           />
           <div id="buyer-strategy">
             <ConversionCTA {...conversionCtas.buyerStrategy} />

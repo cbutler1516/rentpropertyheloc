@@ -66,7 +66,7 @@ export function RelatedContentRail({
           {scenarios.map((scenario) => (
             <ArticleCard
               key={scenario.slug}
-              label="Scenario"
+              label="Guide"
               title={scenario.title}
               excerpt={scenario.emotionalHook}
               href={scenario.href}
@@ -87,7 +87,7 @@ export function RelatedContentRail({
               label={market.regionLabel}
               title={market.name}
               excerpt={market.heroLead}
-              href={`/geo/${market.slug}`}
+              href={`/markets/${market.slug}`}
             />
           ))}
           {videos.map((video) => (
@@ -119,7 +119,7 @@ export function RelatedContentRail({
             audienceScenarios.map((scenario) => (
               <ArticleCard
                 key={scenario.slug}
-                label="Scenario"
+                label="Guide"
                 title={scenario.title}
                 excerpt={scenario.description}
                 href={scenario.href}

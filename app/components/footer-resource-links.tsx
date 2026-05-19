@@ -1,8 +1,9 @@
 import Link from "next/link";
 
 const resourceLinks = [
-  { href: "/learn", label: "Guides" },
-  { href: "/geo", label: "Markets" },
+  { href: "/guides", label: "Financing Guides" },
+  { href: "/markets", label: "Markets" },
+  { href: "/learn", label: "Learn" },
   { href: "/about", label: "State Licensing" },
 ] as const;
 

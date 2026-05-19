@@ -9,7 +9,7 @@ import {
   hostedScenarioSlugs,
 } from "../../lib/scenario-registry";
 
-type ScenarioPageProps = {
+type GuidePageProps = {
   params: Promise<{ slug: string }>;
 };
 
@@ -19,18 +19,18 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: ScenarioPageProps): Promise<Metadata> {
+}: GuidePageProps): Promise<Metadata> {
   const { slug } = await params;
   const funnel = getScenarioFunnel(slug);
 
   if (!funnel) {
-    return { title: "Scenario | The Loan Playbook" };
+    return { title: "Financing Guide | The Loan Playbook" };
   }
 
   return createMoneyFunnelMetadata(funnel);
 }
 
-export default async function ScenarioHostedPage({ params }: ScenarioPageProps) {
+export default async function GuideHostedPage({ params }: GuidePageProps) {
   const { slug } = await params;
   const funnel = getScenarioFunnel(slug);
 

@@ -12,7 +12,7 @@ type LicensedMarketsRailProps = {
 
 export function LicensedMarketsRail({
   title = "Licensed markets",
-  lead = "State and metro strategy pages tied to scenarios, videos, and clear next steps.",
+  lead = "State and metro strategy pages tied to guides, videos, and clear next steps.",
   showMetros = true,
 }: LicensedMarketsRailProps) {
   const metros = getStrategicGeoMarkets().slice(0, 6);
@@ -47,14 +47,14 @@ export function LicensedMarketsRail({
                 label={metro.regionLabel}
                 title={metro.name}
                 excerpt={metro.heroLead}
-                href={`/geo/${metro.slug}`}
+                href={`/markets/${metro.slug}`}
               />
             ))}
           </RevealGroup>
         ) : null}
         <div className="mt-10">
           <TrackedLink
-            href="/geo"
+            href="/markets"
             location="licensed_markets_rail"
             label="View all markets"
             className="text-sm font-medium text-zinc-400 hover:text-white"

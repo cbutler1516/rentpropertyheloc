@@ -14,20 +14,20 @@ import {
 } from "../lib/scenario-registry";
 
 export const metadata: Metadata = {
-  title: "Mortgage Scenarios | The Loan Playbook",
+  title: "Mortgage Guides | The Loan Playbook",
   description:
-    "Scenario-based mortgage guidance for buyers, homeowners, agents, and commercial borrowers—built for search, social traffic, and clear next steps.",
+    "Financing guides for buyers, homeowners, agents, and commercial borrowers—clear paths for search, social traffic, and strategy conversations.",
 };
 
 const audienceLabels: Record<ScenarioAudience, string> = {
-  buyer: "Buyer Scenarios",
-  homeowner: "Homeowner Scenarios",
-  agent: "Agent Scenarios",
-  commercial: "Commercial Scenarios",
+  buyer: "Buyer Guides",
+  homeowner: "Homeowner Guides",
+  agent: "Agent Guides",
+  commercial: "Commercial Guides",
 };
 
-function ScenarioGroup({ audience }: { audience: ScenarioAudience }) {
-  const scenarios = getScenariosByAudience(audience);
+function GuideGroup({ audience }: { audience: ScenarioAudience }) {
+  const guides = getScenariosByAudience(audience);
 
   return (
     <section className="section-flow relative">
@@ -36,19 +36,19 @@ function ScenarioGroup({ audience }: { audience: ScenarioAudience }) {
         <SectionHeader
           eyebrow={audienceLabels[audience]}
           title={audienceLabels[audience]}
-          lead="Emotionally specific paths with a clear next step—not generic mortgage content."
+          lead="Specific financing situations with a clear next step—not generic mortgage content."
         />
         <RevealGroup
           className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
           stagger={80}
         >
-          {scenarios.map((scenario) => (
+          {guides.map((guide) => (
             <ArticleCard
-              key={scenario.slug}
+              key={guide.slug}
               label={audienceLabels[audience]}
-              title={scenario.title}
-              excerpt={scenario.emotionalHook}
-              href={scenario.href}
+              title={guide.title}
+              excerpt={guide.emotionalHook}
+              href={guide.href}
             />
           ))}
         </RevealGroup>
@@ -58,7 +58,7 @@ function ScenarioGroup({ audience }: { audience: ScenarioAudience }) {
   );
 }
 
-export default function ScenariosHubPage() {
+export default function GuidesHubPage() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
       <PageAmbient enableParallax={false} />
@@ -67,9 +67,9 @@ export default function ScenariosHubPage() {
 
       <main className="relative z-10">
         <PageHero
-          eyebrow="Scenario Library"
-          title="Real borrower and agent scenarios—not generic mortgage content."
-          lead="Each path is built for search intent, social traffic, and a clear strategy conversation."
+          eyebrow="Financing Guides"
+          title="Real borrower and agent situations—not generic mortgage content."
+          lead="Each guide is built for search intent, social traffic, and a clear strategy conversation."
           focusLabel="Strategy First"
           focus="Relevance. Clarity. Next step."
           videoSrc="/videos/loan-playbook-learn-film-room.mp4"
@@ -77,15 +77,15 @@ export default function ScenariosHubPage() {
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <TrackedLink
               href="/learn/buyer-readiness"
-              location="scenarios_hub_hero"
+              location="guides_hub_hero"
               label="Start Buyer Strategy"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
               Start Buyer Strategy
             </TrackedLink>
             <TrackedLink
-              href="/geo"
-              location="scenarios_hub_hero"
+              href="/markets"
+              location="guides_hub_hero"
               label="Browse Local Markets"
               className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
             >
@@ -94,20 +94,20 @@ export default function ScenariosHubPage() {
           </div>
         </PageHero>
 
-        <ScenarioGroup audience="buyer" />
-        <ScenarioGroup audience="homeowner" />
-        <ScenarioGroup audience="agent" />
-        <ScenarioGroup audience="commercial" />
+        <GuideGroup audience="buyer" />
+        <GuideGroup audience="homeowner" />
+        <GuideGroup audience="agent" />
+        <GuideGroup audience="commercial" />
 
         <section className="section-flow section-matte relative border-t border-zinc-900/40">
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <p className="font-mono text-[10px] tracking-[0.24em] text-zinc-600 uppercase">
-              Strategy pages are the primary growth layer for search, social, and lead capture.
+              Guides connect strategy content to local market context and clear CTAs.
             </p>
             <p className="mt-4 max-w-3xl text-sm text-zinc-500">
-              {scenarioRegistry.length} scenario paths indexed for buyers, homeowners,
-              agents, and commercial borrowers across Washington markets.
+              {scenarioRegistry.length} financing paths indexed for buyers, homeowners,
+              agents, and commercial borrowers across licensed markets.
             </p>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
@@ -137,4 +137,3 @@ function PageAtmosphere() {
     </>
   );
 }
-

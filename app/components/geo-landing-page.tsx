@@ -52,7 +52,7 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
               <LicensingTrust />
               <TrackedLink
                 href={`/${stateRoute}`}
-                location={`geo_${market.slug}_state`}
+                location={`market_${market.slug}_state`}
                 label={`${stateMarket.name} overview`}
                 className="inline-flex text-sm font-medium text-zinc-400 hover:text-white"
               >
@@ -66,20 +66,20 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
           )}
           <div className="reveal-item mt-12 flex flex-col gap-4 sm:flex-row">
             <TrackedAnchor
-              href="#geo-cta"
-              location={`geo_${market.slug}_hero`}
+              href="#market-cta"
+              location={`market_${market.slug}_hero`}
               label="Start Strategy Conversation"
               className="btn-primary inline-flex h-14 items-center justify-center bg-white px-10 text-sm font-medium tracking-wide text-black hover:bg-zinc-100"
             >
               Start Strategy Conversation
             </TrackedAnchor>
             <TrackedAnchor
-              href="/scenarios"
-              location={`geo_${market.slug}_hero`}
-              label="Browse Scenarios"
+              href="/guides"
+              location={`market_${market.slug}_hero`}
+              label="Browse Financing Guides"
               className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
             >
-              Browse Scenarios
+              Browse Financing Guides
             </TrackedAnchor>
           </div>
         </PageHero>
@@ -90,7 +90,7 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
             <SectionHeader
               eyebrow="Local Context"
               title={`What matters in ${market.name}.`}
-              lead="Geographic intent without generic filler—focused on financing decisions buyers and homeowners actually face."
+              lead="Local context without generic filler—focused on financing decisions buyers and homeowners actually face."
             />
             <RevealGroup
               className="mt-12 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:grid-cols-3"
@@ -115,13 +115,13 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
         </section>
 
         <RelatedContentRail
-          title="Buyer scenarios"
+          title="Buyer guides"
           lead={`Common buyer paths in ${market.name}.`}
           scenarioSlugs={market.buyerScenarios}
         />
 
         <RelatedContentRail
-          title="Homeowner scenarios"
+          title="Homeowner guides"
           lead="Refinance, equity, and timing decisions."
           scenarioSlugs={market.homeownerScenarios}
         />
@@ -145,7 +145,7 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
         ) : null}
 
         <section
-          id="geo-cta"
+          id="market-cta"
           className="section-flow relative"
           data-analytics-section="lead_capture"
         >
@@ -154,7 +154,7 @@ export function GeoLandingPage({ market }: { market: GeoMarket }) {
             <div>
               <SectionHeader
                 eyebrow="Next Step"
-                title={`Talk through a ${market.name} scenario.`}
+                title={`Talk through a ${market.name} financing goal.`}
                 lead="Send the goal, property type, and timeline. We will help frame the next move."
               />
               <div className="mt-8">

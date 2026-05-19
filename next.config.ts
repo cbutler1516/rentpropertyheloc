@@ -15,7 +15,27 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/geo/green-lake",
-        destination: "/geo/seattle",
+        destination: "/markets/seattle",
+        permanent: true,
+      },
+      {
+        source: "/scenarios/:slug",
+        destination: "/guides/:slug",
+        permanent: true,
+      },
+      {
+        source: "/scenarios",
+        destination: "/guides",
+        permanent: true,
+      },
+      {
+        source: "/geo/:slug",
+        destination: "/markets/:slug",
+        permanent: true,
+      },
+      {
+        source: "/geo",
+        destination: "/markets",
         permanent: true,
       },
     ];

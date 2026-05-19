@@ -95,7 +95,7 @@ export const scenarioFunnels = {
     bookingType: "buyer",
     relatedGuides: [
       { label: "Guide", title: "Jumbo loans", href: "/learn/jumbo-loans" },
-      { label: "Scenario", title: "Investment property", href: "/scenarios/investment-property-strategy" },
+      { label: "Guide", title: "Investment property", href: "/guides/investment-property-strategy" },
     ],
     relatedSocialSlugs: ["buyer-readiness-before-search"],
     transcriptPlaceholder: "Transcript placeholder for self-employed documentation strategy.",

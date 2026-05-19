@@ -177,7 +177,7 @@ export default async function SocialPostPage({ params }: SocialPostPageProps) {
         </section>
 
         <RelatedContentRail
-          title="Related guides & scenarios"
+          title="Related guides"
           lead="Continue from the clip to structured financing guidance."
           guideLinks={
             post.relatedLearnArticle

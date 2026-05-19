@@ -6,7 +6,7 @@ import {
 } from "../../components/geo-landing-page";
 import { geoMarkets, getGeoMarketBySlug } from "../../lib/geo-markets";
 
-type GeoPageProps = {
+type MarketPageProps = {
   params: Promise<{ slug: string }>;
 };
 
@@ -16,7 +16,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: GeoPageProps): Promise<Metadata> {
+}: MarketPageProps): Promise<Metadata> {
   const { slug } = await params;
   const market = getGeoMarketBySlug(slug);
 
@@ -27,7 +27,7 @@ export async function generateMetadata({
   return createGeoMetadata(market);
 }
 
-export default async function GeoMarketPage({ params }: GeoPageProps) {
+export default async function MarketPage({ params }: MarketPageProps) {
   const { slug } = await params;
   const market = getGeoMarketBySlug(slug);
 
