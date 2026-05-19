@@ -17,8 +17,6 @@ import {
 
 type TrackableClickType =
   | "apply_cta"
-  | "commercial_call"
-  | "commercial_schedule"
   | "cta"
   | "funnel_apply"
   | "related_guide"
@@ -42,24 +40,6 @@ function trackClickByType({
 }) {
   if (eventType === "apply_cta") {
     trackApplyCtaClick({ label, href, location });
-    return;
-  }
-
-  if (eventType === "commercial_schedule") {
-    trackEvent("commercial_calculator_schedule_click", {
-      cta_label: label,
-      destination: href,
-      cta_location: location,
-    });
-    return;
-  }
-
-  if (eventType === "commercial_call") {
-    trackEvent("commercial_calculator_call_click", {
-      cta_label: label,
-      destination: href,
-      cta_location: location,
-    });
     return;
   }
 

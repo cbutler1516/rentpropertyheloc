@@ -103,8 +103,7 @@ export default function ScenariosHubPage() {
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <p className="font-mono text-[10px] tracking-[0.24em] text-zinc-600 uppercase">
-              {/* TODO: Residential calculator ships in a separate phase after commercial calculator deploys successfully. */}
-              Tools stay secondary. Strategy pages are the primary growth layer.
+              Strategy pages are the primary growth layer for search, social, and lead capture.
             </p>
             <p className="mt-4 max-w-3xl text-sm text-zinc-500">
               {scenarioRegistry.length} scenario paths indexed for buyers, homeowners,

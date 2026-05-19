@@ -4,7 +4,6 @@ import {
   conversionCtas,
 } from "../components/conversion-cta";
 import { InternalPage } from "../components/internal-page";
-import { TrackedLink } from "../components/tracked-link";
 
 export const metadata: Metadata = {
   title: "Commercial | The Loan Playbook",
@@ -49,18 +48,6 @@ export default function CommercialPage() {
       extraSections={
         <div id="commercial-review">
           <ConversionCTA {...conversionCtas.commercialReview} />
-          <p className="mx-auto max-w-7xl px-6 pb-8 text-center font-mono text-[10px] tracking-[0.2em] text-zinc-600 uppercase md:px-10">
-            Commercial calculator:{" "}
-            <TrackedLink
-              href="/commercial/calculator"
-              location="commercial_calculator_footer"
-              label="Open calculator"
-              className="text-zinc-400 underline-offset-4 hover:text-zinc-300 hover:underline"
-            >
-              open calculator
-            </TrackedLink>
-            . Strategy content comes first.
-          </p>
         </div>
       }
     />
