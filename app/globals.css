@@ -1518,6 +1518,30 @@ body {
   }
 }
 
+@keyframes intake-step-in {
+  from {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.intake-step-enter {
+  animation: intake-step-in 0.28s ease-out forwards;
+}
+
+.intake-option-selected {
+  border-color: rgba(124, 58, 237, 0.65) !important;
+  background: rgba(91, 33, 182, 0.12) !important;
+  color: #fff !important;
+  box-shadow:
+    0 0 0 1px rgba(124, 58, 237, 0.35),
+    0 0 18px rgba(124, 58, 237, 0.14);
+}
+
 @keyframes scan-line {
   0% {
     transform: translateY(-100%);
