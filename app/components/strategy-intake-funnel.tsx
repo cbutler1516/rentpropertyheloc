@@ -15,24 +15,17 @@ import {
   trackIntakeFunnelSubmit,
   trackLeadFormStart,
 } from "../lib/analytics-events";
-import {
-  IntakeFinancialsFields,
-  type FinancialsValues,
-} from "./intake-financials-fields";
+import { IntakeFinancialRanges } from "./intake-financial-ranges";
 import { IntakePrioritiesStep } from "./intake-priorities-step";
-import {
-  hasFinancialsInput,
-  parseCurrencyDigits,
-  parsePercentInput,
-} from "../lib/intake-currency";
 import {
   buildGoalsPayload,
   experienceOptions,
   getIntakeGoal,
   getIntakeStepsForGoal,
   getTotalIntakeSteps,
+  getPropertyTypeOptionsForGoal,
+  hasFinancialRangesInput,
   intakeGoals,
-  propertyTypeOptions,
   stateOptions,
   timelineOptions,
   type IntakeGoalId,
@@ -65,9 +58,8 @@ const fieldClass =
 type IntakeFormData = {
   goalId: IntakeGoalId | "";
   timeline: string;
-  purchasePrice: string;
-  downPaymentPercent: string;
-  loanAmount: string;
+  purchasePriceRange: string;
+  downPaymentRange: string;
   propertyType: string;
   strategyPriorities: string[];
   goalsNotes: string;
@@ -81,9 +73,8 @@ type IntakeFormData = {
 const emptyForm: IntakeFormData = {
   goalId: "",
   timeline: "",
-  purchasePrice: "",
-  downPaymentPercent: "",
-  loanAmount: "",
+  purchasePriceRange: "",
+  downPaymentRange: "",
   propertyType: "",
   strategyPriorities: [],
   goalsNotes: "",
@@ -112,7 +103,7 @@ function isStepComplete(
   if (stepId === "goal") return Boolean(snapshot.goalId);
   if (stepId === "timeline") return Boolean(snapshot.timeline);
   if (stepId === "financials") {
-    return hasFinancialsInput(snapshot);
+    return hasFinancialRangesInput(snapshot);
   }
   if (stepId === "property") return Boolean(snapshot.propertyType);
   if (stepId === "goals") return snapshot.strategyPriorities.length >= 1;
@@ -219,20 +210,18 @@ export function StrategyIntakeFunnel() {
       setSubmitState("submitting");
       setErrorMessage("");
 
-      const estimatedPurchasePriceRaw = parseCurrencyDigits(snapshot.purchasePrice);
-      const estimatedLoanAmountRaw = parseCurrencyDigits(snapshot.loanAmount);
-      const downPaymentPercent = parsePercentInput(snapshot.downPaymentPercent);
-
       const payload = {
         formType: activeGoal.formType,
         leadIntent: activeGoal.leadIntent,
         intakeGoal: snapshot.goalId,
         timeline: snapshot.timeline,
-        purchasePrice: estimatedPurchasePriceRaw || snapshot.purchasePrice,
-        loanAmount: estimatedLoanAmountRaw || snapshot.loanAmount,
-        estimatedPurchasePriceRaw,
-        downPaymentPercent: downPaymentPercent || undefined,
-        estimatedLoanAmountRaw,
+        purchasePriceRange: snapshot.purchasePriceRange,
+        downPaymentRange: snapshot.downPaymentRange,
+        purchasePrice: snapshot.purchasePriceRange || "",
+        downPaymentPercent: snapshot.downPaymentRange || "",
+        loanAmount: "",
+        estimatedPurchasePriceRaw: "",
+        estimatedLoanAmountRaw: "",
         propertyType: snapshot.propertyType,
         ...buildGoalsPayload(snapshot.strategyPriorities, snapshot.goalsNotes),
         stateMarket: snapshot.stateMarket,
@@ -364,6 +353,14 @@ export function StrategyIntakeFunnel() {
     selectAndAdvance(snapshot, String(value), stepIndex);
   }
 
+  function handlePurchaseRangeSelect(value: string) {
+    updateField("purchasePriceRange", value);
+  }
+
+  function handleDownPaymentRangeSelect(value: string) {
+    updateField("downPaymentRange", value);
+  }
+
   function handleContinue() {
     if (isAdvancing || submitState === "submitting") return;
     advanceToNextStep(dataRef.current, stepIndex);
@@ -400,8 +397,6 @@ export function StrategyIntakeFunnel() {
           next steps. We&apos;ll follow up with a more useful conversation than a
           generic rate quote.
         </p>
-        <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-        </div>
       </div>
     );
   }
@@ -504,29 +499,18 @@ export function StrategyIntakeFunnel() {
           {currentStepId === "financials" ? (
             <StepShell
               title="Estimated numbers"
-              lead="Ballpark is fine. We'll refine the structure later."
+              lead="Ballpark ranges are enough—we'll refine structure later."
               headingRef={stepHeadingRef}
             >
-              <IntakeFinancialsFields
-                idPrefix={formId}
+              <IntakeFinancialRanges
                 values={{
-                  purchasePrice: data.purchasePrice,
-                  downPaymentPercent: data.downPaymentPercent,
-                  loanAmount: data.loanAmount,
+                  purchasePriceRange: data.purchasePriceRange,
+                  downPaymentRange: data.downPaymentRange,
                 }}
-                onChange={(financials: FinancialsValues) => {
-                  markStarted();
-                  setData((prev) => {
-                    const next = {
-                      ...prev,
-                      purchasePrice: financials.purchasePrice,
-                      downPaymentPercent: financials.downPaymentPercent,
-                      loanAmount: financials.loanAmount,
-                    };
-                    dataRef.current = next;
-                    return next;
-                  });
-                }}
+                pendingValue={pendingChoice}
+                disabled={isAdvancing}
+                onSelectPurchase={handlePurchaseRangeSelect}
+                onSelectDownPayment={handleDownPaymentRangeSelect}
               />
             </StepShell>
           ) : null}
@@ -538,7 +522,7 @@ export function StrategyIntakeFunnel() {
               headingRef={stepHeadingRef}
             >
               <SelectGrid
-                options={propertyTypeOptions}
+                options={getPropertyTypeOptionsForGoal(data.goalId)}
                 value={data.propertyType}
                 pendingValue={pendingChoice}
                 disabled={isAdvancing}

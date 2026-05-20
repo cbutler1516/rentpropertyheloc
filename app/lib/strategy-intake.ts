@@ -93,15 +93,146 @@ export const timelineOptions = [
   "Exploring / not sure",
 ] as const;
 
-export const propertyTypeOptions = [
-  "Single-family residence",
-  "Condo / townhome",
-  "Multi-family (2–4 units)",
-  "Multi-family (5+ units)",
-  "Commercial / mixed-use",
-  "Land / development",
-  "Other",
+export const purchasePriceRangeOptions = [
+  "Under $500k",
+  "$500k–$750k",
+  "$750k–$1M",
+  "$1M–$2M",
+  "$2M+",
+  "Not sure yet",
 ] as const;
+
+export const downPaymentRangeOptions = [
+  "0–5%",
+  "10%",
+  "15–20%",
+  "25%+",
+  "Using equity",
+  "Not sure yet",
+] as const;
+
+const buyHomePropertyOptions = [
+  "Single-family",
+  "Condo / townhouse",
+  "2–4 unit",
+  "New construction",
+  "Vacation home",
+  "Not sure yet",
+] as const;
+
+const buyBeforeSellPropertyOptions = [
+  "Current primary residence",
+  "Next primary residence",
+  "Single-family",
+  "Condo / townhouse",
+  "2–4 unit",
+  "Not sure yet",
+] as const;
+
+const lowerPaymentPropertyOptions = [
+  "Primary residence",
+  "Condo",
+  "Jumbo property",
+  "Investment property",
+  "Multi-unit",
+  "Not sure yet",
+] as const;
+
+const useEquityPropertyOptions = [
+  "Primary residence",
+  "Investment property",
+  "Condo",
+  "Multi-unit",
+  "Vacation home",
+  "Not sure yet",
+] as const;
+
+const investmentPropertyOptions = [
+  "Rental property",
+  "Short-term rental",
+  "2–4 unit",
+  "Multifamily",
+  "Mixed-use",
+  "BRRRR / rehab",
+  "DSCR",
+  "Portfolio expansion",
+] as const;
+
+const dscrPropertyOptions = [
+  "Single rental",
+  "Short-term rental",
+  "2–4 unit",
+  "Multifamily",
+  "Mixed-use",
+  "Portfolio expansion",
+  "Cash-out refinance",
+  "Not sure yet",
+] as const;
+
+const commercialPropertyOptions = [
+  "Multifamily",
+  "Mixed-use",
+  "Retail",
+  "Office",
+  "Industrial",
+  "Warehouse",
+  "Construction",
+  "Bridge financing",
+  "Owner-user",
+  "SBA",
+  "Land acquisition",
+  "Development",
+] as const;
+
+const builderPropertyOptions = [
+  "Spec homes",
+  "Townhomes",
+  "Small multifamily",
+  "Land development",
+  "Vertical construction",
+  "Acquisition financing",
+  "Bridge-to-perm",
+  "Subdivision",
+] as const;
+
+const agentPartnershipPropertyOptions = [
+  "Buyer support",
+  "Listing strategy",
+  "New construction",
+  "Investor clients",
+  "Move-up buyers",
+  "Team / brokerage",
+  "Not sure yet",
+] as const;
+
+const defaultPropertyOptions = buyHomePropertyOptions;
+
+const propertyOptionsByGoal: Record<IntakeGoalId, readonly string[]> = {
+  "buy-home": buyHomePropertyOptions,
+  "buy-before-sell": buyBeforeSellPropertyOptions,
+  "lower-payment": lowerPaymentPropertyOptions,
+  "use-equity": useEquityPropertyOptions,
+  "investment-property": investmentPropertyOptions,
+  dscr: dscrPropertyOptions,
+  "commercial-financing": commercialPropertyOptions,
+  "builder-development": builderPropertyOptions,
+  "agent-partnership": agentPartnershipPropertyOptions,
+};
+
+export function getPropertyTypeOptionsForGoal(goalId: IntakeGoalId | ""): string[] {
+  if (!goalId) return [...defaultPropertyOptions];
+  return [...(propertyOptionsByGoal[goalId] ?? defaultPropertyOptions)];
+}
+
+/** Fallback list when no goal is selected yet. */
+export const propertyTypeOptions = defaultPropertyOptions;
+
+export function hasFinancialRangesInput(snapshot: {
+  purchasePriceRange: string;
+  downPaymentRange: string;
+}): boolean {
+  return Boolean(snapshot.purchasePriceRange || snapshot.downPaymentRange);
+}
 
 export const experienceOptions = [
   "First transaction",

@@ -4,8 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { WordmarkLockup } from "./brand";
-import { TrackedLink } from "./tracked-link";
-
 const navItems = [
   {
     href: "/buyers",
@@ -42,6 +40,16 @@ const navItems = [
     label: "Learn",
     description: "Read the guide",
   },
+  {
+    href: "/deal-analyzer",
+    label: "Analyzer",
+    description: "Model your deal",
+  },
+  {
+    href: "/content-engine",
+    label: "Content",
+    description: "AI content packs",
+  },
 ];
 
 const primaryNavCta = {
@@ -50,10 +58,10 @@ const primaryNavCta = {
   description: "Structured intake",
 };
 
-const secondaryNavCta = {
-  href: "/apply",
-  label: "Apply",
-  description: "Secure application",
+const strategyCallCta = {
+  href: "/#cta",
+  label: "Strategy Call",
+  description: "Talk through your scenario",
 };
 
 function isActivePath(pathname: string, href: string) {
@@ -107,15 +115,12 @@ export function SiteNav() {
         </nav>
 
         <div className="nav-cta-group hidden shrink-0 items-center gap-2.5 md:flex lg:gap-3">
-          <TrackedLink
-            href={secondaryNavCta.href}
-            location="site_nav"
-            label={secondaryNavCta.label}
-            eventType="apply_cta"
+          <Link
+            href={strategyCallCta.href}
             className="inline-flex h-10 items-center justify-center rounded-full border border-zinc-800 px-4 font-mono text-[10px] tracking-[0.16em] text-zinc-300 uppercase transition-colors duration-[var(--duration-hover)] hover:border-[#7c3aed]/50 hover:text-white"
           >
-            {secondaryNavCta.label}
-          </TrackedLink>
+            {strategyCallCta.label}
+          </Link>
           <Link
             href={primaryNavCta.href}
             className="inline-flex h-10 items-center justify-center rounded-full bg-white px-5 font-mono text-[10px] tracking-[0.18em] text-black uppercase transition-colors duration-[var(--duration-hover)] hover:bg-zinc-100"
@@ -161,17 +166,14 @@ export function SiteNav() {
               </Link>
             );
           })}
-          <TrackedLink
-            href={secondaryNavCta.href}
-            location="site_mobile_nav"
-            label={secondaryNavCta.label}
-            eventType="apply_cta"
+          <Link
+            href={strategyCallCta.href}
             className="nav-mobile-link"
             onClick={() => setOpenPathname(null)}
           >
-            <span>{secondaryNavCta.label}</span>
-            <span>{secondaryNavCta.description}</span>
-          </TrackedLink>
+            <span>{strategyCallCta.label}</span>
+            <span>{strategyCallCta.description}</span>
+          </Link>
           <Link
             href={primaryNavCta.href}
             className="nav-mobile-link"
