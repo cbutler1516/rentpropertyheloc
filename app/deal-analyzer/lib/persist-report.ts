@@ -45,6 +45,13 @@ async function fetchNarrative(
 export async function persistDealReport(
   payload: SaveReportPayload,
 ): Promise<PersistReportResult> {
+  if (!payload.lead.smsCallConsent) {
+    return {
+      ok: false,
+      error: "SMS/call consent is required to unlock your report.",
+    };
+  }
+
   const narrative = await fetchNarrative(payload);
   const slug = generateReportSlug();
 

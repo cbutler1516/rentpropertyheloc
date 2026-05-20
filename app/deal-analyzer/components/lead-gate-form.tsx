@@ -14,6 +14,7 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Select } from "@/app/components/ui/select";
 import { Textarea } from "@/app/components/ui/textarea";
+import { SMS_CALL_CONSENT_TEXT } from "../lib/consent";
 import type { ClientRole, LeadCapture } from "../lib/types";
 import { useDealAnalyzer } from "./deal-analyzer-provider";
 
@@ -39,7 +40,8 @@ export function LeadGateForm() {
   const { submitLead, analysis } = useDealAnalyzer();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [form, setForm] = useState<LeadCapture>({
+  const [consentChecked, setConsentChecked] = useState(false);
+  const [form, setForm] = useState<Omit<LeadCapture, "smsCallConsent">>({
     name: "",
     email: "",
     phone: "",
@@ -52,9 +54,18 @@ export function LeadGateForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+
+    if (!consentChecked) {
+      setError("Please check the consent box to continue.");
+      return;
+    }
+
     setSubmitting(true);
 
-    const result = await submitLead(form);
+    const result = await submitLead({
+      ...form,
+      smsCallConsent: true,
+    });
     setSubmitting(false);
 
     if (!result.ok) {
@@ -92,12 +103,12 @@ export function LeadGateForm() {
     <Card className="border-[#c9a227]/20">
       <CardHeader>
         <p className="font-mono text-[10px] tracking-[0.28em] text-[#c9a227] uppercase">
-          Step 2 — Unlock your report
+          Step 3 — Unlock your full report
         </p>
         <CardTitle>Almost there</CardTitle>
         <CardDescription>
-          Share contact details to generate your Playbook Report and a private
-          link you can send to clients.
+          Share contact details to unlock payment numbers, charts, Coach&apos;s
+          Notes, and your private shareable Playbook link.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -193,18 +204,42 @@ export function LeadGateForm() {
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
             />
           </div>
+
           <div className="md:col-span-2">
+            <label className="flex cursor-pointer gap-3 rounded-xl border border-white/[0.08] bg-zinc-950/50 p-4">
+              <input
+                type="checkbox"
+                className="mt-1 h-4 w-4 shrink-0 rounded border-zinc-600 bg-zinc-950 text-[#c9a227] focus:ring-[#7c3aed]/40"
+                checked={consentChecked}
+                onChange={(e) => setConsentChecked(e.target.checked)}
+                required
+                aria-describedby="consent-description"
+              />
+              <span id="consent-description" className="text-xs leading-relaxed text-zinc-400">
+                {SMS_CALL_CONSENT_TEXT}
+              </span>
+            </label>
+          </div>
+
+          <div className="flex flex-col gap-3 md:col-span-2 sm:flex-row sm:items-center">
             <Button
               type="submit"
               variant="gold"
               size="lg"
               className="w-full sm:w-auto"
-              disabled={submitting}
+              disabled={submitting || !consentChecked}
             >
               {submitting
                 ? "Building your Playbook Report…"
-                : "View Playbook Report"}
+                : "Unlock My Full Playbook"}
             </Button>
+            <button
+              type="button"
+              className="font-mono text-[9px] tracking-[0.16em] text-zinc-500 uppercase hover:text-zinc-300"
+              onClick={() => router.push("/deal-analyzer/analyze?step=preview")}
+            >
+              ← Back to preview
+            </button>
           </div>
         </form>
       </CardContent>

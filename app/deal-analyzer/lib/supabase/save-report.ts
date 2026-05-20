@@ -6,6 +6,7 @@ import type {
   DealInputs,
   LeadCapture,
 } from "../types";
+import type { LeadConsentRecord } from "../consent";
 import type { Json } from "./database.types";
 import { createServerSupabaseClient } from "./server";
 
@@ -15,6 +16,7 @@ export type SaveReportInput = {
   inputs: DealInputs;
   analysis: DealAnalysisResult;
   narrative?: PlaybookNarrative;
+  consent?: LeadConsentRecord;
 };
 
 export async function saveReportToSupabase(
@@ -38,6 +40,8 @@ export async function saveReportToSupabase(
       analysis: input.analysis,
     }));
 
+  const consent = input.consent;
+
   const { data: leadRow, error: leadError } = await supabase
     .from("deal_analyzer_leads")
     .insert({
@@ -48,6 +52,11 @@ export async function saveReportToSupabase(
       notes: input.lead.notes || null,
       referral_source: input.lead.referralSource || null,
       agent_name: input.lead.agentName || null,
+      sms_call_consent: consent?.smsCallConsent ?? input.lead.smsCallConsent,
+      consent_text: consent?.consentText ?? null,
+      consent_timestamp: consent?.consentTimestamp ?? null,
+      consent_ip: consent?.consentIp ?? null,
+      consent_user_agent: consent?.consentUserAgent ?? null,
     })
     .select("id")
     .single();
@@ -113,7 +122,9 @@ export async function fetchReportFromSupabase(slug: string) {
     await Promise.all([
       supabase
         .from("deal_analyzer_leads")
-        .select("name, email, phone, role, notes, referral_source, agent_name")
+        .select(
+          "name, email, phone, role, notes, referral_source, agent_name, sms_call_consent, consent_text, consent_timestamp, consent_ip, consent_user_agent",
+        )
         .eq("id", report.lead_id)
         .single(),
       supabase
@@ -149,6 +160,14 @@ export async function fetchReportFromSupabase(slug: string) {
       notes: lead.notes ?? "",
       referralSource: lead.referral_source ?? "",
       agentName: lead.agent_name ?? "",
+      smsCallConsent: lead.sms_call_consent ?? false,
+    },
+    consent: {
+      smsCallConsent: lead.sms_call_consent ?? false,
+      consentText: lead.consent_text,
+      consentTimestamp: lead.consent_timestamp,
+      consentIp: lead.consent_ip,
+      consentUserAgent: lead.consent_user_agent,
     },
     inputs: scenario.inputs_json as unknown as DealInputs,
     analysis: scenario.analysis_json as unknown as DealAnalysisResult,

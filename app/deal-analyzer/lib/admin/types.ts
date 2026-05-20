@@ -1,3 +1,4 @@
+import type { LeadStatus } from "../follow-up-types";
 import type { ClientRole, DealPath } from "../types";
 
 export type DealAnalyzerDatePreset =
@@ -14,6 +15,7 @@ export type DealAnalyzerAdminFilters = {
   datePreset: DealAnalyzerDatePreset;
   dateFrom: string;
   dateTo: string;
+  needsFollowUp: boolean;
 };
 
 export const defaultAdminFilters: DealAnalyzerAdminFilters = {
@@ -23,6 +25,7 @@ export const defaultAdminFilters: DealAnalyzerAdminFilters = {
   datePreset: "all",
   dateFrom: "",
   dateTo: "",
+  needsFollowUp: false,
 };
 
 export type DealAnalyzerKeyMetric = {
@@ -32,6 +35,8 @@ export type DealAnalyzerKeyMetric = {
 
 export type DealAnalyzerReportRow = {
   id: string;
+  leadId: string;
+  scenarioId: string;
   slug: string;
   createdAt: string;
   leadName: string;
@@ -50,6 +55,15 @@ export type DealAnalyzerReportRow = {
   missingContact: boolean;
   isAgentSourced: boolean;
   notes: string;
+  smsCallConsent: boolean;
+  consentTimestamp: string | null;
+  leadStatus: LeadStatus;
+  lastContactedAt: string | null;
+  nextFollowUpAt: string | null;
+  needsFollowUp: boolean;
+  followUpId: string | null;
+  followUpStatus: string | null;
+  followUpUpdatedAt: string | null;
 };
 
 export type DealAnalyzerDashboardStats = {

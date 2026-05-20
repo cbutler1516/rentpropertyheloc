@@ -42,11 +42,22 @@ import {
   type GenerationMode,
   type ContentCalendarRecord,
   type LandingPageRecord,
+  type LeadMagnetRecord,
+  type LaunchHubRecord,
+  type LeadCaptureRecord,
+  type LeadMagnetSectionKey,
   type LandingPageSectionKey,
   type OutputTabKey,
   type PackageFilters,
 } from "../lib/types";
+import {
+  buildLaunchHubFromPackage,
+  mergeLaunchHub,
+  packageHasLaunchAssets,
+} from "../lib/build-launch-hub";
 import { calendarToMarkdown } from "../lib/calendar-export";
+import { launchHubToBrief } from "../lib/launch-hub-export";
+import { leadMagnetToMarkdown } from "../lib/lead-magnet-export";
 import { BrandVoiceSelector } from "./brand-voice-selector";
 import { CalendarGeneratorCard } from "./calendar-generator-card";
 import { CalendarOutputsPanel } from "./calendar-outputs-panel";
@@ -55,14 +66,19 @@ import { CopyButton } from "./copy-button";
 import { ContentEngineShell } from "./content-engine-shell";
 import { ExportActions } from "./export-actions";
 import { GenerationModeToggle } from "./generation-mode-toggle";
+import { LeadCaptureGeneratorCard } from "./lead-capture-generator-card";
+import { LeadCapturePanel } from "./lead-capture-panel";
+import { LeadMagnetGeneratorCard } from "./lead-magnet-generator-card";
+import { LeadMagnetOutputsPanel } from "./lead-magnet-outputs-panel";
+import { LaunchHubPanel } from "./launch-hub-panel";
 import { LandingPageGeneratorCard } from "./landing-page-generator-card";
 import { LandingPageOutputsPanel } from "./landing-page-outputs-panel";
 import { OutputViewTabs, type OutputView } from "./output-view-tabs";
 import { PackageHistoryPanel } from "./package-history-panel";
 import { PackageMetadataForm } from "./package-metadata-form";
-import {
-  type LandingPageIntent,
-} from "../lib/landing-page-intents";
+import { type LeadCapturePreset } from "../lib/lead-capture-presets";
+import { type LeadMagnetType } from "../lib/lead-magnet-types";
+import { type LandingPageIntent } from "../lib/landing-page-intents";
 import { landingPageToMarkdown } from "../lib/landing-page-export";
 
 const SINGLE_PLACEHOLDER = `Paste a market update, video transcript, Fed commentary, borrower scenario, or rough idea…
@@ -118,6 +134,9 @@ function buildExportPackage(draft: {
   campaignOutputs?: CampaignOutputs;
   landingPage?: LandingPageRecord;
   calendar?: ContentCalendarRecord;
+  leadMagnet?: LeadMagnetRecord;
+  launchHub?: LaunchHubRecord;
+  leadCapture?: LeadCaptureRecord;
 }): ContentPackage {
   return {
     id: draft.id ?? "draft",
@@ -133,8 +152,61 @@ function buildExportPackage(draft: {
     outputs: draft.outputs,
     campaignOutputs: draft.campaignOutputs,
     landingPage: draft.landingPage,
+    calendar: draft.calendar,
+    leadMagnet: draft.leadMagnet,
+    launchHub: draft.launchHub,
+    leadCapture: draft.leadCapture,
     tags: parseTagsInput(draft.tagsInput),
   };
+}
+
+function inferLeadCapturePreset(
+  landingIntent: LandingPageIntent | undefined,
+  audience: ContentAudience,
+  topic: string,
+): LeadCapturePreset {
+  if (landingIntent === "buyer-lead") return "buyer-lead";
+  if (landingIntent === "refinance-lead") return "refinance-lead";
+  if (landingIntent === "agent-referral") return "agent-partner";
+  if (landingIntent === "commercial-borrower") return "commercial-borrower";
+  if (landingIntent === "jumbo-luxury") return "jumbo-borrower";
+  if (landingIntent === "first-time-buyer") return "first-time-buyer";
+  if (landingIntent === "seller-concession-strategy") return "seller-concession-lead";
+  if (landingIntent === "rate-market-alert") return "market-update-subscriber";
+  const lower = topic.toLowerCase();
+  if (lower.includes("concession")) return "seller-concession-lead";
+  if (lower.includes("fed") || lower.includes("rate")) return "market-update-subscriber";
+  if (audience === "agent") return "agent-partner";
+  if (audience === "homeowner") return "refinance-lead";
+  return "buyer-lead";
+}
+
+function inferLeadMagnetType(
+  audience: ContentAudience,
+  topic: string,
+): LeadMagnetType {
+  const lower = topic.toLowerCase();
+  if (lower.includes("concession") || lower.includes("buydown"))
+    return "seller-concession-playbook";
+  if (lower.includes("fed") || lower.includes("rate") || lower.includes("market"))
+    return "market-update-report";
+  if (lower.includes("jumbo") || lower.includes("luxury")) return "jumbo-borrower-guide";
+  if (lower.includes("refinanc") || lower.includes("heloc")) return "refinance-guide";
+  if (lower.includes("investor") || lower.includes("dscr")) return "commercial-lending-brief";
+  if (lower.includes("first-time") || lower.includes("first time"))
+    return "first-time-buyer-checklist";
+  if (audience === "agent") return "agent-cheat-sheet";
+  if (audience === "commercial") return "commercial-lending-brief";
+  if (audience === "homeowner") return "refinance-guide";
+  if (audience === "buyer") return "buyer-guide";
+  return "buyer-guide";
+}
+
+function resolveOutputView(pkg: ContentPackage): OutputView {
+  if (pkg.leadMagnet) return "leadMagnet";
+  if (pkg.calendar) return "calendar";
+  if (pkg.landingPage) return "landing";
+  return "content";
 }
 
 function inferLandingIntent(
@@ -199,10 +271,73 @@ export function ContentEngineApp() {
   const [regeneratingDayIndex, setRegeneratingDayIndex] = useState<number | null>(
     null,
   );
+  const [leadMagnet, setLeadMagnet] = useState<LeadMagnetRecord | null>(null);
+  const [leadMagnetType, setLeadMagnetType] =
+    useState<LeadMagnetType>("buyer-guide");
+  const [leadMagnetActiveSection, setLeadMagnetActiveSection] =
+    useState<LeadMagnetSectionKey>("coverTitle");
+  const [leadMagnetLoading, setLeadMagnetLoading] = useState(false);
+  const [launchHub, setLaunchHub] = useState<LaunchHubRecord | null>(null);
+  const [launchHubSyncing, setLaunchHubSyncing] = useState(false);
 
   const minInputLength = generationMode === "campaign" ? 8 : 24;
   const hasResults =
     generationMode === "campaign" ? Boolean(campaignOutputs) : Boolean(outputs);
+
+  const showLeadCapture = useMemo(
+    () => Boolean(landingPage) || Boolean(launchHub),
+    [landingPage, launchHub],
+  );
+
+  const showLaunchHub = useMemo(
+    () =>
+      packageHasLaunchAssets({
+        generationMode,
+        outputs,
+        campaignOutputs,
+        landingPage,
+        calendar,
+        leadMagnet,
+      }),
+    [
+      calendar,
+      campaignOutputs,
+      generationMode,
+      landingPage,
+      leadMagnet,
+      outputs,
+    ],
+  );
+
+  const launchHubContext = useMemo(
+    () => ({
+      title: title || packageTitleFromInput(input),
+      topic,
+      audience,
+      brandVoiceId,
+      generationMode,
+      hasContentOutputs: hasResults,
+      outputs,
+      campaignOutputs,
+      landingPage,
+      calendar,
+      leadMagnet,
+    }),
+    [
+      audience,
+      brandVoiceId,
+      calendar,
+      campaignOutputs,
+      generationMode,
+      hasResults,
+      input,
+      landingPage,
+      leadMagnet,
+      outputs,
+      title,
+      topic,
+    ],
+  );
 
   const refreshPackages = useCallback(async () => {
     const result = await fetchPackages();
@@ -236,6 +371,9 @@ export function ContentEngineApp() {
       outputs: outputs ?? emptySingleOutputs(),
       campaignOutputs: campaignOutputs ?? undefined,
       landingPage: landingPage ?? undefined,
+      calendar: calendar ?? undefined,
+      leadMagnet: leadMagnet ?? undefined,
+      launchHub: launchHub ?? undefined,
     });
   }, [
     activePackageId,
@@ -246,6 +384,9 @@ export function ContentEngineApp() {
     hasResults,
     input,
     calendar,
+    launchHub,
+    leadCapture,
+    leadMagnet,
     landingPage,
     modelUsed,
     outputs,
@@ -254,6 +395,19 @@ export function ContentEngineApp() {
     tone,
     topic,
   ]);
+
+  const syncLaunchHubLocal = useCallback(() => {
+    const fresh = buildLaunchHubFromPackage(launchHubContext);
+    setLaunchHub((prev) => mergeLaunchHub(prev, fresh));
+  }, [launchHubContext]);
+
+  useEffect(() => {
+    if (!showLaunchHub) {
+      setLaunchHub(null);
+      return;
+    }
+    syncLaunchHubLocal();
+  }, [showLaunchHub, syncLaunchHubLocal]);
 
   const stats = useMemo(
     () => ({
@@ -276,6 +430,9 @@ export function ContentEngineApp() {
     setCampaignOutputs(null);
     setLandingPage(null);
     setCalendar(null);
+    setLeadMagnet(null);
+    setLaunchHub(null);
+    setLeadCapture(null);
     setOutputView("content");
     setMode(null);
     setIsUnsaved(false);
@@ -389,6 +546,10 @@ export function ContentEngineApp() {
         outputs: outputs ?? emptySingleOutputs(),
         campaignOutputs: campaignOutputs ?? undefined,
         landingPage: landingPage ?? undefined,
+        calendar: calendar ?? undefined,
+        leadMagnet: leadMagnet ?? undefined,
+        launchHub: launchHub ?? undefined,
+        leadCapture: leadCapture ?? undefined,
         tags: parseTagsInput(tagsInput),
       });
       setActivePackageId(result.package.id);
@@ -407,10 +568,15 @@ export function ContentEngineApp() {
     activePackageId,
     audience,
     brandVoiceId,
+    calendar,
     campaignOutputs,
     generationMode,
     hasResults,
     input,
+    launchHub,
+    leadCapture,
+    leadMagnet,
+    landingPage,
     modelUsed,
     outputs,
     refreshPackages,
@@ -418,8 +584,6 @@ export function ContentEngineApp() {
     title,
     tone,
     topic,
-    calendar,
-    landingPage,
   ]);
 
   const packageContextPayload = useCallback(
@@ -434,10 +598,12 @@ export function ContentEngineApp() {
       outputs: outputs ?? undefined,
       campaignOutputs: campaignOutputs ?? undefined,
       landingPage: landingPage ?? undefined,
+      calendar: calendar ?? undefined,
     }),
     [
       audience,
       brandVoiceId,
+      calendar,
       campaignOutputs,
       generationMode,
       input,
@@ -448,6 +614,88 @@ export function ContentEngineApp() {
       topic,
     ],
   );
+
+  const handleGenerateLeadMagnet = useCallback(async () => {
+    if (!hasResults) return;
+    setLeadMagnetLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/content-engine/lead-magnet", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: leadMagnetType,
+          ...packageContextPayload(),
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error ?? "Lead magnet generation failed.");
+      }
+      setLeadMagnet(data.leadMagnet as LeadMagnetRecord);
+      setLeadMagnetActiveSection("coverTitle");
+      setOutputView("leadMagnet");
+      setIsUnsaved(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setLeadMagnetLoading(false);
+    }
+  }, [hasResults, leadMagnetType, packageContextPayload]);
+
+  const handleGenerateLeadCapture = useCallback(async () => {
+    if (!showLeadCapture || input.trim().length < 8) return;
+    setLeadCaptureLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/content-engine/lead-capture", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          preset: leadCapturePreset,
+          sourceInput: input,
+          topic,
+          title: title || packageTitleFromInput(input),
+          brandVoiceId,
+          generationMode,
+          audience,
+          tone,
+          landingPage: landingPage ?? undefined,
+          launchHub: launchHub ?? undefined,
+          leadMagnet: leadMagnet ?? undefined,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error ?? "Lead capture generation failed.");
+      }
+      setLeadCapture(data.leadCapture as LeadCaptureRecord);
+      setOutputView("leadCapture");
+      setIsUnsaved(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setLeadCaptureLoading(false);
+    }
+  }, [
+    audience,
+    brandVoiceId,
+    generationMode,
+    input,
+    landingPage,
+    launchHub,
+    leadCapturePreset,
+    leadMagnet,
+    showLeadCapture,
+    title,
+    tone,
+    topic,
+  ]);
+
+  const handleLeadCaptureChange = useCallback((next: LeadCaptureRecord) => {
+    setLeadCapture(next);
+    setIsUnsaved(true);
+  }, []);
 
   const handleGenerateLandingPage = useCallback(async () => {
     if (!hasResults) return;
@@ -562,6 +810,48 @@ export function ContentEngineApp() {
     [calendar, hasResults, packageContextPayload],
   );
 
+  const handleLaunchHubChange = useCallback((next: LaunchHubRecord) => {
+    setLaunchHub(next);
+    setIsUnsaved(true);
+  }, []);
+
+  const handleRefreshLaunchHub = useCallback(async () => {
+    if (!showLaunchHub) return;
+    setLaunchHubSyncing(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/content-engine/launch-hub", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: launchHubContext.title,
+          topic: launchHubContext.topic,
+          audience: launchHubContext.audience,
+          brandVoiceId: launchHubContext.brandVoiceId,
+          generationMode: launchHubContext.generationMode,
+          hasContentOutputs: launchHubContext.hasContentOutputs,
+          outputs: launchHubContext.outputs ?? undefined,
+          campaignOutputs: launchHubContext.campaignOutputs ?? undefined,
+          landingPage: launchHubContext.landingPage ?? undefined,
+          calendar: launchHubContext.calendar ?? undefined,
+          leadMagnet: launchHubContext.leadMagnet ?? undefined,
+          existingLaunchHub: launchHub ?? undefined,
+        }),
+      });
+      const data = await response.json();
+      if (response.ok && data.launchHub) {
+        setLaunchHub(data.launchHub as LaunchHubRecord);
+        setIsUnsaved(true);
+      } else {
+        syncLaunchHubLocal();
+      }
+    } catch {
+      syncLaunchHubLocal();
+    } finally {
+      setLaunchHubSyncing(false);
+    }
+  }, [launchHub, launchHubContext, showLaunchHub, syncLaunchHubLocal]);
+
   const loadPackage = useCallback((pkg: ContentPackage) => {
     setInput(pkg.sourceInput);
     setGenerationMode(pkg.generationMode);
@@ -570,12 +860,20 @@ export function ContentEngineApp() {
     setCampaignOutputs(pkg.campaignOutputs ?? null);
     setLandingPage(pkg.landingPage ?? null);
     setCalendar(pkg.calendar ?? null);
+    setLeadMagnet(pkg.leadMagnet ?? null);
+    setLaunchHub(pkg.launchHub ?? null);
+    setLeadCapture(pkg.leadCapture ?? null);
     setLandingIntent(
       pkg.landingPage?.intent ?? inferLandingIntent(pkg.audience, pkg.topic),
     );
-    setOutputView(
-      pkg.calendar ? "calendar" : pkg.landingPage ? "landing" : "content",
+    setLeadCapturePreset(
+      pkg.leadCapture?.preset ??
+        inferLeadCapturePreset(pkg.landingPage?.intent, pkg.audience, pkg.topic),
     );
+    setLeadMagnetType(
+      pkg.leadMagnet?.type ?? inferLeadMagnetType(pkg.audience, pkg.topic),
+    );
+    setOutputView(resolveOutputView(pkg));
     setTitle(pkg.title);
     setAudience(pkg.audience);
     setTone(pkg.tone);
@@ -828,6 +1126,9 @@ export function ContentEngineApp() {
                 <OutputViewTabs
                   showLanding={Boolean(landingPage)}
                   showCalendar={Boolean(calendar)}
+                  showLeadMagnet={Boolean(leadMagnet)}
+                  showLaunchHub={showLaunchHub}
+                  showLeadCapture={showLeadCapture}
                   activeView={outputView}
                   onViewChange={setOutputView}
                   contentLabel="Campaign"
@@ -849,6 +1150,27 @@ export function ContentEngineApp() {
                       void handleRegenerateCalendarDay(dayIndex)
                     }
                   />
+                ) : outputView === "leadMagnet" && leadMagnet ? (
+                  <LeadMagnetOutputsPanel
+                    leadMagnet={leadMagnet}
+                    packageTitle={title || packageTitleFromInput(input)}
+                    activeSection={leadMagnetActiveSection}
+                    onSectionChange={setLeadMagnetActiveSection}
+                  />
+                ) : outputView === "leadCapture" && leadCapture ? (
+                  <LeadCapturePanel
+                    leadCapture={leadCapture}
+                    packageTitle={title || packageTitleFromInput(input)}
+                    onLeadCaptureChange={handleLeadCaptureChange}
+                  />
+                ) : outputView === "launchHub" && launchHub ? (
+                  <LaunchHubPanel
+                    launchHub={launchHub}
+                    packageTitle={title || packageTitleFromInput(input)}
+                    syncing={launchHubSyncing}
+                    onLaunchHubChange={handleLaunchHubChange}
+                    onRefresh={() => void handleRefreshLaunchHub()}
+                  />
                 ) : (
                   <CampaignOutputsPanel
                     outputs={campaignOutputs}
@@ -861,6 +1183,10 @@ export function ContentEngineApp() {
               <div className="flex flex-1 flex-col overflow-hidden p-6">
                 <OutputViewTabs
                   showLanding
+                  showCalendar={Boolean(calendar)}
+                  showLeadMagnet={Boolean(leadMagnet)}
+                  showLaunchHub={showLaunchHub}
+                  showLeadCapture={showLeadCapture}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -871,12 +1197,90 @@ export function ContentEngineApp() {
                   onSectionChange={setLandingActiveSection}
                 />
               </div>
+            ) : outputView === "calendar" && calendar ? (
+              <div className="flex flex-1 flex-col overflow-hidden p-6">
+                <OutputViewTabs
+                  showLanding={Boolean(landingPage)}
+                  showCalendar
+                  showLeadMagnet={Boolean(leadMagnet)}
+                  showLaunchHub={showLaunchHub}
+                  showLeadCapture={showLeadCapture}
+                  activeView={outputView}
+                  onViewChange={setOutputView}
+                />
+                <CalendarOutputsPanel
+                  calendar={calendar}
+                  packageTitle={title || packageTitleFromInput(input)}
+                  regeneratingDayIndex={regeneratingDayIndex}
+                  onCalendarChange={handleCalendarChange}
+                  onRegenerateDay={(dayIndex) =>
+                    void handleRegenerateCalendarDay(dayIndex)
+                  }
+                />
+              </div>
+            ) : outputView === "leadMagnet" && leadMagnet ? (
+              <div className="flex flex-1 flex-col overflow-hidden p-6">
+                <OutputViewTabs
+                  showLanding={Boolean(landingPage)}
+                  showCalendar={Boolean(calendar)}
+                  showLeadMagnet
+                  showLaunchHub={showLaunchHub}
+                  showLeadCapture={showLeadCapture}
+                  activeView={outputView}
+                  onViewChange={setOutputView}
+                />
+                <LeadMagnetOutputsPanel
+                  leadMagnet={leadMagnet}
+                  packageTitle={title || packageTitleFromInput(input)}
+                  activeSection={leadMagnetActiveSection}
+                  onSectionChange={setLeadMagnetActiveSection}
+                />
+              </div>
+            ) : outputView === "leadCapture" && leadCapture ? (
+              <div className="flex flex-1 flex-col overflow-hidden p-6">
+                <OutputViewTabs
+                  showLanding={Boolean(landingPage)}
+                  showCalendar={Boolean(calendar)}
+                  showLeadMagnet={Boolean(leadMagnet)}
+                  showLaunchHub={showLaunchHub}
+                  showLeadCapture
+                  activeView={outputView}
+                  onViewChange={setOutputView}
+                />
+                <LeadCapturePanel
+                  leadCapture={leadCapture}
+                  packageTitle={title || packageTitleFromInput(input)}
+                  onLeadCaptureChange={handleLeadCaptureChange}
+                />
+              </div>
+            ) : outputView === "launchHub" && launchHub ? (
+              <div className="flex flex-1 flex-col overflow-hidden p-6">
+                <OutputViewTabs
+                  showLanding={Boolean(landingPage)}
+                  showCalendar={Boolean(calendar)}
+                  showLeadMagnet={Boolean(leadMagnet)}
+                  showLaunchHub
+                  showLeadCapture={showLeadCapture}
+                  activeView={outputView}
+                  onViewChange={setOutputView}
+                />
+                <LaunchHubPanel
+                  launchHub={launchHub}
+                  packageTitle={title || packageTitleFromInput(input)}
+                  syncing={launchHubSyncing}
+                  onLaunchHubChange={handleLaunchHubChange}
+                  onRefresh={() => void handleRefreshLaunchHub()}
+                />
+              </div>
             ) : (
               <>
                 <CardHeader className="border-b border-white/[0.06] pb-0">
                   <OutputViewTabs
                     showLanding={Boolean(landingPage)}
                     showCalendar={Boolean(calendar)}
+                    showLeadMagnet={Boolean(leadMagnet)}
+                    showLaunchHub={showLaunchHub}
+                    showLeadCapture={showLeadCapture}
                     activeView={outputView}
                     onViewChange={setOutputView}
                   />
@@ -946,7 +1350,7 @@ export function ContentEngineApp() {
           </Card>
         </div>
 
-        {hasResults && (
+        {(hasResults || showLeadCapture) && (
           <>
             <LandingPageGeneratorCard
               intent={landingIntent}
@@ -961,6 +1365,24 @@ export function ContentEngineApp() {
               loading={calendarLoading}
               hasCalendar={Boolean(calendar)}
             />
+
+            <LeadMagnetGeneratorCard
+              type={leadMagnetType}
+              onTypeChange={setLeadMagnetType}
+              onGenerate={() => void handleGenerateLeadMagnet()}
+              loading={leadMagnetLoading}
+              hasLeadMagnet={Boolean(leadMagnet)}
+            />
+
+            {showLeadCapture && (
+              <LeadCaptureGeneratorCard
+                preset={leadCapturePreset}
+                onPresetChange={setLeadCapturePreset}
+                onGenerate={() => void handleGenerateLeadCapture()}
+                loading={leadCaptureLoading}
+                hasLeadCapture={Boolean(leadCapture)}
+              />
+            )}
 
             <Card>
               <CardHeader>
@@ -1045,6 +1467,18 @@ export function ContentEngineApp() {
                     <CopyButton
                       text={calendarToMarkdown(calendar, exportPackage.title)}
                       label="Copy calendar"
+                    />
+                  )}
+                  {leadMagnet && exportPackage && (
+                    <CopyButton
+                      text={leadMagnetToMarkdown(leadMagnet, exportPackage.title)}
+                      label="Copy lead magnet"
+                    />
+                  )}
+                  {launchHub && (
+                    <CopyButton
+                      text={launchHubToBrief(launchHub)}
+                      label="Copy launch brief"
                     />
                   )}
                 </CardContent>

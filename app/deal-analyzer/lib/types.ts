@@ -139,6 +139,8 @@ export type LeadCapture = {
   notes: string;
   referralSource?: string;
   agentName?: string;
+  /** Required true at submit — SMS/call/email contact consent */
+  smsCallConsent: boolean;
 };
 
 export type DealAnalyzerSession = {

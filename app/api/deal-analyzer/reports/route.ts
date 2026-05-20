@@ -1,4 +1,9 @@
 import { NextResponse } from "next/server";
+import { buildConsentRecord } from "@/app/deal-analyzer/lib/consent";
+import {
+  getClientIpFromHeaders,
+  getUserAgentFromHeaders,
+} from "@/app/deal-analyzer/lib/request-meta";
 import { isSupabaseConfigured } from "@/app/deal-analyzer/lib/supabase/env";
 import { saveReportToSupabase } from "@/app/deal-analyzer/lib/supabase/save-report";
 import type {
@@ -38,12 +43,26 @@ export async function POST(request: Request) {
     );
   }
 
+  if (!body.lead.smsCallConsent) {
+    return NextResponse.json(
+      { error: "SMS/call consent is required to unlock the report." },
+      { status: 400 },
+    );
+  }
+
+  const consent = buildConsentRecord({
+    smsCallConsent: true,
+    consentIp: getClientIpFromHeaders(request.headers),
+    consentUserAgent: getUserAgentFromHeaders(request.headers),
+  });
+
   const result = await saveReportToSupabase({
     slug: body.slug,
     lead: body.lead,
     inputs: body.inputs,
     analysis: body.analysis,
     narrative: body.narrative,
+    consent,
   });
 
   if ("error" in result) {

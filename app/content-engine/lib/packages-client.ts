@@ -70,6 +70,9 @@ export async function savePackage(
     campaignOutputs: draft.campaignOutputs,
     landingPage: draft.landingPage,
     calendar: draft.calendar,
+    leadMagnet: draft.leadMagnet,
+    launchHub: draft.launchHub,
+    leadCapture: draft.leadCapture,
     tags: draft.tags,
   };
   const next = upsertLocalPackage(loadLocalPackages(), pkg);

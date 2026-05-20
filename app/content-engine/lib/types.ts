@@ -1,5 +1,7 @@
 import type { BrandVoiceId } from "./brand-voices";
 import type { LandingPageIntent } from "./landing-page-intents";
+import type { LeadCapturePreset } from "./lead-capture-presets";
+import type { LeadMagnetType } from "./lead-magnet-types";
 
 export const LANDING_PAGE_SECTION_KEYS = [
   "heroHeadline",
@@ -85,6 +87,129 @@ export type ContentCalendarRecord = {
 
 export type CalendarViewMode = "board" | "list" | "platform";
 
+export const LEAD_MAGNET_SECTION_KEYS = [
+  "coverTitle",
+  "subtitle",
+  "executiveSummary",
+  "whyItMattersNow",
+  "keyTakeaways",
+  "mainEducationalSection",
+  "mistakesToAvoid",
+  "actionChecklist",
+  "faq",
+  "ctaPage",
+  "complianceDisclaimer",
+] as const;
+
+export type LeadMagnetSectionKey = (typeof LEAD_MAGNET_SECTION_KEYS)[number];
+
+export type LeadMagnetOutputs = Record<LeadMagnetSectionKey, string>;
+
+export type LeadMagnetRecord = {
+  type: LeadMagnetType;
+  sections: LeadMagnetOutputs;
+  generatedAt: string;
+  modelUsed: string;
+};
+
+export const LAUNCH_CHECKLIST_KEYS = [
+  "contentPackGenerated",
+  "landingPageCreated",
+  "calendarBuilt",
+  "leadMagnetCreated",
+  "ctaSelected",
+  "trackingLinkAdded",
+  "crmFollowUpPlanned",
+  "readyToPublish",
+] as const;
+
+export type LaunchChecklistKey = (typeof LAUNCH_CHECKLIST_KEYS)[number];
+
+export type LaunchHubEditableFields = {
+  campaignName: string;
+  campaignGoal: string;
+  primaryCta: string;
+  landingPageUrl: string;
+  utmCampaignName: string;
+  crmTag: string;
+  notes: string;
+};
+
+export type LaunchHubFunnelSummary = {
+  campaignTopic: string;
+  brandVoice: string;
+  audience: string;
+  primaryOffer: string;
+  landingPageIntent: string;
+  leadMagnetType: string;
+  recommendedCta: string;
+  bestPlatforms: string;
+  weeklyPublishingPlan: string;
+  followUpSequenceIdea: string;
+};
+
+export type LaunchHubRecord = {
+  summary: LaunchHubFunnelSummary;
+  fields: LaunchHubEditableFields;
+  checklist: Record<LaunchChecklistKey, boolean>;
+  crmFollowUpPlan: string;
+  updatedAt: string;
+  modelUsed: string;
+};
+
+export const LEAD_CAPTURE_FIELD_KEYS = [
+  "firstName",
+  "lastName",
+  "email",
+  "phone",
+  "buyerTimeline",
+  "loanTypeInterest",
+  "purchasePriceOrLoanAmount",
+  "creditRange",
+  "agentStatus",
+  "notes",
+  "smsCallConsent",
+  "emailOptIn",
+] as const;
+
+export type LeadCaptureFieldKey = (typeof LEAD_CAPTURE_FIELD_KEYS)[number];
+
+export type LeadCaptureFieldConfig = {
+  label: string;
+  placeholder: string;
+  enabled: boolean;
+  required: boolean;
+};
+
+export const CRM_SEQUENCE_KEYS = [
+  "instantText",
+  "instantEmail",
+  "day1FollowUp",
+  "day3FollowUp",
+  "day7FollowUp",
+  "day14Nurture",
+  "agentReferralAlert",
+  "internalTaskList",
+] as const;
+
+export type CrmSequenceKey = (typeof CRM_SEQUENCE_KEYS)[number];
+
+export type LeadCaptureCrmSequence = Record<CrmSequenceKey, string>;
+
+export type LeadCaptureConsentCopy = {
+  smsCallConsentCopy: string;
+  emailOptInCopy: string;
+};
+
+export type LeadCaptureRecord = {
+  preset: LeadCapturePreset;
+  fields: Record<LeadCaptureFieldKey, LeadCaptureFieldConfig>;
+  crmSequence: LeadCaptureCrmSequence;
+  consent: LeadCaptureConsentCopy;
+  generatedAt: string;
+  modelUsed: string;
+};
+
 export const OUTPUT_TAB_KEYS = [
   "tiktokHooks",
   "youtubeTitles",
@@ -157,6 +282,9 @@ export type ContentPackage = {
   campaignOutputs?: CampaignOutputs;
   landingPage?: LandingPageRecord;
   calendar?: ContentCalendarRecord;
+  leadMagnet?: LeadMagnetRecord;
+  launchHub?: LaunchHubRecord;
+  leadCapture?: LeadCaptureRecord;
   tags: string[];
   mode?: "ai" | "demo";
 };
@@ -174,7 +302,69 @@ export type PackageDraft = {
   campaignOutputs?: CampaignOutputs;
   landingPage?: LandingPageRecord;
   calendar?: ContentCalendarRecord;
+  leadMagnet?: LeadMagnetRecord;
+  launchHub?: LaunchHubRecord;
+  leadCapture?: LeadCaptureRecord;
   tags: string[];
+};
+
+export type GenerateLeadCaptureRequest = {
+  preset: LeadCapturePreset;
+  sourceInput: string;
+  topic: string;
+  title: string;
+  brandVoiceId?: BrandVoiceId;
+  generationMode: GenerationMode;
+  audience?: ContentAudience;
+  tone?: string;
+  landingPage?: LandingPageRecord;
+  launchHub?: LaunchHubRecord;
+  leadMagnet?: LeadMagnetRecord;
+};
+
+export type GenerateLeadCaptureResponse = {
+  leadCapture: LeadCaptureRecord;
+  mode: "ai" | "demo";
+};
+
+export type SyncLaunchHubRequest = {
+  title: string;
+  topic: string;
+  audience: ContentAudience;
+  brandVoiceId?: BrandVoiceId;
+  generationMode: GenerationMode;
+  hasContentOutputs: boolean;
+  outputs?: ContentOutputs;
+  campaignOutputs?: CampaignOutputs;
+  landingPage?: LandingPageRecord;
+  calendar?: ContentCalendarRecord;
+  leadMagnet?: LeadMagnetRecord;
+  existingLaunchHub?: LaunchHubRecord;
+};
+
+export type SyncLaunchHubResponse = {
+  launchHub: LaunchHubRecord;
+  mode: "ai" | "demo";
+};
+
+export type GenerateLeadMagnetRequest = {
+  type: LeadMagnetType;
+  sourceInput: string;
+  topic: string;
+  title: string;
+  brandVoiceId?: BrandVoiceId;
+  generationMode: GenerationMode;
+  audience?: ContentAudience;
+  tone?: string;
+  outputs?: ContentOutputs;
+  campaignOutputs?: CampaignOutputs;
+  landingPage?: LandingPageRecord;
+  calendar?: ContentCalendarRecord;
+};
+
+export type GenerateLeadMagnetResponse = {
+  leadMagnet: LeadMagnetRecord;
+  mode: "ai" | "demo";
 };
 
 export type GenerateCalendarRequest = {

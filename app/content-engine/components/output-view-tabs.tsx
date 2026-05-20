@@ -2,11 +2,20 @@
 
 import { cn } from "@/lib/utils";
 
-export type OutputView = "content" | "landing" | "calendar";
+export type OutputView =
+  | "content"
+  | "landing"
+  | "calendar"
+  | "leadMagnet"
+  | "launchHub"
+  | "leadCapture";
 
 type OutputViewTabsProps = {
   showLanding?: boolean;
   showCalendar?: boolean;
+  showLeadMagnet?: boolean;
+  showLaunchHub?: boolean;
+  showLeadCapture?: boolean;
   activeView: OutputView;
   onViewChange: (view: OutputView) => void;
   contentLabel?: string;
@@ -15,11 +24,22 @@ type OutputViewTabsProps = {
 export function OutputViewTabs({
   showLanding = false,
   showCalendar = false,
+  showLeadMagnet = false,
+  showLaunchHub = false,
+  showLeadCapture = false,
   activeView,
   onViewChange,
   contentLabel = "Content",
 }: OutputViewTabsProps) {
-  if (!showLanding && !showCalendar) return null;
+  if (
+    !showLanding &&
+    !showCalendar &&
+    !showLeadMagnet &&
+    !showLaunchHub &&
+    !showLeadCapture
+  ) {
+    return null;
+  }
 
   const tabs: { id: OutputView; label: string; activeClass: string }[] = [
     {
@@ -28,6 +48,22 @@ export function OutputViewTabs({
       activeClass: "bg-[#7c3aed]/25 text-[#e9d5ff]",
     },
   ];
+
+  if (showLaunchHub) {
+    tabs.push({
+      id: "launchHub",
+      label: "Launch hub",
+      activeClass: "bg-[#7c3aed]/35 text-white ring-1 ring-[#7c3aed]/50",
+    });
+  }
+
+  if (showLeadCapture) {
+    tabs.push({
+      id: "leadCapture",
+      label: "Lead capture",
+      activeClass: "bg-rose-500/25 text-rose-200",
+    });
+  }
 
   if (showLanding) {
     tabs.push({
@@ -45,15 +81,23 @@ export function OutputViewTabs({
     });
   }
 
+  if (showLeadMagnet) {
+    tabs.push({
+      id: "leadMagnet",
+      label: "Lead magnet",
+      activeClass: "bg-[#c9a227]/25 text-[#e8c547]",
+    });
+  }
+
   return (
-    <div className="mb-4 flex gap-1 rounded-lg border border-white/[0.06] bg-black/20 p-1">
+    <div className="mb-4 flex gap-1 overflow-x-auto rounded-lg border border-white/[0.06] bg-black/20 p-1">
       {tabs.map((tab) => (
         <button
           key={tab.id}
           type="button"
           onClick={() => onViewChange(tab.id)}
           className={cn(
-            "flex-1 rounded-md px-3 py-2 font-mono text-[9px] tracking-[0.14em] uppercase transition-all",
+            "shrink-0 rounded-md px-3 py-2 font-mono text-[9px] tracking-[0.14em] uppercase transition-all",
             activeView === tab.id
               ? tab.activeClass
               : "text-zinc-500 hover:text-zinc-300",

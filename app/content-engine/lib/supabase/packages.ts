@@ -53,6 +53,9 @@ export async function savePackageToSupabase(
       draft.generationMode === "campaign" ? draft.campaignOutputs : undefined,
     landingPage: draft.landingPage,
     calendar: draft.calendar,
+    leadMagnet: draft.leadMagnet,
+    launchHub: draft.launchHub,
+    leadCapture: draft.leadCapture,
     tags: draft.tags,
   };
 

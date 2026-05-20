@@ -15,6 +15,9 @@ export type ContentEnginePackageRow = {
   outputs_json: Json;
   landing_page_json: Json | null;
   calendar_json: Json | null;
+  lead_magnet_json: Json | null;
+  launch_hub_json: Json | null;
+  lead_capture_json: Json | null;
   tags: string[];
 };
 
@@ -32,6 +35,9 @@ export type ContentEnginePackageInsert = {
   outputs_json: Json;
   landing_page_json?: Json | null;
   calendar_json?: Json | null;
+  lead_magnet_json?: Json | null;
+  launch_hub_json?: Json | null;
+  lead_capture_json?: Json | null;
   tags?: string[];
 };
 

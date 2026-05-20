@@ -153,6 +153,15 @@ export function PackageHistoryPanel({
                   {pkg.calendar && (
                     <Badge variant="default">calendar</Badge>
                   )}
+                  {pkg.leadMagnet && (
+                    <Badge variant="gold">magnet</Badge>
+                  )}
+                  {pkg.launchHub && (
+                    <Badge variant="purple">launch</Badge>
+                  )}
+                  {pkg.leadCapture && (
+                    <Badge variant="warning">capture</Badge>
+                  )}
                   <Badge variant={pkg.modelUsed === "demo" ? "gold" : "purple"}>
                     {pkg.modelUsed === "demo" ? "demo" : "ai"}
                   </Badge>

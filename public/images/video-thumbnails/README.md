@@ -12,4 +12,10 @@ for f in public/videos/hero/*.mp4; do
 done
 ```
 
-Until JPGs exist, cards use a frame from the self-hosted MP4 via `VideoPosterThumbnail`.
+Until JPGs exist, cards use a frame from the self-hosted MP4 (seek ~1.5s) via `VideoPosterThumbnail`.
+
+**Generate (Node):**
+
+```bash
+node scripts/generate-video-thumbnails.mjs
+```

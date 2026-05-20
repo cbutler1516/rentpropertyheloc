@@ -1,6 +1,8 @@
 import { getBrandVoice } from "./brand-voices";
 import { CAMPAIGN_TABS } from "./campaign-tabs";
 import { calendarToMarkdown } from "./calendar-export";
+import { launchHubToMarkdown } from "./launch-hub-export";
+import { leadMagnetToMarkdown } from "./lead-magnet-export";
 import { landingPageToMarkdown } from "./landing-page-export";
 import { OUTPUT_TABS } from "./tabs";
 import type { ContentPackage } from "./types";
@@ -69,6 +71,26 @@ export function packageToMarkdown(pkg: ContentPackage): string {
       "",
       calendarToMarkdown(pkg.calendar, pkg.title).replace(
         `# 7-Day Content Calendar — ${pkg.title}`,
+        "",
+      ),
+    );
+  }
+
+  if (pkg.leadMagnet) {
+    lines.push(
+      "",
+      leadMagnetToMarkdown(pkg.leadMagnet, pkg.title).replace(
+        `# Lead Magnet — ${pkg.title}`,
+        "",
+      ),
+    );
+  }
+
+  if (pkg.launchHub) {
+    lines.push(
+      "",
+      launchHubToMarkdown(pkg.launchHub, pkg.title).replace(
+        `# Launch Hub — ${pkg.title}`,
         "",
       ),
     );

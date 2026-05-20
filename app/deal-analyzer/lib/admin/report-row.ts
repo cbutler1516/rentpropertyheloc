@@ -8,6 +8,8 @@ import type {
   DealInputs,
   DealPath,
 } from "../types";
+import type { DealAnalyzerFollowUpRecord, LeadStatus } from "../follow-up-types";
+import { reportNeedsFollowUp } from "../supabase/follow-ups";
 import { computeLeadScore, scoreToLabel } from "./lead-score";
 import { buildSuggestedFollowUp } from "./suggested-follow-up";
 import type { DealAnalyzerKeyMetric, DealAnalyzerReportRow } from "./types";
@@ -81,7 +83,10 @@ type RawReportRow = {
   agent_name: string | null;
   referral_source: string | null;
   narrative_json: unknown;
+  lead_id: string;
+  scenario_id: string;
   lead: {
+    id?: string;
     name: string;
     email: string;
     phone: string;
@@ -89,12 +94,18 @@ type RawReportRow = {
     notes: string | null;
     referral_source: string | null;
     agent_name: string | null;
+    sms_call_consent?: boolean;
+    consent_timestamp?: string | null;
+    lead_status?: string | null;
+    last_contacted_at?: string | null;
+    next_follow_up_at?: string | null;
   };
   scenario: {
     deal_type: string;
     inputs_json: unknown;
     analysis_json: unknown;
   };
+  followUp?: DealAnalyzerFollowUpRecord | null;
 };
 
 export function mapRawReportToRow(raw: RawReportRow): DealAnalyzerReportRow {
@@ -111,6 +122,7 @@ export function mapRawReportToRow(raw: RawReportRow): DealAnalyzerReportRow {
     notes: raw.lead.notes ?? "",
     referralSource: raw.lead.referral_source ?? raw.referral_source ?? "",
     agentName: raw.lead.agent_name ?? raw.agent_name ?? "",
+    smsCallConsent: raw.lead.sms_call_consent ?? false,
   };
 
   let narrative: PlaybookNarrative | null = null;
@@ -132,9 +144,15 @@ export function mapRawReportToRow(raw: RawReportRow): DealAnalyzerReportRow {
   const agentName = raw.agent_name ?? raw.lead.agent_name ?? null;
   const referralSource = raw.referral_source ?? raw.lead.referral_source ?? null;
   const score = computeLeadScore({ lead, inputs, analysis });
+  const leadStatus = (raw.lead.lead_status as LeadStatus) || "New";
+  const nextFollowUpAt =
+    raw.lead.next_follow_up_at ?? raw.followUp?.nextFollowUpAt ?? null;
+  const hasFollowUp = Boolean(raw.followUp?.id);
 
   return {
     id: raw.id,
+    leadId: raw.lead_id,
+    scenarioId: raw.scenario_id,
     slug: raw.report_slug,
     createdAt: raw.created_at,
     leadName: raw.lead.name,
@@ -158,5 +176,19 @@ export function mapRawReportToRow(raw: RawReportRow): DealAnalyzerReportRow {
     missingContact: isMissingContact(raw.lead.email, raw.lead.phone),
     isAgentSourced: isAgentSourced(lead.role, agentName, referralSource),
     notes: lead.notes,
+    smsCallConsent: raw.lead.sms_call_consent ?? false,
+    consentTimestamp: raw.lead.consent_timestamp ?? null,
+    leadStatus,
+    lastContactedAt:
+      raw.lead.last_contacted_at ?? raw.followUp?.lastContactedAt ?? null,
+    nextFollowUpAt,
+    needsFollowUp: reportNeedsFollowUp({
+      leadStatus,
+      nextFollowUpAt,
+      hasFollowUp,
+    }),
+    followUpId: raw.followUp?.id ?? null,
+    followUpStatus: raw.followUp?.status ?? null,
+    followUpUpdatedAt: raw.followUp?.updatedAt ?? null,
   };
 }

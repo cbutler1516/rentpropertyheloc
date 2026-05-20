@@ -16,19 +16,28 @@ export type VideoCardThumbnailPost = {
 type VideoCardThumbnailProps = {
   video: VideoCardThumbnailPost;
   className?: string;
+  /** First featured card: subtle in-view loop on desktop */
+  subtleAutoplay?: boolean;
 };
 
-export function VideoCardThumbnail({ video, className }: VideoCardThumbnailProps) {
+export function VideoCardThumbnail({
+  video,
+  className,
+  subtleAutoplay = false,
+}: VideoCardThumbnailProps) {
   const post = withVideoThumbnail(video);
 
   if (post.localVideoSrc) {
     return (
       <VideoPosterThumbnail
+        posterSrc={post.thumbnailSrc}
         videoSrc={post.localVideoSrc}
         title={post.title}
         category={post.category}
         platform={post.platform}
         className={className}
+        previewOnHover
+        subtleAutoplay={subtleAutoplay}
       />
     );
   }

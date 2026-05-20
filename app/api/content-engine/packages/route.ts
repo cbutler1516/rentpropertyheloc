@@ -79,6 +79,9 @@ export async function POST(request: Request) {
     campaignOutputs: body.campaignOutputs,
     landingPage: body.landingPage,
     calendar: body.calendar,
+    leadMagnet: body.leadMagnet,
+    launchHub: body.launchHub,
+    leadCapture: body.leadCapture,
     tags: body.tags ?? [],
   });
 

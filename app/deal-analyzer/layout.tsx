@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DealAnalyzerProvider } from "./components/deal-analyzer-provider";
 import { DealAnalyzerShell } from "./components/deal-analyzer-shell";
+import "./deal-analyzer-preview.css";
 
 export const metadata: Metadata = {
   title: "Deal Analyzer | The Loan Playbook",

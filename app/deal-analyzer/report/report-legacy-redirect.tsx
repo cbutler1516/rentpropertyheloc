@@ -18,7 +18,7 @@ export function ReportLegacyRedirect() {
     }
 
     if (analysis && inputs && !reportUnlocked) {
-      router.replace("/deal-analyzer/analyze?step=lead");
+      router.replace("/deal-analyzer/analyze?step=preview");
       return;
     }
 

@@ -12,7 +12,13 @@ function getGuideLink(video: HeroVideo) {
   return null;
 }
 
-export function PublishedVideoCard({ video }: { video: HeroVideo }) {
+export function PublishedVideoCard({
+  video,
+  subtleAutoplay = false,
+}: {
+  video: HeroVideo;
+  subtleAutoplay?: boolean;
+}) {
   const post = withVideoThumbnail(video);
   const guide = getGuideLink(post);
   const showTikTok = post.platform === "TikTok" && Boolean(post.cta.href);
@@ -29,6 +35,7 @@ export function PublishedVideoCard({ video }: { video: HeroVideo }) {
         <VideoCardThumbnail
           video={post}
           className="aspect-[4/5] border-b border-zinc-900/80"
+          subtleAutoplay={subtleAutoplay}
         />
       </TrackedLink>
       <div className="relative flex flex-1 flex-col p-5 md:p-6">

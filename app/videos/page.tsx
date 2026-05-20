@@ -72,8 +72,12 @@ function VideoSection({
           className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           stagger={80}
         >
-          {videos.map((video) => (
-            <PublishedVideoCard key={video.slug} video={video} />
+          {videos.map((video, index) => (
+            <PublishedVideoCard
+              key={video.slug}
+              video={video}
+              subtleAutoplay={id === "featured-videos" && index === 0}
+            />
           ))}
         </RevealGroup>
       </div>

@@ -1,5 +1,6 @@
 import { DealForm } from "../components/deal-form";
 import { LeadGateForm } from "../components/lead-gate-form";
+import { PreviewReportGate } from "../components/preview-report-gate";
 import type { DealPath } from "../lib/types";
 
 const validPaths: DealPath[] = [
@@ -22,8 +23,21 @@ export default async function DealAnalyzerAnalyzePage({
   searchParams: Promise<{ path?: string; step?: string }>;
 }) {
   const params = await searchParams;
-  const step = params.step === "lead" ? "lead" : "form";
+  const step =
+    params.step === "lead"
+      ? "lead"
+      : params.step === "preview"
+        ? "preview"
+        : "form";
   const initialPath = parsePath(params.path);
+
+  if (step === "preview") {
+    return (
+      <div className="mx-auto max-w-4xl space-y-6">
+        <PreviewReportGate />
+      </div>
+    );
+  }
 
   if (step === "lead") {
     return (
@@ -35,6 +49,9 @@ export default async function DealAnalyzerAnalyzePage({
           <h1 className="mt-2 text-3xl font-medium text-white">
             Unlock Playbook Report
           </h1>
+          <p className="mt-2 text-sm text-zinc-500">
+            Step 3 — Contact info & consent to view your full numbers and strategy.
+          </p>
         </div>
         <LeadGateForm />
       </div>

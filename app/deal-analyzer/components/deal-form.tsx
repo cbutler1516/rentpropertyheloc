@@ -80,7 +80,7 @@ export function DealForm({ initialPath }: { initialPath?: DealPath }) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setInputs(preview);
-    router.push("/deal-analyzer/analyze?step=lead");
+    router.push("/deal-analyzer/analyze?step=preview");
   }
 
   return (
@@ -261,10 +261,11 @@ export function DealForm({ initialPath }: { initialPath?: DealPath }) {
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <p className="text-sm text-zinc-500">
-          Next: unlock your Playbook Report with a quick contact step.
+          Next: preview your Playbook Report, then unlock full numbers with contact
+          info.
         </p>
         <Button type="submit" variant="gold" size="lg">
-          Generate Playbook Report
+          Preview Playbook Report
         </Button>
       </div>
     </form>
