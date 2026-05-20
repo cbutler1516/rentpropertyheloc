@@ -115,8 +115,13 @@ export async function generateAndSaveFollowUp(
     return { error: "Report not found." };
   }
 
-  const full = await fetchReportFromSupabase(report.report_slug);
-  if ("error" in full) return { error: full.error };
+  const slug = report.report_slug;
+  if (!slug) return { error: "Report not found." };
+
+  const full = await fetchReportFromSupabase(slug);
+  if ("error" in full) {
+    return { error: full.error ?? "Unable to load report." };
+  }
 
   const siteUrl = getSiteUrl();
   const { followUp, source } = await resolveFollowUpContent({
