@@ -279,6 +279,10 @@ export function ContentEngineApp() {
   const [leadMagnetLoading, setLeadMagnetLoading] = useState(false);
   const [launchHub, setLaunchHub] = useState<LaunchHubRecord | null>(null);
   const [launchHubSyncing, setLaunchHubSyncing] = useState(false);
+  const [leadCapture, setLeadCapture] = useState<LeadCaptureRecord | null>(null);
+  const [leadCapturePreset, setLeadCapturePreset] =
+    useState<LeadCapturePreset>("buyer-lead");
+  const [leadCaptureLoading, setLeadCaptureLoading] = useState(false);
 
   const minInputLength = generationMode === "campaign" ? 8 : 24;
   const hasResults =
@@ -374,6 +378,7 @@ export function ContentEngineApp() {
       calendar: calendar ?? undefined,
       leadMagnet: leadMagnet ?? undefined,
       launchHub: launchHub ?? undefined,
+      leadCapture: leadCapture ?? undefined,
     });
   }, [
     activePackageId,
