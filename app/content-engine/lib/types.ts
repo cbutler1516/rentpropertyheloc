@@ -1,5 +1,6 @@
 import type { BrandVoiceId } from "./brand-voices";
 import type { LandingPageIntent } from "./landing-page-intents";
+import type { CrmProvider } from "./crm-providers";
 import type { LeadCapturePreset } from "./lead-capture-presets";
 import type { LeadMagnetType } from "./lead-magnet-types";
 
@@ -210,6 +211,81 @@ export type LeadCaptureRecord = {
   modelUsed: string;
 };
 
+export type CrmFieldMapping = {
+  leadCaptureField: LeadCaptureFieldKey;
+  crmFieldId: string;
+  enabled: boolean;
+};
+
+export type CrmAutomationSettings = {
+  pushFromLandingPage: boolean;
+  autoTags: string[];
+  createOpportunity: boolean;
+  opportunityPipeline: string;
+  opportunityStage: string;
+  assignedLoanOfficer: string;
+  triggerWorkflowId: string;
+  triggerCampaignId: string;
+  createTasks: boolean;
+  taskReminderDays: number;
+  pushUtmSource: boolean;
+};
+
+export type CrmConnectionPublic = {
+  provider: CrmProvider;
+  connected: boolean;
+  credentialHint?: string;
+  lastVerifiedAt?: string;
+};
+
+export const CRM_ACTIVITY_TYPES = [
+  "lead_pushed",
+  "workflow_triggered",
+  "error",
+  "retry",
+] as const;
+
+export type CrmActivityType = (typeof CRM_ACTIVITY_TYPES)[number];
+
+export type CrmActivityLogEntry = {
+  id: string;
+  at: string;
+  type: CrmActivityType;
+  provider: CrmProvider;
+  message: string;
+  success: boolean;
+  leadEmail?: string;
+  retryable?: boolean;
+  relatedEntryId?: string;
+};
+
+export type CrmIntegrationRecord = {
+  activeProvider: CrmProvider;
+  fieldMappings: CrmFieldMapping[];
+  automations: CrmAutomationSettings;
+  connections: CrmConnectionPublic[];
+  activityLog: CrmActivityLogEntry[];
+  updatedAt: string;
+};
+
+export type CrmTestLeadPayload = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  buyerTimeline?: string;
+  loanTypeInterest?: string;
+  purchasePriceOrLoanAmount?: string;
+  creditRange?: string;
+  agentStatus?: string;
+  notes?: string;
+  smsCallConsent?: boolean;
+  emailOptIn?: boolean;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+};
+
 export const OUTPUT_TAB_KEYS = [
   "tiktokHooks",
   "youtubeTitles",
@@ -285,6 +361,7 @@ export type ContentPackage = {
   leadMagnet?: LeadMagnetRecord;
   launchHub?: LaunchHubRecord;
   leadCapture?: LeadCaptureRecord;
+  crmIntegration?: CrmIntegrationRecord;
   tags: string[];
   mode?: "ai" | "demo";
 };
@@ -305,7 +382,32 @@ export type PackageDraft = {
   leadMagnet?: LeadMagnetRecord;
   launchHub?: LaunchHubRecord;
   leadCapture?: LeadCaptureRecord;
+  crmIntegration?: CrmIntegrationRecord;
   tags: string[];
+};
+
+export type SaveCrmCredentialsRequest = {
+  packageId: string;
+  provider: CrmProvider;
+  credentials: Record<string, string>;
+};
+
+export type CrmConnectionStatusResponse = {
+  connections: CrmConnectionPublic[];
+};
+
+export type CrmPushLeadRequest = {
+  packageId: string;
+  provider?: CrmProvider;
+  lead: CrmTestLeadPayload;
+  testMode?: boolean;
+};
+
+export type CrmPushLeadResponse = {
+  success: boolean;
+  mode: "live" | "demo";
+  message: string;
+  activityLog: CrmActivityLogEntry[];
 };
 
 export type GenerateLeadCaptureRequest = {

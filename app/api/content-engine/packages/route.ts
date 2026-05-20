@@ -82,6 +82,7 @@ export async function POST(request: Request) {
     leadMagnet: body.leadMagnet,
     launchHub: body.launchHub,
     leadCapture: body.leadCapture,
+    crmIntegration: body.crmIntegration,
     tags: body.tags ?? [],
   });
 

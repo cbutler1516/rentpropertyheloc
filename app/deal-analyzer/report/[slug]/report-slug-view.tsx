@@ -56,6 +56,7 @@ export function ReportSlugView({ slug }: { slug: string }) {
         leadRole: readyData.lead.role,
         leadName: readyData.lead.name,
         agentName: readyData.agentName ?? readyData.lead.agentName,
+        partnerAgentName: readyData.partnerAgentName ?? readyData.agentName ?? undefined,
       },
     );
   }, [readyData]);
@@ -125,8 +126,9 @@ export function ReportSlugView({ slug }: { slug: string }) {
         narrative={data.narrative}
         lead={data.lead}
         createdAt={data.createdAt}
-        agentName={data.agentName}
+        agentName={data.partnerAgentName ?? data.agentName}
         referralSource={data.referralSource}
+        partnerBranding={data.partnerBranding ?? null}
       />
     </div>
   );

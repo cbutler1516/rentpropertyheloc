@@ -8,6 +8,7 @@ import {
   generateStaticNarrative,
   type PlaybookNarrative,
 } from "../lib/report-content";
+import type { PartnerAgent } from "../lib/agent-types";
 import type { DealAnalysisResult, DealInputs, LeadCapture } from "../lib/types";
 import { MetricTile } from "./metric-tile";
 import { ReportNarrativeSections } from "./report-narrative-sections";
@@ -22,6 +23,8 @@ export type ReportMeta = {
   createdAt?: string;
   lead?: LeadCapture;
   agentName?: string | null;
+  partnerAgentName?: string | null;
+  partnerBranding?: PartnerAgent | null;
   referralSource?: string | null;
   isSharedView?: boolean;
 };
@@ -45,12 +48,16 @@ function resolveNarrative(
       leadRole: reportMeta?.lead?.role,
       leadName: reportMeta?.lead?.name,
       agentName: reportMeta?.agentName ?? reportMeta?.lead?.agentName,
+      partnerAgentName:
+        reportMeta?.partnerAgentName ?? reportMeta?.agentName ?? undefined,
     });
   }
   return generateStaticNarrative(inputs, analysis, {
     leadRole: reportMeta?.lead?.role,
     leadName: reportMeta?.lead?.name,
     agentName: reportMeta?.agentName ?? reportMeta?.lead?.agentName,
+    partnerAgentName:
+      reportMeta?.partnerAgentName ?? reportMeta?.agentName ?? undefined,
   });
 }
 
@@ -70,10 +77,14 @@ export function PlaybookReport({
   );
 
   const clientName = reportMeta?.lead?.name;
+  const partnerAgentName =
+    reportMeta?.partnerAgentName ?? reportMeta?.agentName ?? null;
   const agentName =
-    reportMeta?.agentName || reportMeta?.lead?.agentName || null;
+    partnerAgentName || reportMeta?.lead?.agentName || null;
   const isAgentContext =
-    reportMeta?.lead?.role === "Agent" || Boolean(agentName);
+    reportMeta?.lead?.role === "Agent" ||
+    Boolean(partnerAgentName) ||
+    Boolean(agentName);
   const showAgentShare =
     isAgentContext || Boolean(narrative.agentShareMessage?.trim());
 
@@ -84,6 +95,7 @@ export function PlaybookReport({
         pathLabel={pathMeta.label}
         clientName={clientName}
         agentName={agentName}
+        partnerBranding={reportMeta?.partnerBranding ?? undefined}
         createdAt={reportMeta?.createdAt}
         showAgentShare={showAgentShare}
         isAi={narrative.source === "ai"}
@@ -267,6 +279,7 @@ export function PlaybookReport({
         pathLabel={pathMeta.label}
         clientName={clientName}
         agentName={agentName}
+        partnerBranding={reportMeta?.partnerBranding ?? undefined}
         createdAt={reportMeta?.createdAt}
         showAgentShare={showAgentShare}
         isAi={narrative.source === "ai"}

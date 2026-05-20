@@ -138,3 +138,48 @@ Run migration `003_deal_analyzer_followups.sql` after `002`.
 **Admin** (`/admin/deal-analyzer`): Generate Follow-Up opens a drawer with text, email, agent message, call notes, priority, timing; copy buttons; lead status dropdown; next follow-up date; **Needs Follow-Up** filter.
 
 Lead statuses: New, Followed Up, Contacted, Appointment Set, Not Ready, Archived.
+
+## v7 — Agent partner system
+
+Run migration `004_deal_analyzer_agents.sql` after `003`.
+
+**Table:** `deal_analyzer_agents` (name, email, phone, company, slug, referral_code).
+
+**Attribution on leads/reports:** `agent_id`, `referral_code` (set automatically when a buyer uses a partner link).
+
+### Public routes (read-only agent lookup)
+
+| Route | Purpose |
+|-------|---------|
+| `/partners/[agentSlug]` | Agent-branded landing + CTA |
+| `/partners/[agentSlug]/deal-analyzer` | Redirects to analyze |
+| `/partners/[agentSlug]/deal-analyzer/analyze` | Full analyzer funnel under partner context |
+| Invalid slug | Redirects to `/deal-analyzer` |
+
+Reports still live at `/deal-analyzer/report/[slug]` globally. Reports show **Shared by [Agent Name]** when referred.
+
+### Admin
+
+| Route | Purpose |
+|-------|---------|
+| `/admin/deal-analyzer/agents` | Add/edit agents, copy partner link, view reports/leads/appointments/conversion |
+
+**API routes:**
+
+- `GET /api/deal-analyzer/agents/[slug]` — public agent profile (read-only)
+- `GET|POST /api/deal-analyzer/admin/agents` — list + stats, create (admin auth)
+- `PATCH|DELETE /api/deal-analyzer/admin/agents/[id]` — update/delete (admin auth)
+
+Partner link format: `{SITE_URL}/partners/{slug}` → analyze at `{SITE_URL}/partners/{slug}/deal-analyzer/analyze`.
+
+## v8 — Agent co-branding
+
+Run migration `005_deal_analyzer_agent_branding.sql` after `004`.
+
+**New agent fields:** `headshot_url`, `logo_url`, `bio`, `brokerage`, `cta_phone`, `cta_email`, `brand_color`.
+
+**Partner landing** (`/partners/{slug}`): co-branded hero with headshot/logo, agent CTA card, “Powered by The Loan Playbook + Broadview Lending”.
+
+**Reports:** co-branded header (Prepared for / Shared by / Financing strategy by Chris Butler), agent contact card, print/PDF chrome includes agent logo and partner lines.
+
+**Admin** (`/admin/deal-analyzer/agents`): branding fields, preview partner page, preview sample report (`/partners/{slug}/sample-report`), Agent Invite Kit (text, email, social, video script, QR placeholder).

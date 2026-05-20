@@ -139,6 +139,23 @@ export default function PartnersPage() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
+        <section className="relative z-10 border-t border-zinc-900/60 py-20">
+          <div className="mx-auto max-w-3xl px-6 md:px-10">
+            <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
+              Deal Analyzer · Agent partners
+            </p>
+            <h2 className="mt-4 text-3xl font-medium text-white">
+              Real estate agents: branded financing playbooks
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-zinc-400">
+              Chris Butler prepares the strategy; your clients get a custom Playbook
+              Report through your partner link. Ask Chris for your{" "}
+              <span className="text-zinc-200">/partners/[your-slug]</span> page and
+              co-branded Deal Analyzer access.
+            </p>
+          </div>
+        </section>
+
         <div id="partnership-conversation">
           <ConversionCTA {...conversionCtas.brokerPartnership} />
         </div>

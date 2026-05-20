@@ -3,6 +3,7 @@ import {
   ConversionCTA,
   conversionCtas,
 } from "../components/conversion-cta";
+import { BookingCtaSection } from "../components/booking-cta";
 import { InternalPage } from "../components/internal-page";
 
 export const metadata: Metadata = {
@@ -48,9 +49,15 @@ export default function HomeownersPage() {
         body: "Understand timing. Compare paths. Move with context.",
       }}
       extraSections={
-        <div id="homeowner-strategy">
-          <ConversionCTA {...conversionCtas.homeownerStrategy} />
-        </div>
+        <>
+          <div id="homeowner-strategy">
+            <ConversionCTA {...conversionCtas.homeownerStrategy} />
+          </div>
+          <BookingCtaSection
+            location="homeowners_page"
+            types={["strategy", "residential"]}
+          />
+        </>
       }
     />
   );

@@ -143,12 +143,30 @@ export type LeadCapture = {
   smsCallConsent: boolean;
 };
 
+export type PartnerAgentRef = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  company: string | null;
+  slug: string;
+  referralCode: string;
+  headshotUrl: string | null;
+  logoUrl: string | null;
+  bio: string | null;
+  brokerage: string | null;
+  ctaPhone: string | null;
+  ctaEmail: string | null;
+  brandColor: string | null;
+};
+
 export type DealAnalyzerSession = {
   inputs: DealInputs | null;
   analysis: DealAnalysisResult | null;
   lead: LeadCapture | null;
   reportSlug: string | null;
   reportUnlocked: boolean;
+  partnerAgent: PartnerAgentRef | null;
 };
 
 export const defaultSession: DealAnalyzerSession = {
@@ -157,4 +175,5 @@ export const defaultSession: DealAnalyzerSession = {
   lead: null,
   reportSlug: null,
   reportUnlocked: false,
+  partnerAgent: null,
 };

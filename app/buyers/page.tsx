@@ -3,6 +3,7 @@ import {
   ConversionCTA,
   conversionCtas,
 } from "../components/conversion-cta";
+import { BookingCtaSection } from "../components/booking-cta";
 import { InternalPage } from "../components/internal-page";
 import { LicensedMarketsRail } from "../components/licensed-markets-rail";
 
@@ -60,6 +61,10 @@ export default function BuyersPage() {
           <div id="buyer-strategy">
             <ConversionCTA {...conversionCtas.buyerStrategy} />
           </div>
+          <BookingCtaSection
+            location="buyers_page"
+            types={["strategy", "residential"]}
+          />
         </>
       }
     />

@@ -18,6 +18,7 @@ export type ContentEnginePackageRow = {
   lead_magnet_json: Json | null;
   launch_hub_json: Json | null;
   lead_capture_json: Json | null;
+  crm_integration_json: Json | null;
   tags: string[];
 };
 
@@ -38,6 +39,7 @@ export type ContentEnginePackageInsert = {
   lead_magnet_json?: Json | null;
   launch_hub_json?: Json | null;
   lead_capture_json?: Json | null;
+  crm_integration_json?: Json | null;
   tags?: string[];
 };
 
@@ -48,6 +50,28 @@ export type Database = {
         Row: ContentEnginePackageRow;
         Insert: ContentEnginePackageInsert;
         Update: Partial<ContentEnginePackageInsert>;
+      };
+      content_engine_crm_credentials: {
+        Row: {
+          id: string;
+          package_id: string;
+          provider: string;
+          credentials_json: Json;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          package_id: string;
+          provider: string;
+          credentials_json: Json;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<{
+          credentials_json: Json;
+          updated_at: string;
+        }>;
       };
     };
   };

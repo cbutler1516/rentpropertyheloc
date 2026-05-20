@@ -4,8 +4,11 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
 import { STRATEGY_CALL_URL } from "../lib/constants";
+import type { PartnerAgent } from "../lib/agent-types";
 import type { PlaybookNarrative } from "../lib/report-content";
+import { AgentContactCard } from "./agent-contact-card";
 import { AgentShareBox } from "./agent-share-box";
+import { PartnerCobrandReportHeader } from "./partner-cobrand-report-header";
 
 function NarrativeList({
   items,
@@ -37,6 +40,7 @@ type ReportNarrativeSectionsProps = {
   pathLabel: string;
   clientName?: string;
   agentName?: string | null;
+  partnerBranding?: PartnerAgent;
   createdAt?: string;
   showAgentShare: boolean;
   isAi: boolean;
@@ -50,6 +54,7 @@ export function ReportNarrativeSections({
   pathLabel,
   clientName,
   agentName,
+  partnerBranding,
   createdAt,
   showAgentShare,
   isAi,
@@ -62,60 +67,82 @@ export function ReportNarrativeSections({
   return (
     <>
       {showHeader ? (
-      <header className="playbook-screen-only relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#7c3aed]/15 via-zinc-950 to-[#c9a227]/10 p-8 md:p-10">
-        <div
-          className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#7c3aed]/20 blur-3xl"
-          aria-hidden
-        />
-        <div className="relative space-y-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="gold">Playbook Report</Badge>
-            {isAi ? <Badge variant="purple">Chris&apos;s read</Badge> : null}
-          </div>
-          {clientName ? (
-            <p className="font-mono text-[10px] tracking-[0.24em] text-[#c9a227] uppercase">
-              Prepared for {clientName}
-            </p>
-          ) : null}
-          {agentName ? (
-            <p className="text-sm text-zinc-500">
-              Shared by {agentName}
-            </p>
-          ) : null}
-          <h1 className="text-3xl font-medium tracking-tight text-white md:text-4xl">
-            {pathLabel} — your Playbook snapshot
-          </h1>
-          <p className="max-w-2xl text-base leading-relaxed text-zinc-300">
-            {narrative.executiveSummary}
-          </p>
-          {createdAt ? (
-            <p className="font-mono text-[9px] tracking-[0.18em] text-zinc-600 uppercase">
-              Generated{" "}
-              {new Date(createdAt).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </p>
-          ) : null}
-          <p className="text-xs text-zinc-600">
-            Educational estimates only — not a loan estimate, approval, or
-            guaranteed terms. Confirm details with a licensed loan advisor.
-          </p>
-        </div>
-      </header>
+        partnerBranding ? (
+          <PartnerCobrandReportHeader
+            pathLabel={pathLabel}
+            clientName={clientName}
+            agent={partnerBranding}
+            createdAt={createdAt}
+            executiveSummary={narrative.executiveSummary}
+            isAi={isAi}
+            variant="screen"
+          />
+        ) : (
+          <header className="playbook-screen-only relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#7c3aed]/15 via-zinc-950 to-[#c9a227]/10 p-8 md:p-10">
+            <div
+              className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#7c3aed]/20 blur-3xl"
+              aria-hidden
+            />
+            <div className="relative space-y-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="gold">Playbook Report</Badge>
+                {isAi ? <Badge variant="purple">Chris&apos;s read</Badge> : null}
+              </div>
+              {clientName ? (
+                <p className="font-mono text-[10px] tracking-[0.24em] text-[#c9a227] uppercase">
+                  Prepared for {clientName}
+                </p>
+              ) : null}
+              {agentName ? (
+                <p className="text-sm text-zinc-500">Shared by {agentName}</p>
+              ) : null}
+              <h1 className="text-3xl font-medium tracking-tight text-white md:text-4xl">
+                {pathLabel} — your Playbook snapshot
+              </h1>
+              <p className="max-w-2xl text-base leading-relaxed text-zinc-300">
+                {narrative.executiveSummary}
+              </p>
+              {createdAt ? (
+                <p className="font-mono text-[9px] tracking-[0.18em] text-zinc-600 uppercase">
+                  Generated{" "}
+                  {new Date(createdAt).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </p>
+              ) : null}
+              <p className="text-xs text-zinc-600">
+                Educational estimates only — not a loan estimate, approval, or
+                guaranteed terms. Confirm details with a licensed loan advisor.
+              </p>
+            </div>
+          </header>
+        )
       ) : null}
 
       {showBody ? (
       <>
-      <div className="playbook-print-only playbook-print-avoid-break mb-6 rounded-lg border border-[#d4d4d8] bg-[#fafafa] p-4">
-        <p className="text-[9pt] font-semibold uppercase tracking-wider text-[#5b21b6]">
-          Executive summary
-        </p>
-        <p className="mt-2 text-[10pt] leading-relaxed text-[#333]">
-          {narrative.executiveSummary}
-        </p>
-      </div>
+      {partnerBranding ? (
+        <PartnerCobrandReportHeader
+          pathLabel={pathLabel}
+          clientName={clientName}
+          agent={partnerBranding}
+          createdAt={createdAt}
+          executiveSummary={narrative.executiveSummary}
+          isAi={isAi}
+          variant="print"
+        />
+      ) : (
+        <div className="playbook-print-only playbook-print-avoid-break mb-6 rounded-lg border border-[#d4d4d8] bg-[#fafafa] p-4">
+          <p className="text-[9pt] font-semibold uppercase tracking-wider text-[#5b21b6]">
+            Executive summary
+          </p>
+          <p className="mt-2 text-[10pt] leading-relaxed text-[#333]">
+            {narrative.executiveSummary}
+          </p>
+        </div>
+      )}
       <Card className="playbook-print-avoid-break border-white/[0.06] bg-zinc-950/60">
         <CardHeader>
           <p className="font-mono text-[10px] tracking-[0.28em] text-zinc-500 uppercase">
@@ -202,6 +229,13 @@ export function ReportNarrativeSections({
           </CardContent>
         </Card>
       </div>
+
+      {partnerBranding ? (
+        <AgentContactCard agent={partnerBranding} className="playbook-print-avoid-break" />
+      ) : null}
+      {partnerBranding ? (
+        <AgentContactCard agent={partnerBranding} variant="print" />
+      ) : null}
 
       {showFooterCta ? (
         <Card className="border-[#c9a227]/30 bg-gradient-to-br from-[#c9a227]/10 to-[#7c3aed]/10 text-center">

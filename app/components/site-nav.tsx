@@ -40,16 +40,6 @@ const navItems = [
     label: "Learn",
     description: "Read the guide",
   },
-  {
-    href: "/deal-analyzer",
-    label: "Analyzer",
-    description: "Model your deal",
-  },
-  {
-    href: "/content-engine",
-    label: "Content",
-    description: "AI content packs",
-  },
 ];
 
 const primaryNavCta = {

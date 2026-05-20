@@ -15,6 +15,7 @@ import {
   trackIntakeFunnelSubmit,
   trackLeadFormStart,
 } from "../lib/analytics-events";
+import { BookingCtaGroup } from "./booking-cta";
 import { IntakeFinancialRanges } from "./intake-financial-ranges";
 import { IntakePrioritiesStep } from "./intake-priorities-step";
 import {
@@ -397,6 +398,7 @@ export function StrategyIntakeFunnel() {
           next steps. We&apos;ll follow up with a more useful conversation than a
           generic rate quote.
         </p>
+        <BookingCtaGroup location="intake_success" />
       </div>
     );
   }

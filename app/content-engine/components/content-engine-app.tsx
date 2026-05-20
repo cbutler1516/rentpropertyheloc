@@ -45,6 +45,7 @@ import {
   type LeadMagnetRecord,
   type LaunchHubRecord,
   type LeadCaptureRecord,
+  type CrmIntegrationRecord,
   type LeadMagnetSectionKey,
   type LandingPageSectionKey,
   type OutputTabKey,
@@ -68,6 +69,8 @@ import { ExportActions } from "./export-actions";
 import { GenerationModeToggle } from "./generation-mode-toggle";
 import { LeadCaptureGeneratorCard } from "./lead-capture-generator-card";
 import { LeadCapturePanel } from "./lead-capture-panel";
+import { CrmHubPanel } from "./crm-hub-panel";
+import { createDefaultCrmIntegration } from "../lib/crm-integration-defaults";
 import { LeadMagnetGeneratorCard } from "./lead-magnet-generator-card";
 import { LeadMagnetOutputsPanel } from "./lead-magnet-outputs-panel";
 import { LaunchHubPanel } from "./launch-hub-panel";
@@ -137,6 +140,7 @@ function buildExportPackage(draft: {
   leadMagnet?: LeadMagnetRecord;
   launchHub?: LaunchHubRecord;
   leadCapture?: LeadCaptureRecord;
+  crmIntegration?: CrmIntegrationRecord;
 }): ContentPackage {
   return {
     id: draft.id ?? "draft",
@@ -156,6 +160,7 @@ function buildExportPackage(draft: {
     leadMagnet: draft.leadMagnet,
     launchHub: draft.launchHub,
     leadCapture: draft.leadCapture,
+    crmIntegration: draft.crmIntegration,
     tags: parseTagsInput(draft.tagsInput),
   };
 }
@@ -283,6 +288,8 @@ export function ContentEngineApp() {
   const [leadCapturePreset, setLeadCapturePreset] =
     useState<LeadCapturePreset>("buyer-lead");
   const [leadCaptureLoading, setLeadCaptureLoading] = useState(false);
+  const [crmIntegration, setCrmIntegration] =
+    useState<CrmIntegrationRecord | null>(null);
 
   const minInputLength = generationMode === "campaign" ? 8 : 24;
   const hasResults =
@@ -291,6 +298,14 @@ export function ContentEngineApp() {
   const showLeadCapture = useMemo(
     () => Boolean(landingPage) || Boolean(launchHub),
     [landingPage, launchHub],
+  );
+
+  const showCrmHub = useMemo(
+    () =>
+      Boolean(landingPage) ||
+      Boolean(launchHub) ||
+      Boolean(leadCapture),
+    [landingPage, launchHub, leadCapture],
   );
 
   const showLaunchHub = useMemo(
@@ -379,6 +394,7 @@ export function ContentEngineApp() {
       leadMagnet: leadMagnet ?? undefined,
       launchHub: launchHub ?? undefined,
       leadCapture: leadCapture ?? undefined,
+      crmIntegration: crmIntegration ?? undefined,
     });
   }, [
     activePackageId,
@@ -389,6 +405,7 @@ export function ContentEngineApp() {
     hasResults,
     input,
     calendar,
+    crmIntegration,
     launchHub,
     leadCapture,
     leadMagnet,
@@ -414,6 +431,20 @@ export function ContentEngineApp() {
     syncLaunchHubLocal();
   }, [showLaunchHub, syncLaunchHubLocal]);
 
+  useEffect(() => {
+    if (!showCrmHub) {
+      setCrmIntegration(null);
+      return;
+    }
+    setCrmIntegration((prev) =>
+      prev ??
+      createDefaultCrmIntegration({
+        leadCapture,
+        launchHub: launchHub ?? undefined,
+      }),
+    );
+  }, [showCrmHub, leadCapture, launchHub]);
+
   const stats = useMemo(
     () => ({
       words: countWords(input),
@@ -438,6 +469,7 @@ export function ContentEngineApp() {
     setLeadMagnet(null);
     setLaunchHub(null);
     setLeadCapture(null);
+    setCrmIntegration(null);
     setOutputView("content");
     setMode(null);
     setIsUnsaved(false);
@@ -555,6 +587,7 @@ export function ContentEngineApp() {
         leadMagnet: leadMagnet ?? undefined,
         launchHub: launchHub ?? undefined,
         leadCapture: leadCapture ?? undefined,
+        crmIntegration: crmIntegration ?? undefined,
         tags: parseTagsInput(tagsInput),
       });
       setActivePackageId(result.package.id);
@@ -578,6 +611,7 @@ export function ContentEngineApp() {
     generationMode,
     hasResults,
     input,
+    crmIntegration,
     launchHub,
     leadCapture,
     leadMagnet,
@@ -590,6 +624,11 @@ export function ContentEngineApp() {
     tone,
     topic,
   ]);
+
+  const handleCrmIntegrationChange = useCallback((next: CrmIntegrationRecord) => {
+    setCrmIntegration(next);
+    setIsUnsaved(true);
+  }, []);
 
   const packageContextPayload = useCallback(
     () => ({
@@ -868,6 +907,15 @@ export function ContentEngineApp() {
     setLeadMagnet(pkg.leadMagnet ?? null);
     setLaunchHub(pkg.launchHub ?? null);
     setLeadCapture(pkg.leadCapture ?? null);
+    setCrmIntegration(
+      pkg.crmIntegration ??
+        (pkg.landingPage || pkg.launchHub || pkg.leadCapture
+          ? createDefaultCrmIntegration({
+              leadCapture: pkg.leadCapture,
+              launchHub: pkg.launchHub,
+            })
+          : null),
+    );
     setLandingIntent(
       pkg.landingPage?.intent ?? inferLandingIntent(pkg.audience, pkg.topic),
     );
@@ -1134,6 +1182,7 @@ export function ContentEngineApp() {
                   showLeadMagnet={Boolean(leadMagnet)}
                   showLaunchHub={showLaunchHub}
                   showLeadCapture={showLeadCapture}
+                  showCrmHub={showCrmHub}
                   activeView={outputView}
                   onViewChange={setOutputView}
                   contentLabel="Campaign"
@@ -1168,6 +1217,14 @@ export function ContentEngineApp() {
                     packageTitle={title || packageTitleFromInput(input)}
                     onLeadCaptureChange={handleLeadCaptureChange}
                   />
+                ) : outputView === "crmHub" && crmIntegration ? (
+                  <CrmHubPanel
+                    crmIntegration={crmIntegration}
+                    packageId={activePackageId}
+                    packageTitle={title || packageTitleFromInput(input)}
+                    leadCapture={leadCapture}
+                    onCrmIntegrationChange={handleCrmIntegrationChange}
+                  />
                 ) : outputView === "launchHub" && launchHub ? (
                   <LaunchHubPanel
                     launchHub={launchHub}
@@ -1192,6 +1249,7 @@ export function ContentEngineApp() {
                   showLeadMagnet={Boolean(leadMagnet)}
                   showLaunchHub={showLaunchHub}
                   showLeadCapture={showLeadCapture}
+                  showCrmHub={showCrmHub}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -1210,6 +1268,7 @@ export function ContentEngineApp() {
                   showLeadMagnet={Boolean(leadMagnet)}
                   showLaunchHub={showLaunchHub}
                   showLeadCapture={showLeadCapture}
+                  showCrmHub={showCrmHub}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -1231,6 +1290,7 @@ export function ContentEngineApp() {
                   showLeadMagnet
                   showLaunchHub={showLaunchHub}
                   showLeadCapture={showLeadCapture}
+                  showCrmHub={showCrmHub}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -1249,6 +1309,7 @@ export function ContentEngineApp() {
                   showLeadMagnet={Boolean(leadMagnet)}
                   showLaunchHub={showLaunchHub}
                   showLeadCapture
+                  showCrmHub={showCrmHub}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -1256,6 +1317,26 @@ export function ContentEngineApp() {
                   leadCapture={leadCapture}
                   packageTitle={title || packageTitleFromInput(input)}
                   onLeadCaptureChange={handleLeadCaptureChange}
+                />
+              </div>
+            ) : outputView === "crmHub" && crmIntegration ? (
+              <div className="flex flex-1 flex-col overflow-hidden p-6">
+                <OutputViewTabs
+                  showLanding={Boolean(landingPage)}
+                  showCalendar={Boolean(calendar)}
+                  showLeadMagnet={Boolean(leadMagnet)}
+                  showLaunchHub={showLaunchHub}
+                  showLeadCapture={showLeadCapture}
+                  showCrmHub
+                  activeView={outputView}
+                  onViewChange={setOutputView}
+                />
+                <CrmHubPanel
+                  crmIntegration={crmIntegration}
+                  packageId={activePackageId}
+                  packageTitle={title || packageTitleFromInput(input)}
+                  leadCapture={leadCapture}
+                  onCrmIntegrationChange={handleCrmIntegrationChange}
                 />
               </div>
             ) : outputView === "launchHub" && launchHub ? (
@@ -1266,6 +1347,7 @@ export function ContentEngineApp() {
                   showLeadMagnet={Boolean(leadMagnet)}
                   showLaunchHub
                   showLeadCapture={showLeadCapture}
+                  showCrmHub={showCrmHub}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -1286,6 +1368,7 @@ export function ContentEngineApp() {
                     showLeadMagnet={Boolean(leadMagnet)}
                     showLaunchHub={showLaunchHub}
                     showLeadCapture={showLeadCapture}
+                    showCrmHub={showCrmHub}
                     activeView={outputView}
                     onViewChange={setOutputView}
                   />

@@ -9,6 +9,9 @@ export type SaveReportPayload = {
   lead: LeadCapture;
   inputs: DealInputs;
   analysis: DealAnalysisResult;
+  agentId?: string | null;
+  referralCode?: string | null;
+  partnerAgentName?: string | null;
 };
 
 async function fetchNarrative(
@@ -22,7 +25,8 @@ async function fetchNarrative(
       leadRole: payload.lead.role,
       leadName: payload.lead.name,
       referralSource: payload.lead.referralSource,
-      agentName: payload.lead.agentName,
+      agentName: payload.partnerAgentName ?? payload.lead.agentName,
+      partnerAgentName: payload.partnerAgentName ?? undefined,
       notes: payload.lead.notes,
       inputs: payload.inputs,
       analysis: payload.analysis,
@@ -38,7 +42,8 @@ async function fetchNarrative(
   return generateStaticNarrative(payload.inputs, payload.analysis, {
     leadRole: payload.lead.role,
     leadName: payload.lead.name,
-    agentName: payload.lead.agentName,
+    agentName: payload.partnerAgentName ?? payload.lead.agentName,
+    partnerAgentName: payload.partnerAgentName ?? undefined,
   });
 }
 
@@ -66,6 +71,8 @@ export async function persistDealReport(
           inputs: payload.inputs,
           analysis: payload.analysis,
           narrative,
+          agentId: payload.agentId ?? null,
+          referralCode: payload.referralCode ?? null,
         }),
       });
 
@@ -99,7 +106,9 @@ export async function persistDealReport(
     analysis: payload.analysis,
     narrative,
     referralSource: payload.lead.referralSource ?? null,
-    agentName: payload.lead.agentName ?? null,
+    agentName: payload.partnerAgentName ?? payload.lead.agentName ?? null,
+    agentId: payload.agentId ?? null,
+    referralCode: payload.referralCode ?? null,
   });
 
   return { ok: true, slug, source: "local" };

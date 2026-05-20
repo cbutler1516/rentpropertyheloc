@@ -9,6 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      deal_analyzer_agents: {
+        Row: {
+          id: string;
+          name: string;
+          email: string;
+          phone: string | null;
+          company: string | null;
+          slug: string;
+          referral_code: string;
+          headshot_url: string | null;
+          logo_url: string | null;
+          bio: string | null;
+          brokerage: string | null;
+          cta_phone: string | null;
+          cta_email: string | null;
+          brand_color: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          email: string;
+          phone?: string | null;
+          company?: string | null;
+          slug: string;
+          referral_code: string;
+          headshot_url?: string | null;
+          logo_url?: string | null;
+          bio?: string | null;
+          brokerage?: string | null;
+          cta_phone?: string | null;
+          cta_email?: string | null;
+          brand_color?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["deal_analyzer_agents"]["Insert"]>;
+      };
       deal_analyzer_leads: {
         Row: {
           id: string;
@@ -20,6 +59,8 @@ export type Database = {
           notes: string | null;
           referral_source: string | null;
           agent_name: string | null;
+          agent_id: string | null;
+          referral_code: string | null;
           sms_call_consent: boolean;
           consent_text: string | null;
           consent_timestamp: string | null;
@@ -39,6 +80,8 @@ export type Database = {
           notes?: string | null;
           referral_source?: string | null;
           agent_name?: string | null;
+          agent_id?: string | null;
+          referral_code?: string | null;
           sms_call_consent?: boolean;
           consent_text?: string | null;
           consent_timestamp?: string | null;
@@ -79,6 +122,8 @@ export type Database = {
           narrative_json: Json | null;
           referral_source: string | null;
           agent_name: string | null;
+          agent_id: string | null;
+          referral_code: string | null;
         };
         Insert: {
           id?: string;
@@ -89,6 +134,8 @@ export type Database = {
           narrative_json?: Json | null;
           referral_source?: string | null;
           agent_name?: string | null;
+          agent_id?: string | null;
+          referral_code?: string | null;
         };
         Update: Partial<Database["public"]["Tables"]["deal_analyzer_reports"]["Insert"]>;
       };

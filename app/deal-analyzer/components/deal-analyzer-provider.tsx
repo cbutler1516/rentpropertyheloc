@@ -18,6 +18,7 @@ import type {
   DealAnalyzerSession,
   DealInputs,
   LeadCapture,
+  PartnerAgentRef,
 } from "../lib/types";
 import { defaultSession } from "../lib/types";
 
@@ -28,6 +29,7 @@ type SubmitLeadResult =
 type DealAnalyzerContextValue = DealAnalyzerSession & {
   setInputs: (inputs: DealInputs) => void;
   submitLead: (lead: LeadCapture) => Promise<SubmitLeadResult>;
+  setPartnerAgent: (agent: PartnerAgentRef | null) => void;
   reset: () => void;
   hydrated: boolean;
 };
@@ -52,6 +54,10 @@ export function DealAnalyzerProvider({ children }: { children: ReactNode }) {
     if (hydrated) saveSession(session);
   }, [session, hydrated]);
 
+  const setPartnerAgent = useCallback((agent: PartnerAgentRef | null) => {
+    setSession((prev) => ({ ...prev, partnerAgent: agent }));
+  }, []);
+
   const setInputs = useCallback((inputs: DealInputs) => {
     const analysis: DealAnalysisResult = analyzeDeal(inputs);
     setSession((prev) => ({
@@ -65,13 +71,30 @@ export function DealAnalyzerProvider({ children }: { children: ReactNode }) {
 
   const submitLead = useCallback(
     async (lead: LeadCapture): Promise<SubmitLeadResult> => {
-      const { inputs, analysis } = sessionRef.current;
+      const { inputs, analysis, partnerAgent } = sessionRef.current;
 
       if (!inputs || !analysis) {
         return { ok: false, error: "Complete your deal details first." };
       }
 
-      const result = await persistDealReport({ lead, inputs, analysis });
+      const leadWithPartner: LeadCapture = {
+        ...lead,
+        referralSource:
+          partnerAgent
+            ? `Partner: ${partnerAgent.name} (${partnerAgent.referralCode})`
+            : lead.referralSource,
+        agentName: partnerAgent?.name ?? lead.agentName,
+        role: partnerAgent ? "Buyer" : lead.role,
+      };
+
+      const result = await persistDealReport({
+        lead: leadWithPartner,
+        inputs,
+        analysis,
+        agentId: partnerAgent?.id ?? null,
+        referralCode: partnerAgent?.referralCode ?? null,
+        partnerAgentName: partnerAgent?.name ?? null,
+      });
 
       if (!result.ok) {
         return { ok: false, error: result.error };
@@ -79,7 +102,7 @@ export function DealAnalyzerProvider({ children }: { children: ReactNode }) {
 
       setSession((prev) => ({
         ...prev,
-        lead,
+        lead: leadWithPartner,
         reportSlug: result.slug,
         reportUnlocked: true,
       }));
@@ -90,7 +113,8 @@ export function DealAnalyzerProvider({ children }: { children: ReactNode }) {
   );
 
   const reset = useCallback(() => {
-    setSession(defaultSession);
+    const partnerAgent = sessionRef.current.partnerAgent;
+    setSession({ ...defaultSession, partnerAgent });
     if (typeof window !== "undefined") {
       sessionStorage.removeItem("loan-playbook-deal-analyzer");
     }
@@ -101,10 +125,11 @@ export function DealAnalyzerProvider({ children }: { children: ReactNode }) {
       ...session,
       setInputs,
       submitLead,
+      setPartnerAgent,
       reset,
       hydrated,
     }),
-    [session, setInputs, submitLead, reset, hydrated],
+    [session, setInputs, submitLead, setPartnerAgent, reset, hydrated],
   );
 
   return (

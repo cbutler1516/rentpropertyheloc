@@ -10,6 +10,7 @@ type StaticMeta = {
   leadRole?: string;
   leadName?: string;
   agentName?: string;
+  partnerAgentName?: string;
 };
 
 function pathLabel(path: DealPath): string {
@@ -119,7 +120,12 @@ export function generateStaticNarrative(
     );
   }
 
-  if (meta?.leadRole === "Agent") {
+  if (meta?.partnerAgentName) {
+    agentShareMessage = `Hi${firstName ? ` ${firstName}` : ""}—${meta.partnerAgentName} shared your Playbook Report from The Loan Playbook. Chris Butler at Broadview Lending prepared this educational financing snapshot (payment, structure, and next steps). It's not a loan approval or guaranteed terms—book a Strategy Call when you're ready to confirm details together.`;
+    coachNotes.unshift(
+      `${meta.partnerAgentName} referred this scenario—acknowledge the agent relationship on your first outreach.`,
+    );
+  } else if (meta?.leadRole === "Agent") {
     agentShareMessage = meta.agentName
       ? `Hi${firstName ? ` ${firstName}` : ""}—${meta.agentName} here. I had Chris Butler's team run a Playbook Report on the financing picture for this property (payment, cash, structure). It's educational only—not a loan approval or guaranteed terms. Take a look and let me know what questions you want to walk through together.`
       : agentShareMessage;

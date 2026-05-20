@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/app/components/ui/button";
@@ -93,7 +94,17 @@ export function AdminDashboard({ siteUrl, initialData }: AdminDashboardProps) {
   const sidebar = useMemo(
     () => (
       <ul className="space-y-1 text-sm text-zinc-400">
-        <li className="rounded-lg bg-[#7c3aed]/10 px-3 py-2 text-[#c4b5fd]">Overview</li>
+        <li className="rounded-lg bg-[#7c3aed]/10 px-3 py-2 text-[#c4b5fd]">
+          Overview
+        </li>
+        <li>
+          <Link
+            href="/admin/deal-analyzer/agents"
+            className="block rounded-lg px-3 py-2 hover:bg-white/[0.04] hover:text-zinc-200"
+          >
+            Partner agents
+          </Link>
+        </li>
         <li className="px-3 py-2">Recent reports</li>
         <li className="px-3 py-2">Lead scoring</li>
       </ul>

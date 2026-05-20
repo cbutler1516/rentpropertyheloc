@@ -1,5 +1,6 @@
 "use client";
 
+import type { PartnerAgent } from "../lib/agent-types";
 import type { DealAnalysisResult, DealInputs, LeadCapture } from "../lib/types";
 import type { PlaybookNarrative } from "../lib/report-content";
 import { dealPathMeta } from "../lib/constants";
@@ -16,6 +17,7 @@ type PlaybookReportDocumentProps = {
   createdAt: string;
   agentName: string | null;
   referralSource: string | null;
+  partnerBranding?: PartnerAgent | null;
 };
 
 export function PlaybookReportDocument({
@@ -27,6 +29,7 @@ export function PlaybookReportDocument({
   createdAt,
   agentName,
   referralSource,
+  partnerBranding,
 }: PlaybookReportDocumentProps) {
   const pathLabel = dealPathMeta[inputs.path].label;
   const reportUrl =
@@ -39,6 +42,8 @@ export function PlaybookReportDocument({
     createdAt,
     lead,
     agentName,
+    partnerAgentName: agentName,
+    partnerBranding: partnerBranding ?? undefined,
     referralSource,
     isSharedView: true,
   };
@@ -52,6 +57,7 @@ export function PlaybookReportDocument({
         pathLabel={pathLabel}
         clientName={lead.name}
         agentName={agentName ?? lead.agentName}
+        partnerBranding={partnerBranding ?? undefined}
         createdAt={createdAt}
         reportUrl={reportUrl}
         slug={slug}

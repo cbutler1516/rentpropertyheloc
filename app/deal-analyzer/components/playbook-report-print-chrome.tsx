@@ -1,9 +1,12 @@
 import { PLAYBOOK_BRAND, PDF_DISCLAIMER, formatReportDate } from "../lib/brand";
+import type { PartnerAgent } from "../lib/agent-types";
+import { resolveBrokerage } from "../lib/agent-branding";
 
 type PlaybookReportPrintChromeProps = {
   pathLabel: string;
   clientName?: string;
   agentName?: string | null;
+  partnerBranding?: PartnerAgent;
   createdAt?: string;
   reportUrl: string;
   slug: string;
@@ -13,11 +16,14 @@ export function PlaybookReportPrintChrome({
   pathLabel,
   clientName,
   agentName,
+  partnerBranding,
   createdAt,
   reportUrl,
   slug,
 }: PlaybookReportPrintChromeProps) {
   const reportDate = formatReportDate(createdAt);
+  const displayAgent = partnerBranding?.name ?? agentName;
+  const brokerage = partnerBranding ? resolveBrokerage(partnerBranding) : null;
 
   return (
     <>
@@ -31,11 +37,21 @@ export function PlaybookReportPrintChrome({
               {PLAYBOOK_BRAND.lendingPartnerFull}
             </p>
           </div>
-          <div style={{ textAlign: "right", fontSize: "8pt", color: "#666" }}>
-            <p style={{ margin: 0 }}>Strategist</p>
-            <p style={{ margin: "2px 0 0", fontWeight: 600, color: "#111" }}>
-              {PLAYBOOK_BRAND.strategist}
-            </p>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
+            {partnerBranding?.logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={partnerBranding.logoUrl}
+                alt=""
+                style={{ height: "28px", maxWidth: "120px", objectFit: "contain" }}
+              />
+            ) : null}
+            <div style={{ textAlign: "right", fontSize: "8pt", color: "#666" }}>
+              <p style={{ margin: 0 }}>Strategist</p>
+              <p style={{ margin: "2px 0 0", fontWeight: 600, color: "#111" }}>
+                {PLAYBOOK_BRAND.strategist}
+              </p>
+            </div>
           </div>
         </div>
         <h1 style={{ fontSize: "16pt", fontWeight: 600, margin: "12px 0 8px", color: "#111" }}>
@@ -47,11 +63,16 @@ export function PlaybookReportPrintChrome({
               <strong>Prepared for:</strong> {clientName}
             </p>
           ) : null}
-          {agentName ? (
+          {displayAgent ? (
             <p style={{ margin: "0 0 4px" }}>
-              <strong>Shared by:</strong> {agentName}
+              <strong>Shared by:</strong> {displayAgent}
+              {brokerage ? ` · ${brokerage}` : ""}
             </p>
           ) : null}
+          <p style={{ margin: "0 0 4px" }}>
+            <strong>Financing strategy by:</strong> {PLAYBOOK_BRAND.strategist} /{" "}
+            {PLAYBOOK_BRAND.lendingPartner}
+          </p>
           <p style={{ margin: "0 0 4px" }}>
             <strong>Report date:</strong> {reportDate}
           </p>

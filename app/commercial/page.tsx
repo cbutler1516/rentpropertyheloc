@@ -3,6 +3,7 @@ import {
   ConversionCTA,
   conversionCtas,
 } from "../components/conversion-cta";
+import { BookingCtaSection } from "../components/booking-cta";
 import { InternalPage } from "../components/internal-page";
 import { LicensedMarketsRail } from "../components/licensed-markets-rail";
 import { TrackedLink } from "../components/tracked-link";
@@ -100,6 +101,11 @@ export default function CommercialPage() {
               submitLabel="Review Your Strategy"
             />
           </div>
+          <BookingCtaSection
+            location="commercial_page"
+            types={["strategy", "investor", "commercial"]}
+            lead="Optional sessions for investors, builders, and commercial sponsors."
+          />
         </>
       }
     />

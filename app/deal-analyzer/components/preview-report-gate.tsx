@@ -8,6 +8,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/ca
 import { dealPathMeta } from "../lib/constants";
 import { getPreviewTeasers } from "../lib/preview-content";
 import { useDealAnalyzer } from "./deal-analyzer-provider";
+import {
+  useDealAnalyzerBasePath,
+  usePartnerAgent,
+} from "./partner-agent-provider";
 
 const MASK = "••••••";
 
@@ -55,6 +59,8 @@ function BlurredChartPlaceholder({ title }: { title: string }) {
 
 export function PreviewReportGate() {
   const router = useRouter();
+  const basePath = useDealAnalyzerBasePath();
+  const partner = usePartnerAgent();
   const { inputs, analysis } = useDealAnalyzer();
 
   if (!inputs || !analysis) {
@@ -64,7 +70,7 @@ export function PreviewReportGate() {
           <CardTitle>Build your scenario first</CardTitle>
         </CardHeader>
         <CardContent>
-          <Button variant="gold" onClick={() => router.push("/deal-analyzer/analyze")}>
+          <Button variant="gold" onClick={() => router.push(`${basePath}/analyze`)}>
             Back to analyzer
           </Button>
         </CardContent>
@@ -87,6 +93,12 @@ export function PreviewReportGate() {
             <Badge variant="gold">Playbook Report Preview</Badge>
             <Badge variant="purple">{pathMeta.eyebrow}</Badge>
           </div>
+          {partner?.agent ? (
+            <p className="text-sm text-zinc-400">
+              Financing strategy by Chris Butler · shared via{" "}
+              <span className="text-white">{partner.agent.name}</span>
+            </p>
+          ) : null}
           <p className="font-mono text-[10px] tracking-[0.24em] text-[#c9a227] uppercase">
             {teasers.shortLabel} · Strategy snapshot
           </p>
@@ -174,12 +186,12 @@ export function PreviewReportGate() {
             <Button
               variant="gold"
               size="lg"
-              onClick={() => router.push("/deal-analyzer/analyze?step=lead")}
+              onClick={() => router.push(`${basePath}/analyze?step=lead`)}
             >
               Unlock My Full Playbook
             </Button>
             <Link
-              href="/deal-analyzer/analyze"
+              href={`${basePath}/analyze`}
               className="font-mono text-[9px] tracking-[0.16em] text-zinc-500 uppercase hover:text-zinc-300"
             >
               Edit scenario

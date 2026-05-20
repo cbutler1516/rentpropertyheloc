@@ -23,23 +23,50 @@ export const metadata: Metadata = {
 
 const publishedVideos = getPublishedHeroVideos();
 
-const buyerSlugs = new Set([
+const FEATURED_SLUGS = new Set([
   "buyer-preapproval-first-step",
   "buyer-power-seller-concessions-spring",
-  "buyer-buydown-and-arm-options",
-  "buyer-jumbo-loan-myths",
   "homeowner-buy-before-sell-program",
-]);
-
-const marketSlugs = new Set([
-  "market-strategy-over-rate-noise",
+  "buyer-jumbo-loan-myths",
   "homeowner-refinance-break-even-roi",
+  "market-strategy-over-rate-noise",
 ]);
 
-const agentSlugs = new Set(["buyer-prequalified-vs-preapproved"]);
+function isFeatured(slug: string) {
+  return FEATURED_SLUGS.has(slug);
+}
 
-function videosForSlugs(slugs: Set<string>) {
-  return publishedVideos.filter((video) => slugs.has(video.slug));
+function isInvestorVideo(video: HeroVideo) {
+  return video.audience === "commercial";
+}
+
+function isAgentVideo(video: HeroVideo) {
+  return video.heroGroup === "agent" || video.slug.startsWith("agent-");
+}
+
+function isMarketVideo(video: HeroVideo) {
+  return video.heroGroup === "market";
+}
+
+function isHomeownerVideo(video: HeroVideo) {
+  return (
+    video.audience === "homeowner" ||
+    video.slug.startsWith("homeowner-")
+  );
+}
+
+function isBuyerVideo(video: HeroVideo) {
+  return video.audience === "buyer" && !video.slug.startsWith("homeowner-");
+}
+
+function videosForSection(
+  predicate: (video: HeroVideo) => boolean,
+  excludeFeatured = true,
+) {
+  return publishedVideos.filter((video) => {
+    if (excludeFeatured && isFeatured(video.slug)) return false;
+    return predicate(video);
+  });
 }
 
 function VideoSection({
@@ -87,10 +114,12 @@ function VideoSection({
 }
 
 export default function VideosPage() {
-  const featuredVideos = publishedVideos;
-  const buyerVideos = videosForSlugs(buyerSlugs);
-  const marketVideos = videosForSlugs(marketSlugs);
-  const agentVideos = videosForSlugs(agentSlugs);
+  const featuredVideos = publishedVideos.filter((v) => isFeatured(v.slug));
+  const investorVideos = videosForSection(isInvestorVideo);
+  const buyerVideos = videosForSection(isBuyerVideo);
+  const homeownerVideos = videosForSection(isHomeownerVideo);
+  const marketVideos = videosForSection(isMarketVideo);
+  const agentVideos = videosForSection(isAgentVideo);
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#050505] text-white">
@@ -135,34 +164,51 @@ export default function VideosPage() {
           id="featured-videos"
           eyebrow="Featured"
           title="Featured Videos"
-          lead="Full watch pages with takeaways, guides, and next steps."
+          lead="Curated clips with full watch pages, takeaways, and next steps."
           videos={featuredVideos}
           matte
         />
 
         <VideoSection
+          id="investor-strategy"
+          eyebrow="Investors"
+          title="Investor Strategy"
+          lead="DSCR, bridge, and structure-first context for operators."
+          videos={investorVideos}
+        />
+
+        <VideoSection
           id="buyer-videos"
           eyebrow="Buyers"
-          title="Buyer Videos"
+          title="Buyers"
           lead="Payment, readiness, concessions, and move-up timing."
           videos={buyerVideos}
+        />
+
+        <VideoSection
+          id="homeowner-videos"
+          eyebrow="Homeowners"
+          title="Homeowners"
+          lead="Refinance timing, equity paths, and annual review context."
+          videos={homeownerVideos}
+          matte
         />
 
         <VideoSection
           id="market-updates"
           eyebrow="Market"
           title="Market Updates"
-          lead="Strategy and timing when headlines get loud."
+          lead="Strategy and macro context when headlines get loud."
           videos={marketVideos}
-          matte
         />
 
         <VideoSection
           id="agent-strategy"
           eyebrow="Agents"
           title="Agent Strategy"
-          lead="Financing context before the offer window."
+          lead="Financing talking points before the offer window."
           videos={agentVideos}
+          matte
         />
 
         <SocialFollowSection

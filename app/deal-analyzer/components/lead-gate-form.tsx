@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/app/components/ui/button";
 import {
@@ -17,6 +17,10 @@ import { Textarea } from "@/app/components/ui/textarea";
 import { SMS_CALL_CONSENT_TEXT } from "../lib/consent";
 import type { ClientRole, LeadCapture } from "../lib/types";
 import { useDealAnalyzer } from "./deal-analyzer-provider";
+import {
+  useDealAnalyzerBasePath,
+  usePartnerAgent,
+} from "./partner-agent-provider";
 
 const roles: ClientRole[] = [
   "Buyer",
@@ -38,6 +42,8 @@ const referralOptions = [
 export function LeadGateForm() {
   const router = useRouter();
   const { submitLead, analysis } = useDealAnalyzer();
+  const partner = usePartnerAgent();
+  const basePath = useDealAnalyzerBasePath();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [consentChecked, setConsentChecked] = useState(false);
@@ -50,6 +56,16 @@ export function LeadGateForm() {
     referralSource: "",
     agentName: "",
   });
+
+  useEffect(() => {
+    if (!partner?.agent) return;
+    setForm((prev) => ({
+      ...prev,
+      role: "Buyer",
+      agentName: partner.agent.name,
+      referralSource: "Agent referral",
+    }));
+  }, [partner?.agent]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -88,7 +104,7 @@ export function LeadGateForm() {
         <CardContent>
           <Button
             variant="gold"
-            onClick={() => router.push("/deal-analyzer/analyze")}
+            onClick={() => router.push(`${basePath}/analyze`)}
           >
             Back to analyzer
           </Button>
@@ -97,7 +113,8 @@ export function LeadGateForm() {
     );
   }
 
-  const showAgentName = form.role === "Agent";
+  const showAgentName = form.role === "Agent" && !partner?.agent;
+  const partnerLocked = Boolean(partner?.agent);
 
   return (
     <Card className="border-[#c9a227]/20">
@@ -110,6 +127,17 @@ export function LeadGateForm() {
           Share contact details to unlock payment numbers, charts, Coach&apos;s
           Notes, and your private shareable Playbook link.
         </CardDescription>
+        {partner?.agent ? (
+          <p className="mt-3 rounded-xl border border-[#7c3aed]/25 bg-[#7c3aed]/10 px-4 py-3 text-sm text-zinc-300">
+            Referred by{" "}
+            <span className="font-medium text-white">{partner.agent.name}</span>
+            {partner.agent.company ? (
+              <span className="text-zinc-500"> · {partner.agent.company}</span>
+            ) : null}
+            . Chris Butler at Broadview Lending will prepare your financing
+            strategy.
+          </p>
+        ) : null}
       </CardHeader>
       <CardContent>
         {error ? (
@@ -155,6 +183,7 @@ export function LeadGateForm() {
             <Select
               id="lead-role"
               value={form.role}
+              disabled={partnerLocked}
               onChange={(e) =>
                 setForm({ ...form, role: e.target.value as ClientRole })
               }
@@ -184,6 +213,7 @@ export function LeadGateForm() {
             <Select
               id="lead-referral"
               value={form.referralSource ?? ""}
+              disabled={partnerLocked}
               onChange={(e) =>
                 setForm({ ...form, referralSource: e.target.value })
               }
@@ -236,7 +266,7 @@ export function LeadGateForm() {
             <button
               type="button"
               className="font-mono text-[9px] tracking-[0.16em] text-zinc-500 uppercase hover:text-zinc-300"
-              onClick={() => router.push("/deal-analyzer/analyze?step=preview")}
+              onClick={() => router.push(`${basePath}/analyze?step=preview`)}
             >
               ← Back to preview
             </button>

@@ -19,6 +19,8 @@ type PostBody = {
   inputs: DealInputs;
   analysis: DealAnalysisResult;
   narrative: PlaybookNarrative;
+  agentId?: string | null;
+  referralCode?: string | null;
 };
 
 export async function POST(request: Request) {
@@ -63,6 +65,8 @@ export async function POST(request: Request) {
     analysis: body.analysis,
     narrative: body.narrative,
     consent,
+    agentId: body.agentId ?? null,
+    referralCode: body.referralCode ?? null,
   });
 
   if ("error" in result) {

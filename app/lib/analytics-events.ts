@@ -6,6 +6,11 @@ export const analyticsEvents = {
   applyCtaClick: "apply_cta_click",
   applyPageView: "apply_page_view",
   bookingClick: "booking_click",
+  bookingCtaClick: "booking_cta_click",
+  strategyCallClick: "strategy_call_click",
+  residentialReviewClick: "residential_review_click",
+  investorSessionClick: "investor_session_click",
+  commercialReviewClick: "commercial_review_click",
   ctaClick: "cta_click",
   formStart: "form_start",
   funnelToApplicationClick: "funnel_to_application_click",
@@ -163,6 +168,33 @@ export function trackBookingClick(payload: {
     booking_type: payload.bookingType,
     cta_label: payload.label,
     destination: payload.href,
+  });
+}
+
+const bookingTypeEventMap = {
+  strategy: analyticsEvents.strategyCallClick,
+  residential: analyticsEvents.residentialReviewClick,
+  investor: analyticsEvents.investorSessionClick,
+  commercial: analyticsEvents.commercialReviewClick,
+} as const;
+
+export function trackBookingCtaClick(payload: {
+  bookingType: keyof typeof bookingTypeEventMap;
+  label: string;
+  href: string;
+  location?: string;
+}) {
+  trackEvent(analyticsEvents.bookingCtaClick, {
+    booking_type: payload.bookingType,
+    cta_label: payload.label,
+    destination: payload.href,
+    cta_location: payload.location,
+  });
+  trackEvent(bookingTypeEventMap[payload.bookingType], {
+    booking_type: payload.bookingType,
+    cta_label: payload.label,
+    destination: payload.href,
+    cta_location: payload.location,
   });
 }
 

@@ -8,6 +8,7 @@ import { Select } from "@/app/components/ui/select";
 import { defaultFormValues, dealPathMeta } from "../lib/constants";
 import type { BuydownType, DealInputs, DealPath } from "../lib/types";
 import { useDealAnalyzer } from "./deal-analyzer-provider";
+import { useDealAnalyzerBasePath } from "./partner-agent-provider";
 import { NumberField } from "./form-field";
 import { PathSelector } from "./path-selector";
 
@@ -64,6 +65,7 @@ function buildInputs(path: DealPath, values: typeof defaultFormValues): DealInpu
 
 export function DealForm({ initialPath }: { initialPath?: DealPath }) {
   const router = useRouter();
+  const basePath = useDealAnalyzerBasePath();
   const { setInputs } = useDealAnalyzer();
   const [path, setPath] = useState<DealPath>(initialPath ?? "buy-home");
   const [values, setValues] = useState(defaultFormValues);
@@ -80,7 +82,7 @@ export function DealForm({ initialPath }: { initialPath?: DealPath }) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setInputs(preview);
-    router.push("/deal-analyzer/analyze?step=preview");
+    router.push(`${basePath}/analyze?step=preview`);
   }
 
   return (

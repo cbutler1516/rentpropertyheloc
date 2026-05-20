@@ -8,6 +8,7 @@ import type {
 } from "../types";
 import type { LeadConsentRecord } from "../consent";
 import type { Json } from "./database.types";
+import { fetchAgentById } from "./agents";
 import { createServerSupabaseClient } from "./server";
 
 export type SaveReportInput = {
@@ -17,6 +18,8 @@ export type SaveReportInput = {
   analysis: DealAnalysisResult;
   narrative?: PlaybookNarrative;
   consent?: LeadConsentRecord;
+  agentId?: string | null;
+  referralCode?: string | null;
 };
 
 export async function saveReportToSupabase(
@@ -52,6 +55,8 @@ export async function saveReportToSupabase(
       notes: input.lead.notes || null,
       referral_source: input.lead.referralSource || null,
       agent_name: input.lead.agentName || null,
+      agent_id: input.agentId ?? null,
+      referral_code: input.referralCode ?? null,
       sms_call_consent: consent?.smsCallConsent ?? input.lead.smsCallConsent,
       consent_text: consent?.consentText ?? null,
       consent_timestamp: consent?.consentTimestamp ?? null,
@@ -87,6 +92,8 @@ export async function saveReportToSupabase(
     narrative_json: narrative as unknown as Json,
     referral_source: input.lead.referralSource || null,
     agent_name: input.lead.agentName || null,
+    agent_id: input.agentId ?? null,
+    referral_code: input.referralCode ?? null,
   });
 
   if (reportError) {
@@ -105,7 +112,7 @@ export async function fetchReportFromSupabase(slug: string) {
   const { data: report, error: reportError } = await supabase
     .from("deal_analyzer_reports")
     .select(
-      "report_slug, created_at, narrative_json, referral_source, agent_name, lead_id, scenario_id",
+      "report_slug, created_at, narrative_json, referral_source, agent_name, agent_id, referral_code, lead_id, scenario_id",
     )
     .eq("report_slug", slug)
     .maybeSingle();
@@ -123,7 +130,7 @@ export async function fetchReportFromSupabase(slug: string) {
       supabase
         .from("deal_analyzer_leads")
         .select(
-          "name, email, phone, role, notes, referral_source, agent_name, sms_call_consent, consent_text, consent_timestamp, consent_ip, consent_user_agent",
+          "name, email, phone, role, notes, referral_source, agent_name, referral_code, sms_call_consent, consent_text, consent_timestamp, consent_ip, consent_user_agent",
         )
         .eq("id", report.lead_id)
         .single(),
@@ -138,6 +145,16 @@ export async function fetchReportFromSupabase(slug: string) {
     return { error: "Report not found." };
   }
 
+  let partnerAgentName = lead.agent_name ?? report.agent_name ?? null;
+  let partnerBranding = null;
+  if (report.agent_id) {
+    const agentResult = await fetchAgentById(report.agent_id);
+    if (agentResult && !("error" in agentResult)) {
+      partnerBranding = agentResult;
+      partnerAgentName = agentResult.name;
+    }
+  }
+
   const narrative = normalizeStoredNarrative(
     report.narrative_json,
     scenario.inputs_json as unknown as DealInputs,
@@ -145,7 +162,8 @@ export async function fetchReportFromSupabase(slug: string) {
     {
       leadRole: lead.role,
       leadName: lead.name,
-      agentName: lead.agent_name ?? report.agent_name ?? undefined,
+      agentName: partnerAgentName ?? undefined,
+      partnerAgentName: partnerAgentName ?? undefined,
     },
   );
 
@@ -159,7 +177,7 @@ export async function fetchReportFromSupabase(slug: string) {
       role: lead.role as ClientRole,
       notes: lead.notes ?? "",
       referralSource: lead.referral_source ?? "",
-      agentName: lead.agent_name ?? "",
+      agentName: partnerAgentName ?? "",
       smsCallConsent: lead.sms_call_consent ?? false,
     },
     consent: {
@@ -173,6 +191,10 @@ export async function fetchReportFromSupabase(slug: string) {
     analysis: scenario.analysis_json as unknown as DealAnalysisResult,
     narrative,
     referralSource: report.referral_source,
-    agentName: report.agent_name,
+    agentName: partnerAgentName,
+    agentId: report.agent_id,
+    referralCode: report.referral_code ?? lead.referral_code ?? null,
+    partnerAgentName,
+    partnerBranding,
   };
 }

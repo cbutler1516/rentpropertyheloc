@@ -16,6 +16,7 @@ export type NarrativeContext = {
   leadName?: string;
   referralSource?: string;
   agentName?: string;
+  partnerAgentName?: string;
   notes?: string;
   inputs: DealInputs;
   analysis: DealAnalysisResult;
@@ -88,6 +89,7 @@ export async function resolveReportNarrative(
     leadRole: ctx.leadRole,
     leadName: ctx.leadName,
     agentName: ctx.agentName,
+    partnerAgentName: ctx.partnerAgentName,
   });
 
   try {
@@ -104,7 +106,12 @@ export function normalizeStoredNarrative(
   raw: unknown,
   inputs: DealInputs,
   analysis: DealAnalysisResult,
-  meta?: { leadRole?: string; leadName?: string; agentName?: string },
+  meta?: {
+    leadRole?: string;
+    leadName?: string;
+    agentName?: string;
+    partnerAgentName?: string;
+  },
 ): PlaybookNarrative {
   if (isCompleteNarrative(raw)) {
     return raw;
@@ -114,6 +121,7 @@ export function normalizeStoredNarrative(
     leadRole: meta?.leadRole,
     leadName: meta?.leadName,
     agentName: meta?.agentName,
+    partnerAgentName: meta?.partnerAgentName,
   });
 
   if (isLegacyNarrative(raw)) {

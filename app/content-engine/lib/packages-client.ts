@@ -73,6 +73,7 @@ export async function savePackage(
     leadMagnet: draft.leadMagnet,
     launchHub: draft.launchHub,
     leadCapture: draft.leadCapture,
+    crmIntegration: draft.crmIntegration,
     tags: draft.tags,
   };
   const next = upsertLocalPackage(loadLocalPackages(), pkg);

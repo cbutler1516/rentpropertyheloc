@@ -8,6 +8,7 @@ type PostBody = {
   leadName?: string;
   referralSource?: string;
   agentName?: string;
+  partnerAgentName?: string;
   notes?: string;
   inputs: DealInputs;
   analysis: DealAnalysisResult;
@@ -34,6 +35,7 @@ export async function POST(request: Request) {
     leadName: body.leadName,
     referralSource: body.referralSource,
     agentName: body.agentName,
+    partnerAgentName: body.partnerAgentName,
     notes: body.notes,
     inputs: body.inputs,
     analysis: body.analysis,

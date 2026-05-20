@@ -49,7 +49,8 @@ export type HeroVideo = SocialPost & {
     | "seller-concessions"
     | "refinance"
     | "market"
-    | "washington";
+    | "washington"
+    | "agent";
 };
 
 const TIKTOK_PROFILE = "https://www.tiktok.com/@theloanplaybook";
@@ -111,7 +112,45 @@ function heroBase(config: {
   };
 }
 
-/** First curated hero publish set (8). */
+/** Curated publish entry with essentials from the content library. */
+function heroCompact(config: {
+  slug: string;
+  title: string;
+  topic: string;
+  category: string;
+  audience: SocialPostAudience;
+  heroGroup: HeroVideo["heroGroup"];
+  shortSummary: string;
+  guideHref?: string;
+  guideLabel?: string;
+  guideSlugs?: string[];
+  marketSlugs?: string[];
+  dominantCta?: HeroVideo["dominantCta"];
+}): HeroVideo {
+  return heroBase({
+    slug: config.slug,
+    title: config.title,
+    topic: config.topic,
+    category: config.category,
+    audience: config.audience,
+    heroGroup: config.heroGroup,
+    shortSummary: config.shortSummary,
+    expandedSummary: config.shortSummary,
+    keyTakeaways: [config.shortSummary],
+    transcriptParagraphs: [config.shortSummary],
+    dominantCta: config.dominantCta ?? {
+      label: "Review Your Strategy",
+      href: "/strategy-review",
+    },
+    relatedLearnArticle: config.guideHref
+      ? { href: config.guideHref, label: config.guideLabel ?? "Related guide" }
+      : undefined,
+    guideSlugs: config.guideSlugs,
+    marketSlugs: config.marketSlugs,
+  });
+}
+
+/** Curated hero publish set (local MP4 in public/videos/hero). */
 export const heroVideos: HeroVideo[] = [
   heroBase({
     slug: "buyer-preapproval-first-step",
@@ -430,6 +469,155 @@ export const heroVideos: HeroVideo[] = [
     },
     localRelevanceDetail:
       "Seattle-area homeowners with strong equity positions often have more options than a rate headline suggests—including HELOC and timed refinance paths.",
+  }),
+  heroCompact({
+    slug: "buyer-down-payment-myth",
+    title: "The down payment myth.",
+    topic: "Down payment",
+    category: "Buyer Education",
+    heroGroup: "buyer-readiness",
+    audience: "buyer",
+    shortSummary: "You may not need as much down as you think—know the real requirement early.",
+    guideHref: "/learn/buyer-readiness",
+    guideLabel: "Buyer readiness guide",
+  }),
+  heroCompact({
+    slug: "buyer-shop-with-preapproval",
+    title: "Shop with pre-approval first.",
+    topic: "Buyer readiness",
+    category: "Buyer Education",
+    heroGroup: "buyer-readiness",
+    audience: "buyer",
+    shortSummary: "Do not tour listings without a verified pre-approval letter.",
+    guideHref: "/learn/buyer-readiness",
+    guideLabel: "Buyer readiness guide",
+  }),
+  heroCompact({
+    slug: "buyer-great-mortgage-preparation",
+    title: "Great mortgages are prepared.",
+    topic: "Buyer readiness",
+    category: "Buyer Education",
+    heroGroup: "buyer-readiness",
+    audience: "buyer",
+    shortSummary: "Strong purchases start with preparation—not luck in a hot market.",
+    guideHref: "/learn/buyer-readiness",
+    guideLabel: "Buyer readiness guide",
+  }),
+  heroCompact({
+    slug: "buyer-rate-vs-payment-focus",
+    title: "Rates do not pay the bills—payments do.",
+    topic: "Payment strategy",
+    category: "Mortgage Strategy",
+    heroGroup: "buyer-readiness",
+    audience: "buyer",
+    shortSummary: "Monthly payment and cash flow matter more than the rate headline alone.",
+    guideHref: "/learn/buyer-readiness",
+    guideLabel: "Buyer readiness guide",
+  }),
+  heroCompact({
+    slug: "buyer-when-to-lock-rate",
+    title: "When to lock your rate.",
+    topic: "Rate timing",
+    category: "Buyer Education",
+    heroGroup: "buyer-readiness",
+    audience: "buyer",
+    shortSummary: "Locking is a timing decision tied to your contract—not headline panic.",
+    guideHref: "/learn/buyer-readiness",
+    guideLabel: "Buyer readiness guide",
+  }),
+  heroCompact({
+    slug: "buyer-physician-loan-no-down-payment",
+    title: "Physician loans and down payment context.",
+    topic: "Physician loans",
+    category: "Specialty Lending",
+    heroGroup: "washington",
+    audience: "buyer",
+    shortSummary: "Physician loan paths have unique down payment and documentation rules.",
+    guideHref: "/guides/physician-loans",
+    guideLabel: "Physician loans guide",
+    guideSlugs: ["physician-loans"],
+  }),
+  heroCompact({
+    slug: "homeowner-12-month-mortgage-review",
+    title: "12-month mortgage review.",
+    topic: "Homeowner review",
+    category: "Homeowner Strategy",
+    heroGroup: "refinance",
+    audience: "homeowner",
+    shortSummary: "Annual review for equity, payment, and whether your structure still fits.",
+    guideHref: "/learn/refinance-timing",
+    guideLabel: "Refinance timing guide",
+    dominantCta: { label: "Review Refinance Timing", href: "/learn/refinance-timing" },
+  }),
+  heroCompact({
+    slug: "homeowner-refinance-opportunity-update",
+    title: "Refinance opportunity update.",
+    topic: "Refinance timing",
+    category: "Homeowner Strategy",
+    heroGroup: "refinance",
+    audience: "homeowner",
+    shortSummary: "When refinance opportunity actually shows up—and when waiting is smarter.",
+    guideHref: "/learn/refinance-timing",
+    guideLabel: "Refinance timing guide",
+    dominantCta: { label: "Review Refinance Timing", href: "/learn/refinance-timing" },
+  }),
+  heroCompact({
+    slug: "homeowner-mortgage-checkup-grooming",
+    title: "Mortgage checkup—equity and HELOC paths.",
+    topic: "Equity strategy",
+    category: "Homeowner Strategy",
+    heroGroup: "refinance",
+    audience: "homeowner",
+    shortSummary: "Routine checkups surface HELOC, cash-out, and hold scenarios before you react to headlines.",
+    guideHref: "/learn/heloc-strategy",
+    guideLabel: "HELOC strategy guide",
+    dominantCta: { label: "Explore HELOC Strategy", href: "/learn/heloc-strategy" },
+  }),
+  heroCompact({
+    slug: "market-seahawks-mortgage-preparation",
+    title: "Seahawks season mortgage preparation.",
+    topic: "Washington market",
+    category: "Market Update",
+    heroGroup: "market",
+    audience: "homeowner",
+    shortSummary: "Local market rhythm and preparation—Washington context when timing a move.",
+    guideHref: "/washington-mortgage",
+    guideLabel: "Washington mortgage strategy",
+    marketSlugs: ["seattle"],
+  }),
+  heroCompact({
+    slug: "market-fed-bond-buying-rates-explained",
+    title: "Fed, bond buying, and what moves rates.",
+    topic: "Market commentary",
+    category: "Market Update",
+    heroGroup: "market",
+    audience: "homeowner",
+    shortSummary: "Macro mechanics in plain language—without trading headlines for a household plan.",
+    guideHref: "/learn/refinance-timing",
+    guideLabel: "Strategy context",
+  }),
+  heroCompact({
+    slug: "market-oil-prices-mortgage-rates",
+    title: "Oil prices and mortgage rates.",
+    topic: "Market commentary",
+    category: "Market Update",
+    heroGroup: "market",
+    audience: "homeowner",
+    shortSummary: "Oil headlines and rate context—what matters for your timing decision.",
+    guideHref: "/videos",
+    guideLabel: "More market videos",
+  }),
+  heroCompact({
+    slug: "agent-free-1-0-buydown-program",
+    title: "Free 2-1 buydown talking points for agents.",
+    topic: "Agent resources",
+    category: "Agent Strategy",
+    heroGroup: "agent",
+    audience: "agent",
+    shortSummary: "Forwardable buydown talking points for client conversations—not rate spam.",
+    guideHref: "/learn/2-1-buydowns",
+    guideLabel: "2-1 buydown guide",
+    dominantCta: { label: "Agent Financing Playbook", href: "/agents/financing-playbook" },
   }),
 ];
 
