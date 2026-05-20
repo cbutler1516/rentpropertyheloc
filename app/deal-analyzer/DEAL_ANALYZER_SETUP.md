@@ -1,4 +1,4 @@
-# Deal Analyzer setup (v2 + v3)
+# Deal Analyzer setup (v2 + v3 + v4)
 
 ## Environment variables
 
@@ -74,3 +74,17 @@ Compliance is enforced in the system prompt: educational estimates only, no appr
 - Send this to your client (agents)
 - Risks & opportunities
 - Charts and deal metrics
+
+## v4 — PDF export & sharing
+
+On `/deal-analyzer/report/[slug]`:
+
+- **Download PDF** — opens the browser print dialog; choose “Save as PDF”. Nav, actions, and site chrome are hidden via print CSS (`deal-analyzer-print.css`).
+- **Copy report link** — copies the full shareable URL.
+- **Copy client message** — copies the agent share blurb plus report URL (when narrative includes `agentShareMessage`).
+
+Print layout includes branded header (The Loan Playbook / Broadview Lending), footer disclaimer, prepared-for / shared-by lines, report date, slug URL, key metrics grid, narrative sections, charts, and contact CTA.
+
+**Social previews:** `generateMetadata` on the slug page uses Supabase when configured. Reports stored only in localStorage do not get server-side Open Graph tags.
+
+No extra npm packages — v4 uses `@media print` and `window.print()` for production-safe PDF export.

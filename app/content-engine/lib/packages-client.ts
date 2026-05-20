@@ -68,6 +68,8 @@ export async function savePackage(
     generationMode: draft.generationMode,
     outputs: draft.outputs,
     campaignOutputs: draft.campaignOutputs,
+    landingPage: draft.landingPage,
+    calendar: draft.calendar,
     tags: draft.tags,
   };
   const next = upsertLocalPackage(loadLocalPackages(), pkg);

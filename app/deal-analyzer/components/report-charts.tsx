@@ -25,7 +25,7 @@ export function PaymentBreakdownChart({
   const data = analysis.chartData.paymentBreakdown;
 
   return (
-    <div className="h-64 w-full">
+    <div className="playbook-chart-print playbook-print-avoid-break h-64 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -62,7 +62,7 @@ export function CashFlowChart({ analysis }: { analysis: DealAnalysisResult }) {
   if (!data.length) return null;
 
   return (
-    <div className="h-64 w-full">
+    <div className="playbook-chart-print playbook-print-avoid-break h-64 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <XAxis dataKey="label" stroke="#71717a" fontSize={11} />
@@ -97,7 +97,7 @@ export function RefinanceComparisonChart({
   if (!data.length) return null;
 
   return (
-    <div className="h-64 w-full">
+    <div className="playbook-chart-print playbook-print-avoid-break h-64 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <XAxis dataKey="label" stroke="#71717a" fontSize={11} />

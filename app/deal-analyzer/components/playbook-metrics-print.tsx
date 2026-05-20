@@ -69,11 +69,11 @@ export function PlaybookMetricsPrint({ analysis }: PlaybookMetricsPrintProps) {
       <div className="playbook-metrics-print-grid">
         {rows.map((row) => (
           <div key={row.label} className="playbook-metrics-print-cell">
-            <div className="playbook-metrics-print-label">{row.label}</motionBg>
-            <div className="playbook-metrics-print-value">{row.value}</motionBg>
-          </motionBg>
+            <div className="playbook-metrics-print-label">{row.label}</div>
+            <div className="playbook-metrics-print-value">{row.value}</div>
+          </div>
         ))}
-      </motionBg>
+      </div>
     </section>
   );
 }

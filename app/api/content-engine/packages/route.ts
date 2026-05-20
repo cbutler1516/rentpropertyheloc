@@ -77,6 +77,8 @@ export async function POST(request: Request) {
     generationMode: body.generationMode ?? "single",
     outputs: body.outputs,
     campaignOutputs: body.campaignOutputs,
+    landingPage: body.landingPage,
+    calendar: body.calendar,
     tags: body.tags ?? [],
   });
 

@@ -40,17 +40,30 @@ import {
   type ContentOutputs,
   type ContentPackage,
   type GenerationMode,
+  type ContentCalendarRecord,
+  type LandingPageRecord,
+  type LandingPageSectionKey,
   type OutputTabKey,
   type PackageFilters,
 } from "../lib/types";
+import { calendarToMarkdown } from "../lib/calendar-export";
 import { BrandVoiceSelector } from "./brand-voice-selector";
+import { CalendarGeneratorCard } from "./calendar-generator-card";
+import { CalendarOutputsPanel } from "./calendar-outputs-panel";
 import { CampaignOutputsPanel } from "./campaign-outputs-panel";
 import { CopyButton } from "./copy-button";
 import { ContentEngineShell } from "./content-engine-shell";
 import { ExportActions } from "./export-actions";
 import { GenerationModeToggle } from "./generation-mode-toggle";
+import { LandingPageGeneratorCard } from "./landing-page-generator-card";
+import { LandingPageOutputsPanel } from "./landing-page-outputs-panel";
+import { OutputViewTabs, type OutputView } from "./output-view-tabs";
 import { PackageHistoryPanel } from "./package-history-panel";
 import { PackageMetadataForm } from "./package-metadata-form";
+import {
+  type LandingPageIntent,
+} from "../lib/landing-page-intents";
+import { landingPageToMarkdown } from "../lib/landing-page-export";
 
 const SINGLE_PLACEHOLDER = `Paste a market update, video transcript, Fed commentary, borrower scenario, or rough idea…
 
@@ -103,6 +116,8 @@ function buildExportPackage(draft: {
   tagsInput: string;
   outputs: ContentOutputs;
   campaignOutputs?: CampaignOutputs;
+  landingPage?: LandingPageRecord;
+  calendar?: ContentCalendarRecord;
 }): ContentPackage {
   return {
     id: draft.id ?? "draft",
@@ -117,8 +132,28 @@ function buildExportPackage(draft: {
     generationMode: draft.generationMode,
     outputs: draft.outputs,
     campaignOutputs: draft.campaignOutputs,
+    landingPage: draft.landingPage,
     tags: parseTagsInput(draft.tagsInput),
   };
+}
+
+function inferLandingIntent(
+  audience: ContentAudience,
+  topic: string,
+): LandingPageIntent {
+  const lower = topic.toLowerCase();
+  if (lower.includes("concession") || lower.includes("buydown"))
+    return "seller-concession-strategy";
+  if (lower.includes("fed") || lower.includes("rate") || lower.includes("market"))
+    return "rate-market-alert";
+  if (lower.includes("jumbo") || lower.includes("luxury")) return "jumbo-luxury";
+  if (lower.includes("refinanc") || lower.includes("heloc")) return "refinance-lead";
+  if (lower.includes("investor") || lower.includes("dscr")) return "commercial-borrower";
+  if (audience === "agent") return "agent-referral";
+  if (audience === "commercial") return "commercial-borrower";
+  if (audience === "homeowner") return "refinance-lead";
+  if (audience === "buyer") return "buyer-lead";
+  return "first-time-buyer";
 }
 
 export function ContentEngineApp() {
@@ -153,6 +188,17 @@ export function ContentEngineApp() {
   const [sidebarView, setSidebarView] = useState<"studio" | "history">("studio");
   const [filters, setFilters] = useState<PackageFilters>(DEFAULT_FILTERS);
   const [mobileHistoryOpen, setMobileHistoryOpen] = useState(false);
+  const [landingPage, setLandingPage] = useState<LandingPageRecord | null>(null);
+  const [landingIntent, setLandingIntent] = useState<LandingPageIntent>("buyer-lead");
+  const [landingActiveSection, setLandingActiveSection] =
+    useState<LandingPageSectionKey>("heroHeadline");
+  const [outputView, setOutputView] = useState<OutputView>("content");
+  const [landingLoading, setLandingLoading] = useState(false);
+  const [calendar, setCalendar] = useState<ContentCalendarRecord | null>(null);
+  const [calendarLoading, setCalendarLoading] = useState(false);
+  const [regeneratingDayIndex, setRegeneratingDayIndex] = useState<number | null>(
+    null,
+  );
 
   const minInputLength = generationMode === "campaign" ? 8 : 24;
   const hasResults =
@@ -189,6 +235,7 @@ export function ContentEngineApp() {
       tagsInput,
       outputs: outputs ?? emptySingleOutputs(),
       campaignOutputs: campaignOutputs ?? undefined,
+      landingPage: landingPage ?? undefined,
     });
   }, [
     activePackageId,
@@ -198,6 +245,8 @@ export function ContentEngineApp() {
     generationMode,
     hasResults,
     input,
+    calendar,
+    landingPage,
     modelUsed,
     outputs,
     tagsInput,
@@ -225,6 +274,9 @@ export function ContentEngineApp() {
   const clearResults = useCallback(() => {
     setOutputs(null);
     setCampaignOutputs(null);
+    setLandingPage(null);
+    setCalendar(null);
+    setOutputView("content");
     setMode(null);
     setIsUnsaved(false);
   }, []);
@@ -250,6 +302,7 @@ export function ContentEngineApp() {
       setTopic(nextTopic);
       setTone(nextTone);
       setTagsInput(inferTags(source, nextTopic, nextAudience).join(", "));
+      setLandingIntent(inferLandingIntent(nextAudience, nextTopic));
       setTitle(
         generationMode === "campaign"
           ? `Campaign: ${source.slice(0, 48)}${source.length > 48 ? "…" : ""}`
@@ -335,6 +388,7 @@ export function ContentEngineApp() {
         generationMode,
         outputs: outputs ?? emptySingleOutputs(),
         campaignOutputs: campaignOutputs ?? undefined,
+        landingPage: landingPage ?? undefined,
         tags: parseTagsInput(tagsInput),
       });
       setActivePackageId(result.package.id);
@@ -364,7 +418,149 @@ export function ContentEngineApp() {
     title,
     tone,
     topic,
+    calendar,
+    landingPage,
   ]);
+
+  const packageContextPayload = useCallback(
+    () => ({
+      sourceInput: input,
+      topic,
+      title: title || packageTitleFromInput(input),
+      brandVoiceId,
+      generationMode,
+      audience,
+      tone,
+      outputs: outputs ?? undefined,
+      campaignOutputs: campaignOutputs ?? undefined,
+      landingPage: landingPage ?? undefined,
+    }),
+    [
+      audience,
+      brandVoiceId,
+      campaignOutputs,
+      generationMode,
+      input,
+      landingPage,
+      outputs,
+      title,
+      tone,
+      topic,
+    ],
+  );
+
+  const handleGenerateLandingPage = useCallback(async () => {
+    if (!hasResults) return;
+    setLandingLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/content-engine/landing-page", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          intent: landingIntent,
+          sourceInput: input,
+          topic,
+          title: title || packageTitleFromInput(input),
+          brandVoiceId,
+          generationMode,
+          audience,
+          tone,
+          outputs: outputs ?? undefined,
+          campaignOutputs: campaignOutputs ?? undefined,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error ?? "Landing page generation failed.");
+      }
+      setLandingPage(data.landingPage as LandingPageRecord);
+      setLandingActiveSection("heroHeadline");
+      setOutputView("landing");
+      setIsUnsaved(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setLandingLoading(false);
+    }
+  }, [
+    audience,
+    brandVoiceId,
+    campaignOutputs,
+    generationMode,
+    hasResults,
+    input,
+    landingIntent,
+    outputs,
+    title,
+    tone,
+    topic,
+  ]);
+
+  const handleGenerateCalendar = useCallback(async () => {
+    if (!hasResults) return;
+    setCalendarLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/content-engine/calendar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(packageContextPayload()),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error ?? "Calendar generation failed.");
+      }
+      setCalendar(data.calendar as ContentCalendarRecord);
+      setOutputView("calendar");
+      setIsUnsaved(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setCalendarLoading(false);
+    }
+  }, [hasResults, packageContextPayload]);
+
+  const handleCalendarChange = useCallback((next: ContentCalendarRecord) => {
+    setCalendar(next);
+    setIsUnsaved(true);
+  }, []);
+
+  const handleRegenerateCalendarDay = useCallback(
+    async (dayIndex: number) => {
+      if (!calendar || !hasResults) return;
+      setRegeneratingDayIndex(dayIndex);
+      setError(null);
+      try {
+        const response = await fetch("/api/content-engine/calendar/day", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...packageContextPayload(),
+            dayIndex,
+            calendar,
+          }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error ?? "Day regeneration failed.");
+        }
+        const day = data.day as ContentCalendarRecord["days"][number];
+        setCalendar({
+          ...calendar,
+          days: calendar.days.map((d) =>
+            d.dayIndex === dayIndex ? { ...day, status: d.status } : d,
+          ),
+        });
+        setIsUnsaved(true);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Something went wrong.");
+      } finally {
+        setRegeneratingDayIndex(null);
+      }
+    },
+    [calendar, hasResults, packageContextPayload],
+  );
 
   const loadPackage = useCallback((pkg: ContentPackage) => {
     setInput(pkg.sourceInput);
@@ -372,6 +568,14 @@ export function ContentEngineApp() {
     setBrandVoiceId(pkg.brandVoiceId);
     setOutputs(pkg.generationMode === "single" ? pkg.outputs : null);
     setCampaignOutputs(pkg.campaignOutputs ?? null);
+    setLandingPage(pkg.landingPage ?? null);
+    setCalendar(pkg.calendar ?? null);
+    setLandingIntent(
+      pkg.landingPage?.intent ?? inferLandingIntent(pkg.audience, pkg.topic),
+    );
+    setOutputView(
+      pkg.calendar ? "calendar" : pkg.landingPage ? "landing" : "content",
+    );
     setTitle(pkg.title);
     setAudience(pkg.audience);
     setTone(pkg.tone);
@@ -621,15 +825,61 @@ export function ContentEngineApp() {
           <Card className="flex min-h-[480px] flex-col overflow-hidden">
             {generationMode === "campaign" ? (
               <div className="flex flex-1 flex-col overflow-hidden p-6">
-                <CampaignOutputsPanel
-                  outputs={campaignOutputs}
-                  activeTab={campaignActiveTab}
-                  onTabChange={setCampaignActiveTab}
+                <OutputViewTabs
+                  showLanding={Boolean(landingPage)}
+                  showCalendar={Boolean(calendar)}
+                  activeView={outputView}
+                  onViewChange={setOutputView}
+                  contentLabel="Campaign"
+                />
+                {outputView === "landing" && landingPage ? (
+                  <LandingPageOutputsPanel
+                    landingPage={landingPage}
+                    packageTitle={title || packageTitleFromInput(input)}
+                    activeSection={landingActiveSection}
+                    onSectionChange={setLandingActiveSection}
+                  />
+                ) : outputView === "calendar" && calendar ? (
+                  <CalendarOutputsPanel
+                    calendar={calendar}
+                    packageTitle={title || packageTitleFromInput(input)}
+                    regeneratingDayIndex={regeneratingDayIndex}
+                    onCalendarChange={handleCalendarChange}
+                    onRegenerateDay={(dayIndex) =>
+                      void handleRegenerateCalendarDay(dayIndex)
+                    }
+                  />
+                ) : (
+                  <CampaignOutputsPanel
+                    outputs={campaignOutputs}
+                    activeTab={campaignActiveTab}
+                    onTabChange={setCampaignActiveTab}
+                  />
+                )}
+              </div>
+            ) : outputView === "landing" && landingPage ? (
+              <div className="flex flex-1 flex-col overflow-hidden p-6">
+                <OutputViewTabs
+                  showLanding
+                  activeView={outputView}
+                  onViewChange={setOutputView}
+                />
+                <LandingPageOutputsPanel
+                  landingPage={landingPage}
+                  packageTitle={title || packageTitleFromInput(input)}
+                  activeSection={landingActiveSection}
+                  onSectionChange={setLandingActiveSection}
                 />
               </div>
             ) : (
               <>
                 <CardHeader className="border-b border-white/[0.06] pb-0">
+                  <OutputViewTabs
+                    showLanding={Boolean(landingPage)}
+                    showCalendar={Boolean(calendar)}
+                    activeView={outputView}
+                    onViewChange={setOutputView}
+                  />
                   <div className="flex flex-wrap items-start justify-between gap-3 pb-4">
                     <div>
                       <CardTitle>Content outputs</CardTitle>
@@ -698,6 +948,20 @@ export function ContentEngineApp() {
 
         {hasResults && (
           <>
+            <LandingPageGeneratorCard
+              intent={landingIntent}
+              onIntentChange={setLandingIntent}
+              onGenerate={() => void handleGenerateLandingPage()}
+              loading={landingLoading}
+              hasLandingPage={Boolean(landingPage)}
+            />
+
+            <CalendarGeneratorCard
+              onGenerate={() => void handleGenerateCalendar()}
+              loading={calendarLoading}
+              hasCalendar={Boolean(calendar)}
+            />
+
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Package details</CardTitle>
@@ -766,8 +1030,23 @@ export function ContentEngineApp() {
                             (tab) => `## ${tab.label}\n\n${outputs![tab.key]}`,
                           ).join("\n\n---\n\n")
                     }
-                    label="Copy all"
+                    label="Copy all content"
                   />
+                  {landingPage && exportPackage && (
+                    <CopyButton
+                      text={landingPageToMarkdown(
+                        landingPage,
+                        exportPackage.title,
+                      )}
+                      label="Copy landing page"
+                    />
+                  )}
+                  {calendar && exportPackage && (
+                    <CopyButton
+                      text={calendarToMarkdown(calendar, exportPackage.title)}
+                      label="Copy calendar"
+                    />
+                  )}
                 </CardContent>
               </Card>
             )}

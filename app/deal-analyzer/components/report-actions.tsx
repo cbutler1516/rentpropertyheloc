@@ -124,6 +124,6 @@ export function ReportActions({
       <p className="break-all font-mono text-[9px] tracking-[0.14em] text-zinc-600">
         {reportUrl}
       </p>
-    </motionBg>
+    </div>
   );
 }

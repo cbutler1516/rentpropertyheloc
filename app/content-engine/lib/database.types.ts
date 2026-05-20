@@ -14,6 +14,7 @@ export type ContentEnginePackageRow = {
   generation_mode: string;
   outputs_json: Json;
   landing_page_json: Json | null;
+  calendar_json: Json | null;
   tags: string[];
 };
 
@@ -30,6 +31,7 @@ export type ContentEnginePackageInsert = {
   generation_mode?: string;
   outputs_json: Json;
   landing_page_json?: Json | null;
+  calendar_json?: Json | null;
   tags?: string[];
 };
 

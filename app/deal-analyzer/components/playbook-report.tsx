@@ -91,7 +91,7 @@ export function PlaybookReport({
         part="header"
       />
 
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="playbook-screen-only grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <MetricTile
           label="Est. monthly payment"
           value={formatCurrency(analysis.payment.total)}
@@ -110,7 +110,7 @@ export function PlaybookReport({
       </section>
 
       {analysis.investor ? (
-        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="playbook-screen-only grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <MetricTile
             label="DSCR"
             value={`${formatNumber(analysis.investor.dscr, 2)}x`}
@@ -133,7 +133,7 @@ export function PlaybookReport({
       ) : null}
 
       {analysis.commercial ? (
-        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="playbook-screen-only grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <MetricTile
             label="DSCR"
             value={`${formatNumber(analysis.commercial.dscr, 2)}x`}
@@ -156,7 +156,7 @@ export function PlaybookReport({
       ) : null}
 
       {analysis.refinance ? (
-        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <section className="playbook-screen-only grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <MetricTile
             label="Current payment"
             value={formatCurrency(analysis.refinance.currentPayment)}
@@ -183,7 +183,7 @@ export function PlaybookReport({
         </section>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="playbook-print-avoid-break grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Payment composition</CardTitle>

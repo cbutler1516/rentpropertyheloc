@@ -29,6 +29,62 @@ export type LandingPageRecord = {
   modelUsed: string;
 };
 
+export const CALENDAR_PLATFORMS = [
+  "tiktok-reels",
+  "facebook",
+  "linkedin",
+  "email",
+  "blog",
+] as const;
+
+export type CalendarPlatform = (typeof CALENDAR_PLATFORMS)[number];
+
+export const CALENDAR_DAY_STATUSES = ["draft", "ready", "posted"] as const;
+
+export type CalendarDayStatus = (typeof CALENDAR_DAY_STATUSES)[number];
+
+export const CALENDAR_AUDIENCE_LENSES = ["agent", "consumer"] as const;
+
+export type CalendarAudienceLens = (typeof CALENDAR_AUDIENCE_LENSES)[number];
+
+export const CALENDAR_FILTER_IDS = [
+  "tiktok-reels",
+  "facebook",
+  "linkedin",
+  "email",
+  "blog",
+  "agent",
+  "consumer",
+] as const;
+
+export type CalendarFilterId = (typeof CALENDAR_FILTER_IDS)[number];
+
+export type CalendarDayEntry = {
+  dayIndex: number;
+  dayLabel: string;
+  platform: CalendarPlatform;
+  postType: string;
+  audienceLens: CalendarAudienceLens;
+  hook: string;
+  caption: string;
+  cta: string;
+  suggestedVisual: string;
+  videoPrompt: string;
+  landingPageTieIn: string;
+  status: CalendarDayStatus;
+};
+
+export const CALENDAR_DAY_COUNT = 7;
+
+export type ContentCalendarRecord = {
+  days: CalendarDayEntry[];
+  weekTheme: string;
+  generatedAt: string;
+  modelUsed: string;
+};
+
+export type CalendarViewMode = "board" | "list" | "platform";
+
 export const OUTPUT_TAB_KEYS = [
   "tiktokHooks",
   "youtubeTitles",
@@ -100,6 +156,7 @@ export type ContentPackage = {
   outputs: ContentOutputs;
   campaignOutputs?: CampaignOutputs;
   landingPage?: LandingPageRecord;
+  calendar?: ContentCalendarRecord;
   tags: string[];
   mode?: "ai" | "demo";
 };
@@ -116,7 +173,36 @@ export type PackageDraft = {
   outputs: ContentOutputs;
   campaignOutputs?: CampaignOutputs;
   landingPage?: LandingPageRecord;
+  calendar?: ContentCalendarRecord;
   tags: string[];
+};
+
+export type GenerateCalendarRequest = {
+  sourceInput: string;
+  topic: string;
+  title: string;
+  brandVoiceId?: BrandVoiceId;
+  generationMode: GenerationMode;
+  audience?: ContentAudience;
+  tone?: string;
+  outputs?: ContentOutputs;
+  campaignOutputs?: CampaignOutputs;
+  landingPage?: LandingPageRecord;
+};
+
+export type GenerateCalendarResponse = {
+  calendar: ContentCalendarRecord;
+  mode: "ai" | "demo";
+};
+
+export type RegenerateCalendarDayRequest = GenerateCalendarRequest & {
+  dayIndex: number;
+  calendar: ContentCalendarRecord;
+};
+
+export type RegenerateCalendarDayResponse = {
+  day: CalendarDayEntry;
+  mode: "ai" | "demo";
 };
 
 export type GenerateLandingPageRequest = {

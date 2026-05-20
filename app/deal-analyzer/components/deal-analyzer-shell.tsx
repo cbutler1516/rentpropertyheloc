@@ -13,7 +13,7 @@ export function DealAnalyzerShell({
   eyebrow = "Deal Analyzer",
 }: DealAnalyzerShellProps) {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#030712] text-white">
+    <div className="deal-analyzer-shell relative min-h-screen overflow-hidden bg-[#030712] text-white">
       <div
         className="pointer-events-none absolute inset-0 playbook-grid playbook-grid-animated opacity-40"
         aria-hidden
@@ -27,7 +27,7 @@ export function DealAnalyzerShell({
         aria-hidden
       />
 
-      <header className="relative z-10 border-b border-white/[0.06] bg-[#030712]/80 backdrop-blur-xl">
+      <header className="deal-analyzer-chrome relative z-10 border-b border-white/[0.06] bg-[#030712]/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-5 md:px-10">
           <Link
             href="/deal-analyzer"
@@ -54,7 +54,7 @@ export function DealAnalyzerShell({
         {children}
       </main>
 
-      <footer className="relative z-10 border-t border-white/[0.06] px-6 py-8 md:px-10">
+      <footer className="deal-analyzer-chrome relative z-10 border-t border-white/[0.06] px-6 py-8 md:px-10">
         <p className="mx-auto max-w-3xl text-center text-xs leading-relaxed text-zinc-500">
           {DEAL_ANALYZER_DISCLAIMER}
         </p>

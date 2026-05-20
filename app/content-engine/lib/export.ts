@@ -1,5 +1,7 @@
 import { getBrandVoice } from "./brand-voices";
 import { CAMPAIGN_TABS } from "./campaign-tabs";
+import { calendarToMarkdown } from "./calendar-export";
+import { landingPageToMarkdown } from "./landing-page-export";
 import { OUTPUT_TABS } from "./tabs";
 import type { ContentPackage } from "./types";
 
@@ -48,6 +50,28 @@ export function packageToMarkdown(pkg: ContentPackage): string {
     for (const tab of OUTPUT_TABS) {
       lines.push(`## ${tab.label}`, "", pkg.outputs[tab.key].trim(), "", "---", "");
     }
+  }
+
+  if (pkg.landingPage) {
+    lines.push(
+      "",
+      "# Landing page",
+      "",
+      landingPageToMarkdown(pkg.landingPage, pkg.title).replace(
+        `# Landing Page — ${pkg.title}`,
+        "",
+      ),
+    );
+  }
+
+  if (pkg.calendar) {
+    lines.push(
+      "",
+      calendarToMarkdown(pkg.calendar, pkg.title).replace(
+        `# 7-Day Content Calendar — ${pkg.title}`,
+        "",
+      ),
+    );
   }
 
   lines.push(

@@ -51,6 +51,8 @@ export async function savePackageToSupabase(
     outputs: emptySingle,
     campaignOutputs:
       draft.generationMode === "campaign" ? draft.campaignOutputs : undefined,
+    landingPage: draft.landingPage,
+    calendar: draft.calendar,
     tags: draft.tags,
   };
 

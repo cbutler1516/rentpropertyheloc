@@ -147,6 +147,12 @@ export function PackageHistoryPanel({
                   {pkg.generationMode === "campaign" && (
                     <Badge variant="gold">campaign</Badge>
                   )}
+                  {pkg.landingPage && (
+                    <Badge variant="success">landing</Badge>
+                  )}
+                  {pkg.calendar && (
+                    <Badge variant="default">calendar</Badge>
+                  )}
                   <Badge variant={pkg.modelUsed === "demo" ? "gold" : "purple"}>
                     {pkg.modelUsed === "demo" ? "demo" : "ai"}
                   </Badge>

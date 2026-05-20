@@ -1,5 +1,10 @@
 /* Deal Analyzer — print / PDF export (v4) */
 
+html.printing-playbook-report .deal-analyzer-chrome,
+html.printing-playbook-report .deal-analyzer-no-print {
+  display: none !important;
+}
+
 @media print {
   @page {
     size: letter;

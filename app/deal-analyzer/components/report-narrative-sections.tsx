@@ -62,7 +62,7 @@ export function ReportNarrativeSections({
   return (
     <>
       {showHeader ? (
-      <header className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#7c3aed]/15 via-zinc-950 to-[#c9a227]/10 p-8 md:p-10">
+      <header className="playbook-screen-only relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#7c3aed]/15 via-zinc-950 to-[#c9a227]/10 p-8 md:p-10">
         <div
           className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#7c3aed]/20 blur-3xl"
           aria-hidden
@@ -108,7 +108,15 @@ export function ReportNarrativeSections({
 
       {showBody ? (
       <>
-      <Card className="border-white/[0.06] bg-zinc-950/60">
+      <div className="playbook-print-only playbook-print-avoid-break mb-6 rounded-lg border border-[#d4d4d8] bg-[#fafafa] p-4">
+        <p className="text-[9pt] font-semibold uppercase tracking-wider text-[#5b21b6]">
+          Executive summary
+        </p>
+        <p className="mt-2 text-[10pt] leading-relaxed text-[#333]">
+          {narrative.executiveSummary}
+        </p>
+      </div>
+      <Card className="playbook-print-avoid-break border-white/[0.06] bg-zinc-950/60">
         <CardHeader>
           <p className="font-mono text-[10px] tracking-[0.28em] text-zinc-500 uppercase">
             In plain language
@@ -168,10 +176,12 @@ export function ReportNarrativeSections({
       </Card>
 
       {showAgentShare ? (
-        <AgentShareBox
-          message={narrative.agentShareMessage}
-          clientName={clientName}
-        />
+        <div className="deal-analyzer-no-print">
+          <AgentShareBox
+            message={narrative.agentShareMessage}
+            clientName={clientName}
+          />
+        </div>
       ) : null}
 
       <div className="grid gap-6 md:grid-cols-2">
