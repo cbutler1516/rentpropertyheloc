@@ -16,6 +16,15 @@ import {
   trackLeadFormStart,
 } from "../lib/analytics-events";
 import {
+  IntakeFinancialsFields,
+  type FinancialsValues,
+} from "./intake-financials-fields";
+import {
+  hasFinancialsInput,
+  parseCurrencyDigits,
+  parsePercentInput,
+} from "../lib/intake-currency";
+import {
   experienceOptions,
   getIntakeGoal,
   getIntakeStepsForGoal,
@@ -44,6 +53,7 @@ type IntakeFormData = {
   goalId: IntakeGoalId | "";
   timeline: string;
   purchasePrice: string;
+  downPaymentPercent: string;
   loanAmount: string;
   propertyType: string;
   goals: string;
@@ -58,6 +68,7 @@ const emptyForm: IntakeFormData = {
   goalId: "",
   timeline: "",
   purchasePrice: "",
+  downPaymentPercent: "",
   loanAmount: "",
   propertyType: "",
   goals: "",
@@ -86,7 +97,7 @@ function isStepComplete(
   if (stepId === "goal") return Boolean(snapshot.goalId);
   if (stepId === "timeline") return Boolean(snapshot.timeline);
   if (stepId === "financials") {
-    return Boolean(snapshot.purchasePrice.trim() || snapshot.loanAmount.trim());
+    return hasFinancialsInput(snapshot);
   }
   if (stepId === "property") return Boolean(snapshot.propertyType);
   if (stepId === "goals") return snapshot.goals.trim().length >= 8;
@@ -193,13 +204,20 @@ export function StrategyIntakeFunnel() {
       setSubmitState("submitting");
       setErrorMessage("");
 
+      const estimatedPurchasePriceRaw = parseCurrencyDigits(snapshot.purchasePrice);
+      const estimatedLoanAmountRaw = parseCurrencyDigits(snapshot.loanAmount);
+      const downPaymentPercent = parsePercentInput(snapshot.downPaymentPercent);
+
       const payload = {
         formType: activeGoal.formType,
         leadIntent: activeGoal.leadIntent,
         intakeGoal: snapshot.goalId,
         timeline: snapshot.timeline,
-        purchasePrice: snapshot.purchasePrice,
-        loanAmount: snapshot.loanAmount,
+        purchasePrice: estimatedPurchasePriceRaw || snapshot.purchasePrice,
+        loanAmount: estimatedLoanAmountRaw || snapshot.loanAmount,
+        estimatedPurchasePriceRaw,
+        downPaymentPercent: downPaymentPercent || undefined,
+        estimatedLoanAmountRaw,
         propertyType: snapshot.propertyType,
         goals: snapshot.goals,
         stateMarket: snapshot.stateMarket,
@@ -465,25 +483,30 @@ export function StrategyIntakeFunnel() {
           {currentStepId === "financials" ? (
             <StepShell
               title="Estimated numbers"
-              lead="Ballpark is fine. We'll refine—not quote off a guess."
+              lead="Ballpark is fine. We'll refine the structure later."
               headingRef={stepHeadingRef}
             >
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Field
-                  label="Estimated purchase price"
-                  id={`${formId}-price`}
-                  value={data.purchasePrice}
-                  onChange={(v) => updateField("purchasePrice", v)}
-                  placeholder="$750,000"
-                />
-                <Field
-                  label="Estimated loan amount"
-                  id={`${formId}-loan`}
-                  value={data.loanAmount}
-                  onChange={(v) => updateField("loanAmount", v)}
-                  placeholder="$600,000"
-                />
-              </div>
+              <IntakeFinancialsFields
+                idPrefix={formId}
+                values={{
+                  purchasePrice: data.purchasePrice,
+                  downPaymentPercent: data.downPaymentPercent,
+                  loanAmount: data.loanAmount,
+                }}
+                onChange={(financials: FinancialsValues) => {
+                  markStarted();
+                  setData((prev) => {
+                    const next = {
+                      ...prev,
+                      purchasePrice: financials.purchasePrice,
+                      downPaymentPercent: financials.downPaymentPercent,
+                      loanAmount: financials.loanAmount,
+                    };
+                    dataRef.current = next;
+                    return next;
+                  });
+                }}
+              />
             </StepShell>
           ) : null}
 
