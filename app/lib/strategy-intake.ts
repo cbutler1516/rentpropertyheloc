@@ -151,3 +151,18 @@ export function getIntakeStepsForGoal(goalId: IntakeGoalId | "") {
 export function getTotalIntakeSteps(goalId: IntakeGoalId | "") {
   return 1 + getIntakeStepsForGoal(goalId).length;
 }
+
+/** Legacy `goals` string plus structured priority fields for intake submit. */
+export function buildGoalsPayload(
+  strategyPriorities: string[],
+  goalsNotes: string,
+) {
+  const notes = goalsNotes.trim();
+  const parts = [...strategyPriorities];
+  if (notes) parts.push(notes);
+  return {
+    strategyPriorities,
+    goalsNotes: notes || undefined,
+    goals: parts.join(" | "),
+  };
+}

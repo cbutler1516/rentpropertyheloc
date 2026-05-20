@@ -19,12 +19,14 @@ import {
   IntakeFinancialsFields,
   type FinancialsValues,
 } from "./intake-financials-fields";
+import { IntakePrioritiesStep } from "./intake-priorities-step";
 import {
   hasFinancialsInput,
   parseCurrencyDigits,
   parsePercentInput,
 } from "../lib/intake-currency";
 import {
+  buildGoalsPayload,
   experienceOptions,
   getIntakeGoal,
   getIntakeStepsForGoal,
@@ -36,6 +38,17 @@ import {
   type IntakeGoalId,
   type IntakeStepId,
 } from "../lib/strategy-intake";
+
+const STEP_MOMENTUM_COPY = [
+  "Let's find the right financing path.",
+  "Timing helps shape the strategy.",
+  "Ballpark numbers are enough.",
+  "Property type changes the play.",
+  "Now we know what matters most.",
+  "Market context helps narrow options.",
+  "Experience level helps us frame next steps.",
+  "Last step — where should we send your review?",
+];
 
 const AUTO_ADVANCE_MS = 200;
 const SINGLE_SELECT_STEPS = new Set([
@@ -56,7 +69,8 @@ type IntakeFormData = {
   downPaymentPercent: string;
   loanAmount: string;
   propertyType: string;
-  goals: string;
+  strategyPriorities: string[];
+  goalsNotes: string;
   stateMarket: string;
   experience: string;
   name: string;
@@ -71,7 +85,8 @@ const emptyForm: IntakeFormData = {
   downPaymentPercent: "",
   loanAmount: "",
   propertyType: "",
-  goals: "",
+  strategyPriorities: [],
+  goalsNotes: "",
   stateMarket: "",
   experience: "",
   name: "",
@@ -100,7 +115,7 @@ function isStepComplete(
     return hasFinancialsInput(snapshot);
   }
   if (stepId === "property") return Boolean(snapshot.propertyType);
-  if (stepId === "goals") return snapshot.goals.trim().length >= 8;
+  if (stepId === "goals") return snapshot.strategyPriorities.length >= 1;
   if (stepId === "market") return Boolean(snapshot.stateMarket);
   if (stepId === "experience") return Boolean(snapshot.experience);
   if (stepId === "contact") {
@@ -219,7 +234,7 @@ export function StrategyIntakeFunnel() {
         downPaymentPercent: downPaymentPercent || undefined,
         estimatedLoanAmountRaw,
         propertyType: snapshot.propertyType,
-        goals: snapshot.goals,
+        ...buildGoalsPayload(snapshot.strategyPriorities, snapshot.goalsNotes),
         stateMarket: snapshot.stateMarket,
         experience: snapshot.experience,
         name: snapshot.name,
@@ -378,12 +393,15 @@ export function StrategyIntakeFunnel() {
           Received
         </p>
         <h2 className="mt-5 text-3xl font-semibold tracking-[-0.03em] text-white md:text-4xl">
-          We&apos;ll review your strategy.
+          We&apos;re reviewing your strategy.
         </h2>
         <p className="mt-5 max-w-lg text-base leading-relaxed text-zinc-400">
-          Expect context-first follow-up—not a rate quote. If your timeline is
-          urgent, note that in your message next time.
+          This gives us enough context to review possible financing structures and
+          next steps. We&apos;ll follow up with a more useful conversation than a
+          generic rate quote.
         </p>
+        <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        </div>
       </div>
     );
   }
@@ -417,6 +435,9 @@ export function StrategyIntakeFunnel() {
             style={{ width: `${progressPercent}%` }}
           />
         </div>
+        <p className="mt-3 text-sm text-zinc-500">
+          {STEP_MOMENTUM_COPY[stepIndex] ?? "We're building your strategy profile."}
+        </p>
       </div>
 
       <form
@@ -529,15 +550,26 @@ export function StrategyIntakeFunnel() {
           {currentStepId === "goals" ? (
             <StepShell
               title="What matters most right now?"
-              lead="Payment, speed, flexibility, equity, or something else."
+              lead="Choose any that fit your situation."
               headingRef={stepHeadingRef}
             >
-              <textarea
-                value={data.goals}
-                onChange={(event) => updateField("goals", event.target.value)}
-                rows={4}
-                placeholder="Example: Buy in Bellevue before selling in Kirkland; need bridge clarity and jumbo structure."
-                className="input-glow min-h-32 w-full resize-y border border-zinc-800 bg-[#050505] px-5 py-4 text-white placeholder:text-zinc-600 outline-none focus:border-[#7c3aed]/60"
+              <IntakePrioritiesStep
+                values={{
+                  strategyPriorities: data.strategyPriorities,
+                  goalsNotes: data.goalsNotes,
+                }}
+                onChange={(priorities) => {
+                  markStarted();
+                  setData((prev) => {
+                    const next = {
+                      ...prev,
+                      strategyPriorities: priorities.strategyPriorities,
+                      goalsNotes: priorities.goalsNotes,
+                    };
+                    dataRef.current = next;
+                    return next;
+                  });
+                }}
               />
             </StepShell>
           ) : null}
@@ -795,3 +827,5 @@ function SelectGrid({
     </ul>
   );
 }
+
+
