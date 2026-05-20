@@ -179,6 +179,10 @@ async function loadAllReportRows(): Promise<
 
   const leadMap = new Map(leads?.map((l) => [l.id, l]) ?? []);
   const scenarioMap = new Map(scenarios?.map((s) => [s.id, s]) ?? []);
+  const reportIds = reports.map((r) => r.id);
+  const followUpResult = await fetchFollowUpsByReportIds(reportIds);
+  const followUpMap =
+    "error" in followUpResult ? new Map<string, never>() : followUpResult;
 
   const rows: DealAnalyzerReportRow[] = [];
 
@@ -195,8 +199,11 @@ async function loadAllReportRows(): Promise<
         agent_name: report.agent_name,
         referral_source: report.referral_source,
         narrative_json: report.narrative_json,
+        lead_id: report.lead_id,
+        scenario_id: report.scenario_id,
         lead,
         scenario,
+        followUp: followUpMap.get(report.id) ?? null,
       }),
     );
   }
