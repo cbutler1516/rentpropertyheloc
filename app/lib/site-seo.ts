@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-export const SITE_URL = "https://www.theloanplaybook.com";
+export const SITE_URL = "https://theloanplaybook.com";
 export const SITE_NAME = "The Loan Playbook";
 export const DEFAULT_OG_IMAGE = "/loan-playbook-social-preview.svg";
 

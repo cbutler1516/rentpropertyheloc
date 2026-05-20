@@ -6,6 +6,7 @@ import { organizationSchema, webSiteSchema } from "./lib/structured-data";
 import {
   DEFAULT_OG_IMAGE,
   SITE_NAME,
+  SITE_URL,
   siteRobots,
 } from "./lib/site-seo";
 import "./globals.css";
@@ -21,7 +22,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.theloanplaybook.com"),
+  metadataBase: new URL(SITE_URL),
   title: SITE_NAME,
   description:
     "Know the move before you make it. Clear mortgage strategy for buyers, homeowners, agents, and investors.",
