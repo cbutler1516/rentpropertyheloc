@@ -1,18 +1,31 @@
+import { getBrandVoice } from "./brand-voices";
+import { CAMPAIGN_TABS } from "./campaign-tabs";
 import { OUTPUT_TABS } from "./tabs";
 import type { ContentPackage } from "./types";
+
+function packageMetaLines(pkg: ContentPackage): string[] {
+  const voice = getBrandVoice(pkg.brandVoiceId);
+  return [
+    `**Topic:** ${pkg.topic}  `,
+    `**Audience:** ${pkg.audience}  `,
+    `**Tone:** ${pkg.tone}  `,
+    `**Brand voice:** ${voice.name}  `,
+    `**Mode:** ${pkg.generationMode === "campaign" ? "Campaign" : "Single pack"}  `,
+    `**Model:** ${pkg.modelUsed}  `,
+    `**Tags:** ${pkg.tags.join(", ") || "—"}  `,
+    `**Saved:** ${new Date(pkg.createdAt).toLocaleString()}`,
+  ];
+}
 
 export function packageToMarkdown(pkg: ContentPackage): string {
   const lines = [
     `# ${pkg.title}`,
     "",
-    `**Topic:** ${pkg.topic}  `,
-    `**Audience:** ${pkg.audience}  `,
-    `**Tone:** ${pkg.tone}  `,
-    `**Model:** ${pkg.modelUsed}  `,
-    `**Tags:** ${pkg.tags.join(", ") || "—"}  `,
-    `**Saved:** ${new Date(pkg.createdAt).toLocaleString()}`,
+    ...packageMetaLines(pkg),
     "",
-    "## Source material",
+    pkg.generationMode === "campaign"
+      ? "## Campaign topic"
+      : "## Source material",
     "",
     pkg.sourceInput.trim(),
     "",
@@ -20,8 +33,21 @@ export function packageToMarkdown(pkg: ContentPackage): string {
     "",
   ];
 
-  for (const tab of OUTPUT_TABS) {
-    lines.push(`## ${tab.label}`, "", pkg.outputs[tab.key].trim(), "", "---", "");
+  if (pkg.generationMode === "campaign" && pkg.campaignOutputs) {
+    for (const tab of CAMPAIGN_TABS) {
+      lines.push(
+        `## ${tab.label}`,
+        "",
+        pkg.campaignOutputs[tab.key].trim(),
+        "",
+        "---",
+        "",
+      );
+    }
+  } else {
+    for (const tab of OUTPUT_TABS) {
+      lines.push(`## ${tab.label}`, "", pkg.outputs[tab.key].trim(), "", "---", "");
+    }
   }
 
   lines.push(
@@ -32,8 +58,8 @@ export function packageToMarkdown(pkg: ContentPackage): string {
   return lines.join("\n");
 }
 
-/** Plain text with explicit page breaks for PDF paste / print workflows. */
 export function packageToPdfReadyText(pkg: ContentPackage): string {
+  const voice = getBrandVoice(pkg.brandVoiceId);
   const lines = [
     "THE LOAN PLAYBOOK — CONTENT PACKAGE",
     "=".repeat(48),
@@ -42,29 +68,45 @@ export function packageToPdfReadyText(pkg: ContentPackage): string {
     `TOPIC: ${pkg.topic}`,
     `AUDIENCE: ${pkg.audience}`,
     `TONE: ${pkg.tone}`,
+    `BRAND VOICE: ${voice.name}`,
+    `MODE: ${pkg.generationMode}`,
     `MODEL: ${pkg.modelUsed}`,
     `TAGS: ${pkg.tags.join(", ") || "—"}`,
     `DATE: ${new Date(pkg.createdAt).toLocaleString()}`,
     "",
     "— PAGE BREAK —",
     "",
-    "SOURCE MATERIAL",
+    pkg.generationMode === "campaign" ? "CAMPAIGN TOPIC" : "SOURCE MATERIAL",
     "-".repeat(48),
     "",
     pkg.sourceInput.trim(),
     "",
   ];
 
-  for (const tab of OUTPUT_TABS) {
-    lines.push(
-      "— PAGE BREAK —",
-      "",
-      tab.label.toUpperCase(),
-      "-".repeat(48),
-      "",
-      pkg.outputs[tab.key].trim(),
-      "",
-    );
+  if (pkg.generationMode === "campaign" && pkg.campaignOutputs) {
+    for (const tab of CAMPAIGN_TABS) {
+      lines.push(
+        "— PAGE BREAK —",
+        "",
+        tab.label.toUpperCase(),
+        "-".repeat(48),
+        "",
+        pkg.campaignOutputs[tab.key].trim(),
+        "",
+      );
+    }
+  } else {
+    for (const tab of OUTPUT_TABS) {
+      lines.push(
+        "— PAGE BREAK —",
+        "",
+        tab.label.toUpperCase(),
+        "-".repeat(48),
+        "",
+        pkg.outputs[tab.key].trim(),
+        "",
+      );
+    }
   }
 
   lines.push(

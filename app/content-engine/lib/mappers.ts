@@ -3,13 +3,17 @@ import {
   isBrandVoiceId,
 } from "./brand-voices";
 import type { ContentEnginePackageRow } from "./database.types";
+import { isLandingPageIntent } from "./landing-page-intents";
 import {
   CAMPAIGN_OUTPUT_TAB_KEYS,
+  LANDING_PAGE_SECTION_KEYS,
   OUTPUT_TAB_KEYS,
   type CampaignOutputs,
   type ContentOutputs,
   type ContentPackage,
   type GenerationMode,
+  type LandingPageOutputs,
+  type LandingPageRecord,
 } from "./types";
 
 export function rowToPackage(row: ContentEnginePackageRow): ContentPackage {
@@ -30,6 +34,7 @@ export function rowToPackage(row: ContentEnginePackageRow): ContentPackage {
     outputs: parsed.single,
     campaignOutputs:
       generationMode === "campaign" ? parsed.campaign : undefined,
+    landingPage: parseLandingPageJson(row.landing_page_json),
     tags: row.tags ?? [],
   };
 }
@@ -163,7 +168,4 @@ export function normalizeLegacyPackage(raw: unknown): ContentPackage | null {
     outputs: parsed.single,
     campaignOutputs: parsed.campaign,
     tags: Array.isArray(record.tags)
-      ? record.tags.filter((t): t is string => typeof t === "string")
-      : [],
-  };
-}
+      ? record.tags.filter((t)

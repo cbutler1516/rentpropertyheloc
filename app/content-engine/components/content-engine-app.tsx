@@ -13,6 +13,11 @@ import {
 import { Textarea } from "@/app/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import {
+  DEFAULT_BRAND_VOICE_ID,
+  type BrandVoiceId,
+} from "../lib/brand-voices";
+import { CAMPAIGN_TABS } from "../lib/campaign-tabs";
+import {
   inferAudience,
   inferTags,
   inferTone,
@@ -26,25 +31,38 @@ import {
   savePackage,
 } from "../lib/packages-client";
 import { OUTPUT_TABS } from "../lib/tabs";
-import type {
-  ContentAudience,
-  ContentOutputs,
-  ContentPackage,
-  DateFilterPreset,
-  OutputTabKey,
-  PackageFilters,
+import {
+  CAMPAIGN_OUTPUT_TAB_KEYS,
+  OUTPUT_TAB_KEYS,
+  type CampaignOutputTabKey,
+  type CampaignOutputs,
+  type ContentAudience,
+  type ContentOutputs,
+  type ContentPackage,
+  type GenerationMode,
+  type OutputTabKey,
+  type PackageFilters,
 } from "../lib/types";
+import { BrandVoiceSelector } from "./brand-voice-selector";
+import { CampaignOutputsPanel } from "./campaign-outputs-panel";
 import { CopyButton } from "./copy-button";
 import { ContentEngineShell } from "./content-engine-shell";
 import { ExportActions } from "./export-actions";
+import { GenerationModeToggle } from "./generation-mode-toggle";
 import { PackageHistoryPanel } from "./package-history-panel";
 import { PackageMetadataForm } from "./package-metadata-form";
 
-const PLACEHOLDER = `Paste a market update, video transcript, Fed commentary, borrower scenario, or rough idea…
+const SINGLE_PLACEHOLDER = `Paste a market update, video transcript, Fed commentary, borrower scenario, or rough idea…
 
-Example: "Fed held steady but dot plot shifted. Buyers in Seattle are asking whether to wait for spring inventory. Agent partners want forwardable language without rate bait."`;
+Example: "Fed held steady but dot plot shifted. Buyers in Seattle are asking whether to wait for spring inventory."`;
 
-const SAMPLE_INPUT = `Fed held rates steady but signaled fewer cuts in 2026. Puget Sound buyers are asking whether to wait for spring inventory or lock a buy-before-sell plan now. Agents want forwardable talking points that don't sound like rate spam.`;
+const CAMPAIGN_PLACEHOLDER = `Enter one campaign topic — the app builds your 7-day content plan.
+
+Example: "Spring inventory crunch for Puget Sound buyers"`;
+
+const SAMPLE_SINGLE = `Fed held rates steady but signaled fewer cuts in 2026. Puget Sound buyers are asking whether to wait for spring inventory or lock a buy-before-sell plan now. Agents want forwardable talking points that don't sound like rate spam.`;
+
+const SAMPLE_CAMPAIGN = `Spring inventory crunch for Puget Sound buyers — how to win offers without rate bait`;
 
 const DEFAULT_FILTERS: PackageFilters = {
   search: "",
@@ -52,6 +70,13 @@ const DEFAULT_FILTERS: PackageFilters = {
   topic: "all",
   datePreset: "all",
 };
+
+function emptySingleOutputs(): ContentOutputs {
+  return OUTPUT_TAB_KEYS.reduce((acc, key) => {
+    acc[key] = "";
+    return acc;
+  }, {} as ContentOutputs);
+}
 
 function countWords(text: string) {
   return text.trim() ? text.trim().split(/\s+/).length : 0;
@@ -65,19 +90,20 @@ function parseTagsInput(value: string): string[] {
     .slice(0, 12);
 }
 
-function buildExportPackage(
-  draft: {
-    id: string | null;
-    title: string;
-    sourceInput: string;
-    audience: ContentAudience;
-    tone: string;
-    topic: string;
-    modelUsed: string;
-    tagsInput: string;
-    outputs: ContentOutputs;
-  },
-): ContentPackage {
+function buildExportPackage(draft: {
+  id: string | null;
+  title: string;
+  sourceInput: string;
+  audience: ContentAudience;
+  tone: string;
+  topic: string;
+  modelUsed: string;
+  brandVoiceId: BrandVoiceId;
+  generationMode: GenerationMode;
+  tagsInput: string;
+  outputs: ContentOutputs;
+  campaignOutputs?: CampaignOutputs;
+}): ContentPackage {
   return {
     id: draft.id ?? "draft",
     createdAt: new Date().toISOString(),
@@ -87,15 +113,26 @@ function buildExportPackage(
     tone: draft.tone,
     topic: draft.topic,
     modelUsed: draft.modelUsed,
+    brandVoiceId: draft.brandVoiceId,
+    generationMode: draft.generationMode,
     outputs: draft.outputs,
+    campaignOutputs: draft.campaignOutputs,
     tags: parseTagsInput(draft.tagsInput),
   };
 }
 
 export function ContentEngineApp() {
   const [input, setInput] = useState("");
+  const [generationMode, setGenerationMode] = useState<GenerationMode>("single");
+  const [brandVoiceId, setBrandVoiceId] =
+    useState<BrandVoiceId>(DEFAULT_BRAND_VOICE_ID);
   const [outputs, setOutputs] = useState<ContentOutputs | null>(null);
+  const [campaignOutputs, setCampaignOutputs] = useState<CampaignOutputs | null>(
+    null,
+  );
   const [activeTab, setActiveTab] = useState<OutputTabKey>("tiktokHooks");
+  const [campaignActiveTab, setCampaignActiveTab] =
+    useState<CampaignOutputTabKey>("shortFormVideoIdeas");
   const [packages, setPackages] = useState<ContentPackage[]>([]);
   const [storageSource, setStorageSource] = useState<"supabase" | "local">(
     "local",
@@ -117,6 +154,10 @@ export function ContentEngineApp() {
   const [filters, setFilters] = useState<PackageFilters>(DEFAULT_FILTERS);
   const [mobileHistoryOpen, setMobileHistoryOpen] = useState(false);
 
+  const minInputLength = generationMode === "campaign" ? 8 : 24;
+  const hasResults =
+    generationMode === "campaign" ? Boolean(campaignOutputs) : Boolean(outputs);
+
   const refreshPackages = useCallback(async () => {
     const result = await fetchPackages();
     setPackages(result.packages);
@@ -127,11 +168,14 @@ export function ContentEngineApp() {
     void refreshPackages();
   }, [refreshPackages]);
 
-  const activeOutput = outputs?.[activeTab] ?? "";
+  const activeOutput =
+    generationMode === "campaign"
+      ? (campaignOutputs?.[campaignActiveTab] ?? "")
+      : (outputs?.[activeTab] ?? "");
   const activeTabConfig = OUTPUT_TABS.find((tab) => tab.key === activeTab);
 
   const exportPackage = useMemo(() => {
-    if (!outputs) return null;
+    if (!hasResults) return null;
     return buildExportPackage({
       id: activePackageId,
       title: title || packageTitleFromInput(input),
@@ -140,12 +184,19 @@ export function ContentEngineApp() {
       tone,
       topic,
       modelUsed,
+      brandVoiceId,
+      generationMode,
       tagsInput,
-      outputs,
+      outputs: outputs ?? emptySingleOutputs(),
+      campaignOutputs: campaignOutputs ?? undefined,
     });
   }, [
     activePackageId,
     audience,
+    brandVoiceId,
+    campaignOutputs,
+    generationMode,
+    hasResults,
     input,
     modelUsed,
     outputs,
@@ -159,66 +210,115 @@ export function ContentEngineApp() {
     () => ({
       words: countWords(input),
       packages: packages.length,
-      channels: outputs ? OUTPUT_TABS.length : 0,
+      channels:
+        generationMode === "campaign"
+          ? campaignOutputs
+            ? CAMPAIGN_OUTPUT_TAB_KEYS.length
+            : 0
+          : outputs
+            ? OUTPUT_TAB_KEYS.length
+            : 0,
     }),
-    [input, packages.length, outputs],
+    [campaignOutputs, generationMode, input, outputs, packages.length],
   );
 
-  const applyInferredMetadata = useCallback((source: string, nextMode: "ai" | "demo", nextModel: string) => {
-    const nextAudience = inferAudience(source);
-    const nextTopic = inferTopic(source);
-    const nextTone = inferTone(source);
-    setAudience(nextAudience);
-    setTopic(nextTopic);
-    setTone(nextTone);
-    setTagsInput(inferTags(source, nextTopic, nextAudience).join(", "));
-    setTitle(packageTitleFromInput(source));
-    setMode(nextMode);
-    setModelUsed(nextModel);
+  const clearResults = useCallback(() => {
+    setOutputs(null);
+    setCampaignOutputs(null);
+    setMode(null);
+    setIsUnsaved(false);
   }, []);
 
-  const handleGenerate = useCallback(async (overrideInput?: string) => {
-    const source = (overrideInput ?? input).trim();
-    if (source.length < 24) return;
-
-    setError(null);
-    setSaveMessage(null);
-    setLoading(true);
-    try {
-      const response = await fetch("/api/content-engine/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ input: source }),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error ?? "Generation failed.");
-      }
-
-      if (overrideInput) setInput(overrideInput);
-
-      setOutputs(data.outputs as ContentOutputs);
-      applyInferredMetadata(
-        source,
-        data.mode as "ai" | "demo",
-        data.modelUsed ?? (data.mode === "ai" ? "gpt-4o-mini" : "demo"),
-      );
-      if (data.topic) setTopic(data.topic);
-      if (data.audience) setAudience(data.audience);
-      if (data.title) setTitle(data.title);
-
+  const handleModeChange = useCallback(
+    (next: GenerationMode) => {
+      setGenerationMode(next);
+      clearResults();
+      setError(null);
+      setSaveMessage(null);
       setActivePackageId(null);
-      setIsUnsaved(true);
-      setActiveTab("tiktokHooks");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
-  }, [applyInferredMetadata, input]);
+    },
+    [clearResults],
+  );
+
+  const applyInferredMetadata = useCallback(
+    (source: string, nextMode: "ai" | "demo", nextModel: string) => {
+      const nextAudience = inferAudience(source);
+      const nextTopic =
+        generationMode === "campaign" ? source : inferTopic(source);
+      const nextTone = inferTone(source);
+      setAudience(nextAudience);
+      setTopic(nextTopic);
+      setTone(nextTone);
+      setTagsInput(inferTags(source, nextTopic, nextAudience).join(", "));
+      setTitle(
+        generationMode === "campaign"
+          ? `Campaign: ${source.slice(0, 48)}${source.length > 48 ? "…" : ""}`
+          : packageTitleFromInput(source),
+      );
+      setMode(nextMode);
+      setModelUsed(nextModel);
+    },
+    [generationMode],
+  );
+
+  const handleGenerate = useCallback(
+    async (overrideInput?: string) => {
+      const source = (overrideInput ?? input).trim();
+      if (source.length < minInputLength) return;
+
+      setError(null);
+      setSaveMessage(null);
+      setLoading(true);
+      try {
+        const response = await fetch("/api/content-engine/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            input: source,
+            mode: generationMode,
+            brandVoiceId,
+          }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error ?? "Generation failed.");
+        }
+
+        if (overrideInput) setInput(overrideInput);
+
+        if (data.generationMode === "campaign" || generationMode === "campaign") {
+          setCampaignOutputs(data.campaignOutputs as CampaignOutputs);
+          setOutputs(null);
+          setCampaignActiveTab("shortFormVideoIdeas");
+        } else {
+          setOutputs(data.outputs as ContentOutputs);
+          setCampaignOutputs(null);
+          setActiveTab("tiktokHooks");
+        }
+
+        if (data.brandVoiceId) setBrandVoiceId(data.brandVoiceId);
+        applyInferredMetadata(
+          source,
+          data.mode as "ai" | "demo",
+          data.modelUsed ?? (data.mode === "ai" ? "gpt-4o-mini" : "demo"),
+        );
+        if (data.topic) setTopic(data.topic);
+        if (data.audience) setAudience(data.audience);
+        if (data.title) setTitle(data.title);
+
+        setActivePackageId(null);
+        setIsUnsaved(true);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Something went wrong.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [applyInferredMetadata, brandVoiceId, generationMode, input, minInputLength],
+  );
 
   const handleSavePackage = useCallback(async () => {
-    if (!outputs) return;
+    if (!hasResults) return;
     setSaving(true);
     setError(null);
     setSaveMessage(null);
@@ -231,7 +331,10 @@ export function ContentEngineApp() {
         tone,
         topic,
         modelUsed,
-        outputs,
+        brandVoiceId,
+        generationMode,
+        outputs: outputs ?? emptySingleOutputs(),
+        campaignOutputs: campaignOutputs ?? undefined,
         tags: parseTagsInput(tagsInput),
       });
       setActivePackageId(result.package.id);
@@ -249,6 +352,10 @@ export function ContentEngineApp() {
   }, [
     activePackageId,
     audience,
+    brandVoiceId,
+    campaignOutputs,
+    generationMode,
+    hasResults,
     input,
     modelUsed,
     outputs,
@@ -261,7 +368,10 @@ export function ContentEngineApp() {
 
   const loadPackage = useCallback((pkg: ContentPackage) => {
     setInput(pkg.sourceInput);
-    setOutputs(pkg.outputs);
+    setGenerationMode(pkg.generationMode);
+    setBrandVoiceId(pkg.brandVoiceId);
+    setOutputs(pkg.generationMode === "single" ? pkg.outputs : null);
+    setCampaignOutputs(pkg.campaignOutputs ?? null);
     setTitle(pkg.title);
     setAudience(pkg.audience);
     setTone(pkg.tone);
@@ -272,21 +382,27 @@ export function ContentEngineApp() {
     setActivePackageId(pkg.id);
     setIsUnsaved(false);
     setActiveTab("tiktokHooks");
+    setCampaignActiveTab("shortFormVideoIdeas");
     setError(null);
     setSaveMessage(null);
     setMobileHistoryOpen(false);
   }, []);
 
-  const handleDuplicate = useCallback((pkg: ContentPackage) => {
-    loadPackage(pkg);
-    setTitle(`${pkg.title} (copy)`);
-    setActivePackageId(null);
-    setIsUnsaved(true);
-    setSidebarView("studio");
-  }, [loadPackage]);
+  const handleDuplicate = useCallback(
+    (pkg: ContentPackage) => {
+      loadPackage(pkg);
+      setTitle(`${pkg.title} (copy)`);
+      setActivePackageId(null);
+      setIsUnsaved(true);
+      setSidebarView("studio");
+    },
+    [loadPackage],
+  );
 
   const handleRegenerate = useCallback(
     async (pkg: ContentPackage) => {
+      setGenerationMode(pkg.generationMode);
+      setBrandVoiceId(pkg.brandVoiceId);
       setSidebarView("studio");
       setActivePackageId(null);
       setIsUnsaved(true);
@@ -340,44 +456,30 @@ export function ContentEngineApp() {
                 Quick start
               </p>
               <p className="mt-2 text-xs leading-relaxed text-zinc-400">
-                Generate a pack, refine metadata, then save to your playbook
-                library.
+                Pick a brand voice, choose single pack or campaign mode, then
+                generate and save.
               </p>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
                 className="mt-3 w-full"
-                onClick={() => setInput(SAMPLE_INPUT)}
+                onClick={() =>
+                  setInput(
+                    generationMode === "campaign" ? SAMPLE_CAMPAIGN : SAMPLE_SINGLE,
+                  )
+                }
               >
                 Load sample
               </Button>
             </Card>
-            <ul className="space-y-2 text-xs text-zinc-500">
-              <li className="flex gap-2">
-                <span className="text-[#c9a227]">01</span>
-                Paste source material
-              </li>
-              <li className="flex gap-2">
-                <span className="text-[#c9a227]">02</span>
-                Generate content pack
-              </li>
-              <li className="flex gap-2">
-                <span className="text-[#c9a227]">03</span>
-                Save package + export
-              </li>
-            </ul>
             <p className="rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-[11px] text-zinc-400">
               Storage:{" "}
               <span className="text-zinc-200">
                 {isRemoteStorageAvailable()
                   ? `Supabase (${storageSource})`
-                  : "Local only — add Supabase env vars"}
+                  : "Local only"}
               </span>
-            </p>
-            <p className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-[11px] leading-relaxed text-amber-200/80">
-              <code className="text-amber-100">OPENAI_API_KEY</code> enables live
-              AI. Demo mode always works offline.
             </p>
           </div>
         ) : (
@@ -409,39 +511,19 @@ export function ContentEngineApp() {
             {mobileHistoryOpen ? "Hide panel" : "Studio / history"}
           </Button>
           {mode && (
-            <Badge variant={mode === "ai" ? "purple" : "gold"}>{mode} mode</Badge>
+            <Badge variant={mode === "ai" ? "purple" : "gold"}>{mode}</Badge>
           )}
           {isUnsaved && <Badge variant="warning">Unsaved</Badge>}
         </div>
-
-        {mobileHistoryOpen && (
-          <Card className="lg:hidden">
-            <CardContent className="max-h-[28rem] overflow-y-auto pt-4">
-              {sidebarView === "history" ? (
-                <PackageHistoryPanel
-                  packages={packages}
-                  filters={filters}
-                  activePackageId={activePackageId}
-                  onFiltersChange={setFilters}
-                  onSelect={loadPackage}
-                  onDelete={(id) => void handleDeletePackage(id)}
-                  onDuplicate={handleDuplicate}
-                  onRegenerate={(pkg) => void handleRegenerate(pkg)}
-                />
-              ) : (
-                <p className="text-xs text-zinc-500">
-                  Use desktop sidebar for studio tips, or switch to History tab.
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        )}
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {[
             { label: "Source words", value: stats.words },
             { label: "Saved packages", value: stats.packages },
-            { label: "Channels ready", value: stats.channels },
+            {
+              label: generationMode === "campaign" ? "Campaign assets" : "Channels",
+              value: stats.channels,
+            },
             {
               label: "Engine",
               value: mode === "ai" ? "Live AI" : mode === "demo" ? "Demo" : "—",
@@ -458,31 +540,55 @@ export function ContentEngineApp() {
           ))}
         </div>
 
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <GenerationModeToggle value={generationMode} onChange={handleModeChange} />
+          {hasResults && (
+            <Badge variant={generationMode === "campaign" ? "gold" : "purple"}>
+              {generationMode === "campaign" ? "Campaign ready" : "Pack ready"}
+            </Badge>
+          )}
+        </div>
+
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
           <Card className="flex flex-col">
             <CardHeader>
-              <CardTitle>Source material</CardTitle>
+              <CardTitle>
+                {generationMode === "campaign" ? "Campaign topic" : "Source material"}
+              </CardTitle>
               <CardDescription>
-                Market updates, transcripts, Fed notes, borrower scenarios, or
-                rough ideas.
+                {generationMode === "campaign"
+                  ? "One topic drives your full week of content."
+                  : "Market updates, transcripts, Fed notes, or borrower scenarios."}
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-1 flex-col gap-4">
+              <BrandVoiceSelector
+                value={brandVoiceId}
+                onChange={setBrandVoiceId}
+              />
               <Textarea
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
-                placeholder={PLACEHOLDER}
-                className="min-h-[280px] flex-1 resize-y font-mono text-[13px] leading-relaxed md:min-h-[360px]"
+                placeholder={
+                  generationMode === "campaign"
+                    ? CAMPAIGN_PLACEHOLDER
+                    : SINGLE_PLACEHOLDER
+                }
+                className="min-h-[220px] flex-1 resize-y font-mono text-[13px] leading-relaxed md:min-h-[300px]"
               />
               <div className="flex flex-wrap items-center gap-3">
                 <Button
                   type="button"
                   variant="gold"
                   size="lg"
-                  disabled={loading || input.trim().length < 24}
+                  disabled={loading || input.trim().length < minInputLength}
                   onClick={() => void handleGenerate()}
                 >
-                  {loading ? "Running playbook…" : "Generate content pack"}
+                  {loading
+                    ? "Running playbook…"
+                    : generationMode === "campaign"
+                      ? "Build campaign"
+                      : "Generate content pack"}
                 </Button>
                 <Button
                   type="button"
@@ -490,23 +596,18 @@ export function ContentEngineApp() {
                   size="sm"
                   onClick={() => {
                     setInput("");
-                    setOutputs(null);
-                    setMode(null);
+                    clearResults();
                     setError(null);
                     setSaveMessage(null);
                     setActivePackageId(null);
-                    setIsUnsaved(false);
                   }}
                 >
                   Clear
                 </Button>
                 {mode && (
                   <Badge variant={mode === "ai" ? "purple" : "gold"}>
-                    {mode === "ai" ? modelUsed : "Demo engine"}
+                    {mode === "ai" ? modelUsed : "Demo"}
                   </Badge>
-                )}
-                {isUnsaved && outputs && (
-                  <Badge variant="warning">Unsaved draft</Badge>
                 )}
               </div>
               {error && (
@@ -518,79 +619,91 @@ export function ContentEngineApp() {
           </Card>
 
           <Card className="flex min-h-[480px] flex-col overflow-hidden">
-            <CardHeader className="border-b border-white/[0.06] pb-0">
-              <div className="flex flex-wrap items-start justify-between gap-3 pb-4">
-                <div>
-                  <CardTitle>Content outputs</CardTitle>
-                  <CardDescription>
-                    {activeTabConfig?.description ??
-                      "Generate a pack to unlock all channels."}
-                  </CardDescription>
-                </div>
-                {outputs && (
-                  <CopyButton text={activeOutput} label="Copy tab" />
-                )}
+            {generationMode === "campaign" ? (
+              <div className="flex flex-1 flex-col overflow-hidden p-6">
+                <CampaignOutputsPanel
+                  outputs={campaignOutputs}
+                  activeTab={campaignActiveTab}
+                  onTabChange={setCampaignActiveTab}
+                />
               </div>
-              <div
-                className="-mx-2 flex gap-1 overflow-x-auto pb-3"
-                role="tablist"
-              >
-                {OUTPUT_TABS.map((tab) => (
-                  <button
-                    key={tab.key}
-                    type="button"
-                    role="tab"
-                    aria-selected={activeTab === tab.key}
-                    onClick={() => setActiveTab(tab.key)}
-                    disabled={!outputs}
-                    className={cn(
-                      "shrink-0 rounded-lg px-3 py-2 font-mono text-[9px] tracking-[0.12em] uppercase transition-all",
-                      activeTab === tab.key
-                        ? "bg-[#7c3aed]/25 text-[#e9d5ff] ring-1 ring-[#7c3aed]/40"
-                        : "text-zinc-500 hover:bg-white/5 hover:text-zinc-300 disabled:opacity-40",
+            ) : (
+              <>
+                <CardHeader className="border-b border-white/[0.06] pb-0">
+                  <div className="flex flex-wrap items-start justify-between gap-3 pb-4">
+                    <div>
+                      <CardTitle>Content outputs</CardTitle>
+                      <CardDescription>
+                        {activeTabConfig?.description ??
+                          "Generate a pack to unlock all channels."}
+                      </CardDescription>
+                    </div>
+                    {outputs && (
+                      <CopyButton text={activeOutput} label="Copy tab" />
                     )}
+                  </div>
+                  <div
+                    className="-mx-2 flex gap-1 overflow-x-auto pb-3"
+                    role="tablist"
                   >
-                    <span className="mr-1 opacity-60">{tab.icon}</span>
-                    {tab.shortLabel}
-                  </button>
-                ))}
-              </div>
-            </CardHeader>
-            <CardContent className="flex flex-1 flex-col overflow-hidden p-0">
-              {!outputs ? (
-                <div className="flex flex-1 flex-col items-center justify-center gap-3 px-8 py-16 text-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[#c9a227]/30 bg-[#c9a227]/10 font-mono text-lg text-[#e8c547]">
-                    LP
+                    {OUTPUT_TABS.map((tab) => (
+                      <button
+                        key={tab.key}
+                        type="button"
+                        role="tab"
+                        aria-selected={activeTab === tab.key}
+                        onClick={() => setActiveTab(tab.key)}
+                        disabled={!outputs}
+                        className={cn(
+                          "shrink-0 rounded-lg px-3 py-2 font-mono text-[9px] tracking-[0.12em] uppercase transition-all",
+                          activeTab === tab.key
+                            ? "bg-[#7c3aed]/25 text-[#e9d5ff] ring-1 ring-[#7c3aed]/40"
+                            : "text-zinc-500 hover:bg-white/5 hover:text-zinc-300 disabled:opacity-40",
+                        )}
+                      >
+                        <span className="mr-1 opacity-60">{tab.icon}</span>
+                        {tab.shortLabel}
+                      </button>
+                    ))}
                   </div>
-                  <p className="max-w-sm text-sm text-zinc-500">
-                    Your 12-channel playbook appears here—hooks, posts, email,
-                    SEO, AI video prompts, and agent/consumer versions.
-                  </p>
-                </div>
-              ) : (
-                <div className="flex flex-1 flex-col overflow-hidden">
-                  <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-6 py-3">
-                    <p className="font-mono text-[9px] tracking-[0.2em] text-[#c9a227] uppercase">
-                      {activeTabConfig?.label}
+                </CardHeader>
+                <CardContent className="flex flex-1 flex-col overflow-hidden p-0">
+                {!outputs ? (
+                  <div className="flex flex-1 flex-col items-center justify-center gap-3 px-8 py-16 text-center">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[#c9a227]/30 bg-[#c9a227]/10 font-mono text-lg text-[#e8c547]">
+                      LP
+                    </div>
+                    <p className="max-w-sm text-sm text-zinc-500">
+                      Your 12-channel playbook appears here.
                     </p>
-                    <CopyButton text={activeOutput} label="Copy" />
                   </div>
-                  <pre className="flex-1 overflow-auto whitespace-pre-wrap px-6 py-5 font-sans text-sm leading-relaxed text-zinc-200">
-                    {activeOutput}
-                  </pre>
-                </div>
-              )}
-            </CardContent>
+                ) : (
+                  <div className="flex flex-1 flex-col overflow-hidden">
+                    <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-6 py-3">
+                      <p className="font-mono text-[9px] tracking-[0.2em] text-[#c9a227] uppercase">
+                        {activeTabConfig?.label}
+                      </p>
+                      <CopyButton text={activeOutput} label="Copy" />
+                    </div>
+                    <pre className="flex-1 overflow-auto whitespace-pre-wrap px-6 py-5 font-sans text-sm leading-relaxed text-zinc-200">
+                      {activeOutput}
+                    </pre>
+                  </div>
+                )}
+              </CardContent>
+              </>
+            )}
           </Card>
         </div>
 
-        {outputs && (
+        {hasResults && (
           <>
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Package details</CardTitle>
                 <CardDescription>
-                  Refine audience, tone, and tags before saving to your library.
+                  Refine metadata before saving. Brand voice:{" "}
+                  <span className="text-zinc-300">{brandVoiceId}</span>
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -623,7 +736,7 @@ export function ContentEngineApp() {
                     disabled={loading}
                     onClick={() => void handleGenerate()}
                   >
-                    Regenerate outputs
+                    Regenerate
                   </Button>
                   {saveMessage && (
                     <p className="text-sm text-emerald-400">{saveMessage}</p>
@@ -637,16 +750,23 @@ export function ContentEngineApp() {
                 <CardHeader>
                   <CardTitle className="text-base">Export package</CardTitle>
                   <CardDescription>
-                    Markdown for Notion/CMS, or PDF-ready text with page breaks.
+                    Markdown or PDF-ready text for your VA or content folder.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <ExportActions pkg={exportPackage} />
                   <CopyButton
-                    text={OUTPUT_TABS.map(
-                      (tab) => `## ${tab.label}\n\n${outputs[tab.key]}`,
-                    ).join("\n\n---\n\n")}
-                    label="Copy all channels"
+                    text={
+                      generationMode === "campaign" && campaignOutputs
+                        ? CAMPAIGN_TABS.map(
+                            (tab) =>
+                              `## ${tab.label}\n\n${campaignOutputs[tab.key]}`,
+                          ).join("\n\n---\n\n")
+                        : OUTPUT_TABS.map(
+                            (tab) => `## ${tab.label}\n\n${outputs![tab.key]}`,
+                          ).join("\n\n---\n\n")
+                    }
+                    label="Copy all"
                   />
                 </CardContent>
               </Card>

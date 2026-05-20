@@ -23,7 +23,7 @@ export type BrandVoicePreset = {
 
 export const DEFAULT_BRAND_VOICE_ID: BrandVoiceId = "chris-butler-loan-playbook";
 
-export const BRAND_VOICE_PRESETS: Record<BrandVoiceId, BrandVoicePreset> = {
+export const BRAND_VOICE_PRESETS: { [K in BrandVoiceId]: BrandVoicePreset } = {
   "chris-butler-loan-playbook": {
     id: "chris-butler-loan-playbook",
     name: "Chris Butler / Loan Playbook",
@@ -95,7 +95,7 @@ export const BRAND_VOICE_PRESETS: Record<BrandVoiceId, BrandVoicePreset> = {
       "you should have already",
       "everyone knows",
       "just refinance",
-      "DTI, LTV, PMI" without explanation,
+      "DTI / LTV / PMI without explanation",
     ],
     preferred_ctas: [
       "Run your numbers before you tour homes.",
@@ -158,7 +158,7 @@ export const BRAND_VOICE_PRESETS: Record<BrandVoiceId, BrandVoicePreset> = {
       "Comment PLAYBOOK for the serious version.",
     ],
     content_examples: [
-      "POV: your buyer said they're 'just browsing' but already picked cabinet hardware.",
+      "POV: your buyer said they are just browsing but already picked cabinet hardware.",
       "Me explaining APR vs rate using only sports penalties and snack analogies.",
     ],
   },
@@ -225,7 +225,7 @@ export const BRAND_VOICE_PRESETS: Record<BrandVoiceId, BrandVoicePreset> = {
       "Normalize fear; celebrate small wins.",
       "Explain process order: budget → pre-approval → search → offer.",
       "Mention programs only as options to explore with a licensed pro.",
-      "Use 'you' voice; keep sentences short.",
+      "Use a direct you voice; keep sentences short.",
     ],
     banned_phrases: [
       "you'd be dumb not to",

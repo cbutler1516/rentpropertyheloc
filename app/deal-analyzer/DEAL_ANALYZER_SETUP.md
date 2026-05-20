@@ -1,41 +1,76 @@
-# Deal Analyzer v2 — Supabase setup
+# Deal Analyzer setup (v2 + v3)
 
-## 1. Environment variables
+## Environment variables
 
-Copy `.env.example` to `.env.local` and set:
+Copy `.env.example` to `.env.local`:
 
 ```env
+# Supabase — leads, scenarios, shareable reports
 NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
-SUPABASE_SERVICE_ROLE_KEY=eyJ...   # recommended for API routes
+SUPABASE_SERVICE_ROLE_KEY=eyJ...
 NEXT_PUBLIC_SITE_URL=https://yourdomain.com
+
+# OpenAI — Chris-style Playbook narratives (v3)
+OPENAI_API_KEY=sk-...
+OPENAI_MODEL=gpt-4o-mini
 ```
 
-Without these variables, the analyzer falls back to **localStorage** for reports (same device only).
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `NEXT_PUBLIC_SUPABASE_*` | No* | Persist leads & shareable `/deal-analyzer/report/[slug]` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Recommended | Reliable server writes from API routes |
+| `OPENAI_API_KEY` | No | AI narratives; falls back to static copy if missing |
+| `OPENAI_MODEL` | No | Defaults to `gpt-4o-mini` |
 
-## 2. Run the migration
+\*Without Supabase, reports save to **localStorage** (same browser only).
 
-In the Supabase SQL editor, run:
+## Database
+
+Run in Supabase SQL editor:
 
 `supabase/migrations/001_deal_analyzer.sql`
 
-This creates:
+## Flow
 
-- `deal_analyzer_leads`
-- `deal_analyzer_scenarios`
-- `deal_analyzer_reports`
+1. User models a deal at `/deal-analyzer/analyze`
+2. Lead gate calls `POST /api/deal-analyzer/generate-narrative` (OpenAI or static fallback)
+3. `POST /api/deal-analyzer/reports` saves lead, scenario, and narrative
+4. User lands on `/deal-analyzer/report/[slug]` — shareable link
 
-## 3. Flow
+## Narrative API
 
-1. User completes `/deal-analyzer/analyze`
-2. Lead gate saves lead + scenario + report via `POST /api/deal-analyzer/reports`
-3. User is redirected to `/deal-analyzer/report/[slug]`
-4. Shareable link works for anyone with the slug
+`POST /api/deal-analyzer/generate-narrative`
 
-## 4. Tables
+Body: `dealType`, `leadRole`, `inputs`, `analysis`, plus optional `leadName`, `agentName`, `referralSource`, `notes`.
 
-| Table | Purpose |
-|-------|---------|
-| `deal_analyzer_leads` | Contact + role + referral / agent |
-| `deal_analyzer_scenarios` | `inputs_json`, `analysis_json`, `deal_type` |
-| `deal_analyzer_reports` | Unique `report_slug`, narrative, denormalized agent fields |
+Returns JSON:
+
+```json
+{
+  "narrative": {
+    "executiveSummary": "",
+    "recommendedStrategy": "",
+    "coachNotes": [],
+    "risks": [],
+    "opportunities": [],
+    "nextSteps": [],
+    "clientFriendlyExplanation": "",
+    "agentShareMessage": ""
+  },
+  "source": "ai"
+}
+```
+
+Compliance is enforced in the system prompt: educational estimates only, no approval guarantees, recommend licensed advisor review.
+
+## v3 report sections
+
+- Executive summary hero (Chris’s read)
+- Plain-language client explanation
+- Coach’s Notes (premium bullets)
+- Recommended strategy
+- What I’d look at next
+- Send this to your client (agents)
+- Risks & opportunities
+- Charts and deal metrics

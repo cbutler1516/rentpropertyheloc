@@ -64,7 +64,10 @@ export async function savePackage(
     tone: draft.tone,
     topic: draft.topic,
     modelUsed: draft.modelUsed,
+    brandVoiceId: draft.brandVoiceId,
+    generationMode: draft.generationMode,
     outputs: draft.outputs,
+    campaignOutputs: draft.campaignOutputs,
     tags: draft.tags,
   };
   const next = upsertLocalPackage(loadLocalPackages(), pkg);

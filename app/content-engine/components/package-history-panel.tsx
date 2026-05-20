@@ -144,6 +144,9 @@ export function PackageHistoryPanel({
                     {formatDate(pkg.createdAt)}
                   </span>
                   <Badge variant="purple">{pkg.audience}</Badge>
+                  {pkg.generationMode === "campaign" && (
+                    <Badge variant="gold">campaign</Badge>
+                  )}
                   <Badge variant={pkg.modelUsed === "demo" ? "gold" : "purple"}>
                     {pkg.modelUsed === "demo" ? "demo" : "ai"}
                   </Badge>

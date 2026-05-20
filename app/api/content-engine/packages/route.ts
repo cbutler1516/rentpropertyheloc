@@ -4,8 +4,11 @@ import {
   listPackagesFromSupabase,
   savePackageToSupabase,
 } from "@/app/content-engine/lib/supabase/packages";
-import type { SavePackageRequest } from "@/app/content-engine/lib/types";
-import { OUTPUT_TAB_KEYS } from "@/app/content-engine/lib/types";
+import {
+  CAMPAIGN_OUTPUT_TAB_KEYS,
+  OUTPUT_TAB_KEYS,
+  type SavePackageRequest,
+} from "@/app/content-engine/lib/types";
 
 export async function GET() {
   if (!isSupabaseConfigured()) {
@@ -42,12 +45,23 @@ export async function POST(request: Request) {
     );
   }
 
-  for (const key of OUTPUT_TAB_KEYS) {
-    if (!body.outputs?.[key]?.trim()) {
-      return NextResponse.json(
-        { error: "Complete outputs are required before saving." },
-        { status: 400 },
-      );
+  if (body.generationMode === "campaign") {
+    for (const key of CAMPAIGN_OUTPUT_TAB_KEYS) {
+      if (!body.campaignOutputs?.[key]?.trim()) {
+        return NextResponse.json(
+          { error: "Complete campaign outputs are required before saving." },
+          { status: 400 },
+        );
+      }
+    }
+  } else {
+    for (const key of OUTPUT_TAB_KEYS) {
+      if (!body.outputs?.[key]?.trim()) {
+        return NextResponse.json(
+          { error: "Complete outputs are required before saving." },
+          { status: 400 },
+        );
+      }
     }
   }
 
@@ -59,7 +73,10 @@ export async function POST(request: Request) {
     tone: body.tone ?? "strategic",
     topic: body.topic ?? "Mortgage strategy",
     modelUsed: body.modelUsed ?? "demo",
+    brandVoiceId: body.brandVoiceId,
+    generationMode: body.generationMode ?? "single",
     outputs: body.outputs,
+    campaignOutputs: body.campaignOutputs,
     tags: body.tags ?? [],
   });
 

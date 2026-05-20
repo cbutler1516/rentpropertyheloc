@@ -13,6 +13,7 @@ export type ContentEnginePackageRow = {
   brand_voice_id: string;
   generation_mode: string;
   outputs_json: Json;
+  landing_page_json: Json | null;
   tags: string[];
 };
 
@@ -28,6 +29,7 @@ export type ContentEnginePackageInsert = {
   brand_voice_id?: string;
   generation_mode?: string;
   outputs_json: Json;
+  landing_page_json?: Json | null;
   tags?: string[];
 };
 

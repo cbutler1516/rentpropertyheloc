@@ -1,4 +1,33 @@
 import type { BrandVoiceId } from "./brand-voices";
+import type { LandingPageIntent } from "./landing-page-intents";
+
+export const LANDING_PAGE_SECTION_KEYS = [
+  "heroHeadline",
+  "heroSubheadline",
+  "primaryCta",
+  "secondaryCta",
+  "problemSection",
+  "whyItMattersNow",
+  "loanPlaybookExplanation",
+  "keyBenefits",
+  "whoThisIsFor",
+  "faqSection",
+  "complianceDisclaimer",
+  "leadFormFields",
+  "thankYouPageCopy",
+  "followUpEmailCopy",
+] as const;
+
+export type LandingPageSectionKey = (typeof LANDING_PAGE_SECTION_KEYS)[number];
+
+export type LandingPageOutputs = Record<LandingPageSectionKey, string>;
+
+export type LandingPageRecord = {
+  intent: LandingPageIntent;
+  sections: LandingPageOutputs;
+  generatedAt: string;
+  modelUsed: string;
+};
 
 export const OUTPUT_TAB_KEYS = [
   "tiktokHooks",
@@ -70,6 +99,7 @@ export type ContentPackage = {
   generationMode: GenerationMode;
   outputs: ContentOutputs;
   campaignOutputs?: CampaignOutputs;
+  landingPage?: LandingPageRecord;
   tags: string[];
   mode?: "ai" | "demo";
 };
@@ -85,7 +115,26 @@ export type PackageDraft = {
   generationMode: GenerationMode;
   outputs: ContentOutputs;
   campaignOutputs?: CampaignOutputs;
+  landingPage?: LandingPageRecord;
   tags: string[];
+};
+
+export type GenerateLandingPageRequest = {
+  intent: LandingPageIntent;
+  sourceInput: string;
+  topic: string;
+  title: string;
+  brandVoiceId?: BrandVoiceId;
+  generationMode: GenerationMode;
+  audience?: ContentAudience;
+  tone?: string;
+  outputs?: ContentOutputs;
+  campaignOutputs?: CampaignOutputs;
+};
+
+export type GenerateLandingPageResponse = {
+  landingPage: LandingPageRecord;
+  mode: "ai" | "demo";
 };
 
 export type GenerateRequest = {

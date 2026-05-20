@@ -201,7 +201,9 @@ export function LeadGateForm() {
               className="w-full sm:w-auto"
               disabled={submitting}
             >
-              {submitting ? "Saving report…" : "View Playbook Report"}
+              {submitting
+                ? "Building your Playbook Report…"
+                : "View Playbook Report"}
             </Button>
           </div>
         </form>
