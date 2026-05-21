@@ -4,6 +4,7 @@ import {
 } from "./brand-voices";
 import type { ContentEnginePackageRow } from "./database.types";
 import { isLandingPageIntent } from "./landing-page-intents";
+import { parseAnalyticsJson } from "./analytics-parse";
 import { parseCrmIntegrationJson } from "./crm-integration-parse";
 import { isLeadCapturePreset } from "./lead-capture-presets";
 import { isLeadMagnetType } from "./lead-magnet-types";
@@ -71,6 +72,7 @@ export function rowToPackage(row: ContentEnginePackageRow): ContentPackage {
     launchHub: parseLaunchHubJson(row.launch_hub_json),
     leadCapture: parseLeadCaptureJson(row.lead_capture_json),
     crmIntegration: parseCrmIntegrationJson(row.crm_integration_json),
+    analytics: parseAnalyticsJson(row.analytics_json),
     tags: row.tags ?? [],
   };
 }
@@ -110,6 +112,9 @@ export function packageToRow(pkg: ContentPackage): PackageRowInsert {
       : null,
     crm_integration_json: pkg.crmIntegration
       ? (pkg.crmIntegration as unknown as ContentEnginePackageRow["crm_integration_json"])
+      : null,
+    analytics_json: pkg.analytics
+      ? (pkg.analytics as unknown as ContentEnginePackageRow["analytics_json"])
       : null,
     tags: pkg.tags,
   };
@@ -528,6 +533,10 @@ export function normalizeLegacyPackage(raw: unknown): ContentPackage | null {
     crmIntegration:
       record.crmIntegration && typeof record.crmIntegration === "object"
         ? parseCrmIntegrationJson(record.crmIntegration)
+        : undefined,
+    analytics:
+      record.analytics && typeof record.analytics === "object"
+        ? parseAnalyticsJson(record.analytics)
         : undefined,
     tags: Array.isArray(record.tags)
       ? record.tags.filter((t): t is string => typeof t === "string")

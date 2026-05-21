@@ -5,6 +5,7 @@ import {
 } from "../components/conversion-cta";
 import { BookingCtaSection } from "../components/booking-cta";
 import { InternalPage } from "../components/internal-page";
+import { ScenarioReviewCta } from "../components/scenario-review-cta";
 import { LicensedMarketsRail } from "../components/licensed-markets-rail";
 import { TrackedLink } from "../components/tracked-link";
 import { buildPageMetadata } from "../lib/site-seo";
@@ -21,8 +22,10 @@ export default function CommercialPage() {
     <InternalPage
       contentSurface="commercial"
       founderAudience="commercial"
-      featuredTitle="Featured for investors"
-      featuredLead="DSCR, bridge, and structure-first guides—not generic LO pitch decks."
+      featuredLimit={2}
+      showFeatured
+      featuredTitle="Operator picks"
+      featuredLead="Structure-first guides—two starting points."
       eyebrow="Investor & Commercial Strategy"
       title="Capital strategy for operators—not generic LO branding."
       lead="For investors, builders, and sponsors who need the deal to read clearly before terms."
@@ -31,7 +34,7 @@ export default function CommercialPage() {
       heroVideoSrc="/videos/loan-playbook-commercial-golf.mp4"
       primaryCta={{
         href: "/strategy-review",
-        label: "Review Your Strategy",
+        label: "Review Commercial Scenario",
       }}
       sections={[
         {
@@ -95,10 +98,13 @@ export default function CommercialPage() {
             lead="Washington roots with multi-state licensing for investor and commercial-adjacent paths."
             showMetros={false}
           />
+          <section className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <ScenarioReviewCta audience="commercial" location="commercial_page" />
+          </section>
           <div id="commercial-review">
             <ConversionCTA
               {...conversionCtas.commercialReview}
-              submitLabel="Review Your Strategy"
+              submitLabel="Review Commercial Scenario"
             />
           </div>
           <BookingCtaSection

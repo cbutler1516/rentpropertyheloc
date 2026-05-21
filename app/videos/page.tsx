@@ -76,6 +76,7 @@ function VideoSection({
   lead,
   videos,
   matte = false,
+  light = false,
 }: {
   id: string;
   eyebrow: string;
@@ -83,18 +84,27 @@ function VideoSection({
   lead: string;
   videos: HeroVideo[];
   matte?: boolean;
+  light?: boolean;
 }) {
   if (videos.length === 0) return null;
+
+  const sectionClass = light
+    ? "section-light border-y border-zinc-200/80"
+    : matte
+      ? "section-matte border-y border-zinc-900/40"
+      : "";
 
   return (
     <section
       id={id}
       data-analytics-section={`videos_${id}`}
-      className={`section-flow relative ${matte ? "section-matte border-y border-zinc-900/40" : ""}`}
+      className={`section-flow relative ${sectionClass}`}
     >
       <div className="section-bridge-top" aria-hidden />
       <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-        <SectionHeader eyebrow={eyebrow} title={title} lead={lead} />
+        <div className={light ? "[&_h2]:text-zinc-900 [&_p]:text-zinc-600" : ""}>
+          <SectionHeader eyebrow={eyebrow} title={title} lead={lead} />
+        </div>
         <RevealGroup
           className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           stagger={80}
@@ -167,6 +177,7 @@ export default function VideosPage() {
           lead="Curated clips with full watch pages, takeaways, and next steps."
           videos={featuredVideos}
           matte
+          light
         />
 
         <VideoSection
@@ -191,7 +202,7 @@ export default function VideosPage() {
           title="Homeowners"
           lead="Refinance timing, equity paths, and annual review context."
           videos={homeownerVideos}
-          matte
+          light
         />
 
         <VideoSection

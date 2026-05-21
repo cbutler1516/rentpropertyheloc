@@ -5,7 +5,7 @@ import { buildPageMetadata } from "./lib/site-seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "Mortgage Strategy for Buyers, Homeowners & Investors",
   description:
-    "Education-first mortgage guidance—videos, guides, and strategy intake for buyers, homeowners, agents, and investors. Licensed in multiple states; Puget Sound depth where it matters.",
+    "Education-first mortgage guidance—videos, guides, and a simple intake for buyers, homeowners, and investors. HELOC, DSCR, and equity paths. Licensed in multiple states.",
   path: "/",
 });
 import { ComplianceFooter } from "./components/compliance-footer";
@@ -14,6 +14,7 @@ import { FounderAdvisorSection } from "./components/founder-advisor-section";
 import { HeroVideo } from "./components/hero-video";
 import { FeaturedContentSection } from "./components/featured-content-section";
 import { LeadCaptureForm } from "./components/lead-capture-form";
+import { LiquidityStrategyStrip } from "./components/liquidity-strategy-strip";
 import { ProofLayer } from "./components/proof-layer";
 import { PageAmbient } from "./components/page-ambient";
 import { RevealGroup } from "./components/reveal-group";
@@ -24,38 +25,31 @@ import { TrackedAnchor, TrackedLink } from "./components/tracked-link";
 const paths = [
   {
     label: "Buy a Home",
-    title: "Know your number first.",
+    title: "Know your number before you search.",
     href: "/buyers",
-    description: "Payment, cash, and timing before the search.",
-    cta: "Start Buyer Strategy",
+    description: "Payment, cash to close, and timing—without a calculator maze.",
+    cta: "Buy a Home",
   },
   {
-    label: "Lower My Payment",
-    title: "Review refinance timing.",
+    label: "Use Equity / Refinance",
+    title: "Keep your rate. Access capital.",
     href: "/homeowners",
-    description: "Break-even and cash flow—not rate panic.",
-    cta: "Review Timing",
+    description: "Refinance timing, HELOC, or hold—the right tool for the goal.",
+    cta: "Explore HELOC Options",
   },
   {
-    label: "Use My Equity",
-    title: "Compare equity paths.",
-    href: "/learn/heloc-strategy",
-    description: "HELOC, cash-out, or hold—each solves a different problem.",
-    cta: "Explore Equity",
-  },
-  {
-    label: "Agent Support",
-    title: "Sharpen buyer conversations.",
-    href: "/agents",
-    description: "Financing context before the offer window.",
-    cta: "Agent Resources",
+    label: "Invest",
+    title: "Rental and portfolio financing.",
+    href: "/investors",
+    description: "DSCR, bridge, and acquisition capital for landlords and operators.",
+    cta: "Investment Property Financing",
   },
   {
     label: "Commercial",
-    title: "Make the deal legible.",
+    title: "Sponsors and asset clarity.",
     href: "/commercial",
-    description: "Asset, sponsor, structure, and next steps.",
-    cta: "Commercial Review",
+    description: "Structure-first context for operators and commercial sponsors.",
+    cta: "Commercial Financing",
   },
 ];
 
@@ -93,7 +87,7 @@ export default function Home() {
           />
           <div className="relative z-10 flex flex-col">
             <p className="hero-enter hero-enter-d1 relative mb-6 font-mono text-xs tracking-[0.4em] text-[#7c3aed] uppercase">
-              Mortgage Strategy · Residential · Commercial
+              Buyers · Homeowners · Investors
             </p>
             <h1 className="hero-enter hero-enter-d2 hero-headline-glow relative max-w-5xl text-[clamp(2.25rem,7vw,4.75rem)] leading-[0.96] font-semibold tracking-[-0.04em] text-white">
               Make the loan
@@ -101,8 +95,8 @@ export default function Home() {
               <span className="text-zinc-500">make sense.</span>
             </h1>
             <p className="hero-enter hero-enter-d3 relative mt-6 max-w-lg text-base leading-relaxed text-zinc-400 md:mt-8 md:max-w-2xl md:text-lg">
-              Education-first mortgage guidance for buyers, homeowners, agents,
-              and real estate partners.
+              Clear guidance for buying a home, using equity, and investor
+              financing—including HELOC strategy and DSCR paths.
             </p>
             <div className="hero-enter hero-enter-d4 relative mt-8 flex flex-col gap-3 sm:flex-row sm:items-center md:mt-10">
               <TrackedAnchor
@@ -113,6 +107,14 @@ export default function Home() {
               >
                 Choose Your Path
               </TrackedAnchor>
+              <TrackedAnchor
+                href="/strategy-review"
+                location="homepage_hero"
+                label="Review My Options"
+                className="btn-ghost inline-flex h-14 items-center justify-center border border-zinc-800 px-10 text-sm font-medium tracking-wide text-zinc-300 hover:border-[#7c3aed]/50 hover:text-white"
+              >
+                Review My Options
+              </TrackedAnchor>
             </div>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
@@ -121,95 +123,74 @@ export default function Home() {
         <section
           id="paths"
           data-analytics-section="homepage_paths"
-          className="section-flow section-matte relative border-t border-zinc-900/40 backdrop-blur-sm"
+          className="section-flow section-light relative border-t border-zinc-200/80"
         >
           <div className="section-bridge-top" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <RevealGroup stagger={120}>
-              <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                Your next move
+              <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#6d28d9] uppercase">
+                Start here
               </p>
-              <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
+              <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-zinc-900 md:mt-6 md:text-5xl">
                 What are you trying to do?
               </h2>
-              <p className="reveal-item mt-4 max-w-xl text-base leading-relaxed text-zinc-500 md:text-lg">
-                One clear path—no calculator maze.
+              <p className="reveal-item mt-4 max-w-xl text-base leading-relaxed text-zinc-600 md:text-lg">
+                Four clear lanes. Pick one—we&apos;ll point you to the right
+                videos, guides, and next step.
               </p>
             </RevealGroup>
 
             <RevealGroup
-              className="mt-10 grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:mt-12 md:grid-cols-2 lg:grid-cols-5"
-              stagger={150}
+              className="mt-10 grid gap-4 md:mt-12 md:grid-cols-2 lg:grid-cols-4"
+              stagger={120}
             >
-              {paths.map((path, index) => (
+              {paths.map((path) => (
                 <TrackedLink
                   key={path.label}
                   href={path.href}
                   location="homepage_audience_path"
                   label={path.cta}
-                  className={`reveal-item group relative flex h-full min-h-[14rem] flex-col bg-[#050505] p-6 transition-colors duration-[var(--duration-hover)] hover:bg-[#0a0a0a] md:min-h-[15rem] md:p-7 ${
-                    index === 0 ? "lg:col-span-2" : "lg:col-span-1"
-                  }`}
+                  className="reveal-item path-card-light group flex min-h-[13rem] flex-col rounded-lg p-6 md:min-h-[14rem] md:p-7"
                 >
-                  <span className="relative font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
+                  <span className="font-mono text-[10px] tracking-[0.28em] text-[#6d28d9] uppercase">
                     {path.label}
                   </span>
-                  <h3 className="relative mt-6 text-2xl font-semibold tracking-[-0.03em] text-white">
+                  <h3 className="mt-5 text-xl font-semibold tracking-[-0.03em] text-zinc-900">
                     {path.title}
                   </h3>
-                  <p className="relative mt-4 flex-1 text-sm leading-relaxed text-zinc-500 group-hover:text-zinc-400">
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-zinc-600 group-hover:text-zinc-700">
                     {path.description}
                   </p>
-                  <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-medium text-white">
+                  <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#5b21b6]">
                     {path.cta}
-                    <span className="text-[#7c3aed]" aria-hidden>
-                      →
-                    </span>
+                    <span aria-hidden>→</span>
                   </span>
                 </TrackedLink>
               ))}
             </RevealGroup>
-            <p className="mt-10 text-center text-sm text-zinc-500">
-              Based in Washington. Licensed in multiple states.
-            </p>
-            <p className="mt-4 text-center text-sm text-zinc-600">
-              Puget Sound expertise:{" "}
+            <p className="mt-10 text-center text-sm text-zinc-600">
+              Based in Washington. Licensed in multiple states.{" "}
               <TrackedLink
-                href="/washington-mortgage"
-                location="homepage_local"
-                label="Washington"
-                className="text-zinc-400 hover:text-white"
+                href="/agents"
+                location="homepage_agents_discreet"
+                className="text-zinc-500 hover:text-zinc-800"
               >
-                Washington
-              </TrackedLink>
-              {" · "}
-              <TrackedLink
-                href="/markets/seattle"
-                location="homepage_local"
-                label="Seattle"
-                className="text-zinc-400 hover:text-white"
-              >
-                Seattle
-              </TrackedLink>
-              {" · "}
-              <TrackedLink
-                href="/markets/bellevue"
-                location="homepage_local"
-                label="Bellevue"
-                className="text-zinc-400 hover:text-white"
-              >
-                Bellevue
+                Agent resources
               </TrackedLink>
             </p>
           </div>
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
+        <LiquidityStrategyStrip location="homepage" />
+
         <FeaturedContentSection
           surface="homepage"
-          title="Start here"
-          lead="Three picks—video, guide, and market depth."
+          title="Worth your time"
+          lead="One video, one guide, and local context—nothing extra."
           eyebrow="Featured"
+          tone="light"
+          limit={3}
         />
 
         <FounderAdvisorSection audience="general" />
@@ -218,30 +199,40 @@ export default function Home() {
 
         <section
           id="cta"
-          className="section-flow relative"
+          className="section-flow section-light relative border-t border-zinc-200/80"
           data-analytics-section="lead_capture"
         >
           <div className="section-bridge-top" aria-hidden />
           <div className="mx-auto w-full max-w-7xl px-6 md:px-10">
-            <div className="cta-panel group relative overflow-hidden border border-zinc-900/80 bg-[#0a0a0a] px-6 py-16 md:px-16 md:py-24">
+            <div className="content-panel-light rounded-xl px-6 py-14 md:px-14 md:py-20">
               <RevealGroup className="relative" stagger={110}>
-                <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
-                  Next step
+                <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#6d28d9] uppercase">
+                  Quick question
                 </p>
-                <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:mt-6 md:text-5xl">
-                  Talk through your scenario.
+                <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-zinc-900 md:mt-6 md:text-5xl">
+                  Tell us what you&apos;re working on.
                 </h2>
-                <p className="reveal-item mt-6 max-w-lg text-base leading-relaxed text-zinc-400 md:mt-8 md:text-lg">
-                  Share your goal and timeline. We respond with context—not a
-                  rate quote.
+                <p className="reveal-item mt-6 max-w-lg text-base leading-relaxed text-zinc-600 md:mt-8 md:text-lg">
+                  A short form or a structured intake—we respond with context,
+                  not a rate quote.
                 </p>
                 <LeadCaptureForm
                   formType="Buyer Strategy Call"
-                  submitLabel="Start Your Strategy"
+                  submitLabel="Start My Strategy"
                   intent="buyer"
                 />
-                <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
+                <p className="reveal-item mt-5 font-mono text-[10px] tracking-widest text-zinc-500 uppercase">
                   No-pressure guidance · Not a loan application
+                </p>
+                <p className="reveal-item mt-4 text-sm text-zinc-600">
+                  Prefer a guided intake?{" "}
+                  <TrackedLink
+                    href="/strategy-review"
+                    location="homepage_cta_intake"
+                    className="font-medium text-[#5b21b6] hover:text-[#4c1d95]"
+                  >
+                    Review My Options →
+                  </TrackedLink>
                 </p>
               </RevealGroup>
             </div>
@@ -251,7 +242,7 @@ export default function Home() {
 
       <StickyMobileCta
         href="/strategy-review"
-        label="Review Your Strategy"
+        label="Review Options"
         location="homepage_sticky"
       />
 

@@ -5,6 +5,12 @@ import { ComplianceFooter } from "./compliance-footer";
 import { FooterSocialLinks } from "./footer-social-links";
 import { LeadCaptureForm, type LeadIntent } from "./lead-capture-form";
 import { MediaThumbnail } from "./media-thumbnail";
+import {
+  ScenarioReviewCta,
+  type ScenarioReviewAudience,
+} from "./scenario-review-cta";
+import { VideoCardThumbnail } from "./video-card-thumbnail";
+import { getHeroVideoBySlug } from "../lib/hero-videos";
 import { MicroOptIn } from "./micro-opt-in";
 import { PageHero, SectionHeader } from "./design-system";
 import { PageAmbient } from "./page-ambient";
@@ -23,6 +29,14 @@ const applicationCtaSlugs = new Set([
   "refinance-timing",
   "heloc-strategy",
 ]);
+
+function funnelScenarioAudience(slug: string): ScenarioReviewAudience {
+  if (slug === "seller-concessions") return "seller-concessions";
+  if (slug === "2-1-buydowns") return "buydown";
+  if (slug === "heloc-strategy") return "heloc";
+  if (slug === "refinance-timing") return "refinance";
+  return "buyer";
+}
 
 export function createMoneyFunnelMetadata(funnel: MoneyFunnel): Metadata {
   return {
@@ -67,9 +81,13 @@ function getMicroOptInCopy(intent: LeadIntent) {
 
 export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
   const featuredPost = getSocialPostBySlug(funnel.videoSlug);
+  const heroVideo = funnel.videoSlug
+    ? getHeroVideoBySlug(funnel.videoSlug)
+    : undefined;
   const relatedPosts = funnel.relatedSocialSlugs
     .map((slug) => getSocialPostBySlug(slug))
-    .filter((post): post is HeroVideo => Boolean(post));
+    .filter((post): post is HeroVideo => Boolean(post))
+    .slice(0, 2);
   const leadIntent = getFunnelIntent(funnel);
   const optIn = getMicroOptInCopy(leadIntent);
   const showApplicationCta = applicationCtaSlugs.has(funnel.slug);
@@ -133,12 +151,38 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                     allowFullScreen
                     loading="lazy"
                   />
+                ) : heroVideo || featuredPost?.localVideoSrc ? (
+                  <VideoCardThumbnail
+                    video={{
+                      slug:
+                        heroVideo?.slug ??
+                        featuredPost?.slug ??
+                        funnel.videoSlug ??
+                        "buyer-preapproval-first-step",
+                      title:
+                        funnel.videoTitle ??
+                        heroVideo?.title ??
+                        featuredPost?.title ??
+                        "Featured video",
+                      category:
+                        featuredPost?.category ?? heroVideo?.category ?? funnel.eyebrow,
+                      platform: featuredPost?.platform ?? heroVideo?.platform ?? "TikTok",
+                      localVideoSrc: heroVideo?.localVideoSrc ?? featuredPost?.localVideoSrc,
+                      thumbnailSrc:
+                        featuredPost?.thumbnailSrc ?? heroVideo?.thumbnailSrc ?? funnel.thumbnailSrc,
+                      thumbnailFocalPoint:
+                        featuredPost?.thumbnailFocalPoint ??
+                        heroVideo?.thumbnailFocalPoint ??
+                        funnel.thumbnailFocalPoint,
+                      runtime: featuredPost?.runtime ?? heroVideo?.runtime,
+                    }}
+                    className="h-full min-h-[20rem]"
+                  />
                 ) : (
                   <MediaThumbnail
                     title={funnel.videoTitle ?? featuredPost?.title ?? "Featured video"}
                     category={featuredPost?.category ?? funnel.eyebrow}
                     platform={featuredPost?.platform}
-                    thumbnailLabel="Featured"
                     thumbnailSrc={featuredPost?.thumbnailSrc ?? funnel.thumbnailSrc}
                     thumbnailFocalPoint={
                       featuredPost?.thumbnailFocalPoint ?? funnel.thumbnailFocalPoint
@@ -296,14 +340,23 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
+        <section className="section-flow relative">
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <ScenarioReviewCta
+              audience={funnelScenarioAudience(funnel.slug)}
+              location={`${funnel.slug}_funnel`}
+            />
+          </div>
+        </section>
+
         <section
           id="funnel-cta"
-          className="section-flow relative"
+          className="section-flow section-light relative border-t border-zinc-200/80"
           data-analytics-section="lead_capture"
         >
           <div className="section-bridge-top" aria-hidden />
           <div className="mx-auto w-full max-w-7xl px-6 md:px-10">
-            <div className="cta-panel group relative overflow-hidden border border-zinc-900/80 bg-[#0a0a0a] px-8 py-16 md:px-16 md:py-20">
+            <div className="content-panel-light rounded-xl px-8 py-16 md:px-16 md:py-20">
               <div
                 className="playbook-grid pointer-events-none absolute inset-0 opacity-30"
                 aria-hidden
@@ -313,13 +366,13 @@ export function MoneyFunnelPage({ funnel }: { funnel: MoneyFunnel }) {
                 aria-hidden
               />
               <RevealGroup className="relative" stagger={110}>
-                <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#7c3aed] uppercase">
+                <p className="reveal-item font-mono text-xs tracking-[0.35em] text-[#6d28d9] uppercase">
                   {funnel.ctaLabel}
                 </p>
-                <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white md:text-6xl">
+                <h2 className="reveal-item mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-zinc-900 md:text-5xl">
                   {funnel.ctaTitle}
                 </h2>
-                <p className="reveal-item mt-8 max-w-xl text-lg leading-relaxed text-zinc-400">
+                <p className="reveal-item mt-8 max-w-xl text-lg leading-relaxed text-zinc-600">
                   {funnel.ctaBody}
                 </p>
                 <LeadCaptureForm

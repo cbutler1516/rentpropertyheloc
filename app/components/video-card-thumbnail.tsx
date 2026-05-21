@@ -26,12 +26,15 @@ export function VideoCardThumbnail({
   subtleAutoplay = false,
 }: VideoCardThumbnailProps) {
   const post = withVideoThumbnail(video);
+  const localVideoSrc =
+    post.localVideoSrc ??
+    (post.slug ? `/videos/hero/${post.slug}.mp4` : undefined);
 
-  if (post.localVideoSrc) {
+  if (localVideoSrc) {
     return (
       <VideoPosterThumbnail
         posterSrc={post.thumbnailSrc}
-        videoSrc={post.localVideoSrc}
+        videoSrc={localVideoSrc}
         title={post.title}
         category={post.category}
         platform={post.platform}

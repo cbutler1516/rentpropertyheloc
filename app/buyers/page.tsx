@@ -5,6 +5,7 @@ import {
 } from "../components/conversion-cta";
 import { BookingCtaSection } from "../components/booking-cta";
 import { InternalPage } from "../components/internal-page";
+import { ScenarioReviewCta } from "../components/scenario-review-cta";
 import { LicensedMarketsRail } from "../components/licensed-markets-rail";
 
 import { buildPageMetadata } from "../lib/site-seo";
@@ -20,8 +21,10 @@ export default function BuyersPage() {
   return (
     <InternalPage
       contentSurface="buyers"
-      featuredTitle="Featured for buyers"
-      featuredLead="Videos, guides, and Puget Sound context before you write the offer."
+      featuredLimit={2}
+      showFeatured
+      featuredTitle="Start with these"
+      featuredLead="Two picks—video and guide—before you write the offer."
       eyebrow="Buyer Strategy"
       title="Enter the market with a plan, not a guess."
       lead="For buyers who want clarity before the search gets loud."
@@ -29,8 +32,8 @@ export default function BuyersPage() {
       strategyVisual="football-buyers"
       heroVideoSrc="/videos/loan-playbook-commercial-golf.mp4"
       founderAudience="buyer"
-      primaryCta={{ href: "#buyer-strategy", label: "Start Your Buyer Strategy" }}
-      stickyCta={{ href: "#buyer-strategy", label: "Start Buyer Strategy" }}
+      primaryCta={{ href: "/strategy-review", label: "Review My Options" }}
+      stickyCta={{ href: "/strategy-review", label: "Review Options" }}
       sections={[
         {
           label: "01 / Readiness",
@@ -58,8 +61,14 @@ export default function BuyersPage() {
             title="Where we lend—and how we think locally."
             lead="State and metro pages connect buyer guides to real market context."
           />
+          <section className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <ScenarioReviewCta audience="buyer" location="buyers_page" />
+          </section>
           <div id="buyer-strategy">
-            <ConversionCTA {...conversionCtas.buyerStrategy} />
+            <ConversionCTA
+              {...conversionCtas.buyerStrategy}
+              submitLabel="Start My Strategy"
+            />
           </div>
           <BookingCtaSection
             location="buyers_page"

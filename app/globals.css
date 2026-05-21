@@ -233,6 +233,57 @@ body {
   );
 }
 
+/* Lighter content bands — keynote contrast on dark shell */
+.section-light {
+  --bridge-from: #f4f4f5;
+  --bridge-to: #f4f4f5;
+  background: linear-gradient(
+    180deg,
+    #fafafa 0%,
+    #f4f4f5 48%,
+    #fafafa 100%
+  );
+  color: #18181b;
+}
+
+.content-panel-light {
+  border: 1px solid rgba(24, 24, 27, 0.08);
+  background: #fafafa;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+}
+
+.path-card-light {
+  border: 1px solid rgba(24, 24, 27, 0.1);
+  background: #ffffff;
+  transition:
+    background-color var(--duration-hover) var(--ease-soft),
+    border-color var(--duration-hover) var(--ease-soft),
+    box-shadow var(--duration-hover) var(--ease-soft);
+}
+
+.path-card-light:hover {
+  border-color: rgba(124, 58, 237, 0.28);
+  background: #ffffff;
+  box-shadow: 0 12px 40px rgba(24, 24, 27, 0.06);
+}
+
+.feature-card-light {
+  background: #ffffff;
+  border: 1px solid rgba(24, 24, 27, 0.08);
+}
+
+.feature-card-light h3 {
+  color: #18181b;
+}
+
+.feature-card-light p {
+  color: #52525b;
+}
+
+.feature-card-light p.font-mono {
+  color: #6d28d9;
+}
+
 .section-parallax-inner {
   transition: transform 0.1s linear;
   will-change: transform;
@@ -270,6 +321,7 @@ body {
   position: relative;
   display: inline-flex;
   align-items: center;
+  white-space: nowrap;
   border-radius: 999px;
   padding: 0.7rem 0.85rem;
   transition:

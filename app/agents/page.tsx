@@ -15,6 +15,7 @@ import { PageAmbient } from "../components/page-ambient";
 import { RevealGroup } from "../components/reveal-group";
 import { SiteNav } from "../components/site-nav";
 import { FeaturedContentSection } from "../components/featured-content-section";
+import { ScenarioReviewCta } from "../components/scenario-review-cta";
 import { LicensedMarketsRail } from "../components/licensed-markets-rail";
 import { StickyMobileCta } from "../components/sticky-mobile-cta";
 import { TrustStack } from "../components/trust-stack";
@@ -171,10 +172,35 @@ export default function AgentsPage() {
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
+        <section className="section-flow section-light relative border-y border-zinc-200/80">
+          <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10 py-12">
+            <p className="font-mono text-[10px] tracking-[0.28em] text-[#6d28d9] uppercase">
+              Industry resource
+            </p>
+            <h2 className="mt-4 max-w-2xl text-2xl font-semibold tracking-[-0.03em] text-zinc-900">
+              Built for agents—not consumer homebuyer traffic.
+            </h2>
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-600">
+              Financing talking points for your clients. Brokerage programs live
+              under{" "}
+              <TrackedLink
+                href="/partners"
+                location="agents_partners_link"
+                className="font-medium text-[#5b21b6] hover:text-[#4c1d95]"
+              >
+                Agent Partnerships
+              </TrackedLink>
+              .
+            </p>
+          </div>
+        </section>
+
         <FeaturedContentSection
           surface="agents"
-          title="Featured for agents"
-          lead="Videos and guides that sharpen buyer conversations."
+          title="For your clients"
+          lead="Two clips and guides worth forwarding."
+          limit={2}
+          tone="light"
         />
 
         <LicensedMarketsRail
@@ -184,14 +210,18 @@ export default function AgentsPage() {
 
         <TrustStack audience="agent" />
 
+        <section className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+          <ScenarioReviewCta audience="agent" location="agents_page" />
+        </section>
+
         <div id="agent-strategy">
           <ConversionCTA {...conversionCtas.agentPartnership} />
         </div>
       </main>
 
       <StickyMobileCta
-        href="#agent-strategy"
-        label="Talk With Our Team"
+        href="/strategy-review"
+        label="Review Options"
         location="agents_sticky"
       />
 

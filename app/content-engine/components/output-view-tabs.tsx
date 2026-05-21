@@ -9,7 +9,8 @@ export type OutputView =
   | "leadMagnet"
   | "launchHub"
   | "leadCapture"
-  | "crmHub";
+  | "crmHub"
+  | "analytics";
 
 type OutputViewTabsProps = {
   showLanding?: boolean;
@@ -18,6 +19,7 @@ type OutputViewTabsProps = {
   showLaunchHub?: boolean;
   showLeadCapture?: boolean;
   showCrmHub?: boolean;
+  showAnalytics?: boolean;
   activeView: OutputView;
   onViewChange: (view: OutputView) => void;
   contentLabel?: string;
@@ -30,6 +32,7 @@ export function OutputViewTabs({
   showLaunchHub = false,
   showLeadCapture = false,
   showCrmHub = false,
+  showAnalytics = false,
   activeView,
   onViewChange,
   contentLabel = "Content",
@@ -40,7 +43,8 @@ export function OutputViewTabs({
     !showLeadMagnet &&
     !showLaunchHub &&
     !showLeadCapture &&
-    !showCrmHub
+    !showCrmHub &&
+    !showAnalytics
   ) {
     return null;
   }
@@ -74,6 +78,14 @@ export function OutputViewTabs({
       id: "crmHub",
       label: "CRM hub",
       activeClass: "bg-indigo-500/25 text-indigo-200",
+    });
+  }
+
+  if (showAnalytics) {
+    tabs.push({
+      id: "analytics",
+      label: "Analytics",
+      activeClass: "bg-amber-500/25 text-amber-200",
     });
   }
 

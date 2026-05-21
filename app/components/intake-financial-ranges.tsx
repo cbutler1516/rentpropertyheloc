@@ -75,7 +75,7 @@ export function IntakeFinancialRanges({
   return (
     <div className="space-y-8">
       <RangeGrid
-        label="Estimated purchase price"
+        label="Rough price range"
         options={purchasePriceRangeOptions}
         value={values.purchasePriceRange}
         pendingValue={pendingValue}

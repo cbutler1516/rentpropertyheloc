@@ -9,7 +9,8 @@ export type IntakeGoalId =
   | "dscr"
   | "commercial-financing"
   | "builder-development"
-  | "agent-partnership";
+  | "agent-partnership"
+  | "not-sure-yet";
 
 export type IntakeGoal = {
   id: IntakeGoalId;
@@ -83,7 +84,30 @@ export const intakeGoals: IntakeGoal[] = [
     leadIntent: "agent",
     formType: "Strategy Intake — Agent partnership",
   },
+  {
+    id: "not-sure-yet",
+    label: "Not sure yet",
+    description: "We'll help narrow the path after a few questions.",
+    leadIntent: "buyer",
+    formType: "Strategy Intake — Not sure yet",
+  },
 ];
+
+export function getIntakeSubmitLabel(goalId: string): string {
+  switch (goalId) {
+    case "investment-property":
+    case "dscr":
+      return "Review Investment Strategy";
+    case "commercial-financing":
+    case "builder-development":
+      return "Review Commercial Scenario";
+    case "lower-payment":
+    case "use-equity":
+      return "Review My Options";
+    default:
+      return "Start My Strategy";
+  }
+}
 
 export const timelineOptions = [
   "Within 30 days",
@@ -217,6 +241,7 @@ const propertyOptionsByGoal: Record<IntakeGoalId, readonly string[]> = {
   "commercial-financing": commercialPropertyOptions,
   "builder-development": builderPropertyOptions,
   "agent-partnership": agentPartnershipPropertyOptions,
+  "not-sure-yet": defaultPropertyOptions,
 };
 
 export function getPropertyTypeOptionsForGoal(goalId: IntakeGoalId | ""): string[] {

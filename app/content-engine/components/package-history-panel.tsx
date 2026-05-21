@@ -165,6 +165,9 @@ export function PackageHistoryPanel({
                   {pkg.crmIntegration && (
                     <Badge variant="purple">crm</Badge>
                   )}
+                  {pkg.analytics && (
+                    <Badge variant="gold">analytics</Badge>
+                  )}
                   <Badge variant={pkg.modelUsed === "demo" ? "gold" : "purple"}>
                     {pkg.modelUsed === "demo" ? "demo" : "ai"}
                   </Badge>

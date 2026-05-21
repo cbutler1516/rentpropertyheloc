@@ -4,6 +4,11 @@ const resourceLinks = [
   { href: "/guides", label: "Financing Guides" },
   { href: "/markets", label: "Markets" },
   { href: "/learn", label: "Learn" },
+  { href: "/deal-analyzer", label: "Compare Financing Options" },
+  { href: "/agents", label: "For Agents" },
+  { href: "/partners", label: "Agent Partnerships" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
   { href: "/about", label: "State Licensing" },
 ] as const;
 

@@ -74,6 +74,7 @@ export async function savePackage(
     launchHub: draft.launchHub,
     leadCapture: draft.leadCapture,
     crmIntegration: draft.crmIntegration,
+    analytics: draft.analytics,
     tags: draft.tags,
   };
   const next = upsertLocalPackage(loadLocalPackages(), pkg);

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -13,6 +14,8 @@ import {
   trackLeadFormStart,
   trackLeadSubmit,
 } from "../lib/analytics-events";
+import { LEAD_FORM_CONSENT_HTML } from "../lib/compliance-consent";
+import { leadIntentChipOptions } from "../lib/lead-intent-options";
 
 export type LeadFormType =
   | "Buyer Strategy Call"
@@ -38,14 +41,6 @@ type LeadCaptureFormProps = {
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
 
-const roleOptions = [
-  "Buyer",
-  "Real estate agent",
-  "Managing broker / owner",
-  "Investor / operator",
-  "Other",
-];
-
 function getLeadIntent(formType: LeadFormType): LeadIntent {
   if (formType === "Homeowner Strategy Review") return "homeowner";
   if (formType === "Agent Partnership Conversation") return "agent";
@@ -54,6 +49,14 @@ function getLeadIntent(formType: LeadFormType): LeadIntent {
   if (formType === "Newsletter Signup") return "newsletter";
 
   return "buyer";
+}
+
+function defaultIntentChip(formType: LeadFormType): string {
+  if (formType === "Homeowner Strategy Review") return "Refinance";
+  if (formType === "Commercial Scenario Review") return "Commercial property";
+  if (formType === "Agent Partnership Conversation") return "Not sure yet";
+  if (formType === "Newsletter Signup") return "Not sure yet";
+  return "Buy a home";
 }
 
 export function LeadCaptureForm({
@@ -65,11 +68,15 @@ export function LeadCaptureForm({
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldsStarted, setFieldsStarted] = useState(0);
+  const [selectedIntent, setSelectedIntent] = useState(() =>
+    defaultIntentChip(formType),
+  );
   const abandonmentTracked = useRef(false);
   const hasTrackedStartRef = useRef(false);
   const submitStateRef = useRef(submitState);
   const fieldsStartedRef = useRef(0);
   const leadIntent = intent ?? getLeadIntent(formType);
+  const showIntentChips = formType !== "Newsletter Signup";
 
   useEffect(() => {
     submitStateRef.current = submitState;
@@ -85,11 +92,9 @@ export function LeadCaptureForm({
       const field = form.elements.namedItem(name);
       if (!field) return false;
       const value =
-        field instanceof HTMLSelectElement
-          ? field.value
-          : field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement
-            ? field.value.trim()
-            : "";
+        field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement
+          ? field.value.trim()
+          : "";
       return value.length > 0;
     }).length;
   }
@@ -157,7 +162,7 @@ export function LeadCaptureForm({
       name: String(formData.get("name") ?? ""),
       email: String(formData.get("email") ?? ""),
       phone: String(formData.get("phone") ?? ""),
-      role: String(formData.get("role") ?? ""),
+      role: String(formData.get("role") ?? selectedIntent),
       message: String(formData.get("message") ?? ""),
       consent: formData.get("consent") === "on",
       page: typeof window !== "undefined" ? window.location.href : "",
@@ -180,6 +185,7 @@ export function LeadCaptureForm({
         });
         setSubmitState("success");
         form.reset();
+        setSelectedIntent(defaultIntentChip(formType));
         return;
       }
 
@@ -203,6 +209,7 @@ export function LeadCaptureForm({
       });
       setSubmitState("success");
       form.reset();
+      setSelectedIntent(defaultIntentChip(formType));
     } catch (error) {
       console.error(error);
       setErrorMessage(
@@ -238,6 +245,7 @@ export function LeadCaptureForm({
         className="hidden"
         aria-hidden="true"
       />
+      <input type="hidden" name="role" value={selectedIntent} />
 
       <div>
         <label htmlFor={`${formId}-name`} className="sr-only">
@@ -278,43 +286,50 @@ export function LeadCaptureForm({
           name="phone"
           type="tel"
           autoComplete="tel"
-          placeholder="Phone"
+          placeholder="Phone (optional)"
           className="input-glow h-14 w-full border border-zinc-800 bg-[#050505] px-5 text-white transition-all duration-[var(--duration-hover)] placeholder:text-zinc-600 outline-none focus:border-[#7c3aed]/60"
         />
       </div>
 
-      <div>
-        <label htmlFor={`${formId}-role`} className="sr-only">
-          Role or inquiry type
-        </label>
-        <select
-          id={`${formId}-role`}
-          name="role"
-          required
-          defaultValue=""
-          className="input-glow h-14 w-full border border-zinc-800 bg-[#050505] px-5 text-zinc-300 transition-all duration-[var(--duration-hover)] outline-none focus:border-[#7c3aed]/60"
-        >
-          <option value="" disabled>
-            Role / type
-          </option>
-          {roleOptions.map((role) => (
-            <option key={role} value={role}>
-              {role}
-            </option>
-          ))}
-        </select>
-      </div>
+      {showIntentChips ? (
+        <fieldset className="md:col-span-2">
+          <legend className="mb-3 font-mono text-[9px] tracking-[0.2em] text-zinc-500 uppercase">
+            What are you looking to do?
+          </legend>
+          <ul className="flex flex-wrap gap-2">
+            {leadIntentChipOptions.map((option) => {
+              const active = selectedIntent === option.value;
+              return (
+                <li key={option.value}>
+                  <button
+                    type="button"
+                    disabled={disabled}
+                    onClick={() => setSelectedIntent(option.value)}
+                    className={`rounded-full border px-3 py-2 font-mono text-[9px] tracking-[0.12em] uppercase transition-colors ${
+                      active
+                        ? "border-[#7c3aed]/60 bg-[#7c3aed]/15 text-[#e9d5ff]"
+                        : "border-zinc-800 text-zinc-400 hover:border-zinc-600 hover:text-zinc-200"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </fieldset>
+      ) : null}
 
       <div className="md:col-span-2">
         <label htmlFor={`${formId}-message`} className="sr-only">
-          Message or scenario
+          Optional notes
         </label>
         <textarea
           id={`${formId}-message`}
           name="message"
-          rows={4}
-          placeholder="Message / scenario"
-          className="input-glow min-h-28 w-full resize-y border border-zinc-800 bg-[#050505] px-5 py-4 text-white transition-all duration-[var(--duration-hover)] placeholder:text-zinc-600 outline-none focus:border-[#7c3aed]/60"
+          rows={3}
+          placeholder="Optional notes (timeline, property, goals)"
+          className="input-glow min-h-24 w-full resize-y border border-zinc-800 bg-[#050505] px-5 py-4 text-white transition-all duration-[var(--duration-hover)] placeholder:text-zinc-600 outline-none focus:border-[#7c3aed]/60"
         />
       </div>
 
@@ -326,8 +341,11 @@ export function LeadCaptureForm({
           className="mt-1 h-4 w-4 shrink-0 accent-[#7c3aed]"
         />
         <span>
-          By submitting, you agree to be contacted about your inquiry. This is
-          not a loan application or commitment to lend.
+          {LEAD_FORM_CONSENT_HTML}{" "}
+          <Link href="/privacy" className="text-zinc-400 underline-offset-2 hover:text-white hover:underline">
+            Privacy Policy
+          </Link>
+          .
         </span>
       </label>
 

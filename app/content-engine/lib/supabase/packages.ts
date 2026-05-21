@@ -57,6 +57,7 @@ export async function savePackageToSupabase(
     launchHub: draft.launchHub,
     leadCapture: draft.leadCapture,
     crmIntegration: draft.crmIntegration,
+    analytics: draft.analytics,
     tags: draft.tags,
   };
 

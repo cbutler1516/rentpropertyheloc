@@ -18,10 +18,12 @@ import {
 import { BookingCtaGroup } from "./booking-cta";
 import { IntakeFinancialRanges } from "./intake-financial-ranges";
 import { IntakePrioritiesStep } from "./intake-priorities-step";
+import { INTAKE_CONTACT_CONSENT } from "../lib/compliance-consent";
 import {
   buildGoalsPayload,
   experienceOptions,
   getIntakeGoal,
+  getIntakeSubmitLabel,
   getIntakeStepsForGoal,
   getTotalIntakeSteps,
   getPropertyTypeOptionsForGoal,
@@ -500,8 +502,8 @@ export function StrategyIntakeFunnel() {
 
           {currentStepId === "financials" ? (
             <StepShell
-              title="Estimated numbers"
-              lead="Ballpark ranges are enough—we'll refine structure later."
+              title="Rough price range"
+              lead="Ballpark numbers are enough—we'll refine details later."
               headingRef={stepHeadingRef}
             >
               <IntakeFinancialRanges
@@ -519,8 +521,8 @@ export function StrategyIntakeFunnel() {
 
           {currentStepId === "property" ? (
             <StepShell
-              title="Property type"
-              lead="What are you financing?"
+              title="What kind of property?"
+              lead="Pick the closest fit."
               headingRef={stepHeadingRef}
             >
               <SelectGrid
@@ -535,8 +537,8 @@ export function StrategyIntakeFunnel() {
 
           {currentStepId === "goals" ? (
             <StepShell
-              title="What matters most right now?"
-              lead="Choose any that fit your situation."
+              title="What's most important right now?"
+              lead="Choose any that apply—optional notes below."
               headingRef={stepHeadingRef}
             >
               <IntakePrioritiesStep
@@ -595,7 +597,7 @@ export function StrategyIntakeFunnel() {
           {currentStepId === "contact" ? (
             <StepShell
               title="How should we reach you?"
-              lead="For strategy follow-up only—not a loan application."
+              lead="Tell us a little about the scenario—we'll follow up with context."
               headingRef={stepHeadingRef}
             >
               <div className="grid gap-4 sm:grid-cols-2">
@@ -628,8 +630,11 @@ export function StrategyIntakeFunnel() {
                 />
               </div>
               <p className="mt-5 text-sm leading-relaxed text-zinc-500">
-                By continuing, you agree to be contacted about your inquiry. This
-                is not a loan application or commitment to lend.
+                {INTAKE_CONTACT_CONSENT}{" "}
+                <a href="/privacy" className="text-zinc-400 underline-offset-2 hover:text-white hover:underline">
+                  Privacy Policy
+                </a>
+                .
               </p>
             </StepShell>
           ) : null}
@@ -665,7 +670,7 @@ export function StrategyIntakeFunnel() {
               {submitState === "submitting"
                 ? "Sending..."
                 : currentStepId === "contact"
-                  ? "Review Your Strategy"
+                  ? getIntakeSubmitLabel(data.goalId)
                   : "Continue"}
             </button>
           ) : null}

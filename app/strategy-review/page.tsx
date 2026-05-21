@@ -11,7 +11,7 @@ import { breadcrumbSchema, webSiteSchema } from "../lib/structured-data";
 import { buildPageMetadata } from "../lib/site-seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Review Your Strategy",
+  title: "Review Your Options",
   description:
     "Tell us what you are trying to accomplish. A short, structured intake for buyers, homeowners, investors, builders, and agent partners.",
   path: "/strategy-review",
@@ -25,7 +25,7 @@ export default function StrategyReviewPage() {
           webSiteSchema(),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Review Your Strategy", path: "/strategy-review" },
+            { name: "Review Your Options", path: "/strategy-review" },
           ]),
         ]}
       />
@@ -45,11 +45,11 @@ export default function StrategyReviewPage() {
             Strategy intake
           </p>
           <h1 className="mt-5 text-[clamp(2rem,5vw,3.25rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-white">
-            Review your strategy.
+            Review your options.
           </h1>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-zinc-400 md:text-lg">
-            A few focused questions so we can respond with context—not a rate
-            quote. Most people finish in under two minutes.
+            A few quick questions so we can respond with useful context—not a
+            rate quote. Most people finish in under two minutes.
           </p>
           <div className="mt-10">
             <StrategyIntakeFunnel />
@@ -62,7 +62,7 @@ export default function StrategyReviewPage() {
 
       <StickyMobileCta
         href="#strategy-intake"
-        label="Review Your Strategy"
+        label="Review Options"
         location="strategy_review_sticky"
       />
 

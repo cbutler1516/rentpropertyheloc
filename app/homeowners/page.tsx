@@ -5,6 +5,8 @@ import {
 } from "../components/conversion-cta";
 import { BookingCtaSection } from "../components/booking-cta";
 import { InternalPage } from "../components/internal-page";
+import { LiquidityStrategyStrip } from "../components/liquidity-strategy-strip";
+import { ScenarioReviewCta } from "../components/scenario-review-cta";
 
 export const metadata: Metadata = {
   title: "Homeowners | The Loan Playbook",
@@ -16,8 +18,10 @@ export default function HomeownersPage() {
   return (
     <InternalPage
       contentSurface="homeowners"
-      featuredTitle="Featured for homeowners"
-      featuredLead="Timing, equity, and payment context when your goals change."
+      featuredLimit={2}
+      showFeatured
+      featuredTitle="Equity & timing"
+      featuredLead="HELOC, refinance, and hold scenarios—two starting points."
       eyebrow="Homeowner Strategy"
       title="Your home is an asset—with options."
       lead="Refinance, HELOC, and equity moves should follow the plan—not the headline."
@@ -25,8 +29,8 @@ export default function HomeownersPage() {
       strategyVisual="tennis-about"
       heroVideoSrc="/videos/loan-playbook-learn-film-room.mp4"
       founderAudience="homeowner"
-      primaryCta={{ href: "#homeowner-strategy", label: "Review Refinance Timing" }}
-      stickyCta={{ href: "#homeowner-strategy", label: "Review Timing" }}
+      primaryCta={{ href: "/strategy-review", label: "Review My Options" }}
+      stickyCta={{ href: "/strategy-review", label: "Review Options" }}
       sections={[
         {
           label: "01 / Timing",
@@ -50,8 +54,15 @@ export default function HomeownersPage() {
       }}
       extraSections={
         <>
+          <LiquidityStrategyStrip location="homeowners" />
+          <section className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+            <ScenarioReviewCta audience="homeowner" location="homeowners_page" />
+          </section>
           <div id="homeowner-strategy">
-            <ConversionCTA {...conversionCtas.homeownerStrategy} />
+            <ConversionCTA
+              {...conversionCtas.homeownerStrategy}
+              submitLabel="Review My Options"
+            />
           </div>
           <BookingCtaSection
             location="homeowners_page"

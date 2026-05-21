@@ -16,9 +16,9 @@ import { SiteNav } from "../components/site-nav";
 import { TrackedAnchor } from "../components/tracked-link";
 
 export const metadata: Metadata = {
-  title: "Partners | The Loan Playbook",
+  title: "Agent Partnerships | The Loan Playbook",
   description:
-    "Mortgage partnership options for managing brokers, teams, brokerages, and firm owners.",
+    "B2B mortgage partnership options for managing brokers, teams, brokerages, and firm owners.",
 };
 
 const problemAreas = [
@@ -64,9 +64,9 @@ export default function PartnersPage() {
 
       <main className="relative z-10">
         <PageHero
-          eyebrow="Brokerage Partnerships"
-          title="A cleaner finance layer for firms."
-          lead="For managing brokers, teams, brokerages, and firms exploring compliant partnership models."
+          eyebrow="For Real Estate Agents"
+          title="Agent partnerships & firm programs."
+          lead="B2B programs for managing brokers, teams, and brokerages—not consumer homebuyer traffic."
           focusLabel="Partner Path"
           focus="Firm-level education, agent adoption, lead paths, and compliance review."
           visual="golf-commercial"

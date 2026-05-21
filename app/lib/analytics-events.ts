@@ -11,6 +11,7 @@ export const analyticsEvents = {
   residentialReviewClick: "residential_review_click",
   investorSessionClick: "investor_session_click",
   commercialReviewClick: "commercial_review_click",
+  scenarioReviewCtaClick: "scenario_review_cta_click",
   ctaClick: "cta_click",
   formStart: "form_start",
   funnelToApplicationClick: "funnel_to_application_click",
@@ -195,6 +196,24 @@ export function trackBookingCtaClick(payload: {
     cta_label: payload.label,
     destination: payload.href,
     cta_location: payload.location,
+  });
+}
+
+export function trackScenarioReviewCtaClick(payload: {
+  audience: string;
+  label: string;
+  href: string;
+  location?: string;
+  ctaType?: string;
+}) {
+  trackEvent(analyticsEvents.scenarioReviewCtaClick, {
+    audience: payload.audience,
+    cta_type: payload.ctaType ?? payload.label,
+    cta_label: payload.label,
+    destination: payload.href,
+    cta_location: payload.location,
+    source_page:
+      typeof window !== "undefined" ? window.location.pathname : undefined,
   });
 }
 

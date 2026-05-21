@@ -37,6 +37,9 @@ type InternalPageProps = {
   contentSurface?: ContentSurface;
   featuredTitle?: string;
   featuredLead?: string;
+  featuredLimit?: number;
+  showFeatured?: boolean;
+  lightProcessSection?: boolean;
   primaryCta?: {
     href: string;
     label: string;
@@ -66,6 +69,9 @@ export function InternalPage({
   contentSurface,
   featuredTitle,
   featuredLead,
+  featuredLimit = 3,
+  showFeatured = true,
+  lightProcessSection = true,
   primaryCta,
   secondaryCta,
   founderAudience = "general",
@@ -127,15 +133,27 @@ export function InternalPage({
           ) : null}
         </PageHero>
 
-        <section className="section-flow section-matte relative border-y border-zinc-900/40">
+        <section
+          className={`section-flow relative border-y ${
+            lightProcessSection
+              ? "section-light border-zinc-200/80"
+              : "section-matte border-zinc-900/40"
+          }`}
+        >
           <div className="section-bridge-top" aria-hidden />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#5b21b6]/[0.035] via-transparent to-transparent"
-            aria-hidden
-          />
+          {!lightProcessSection ? (
+            <div
+              className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#5b21b6]/[0.035] via-transparent to-transparent"
+              aria-hidden
+            />
+          ) : null}
           <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
             <RevealGroup
-              className="grid gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70 md:grid-cols-3"
+              className={`grid gap-4 md:grid-cols-3 ${
+                lightProcessSection
+                  ? ""
+                  : "gap-px overflow-hidden border border-zinc-900/80 bg-zinc-900/70"
+              }`}
               stagger={140}
             >
               {sections.map((section) => (
@@ -144,6 +162,9 @@ export function InternalPage({
                   step={section.label}
                   title={section.title}
                   body={section.body}
+                  className={
+                    lightProcessSection ? "feature-card-light rounded-lg" : undefined
+                  }
                 />
               ))}
             </RevealGroup>
@@ -151,11 +172,13 @@ export function InternalPage({
           <div className="section-bridge-bottom" aria-hidden />
         </section>
 
-        {contentSurface ? (
+        {contentSurface && showFeatured ? (
           <FeaturedContentSection
             surface={contentSurface}
             title={featuredTitle}
             lead={featuredLead}
+            limit={featuredLimit}
+            tone="dark"
           />
         ) : null}
 

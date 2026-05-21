@@ -3,32 +3,29 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { getBookingUrl } from "../lib/booking-urls";
 import { WordmarkLockup } from "./brand";
+
 const navItems = [
   {
     href: "/buyers",
-    label: "Buyers",
-    description: "Start with your number",
+    label: "Buy a Home",
+    description: "Payment and readiness",
   },
   {
     href: "/homeowners",
-    label: "Homeowners",
-    description: "Refinance, equity, and timing",
+    label: "Use Equity",
+    description: "Refinance and HELOC",
   },
   {
-    href: "/agents",
-    label: "Agents",
-    description: "Financing clarity for clients",
-  },
-  {
-    href: "/partners",
-    label: "Partners",
-    description: "Brokerages and teams",
+    href: "/investors",
+    label: "Invest",
+    description: "Rental and DSCR paths",
   },
   {
     href: "/commercial",
     label: "Commercial",
-    description: "Investor and operator paths",
+    description: "Operators and sponsors",
   },
   {
     href: "/videos",
@@ -42,16 +39,10 @@ const navItems = [
   },
 ];
 
-const primaryNavCta = {
+const reviewOptionsCta = {
   href: "/strategy-review",
-  label: "Review Your Strategy",
-  description: "Structured intake",
-};
-
-const strategyCallCta = {
-  href: "/#cta",
-  label: "Strategy Call",
-  description: "Talk through your scenario",
+  label: "Review Options",
+  description: "Short structured intake",
 };
 
 function isActivePath(pathname: string, href: string) {
@@ -62,6 +53,7 @@ export function SiteNav() {
   const pathname = usePathname();
   const [openPathname, setOpenPathname] = useState<string | null>(null);
   const isOpen = openPathname === pathname;
+  const strategyCallHref = getBookingUrl("strategy");
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -106,16 +98,16 @@ export function SiteNav() {
 
         <div className="nav-cta-group hidden shrink-0 items-center gap-2.5 md:flex lg:gap-3">
           <Link
-            href={strategyCallCta.href}
+            href={strategyCallHref}
             className="inline-flex h-10 items-center justify-center rounded-full border border-zinc-800 px-4 font-mono text-[10px] tracking-[0.16em] text-zinc-300 uppercase transition-colors duration-[var(--duration-hover)] hover:border-[#7c3aed]/50 hover:text-white"
           >
-            {strategyCallCta.label}
+            Strategy Call
           </Link>
           <Link
-            href={primaryNavCta.href}
+            href={reviewOptionsCta.href}
             className="inline-flex h-10 items-center justify-center rounded-full bg-white px-5 font-mono text-[10px] tracking-[0.18em] text-black uppercase transition-colors duration-[var(--duration-hover)] hover:bg-zinc-100"
           >
-            {primaryNavCta.label}
+            {reviewOptionsCta.label}
           </Link>
         </div>
 
@@ -157,26 +149,26 @@ export function SiteNav() {
             );
           })}
           <Link
-            href={strategyCallCta.href}
+            href={strategyCallHref}
             className="nav-mobile-link"
             onClick={() => setOpenPathname(null)}
           >
-            <span>{strategyCallCta.label}</span>
-            <span>{strategyCallCta.description}</span>
+            <span>Strategy Call</span>
+            <span>Talk through your scenario</span>
           </Link>
           <Link
-            href={primaryNavCta.href}
+            href={reviewOptionsCta.href}
             className="nav-mobile-link"
             aria-current={
-              isActivePath(pathname, primaryNavCta.href) ? "page" : undefined
+              isActivePath(pathname, reviewOptionsCta.href) ? "page" : undefined
             }
             data-active={
-              isActivePath(pathname, primaryNavCta.href) ? "true" : undefined
+              isActivePath(pathname, reviewOptionsCta.href) ? "true" : undefined
             }
             onClick={() => setOpenPathname(null)}
           >
-            <span>{primaryNavCta.label}</span>
-            <span>{primaryNavCta.description}</span>
+            <span>{reviewOptionsCta.label}</span>
+            <span>{reviewOptionsCta.description}</span>
           </Link>
         </nav>
       </div>

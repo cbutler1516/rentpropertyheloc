@@ -286,6 +286,57 @@ export type CrmTestLeadPayload = {
   utmCampaign?: string;
 };
 
+export type CampaignMetricsInput = {
+  views: number;
+  clicks: number;
+  leads: number;
+  appointments: number;
+  applications: number;
+  funded_loans: number;
+  ad_spend: number;
+  estimated_revenue: number;
+};
+
+export type AnalyticsComputed = {
+  clickThroughRate: number;
+  leadConversionRate: number;
+  costPerLead: number | null;
+  costPerAppointment: number | null;
+  costPerFundedLoan: number | null;
+  estimatedRoi: number | null;
+  revenuePerLead: number | null;
+};
+
+export type CrmActivitySummary = {
+  testLeadsSent: number;
+  liveLeadsPushed: number;
+  pushFailures: number;
+  lastActivityAt: string | null;
+};
+
+export type FunnelStageMetric = {
+  stage: string;
+  count: number;
+  rateFromPrevious: number | null;
+};
+
+export type AnalyticsInsights = {
+  campaignHealthScore: number;
+  funnelMetrics: FunnelStageMetric[];
+  roiSummary: string;
+  bestPerformingAssetNotes: string;
+  nextRecommendedAction: string;
+};
+
+export type AnalyticsRecord = {
+  metrics: CampaignMetricsInput;
+  computed: AnalyticsComputed;
+  crmSummary: CrmActivitySummary;
+  insights: AnalyticsInsights;
+  updatedAt: string;
+  modelUsed: string;
+};
+
 export const OUTPUT_TAB_KEYS = [
   "tiktokHooks",
   "youtubeTitles",
@@ -362,6 +413,7 @@ export type ContentPackage = {
   launchHub?: LaunchHubRecord;
   leadCapture?: LeadCaptureRecord;
   crmIntegration?: CrmIntegrationRecord;
+  analytics?: AnalyticsRecord;
   tags: string[];
   mode?: "ai" | "demo";
 };
@@ -383,7 +435,29 @@ export type PackageDraft = {
   launchHub?: LaunchHubRecord;
   leadCapture?: LeadCaptureRecord;
   crmIntegration?: CrmIntegrationRecord;
+  analytics?: AnalyticsRecord;
   tags: string[];
+};
+
+export type AnalyticsRecommendRequest = {
+  title: string;
+  topic: string;
+  audience?: ContentAudience;
+  analytics: AnalyticsRecord;
+  hasLandingPage?: boolean;
+  hasLeadCapture?: boolean;
+  hasLeadMagnet?: boolean;
+  hasCalendar?: boolean;
+  hasLaunchHub?: boolean;
+  hasCrmHub?: boolean;
+};
+
+export type AnalyticsRecommendResponse = {
+  insights: Pick<
+    AnalyticsInsights,
+    "bestPerformingAssetNotes" | "nextRecommendedAction" | "roiSummary"
+  >;
+  mode: "ai" | "demo";
 };
 
 export type SaveCrmCredentialsRequest = {

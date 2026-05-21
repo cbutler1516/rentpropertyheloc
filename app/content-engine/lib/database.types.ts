@@ -19,6 +19,7 @@ export type ContentEnginePackageRow = {
   launch_hub_json: Json | null;
   lead_capture_json: Json | null;
   crm_integration_json: Json | null;
+  analytics_json: Json | null;
   tags: string[];
 };
 
@@ -40,6 +41,7 @@ export type ContentEnginePackageInsert = {
   launch_hub_json?: Json | null;
   lead_capture_json?: Json | null;
   crm_integration_json?: Json | null;
+  analytics_json?: Json | null;
   tags?: string[];
 };
 

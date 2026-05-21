@@ -83,6 +83,7 @@ export async function POST(request: Request) {
     launchHub: body.launchHub,
     leadCapture: body.leadCapture,
     crmIntegration: body.crmIntegration,
+    analytics: body.analytics,
     tags: body.tags ?? [],
   });
 

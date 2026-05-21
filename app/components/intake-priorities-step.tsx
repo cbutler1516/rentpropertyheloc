@@ -71,7 +71,7 @@ export function IntakePrioritiesStep({
           id={notesId}
           value={values.goalsNotes}
           rows={2}
-          placeholder="Optional details about your goals, property, timing, or scenario."
+          placeholder="Optional notes—timeline, property, or anything we should know."
           onChange={(event) =>
             onChange({ ...values, goalsNotes: event.target.value })
           }
