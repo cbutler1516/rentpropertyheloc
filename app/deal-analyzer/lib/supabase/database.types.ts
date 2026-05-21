@@ -124,6 +124,10 @@ export type Database = {
           agent_name: string | null;
           agent_id: string | null;
           referral_code: string | null;
+          crm_push_status: string;
+          crm_last_pushed_at: string | null;
+          crm_push_error: string | null;
+          crm_external_id: string | null;
         };
         Insert: {
           id?: string;
@@ -136,6 +140,10 @@ export type Database = {
           agent_name?: string | null;
           agent_id?: string | null;
           referral_code?: string | null;
+          crm_push_status?: string;
+          crm_last_pushed_at?: string | null;
+          crm_push_error?: string | null;
+          crm_external_id?: string | null;
         };
         Update: Partial<Database["public"]["Tables"]["deal_analyzer_reports"]["Insert"]>;
       };

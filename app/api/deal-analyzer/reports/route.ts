@@ -4,6 +4,8 @@ import {
   getClientIpFromHeaders,
   getUserAgentFromHeaders,
 } from "@/app/deal-analyzer/lib/request-meta";
+import { isCrmAutoPushEnabled } from "@/app/deal-analyzer/lib/crm/env";
+import { pushDealAnalyzerReportAfterCreate } from "@/app/deal-analyzer/lib/crm/push-report";
 import { isSupabaseConfigured } from "@/app/deal-analyzer/lib/supabase/env";
 import { saveReportToSupabase } from "@/app/deal-analyzer/lib/supabase/save-report";
 import type {
@@ -71,6 +73,10 @@ export async function POST(request: Request) {
 
   if ("error" in result) {
     return NextResponse.json({ error: result.error }, { status: 500 });
+  }
+
+  if (isCrmAutoPushEnabled()) {
+    void pushDealAnalyzerReportAfterCreate(result.reportId);
   }
 
   return NextResponse.json({ slug: result.slug });

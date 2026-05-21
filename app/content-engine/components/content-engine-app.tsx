@@ -47,6 +47,7 @@ import {
   type LeadCaptureRecord,
   type CrmIntegrationRecord,
   type AnalyticsRecord,
+  type PublishedPageStatus,
   type LeadMagnetSectionKey,
   type LandingPageSectionKey,
   type OutputTabKey,
@@ -296,6 +297,8 @@ export function ContentEngineApp() {
   const [crmIntegration, setCrmIntegration] =
     useState<CrmIntegrationRecord | null>(null);
   const [analytics, setAnalytics] = useState<AnalyticsRecord | null>(null);
+  const [publishedStatus, setPublishedStatus] =
+    useState<PublishedPageStatus | null>(null);
 
   const minInputLength = generationMode === "campaign" ? 8 : 24;
   const hasResults =
@@ -528,6 +531,7 @@ export function ContentEngineApp() {
     setLeadCapture(null);
     setCrmIntegration(null);
     setAnalytics(null);
+    setPublishedStatus(null);
     setOutputView("content");
     setMode(null);
     setIsUnsaved(false);
@@ -694,6 +698,13 @@ export function ContentEngineApp() {
     setAnalytics(next);
     setIsUnsaved(true);
   }, []);
+
+  const handlePublishedStatusChange = useCallback(
+    (next: PublishedPageStatus | null) => {
+      setPublishedStatus(next);
+    },
+    [],
+  );
 
   const packageContextPayload = useCallback(
     () => ({
@@ -1018,6 +1029,7 @@ export function ContentEngineApp() {
     setModelUsed(pkg.modelUsed);
     setMode(pkg.modelUsed === "demo" ? "demo" : "ai");
     setActivePackageId(pkg.id);
+    setPublishedStatus(null);
     setIsUnsaved(false);
     setActiveTab("tiktokHooks");
     setCampaignActiveTab("shortFormVideoIdeas");
@@ -1275,6 +1287,7 @@ export function ContentEngineApp() {
                   <LandingPageOutputsPanel
                     landingPage={landingPage}
                     packageTitle={title || packageTitleFromInput(input)}
+                    packageId={activePackageId}
                     activeSection={landingActiveSection}
                     onSectionChange={setLandingActiveSection}
                   />
@@ -1351,6 +1364,11 @@ export function ContentEngineApp() {
                 <LandingPageOutputsPanel
                   landingPage={landingPage}
                   packageTitle={title || packageTitleFromInput(input)}
+                  packageId={activePackageId}
+                  leadCapture={leadCapture}
+                  crmIntegration={crmIntegration}
+                  publishedStatus={publishedStatus}
+                  onPublishedStatusChange={handlePublishedStatusChange}
                   activeSection={landingActiveSection}
                   onSectionChange={setLandingActiveSection}
                 />

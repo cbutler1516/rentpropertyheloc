@@ -6,6 +6,7 @@ import type {
   DealAnalyzerDashboardStats,
   DealAnalyzerReportRow,
 } from "../admin/types";
+import type { CrmPushFilter } from "../crm/types";
 import type { ClientRole, DealPath } from "../types";
 import { createServerSupabaseClient } from "./server";
 import { fetchFollowUpsByReportIds } from "./follow-ups";
@@ -22,6 +23,10 @@ type RawJoinedReport = {
   narrative_json: unknown;
   lead_id: string;
   scenario_id: string;
+  crm_push_status: string | null;
+  crm_last_pushed_at: string | null;
+  crm_push_error: string | null;
+  crm_external_id: string | null;
 };
 
 function startOfWeekIso(): string {
@@ -76,6 +81,10 @@ export function filterDealAnalyzerReports(
     }
 
     if (filters.needsFollowUp && !row.needsFollowUp) return false;
+
+    if (filters.crmPush !== "all" && row.crmPushStatus !== filters.crmPush) {
+      return false;
+    }
 
     if (from || to) {
       const created = new Date(row.createdAt);
@@ -144,7 +153,7 @@ async function loadAllReportRows(): Promise<
   const { data: reports, error: reportsError } = await supabase
     .from("deal_analyzer_reports")
     .select(
-      "id, created_at, report_slug, agent_name, referral_source, narrative_json, lead_id, scenario_id",
+      "id, created_at, report_slug, agent_name, referral_source, narrative_json, lead_id, scenario_id, crm_push_status, crm_last_pushed_at, crm_push_error, crm_external_id",
     )
     .order("created_at", { ascending: false })
     .limit(500);
@@ -201,6 +210,10 @@ async function loadAllReportRows(): Promise<
         narrative_json: report.narrative_json,
         lead_id: report.lead_id,
         scenario_id: report.scenario_id,
+        crm_push_status: report.crm_push_status,
+        crm_last_pushed_at: report.crm_last_pushed_at,
+        crm_push_error: report.crm_push_error,
+        crm_external_id: report.crm_external_id,
         lead,
         scenario,
         followUp: followUpMap.get(report.id) ?? null,

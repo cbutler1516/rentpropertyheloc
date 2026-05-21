@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { SEO_LANDING_SLUGS } from "../deal-analyzer/lib/seo-landing-content";
 import { geoMarkets } from "./geo-markets";
 import { heroVideos } from "./hero-videos";
 import { learnArticles } from "./learn-articles";
@@ -25,6 +26,11 @@ const corePaths = [
   "/buyers",
   "/homeowners",
   "/commercial",
+  "/commercial-capital-matchmaker",
+  "/commercial-capital-matchmaker/intake",
+  "/commercial-capital-matchmaker/results",
+  "/commercial-capital-matchmaker/summary",
+  "/commercial-capital-matchmaker/admin",
   "/investors",
   "/partners",
   "/privacy",
@@ -82,6 +88,12 @@ export function getPublicSitemapPaths(): string[] {
     }
   }
 
+  addPath(paths, "/deal-analyzer");
+  addPath(paths, "/deal-analyzer/analyze");
+  for (const slug of SEO_LANDING_SLUGS) {
+    addPath(paths, `/deal-analyzer/${slug}`);
+  }
+
   return [...paths].sort((a, b) => a.localeCompare(b));
 }
 
@@ -114,6 +126,12 @@ function getPriority(path: string): SitemapPriority {
   }
   if (path.startsWith("/videos/") || path.startsWith("/guides/")) {
     return 0.7;
+  }
+  if (path.startsWith("/deal-analyzer/") && path !== "/deal-analyzer/analyze") {
+    return 0.75;
+  }
+  if (path === "/deal-analyzer") {
+    return 0.8;
   }
   return 0.6;
 }

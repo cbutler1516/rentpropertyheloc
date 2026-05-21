@@ -6,6 +6,7 @@ export function organizationSchema() {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
+    logo: `${SITE_URL}/brand/loan-playbook-icon.png`,
     description:
       "Education-first mortgage strategy for buyers, homeowners, agents, and investors.",
     sameAs: [

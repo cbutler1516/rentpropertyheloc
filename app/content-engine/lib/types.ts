@@ -460,6 +460,60 @@ export type AnalyticsRecommendResponse = {
   mode: "ai" | "demo";
 };
 
+export type PublishedPageStatus = {
+  slug: string;
+  isPublished: boolean;
+  publishedAt: string | null;
+  unpublishedAt: string | null;
+  publishedUrl: string;
+};
+
+export type PublishedPageRecord = {
+  id: string;
+  packageId: string;
+  slug: string;
+  packageTitle: string;
+  landingPage: LandingPageRecord;
+  leadCapture?: LeadCaptureRecord;
+  crmIntegration?: CrmIntegrationRecord;
+  isPublished: boolean;
+  publishedAt: string;
+  updatedAt: string;
+  unpublishedAt?: string;
+};
+
+export type CampaignLeadPayload = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  buyerTimeline?: string;
+  loanTypeInterest?: string;
+  purchasePriceOrLoanAmount?: string;
+  creditRange?: string;
+  agentStatus?: string;
+  notes?: string;
+  smsCallConsent?: boolean;
+  emailOptIn?: boolean;
+};
+
+export type CampaignUtmParams = {
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmTerm?: string;
+  utmContent?: string;
+};
+
+export type PublishCampaignRequest = {
+  packageId: string;
+  slug: string;
+  packageTitle: string;
+  landingPage: LandingPageRecord;
+  leadCapture?: LeadCaptureRecord;
+  crmIntegration?: CrmIntegrationRecord;
+};
+
 export type SaveCrmCredentialsRequest = {
   packageId: string;
   provider: CrmProvider;

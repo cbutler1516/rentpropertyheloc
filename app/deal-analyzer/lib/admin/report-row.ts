@@ -85,6 +85,10 @@ type RawReportRow = {
   narrative_json: unknown;
   lead_id: string;
   scenario_id: string;
+  crm_push_status?: string | null;
+  crm_last_pushed_at?: string | null;
+  crm_push_error?: string | null;
+  crm_external_id?: string | null;
   lead: {
     id?: string;
     name: string;
@@ -190,5 +194,10 @@ export function mapRawReportToRow(raw: RawReportRow): DealAnalyzerReportRow {
     followUpId: raw.followUp?.id ?? null,
     followUpStatus: raw.followUp?.status ?? null,
     followUpUpdatedAt: raw.followUp?.updatedAt ?? null,
+    crmPushStatus:
+      (raw.crm_push_status as "not_pushed" | "pushed" | "failed") ?? "not_pushed",
+    crmLastPushedAt: raw.crm_last_pushed_at ?? null,
+    crmPushError: raw.crm_push_error ?? null,
+    crmExternalId: raw.crm_external_id ?? null,
   };
 }

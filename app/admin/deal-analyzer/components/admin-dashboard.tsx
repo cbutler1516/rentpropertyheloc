@@ -16,6 +16,7 @@ import { AdminHighlights } from "./admin-highlights";
 import { AdminFollowUpDrawer } from "./admin-follow-up-drawer";
 import { AdminReportsTable } from "./admin-reports-table";
 import { AdminShell } from "./admin-shell";
+import { AdminCrmPanel } from "./admin-crm-panel";
 import { AdminStatCards } from "./admin-stat-cards";
 
 type DashboardHighlights = {
@@ -46,6 +47,7 @@ function buildQuery(filters: DealAnalyzerAdminFilters): string {
   if (filters.dateFrom) params.set("dateFrom", filters.dateFrom);
   if (filters.dateTo) params.set("dateTo", filters.dateTo);
   if (filters.needsFollowUp) params.set("needsFollowUp", "true");
+  if (filters.crmPush !== "all") params.set("crmPush", filters.crmPush);
   return params.toString();
 }
 
@@ -147,6 +149,8 @@ export function AdminDashboard({ siteUrl, initialData }: AdminDashboardProps) {
           missingContact={data.highlights.missingContact}
         />
 
+        <AdminCrmPanel onPushComplete={() => void fetchDashboard(filters)} />
+
         <section className="space-y-4">
           <div>
             <h2 className="text-lg font-medium text-white">Recent reports</h2>
@@ -167,6 +171,7 @@ export function AdminDashboard({ siteUrl, initialData }: AdminDashboardProps) {
               setFollowUpRow(row);
               setDrawerOpen(true);
             }}
+            onCrmPushComplete={() => void fetchDashboard(filters)}
           />
         </section>
       </div>

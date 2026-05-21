@@ -11,12 +11,24 @@ import {
   landingPageToPlainText,
 } from "../lib/landing-page-export";
 import { LANDING_PAGE_TABS } from "../lib/landing-page-tabs";
-import type { LandingPageRecord, LandingPageSectionKey } from "../lib/types";
+import type {
+  CrmIntegrationRecord,
+  LandingPageRecord,
+  LandingPageSectionKey,
+  LeadCaptureRecord,
+  PublishedPageStatus,
+} from "../lib/types";
 import { CopyButton } from "./copy-button";
+import { LandingPagePublishCard } from "./landing-page-publish-card";
 
 type LandingPageOutputsPanelProps = {
   landingPage: LandingPageRecord;
   packageTitle: string;
+  packageId: string | null;
+  leadCapture?: LeadCaptureRecord | null;
+  crmIntegration?: CrmIntegrationRecord | null;
+  publishedStatus?: PublishedPageStatus | null;
+  onPublishedStatusChange?: (status: PublishedPageStatus | null) => void;
   activeSection: LandingPageSectionKey;
   onSectionChange: (key: LandingPageSectionKey) => void;
 };
@@ -24,6 +36,11 @@ type LandingPageOutputsPanelProps = {
 export function LandingPageOutputsPanel({
   landingPage,
   packageTitle,
+  packageId,
+  leadCapture,
+  crmIntegration,
+  publishedStatus,
+  onPublishedStatusChange,
   activeSection,
   onSectionChange,
 }: LandingPageOutputsPanelProps) {
@@ -37,6 +54,15 @@ export function LandingPageOutputsPanel({
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
+      <LandingPagePublishCard
+        packageId={packageId}
+        packageTitle={packageTitle}
+        landingPage={landingPage}
+        leadCapture={leadCapture}
+        crmIntegration={crmIntegration}
+        initialStatus={publishedStatus}
+        onStatusChange={onPublishedStatusChange}
+      />
       <div className="flex flex-wrap items-start justify-between gap-3 pb-4">
         <div>
           <CardTitle>Landing page</CardTitle>

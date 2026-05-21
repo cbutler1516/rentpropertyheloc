@@ -1,3 +1,4 @@
+import type { CrmPushFilter } from "../crm/types";
 import type { LeadStatus } from "../follow-up-types";
 import type { ClientRole, DealPath } from "../types";
 
@@ -16,6 +17,7 @@ export type DealAnalyzerAdminFilters = {
   dateFrom: string;
   dateTo: string;
   needsFollowUp: boolean;
+  crmPush: CrmPushFilter;
 };
 
 export const defaultAdminFilters: DealAnalyzerAdminFilters = {
@@ -26,6 +28,7 @@ export const defaultAdminFilters: DealAnalyzerAdminFilters = {
   dateFrom: "",
   dateTo: "",
   needsFollowUp: false,
+  crmPush: "all",
 };
 
 export type DealAnalyzerKeyMetric = {
@@ -64,6 +67,10 @@ export type DealAnalyzerReportRow = {
   followUpId: string | null;
   followUpStatus: string | null;
   followUpUpdatedAt: string | null;
+  crmPushStatus: "not_pushed" | "pushed" | "failed";
+  crmLastPushedAt: string | null;
+  crmPushError: string | null;
+  crmExternalId: string | null;
 };
 
 export type DealAnalyzerDashboardStats = {

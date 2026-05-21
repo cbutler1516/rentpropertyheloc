@@ -28,6 +28,11 @@ const navItems = [
     description: "Operators and sponsors",
   },
   {
+    href: "/commercial-capital-matchmaker",
+    label: "Capital Match",
+    description: "Broadview capital strategy",
+  },
+  {
     href: "/videos",
     label: "Videos",
     description: "Watch first",
@@ -72,7 +77,7 @@ export function SiteNav() {
           className="nav-brand"
           aria-label="The Loan Playbook home"
         >
-          <WordmarkLockup />
+          <WordmarkLockup priority />
         </Link>
 
         <nav

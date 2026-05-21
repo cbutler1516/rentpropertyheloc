@@ -24,7 +24,7 @@ export type SaveReportInput = {
 
 export async function saveReportToSupabase(
   input: SaveReportInput,
-): Promise<{ slug: string } | { error: string }> {
+): Promise<{ slug: string; reportId: string } | { error: string }> {
   const supabase = createServerSupabaseClient();
   if (!supabase) {
     return { error: "Supabase is not configured." };
@@ -85,22 +85,27 @@ export async function saveReportToSupabase(
     return { error: scenarioError?.message ?? "Failed to save scenario." };
   }
 
-  const { error: reportError } = await supabase.from("deal_analyzer_reports").insert({
-    lead_id: leadRow.id,
-    scenario_id: scenarioRow.id,
-    report_slug: input.slug,
-    narrative_json: narrative as unknown as Json,
-    referral_source: input.lead.referralSource || null,
-    agent_name: input.lead.agentName || null,
-    agent_id: input.agentId ?? null,
-    referral_code: input.referralCode ?? null,
-  });
+  const { data: reportRow, error: reportError } = await supabase
+    .from("deal_analyzer_reports")
+    .insert({
+      lead_id: leadRow.id,
+      scenario_id: scenarioRow.id,
+      report_slug: input.slug,
+      narrative_json: narrative as unknown as Json,
+      referral_source: input.lead.referralSource || null,
+      agent_name: input.lead.agentName || null,
+      agent_id: input.agentId ?? null,
+      referral_code: input.referralCode ?? null,
+      crm_push_status: "not_pushed",
+    })
+    .select("id")
+    .single();
 
-  if (reportError) {
-    return { error: reportError.message };
+  if (reportError || !reportRow) {
+    return { error: reportError?.message ?? "Failed to save report." };
   }
 
-  return { slug: input.slug };
+  return { slug: input.slug, reportId: reportRow.id };
 }
 
 export async function fetchReportFromSupabase(slug: string) {

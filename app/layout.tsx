@@ -26,6 +26,16 @@ export const metadata: Metadata = {
   title: SITE_NAME,
   description:
     "Know the move before you make it. Clear mortgage strategy for buyers, homeowners, agents, and investors.",
+  icons: {
+    icon: [
+      { url: "/brand/loan-playbook-icon.svg", type: "image/svg+xml" },
+      { url: "/brand/loan-playbook-icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [
+      { url: "/brand/loan-playbook-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/brand/loan-playbook-icon.png",
+  },
   openGraph: {
     title: SITE_NAME,
     description:

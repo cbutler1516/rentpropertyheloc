@@ -23,6 +23,9 @@ function parseFilters(searchParams: URLSearchParams): DealAnalyzerAdminFilters {
     dateFrom: searchParams.get("dateFrom") ?? "",
     dateTo: searchParams.get("dateTo") ?? "",
     needsFollowUp: searchParams.get("needsFollowUp") === "true",
+    crmPush:
+      (searchParams.get("crmPush") as DealAnalyzerAdminFilters["crmPush"] | null) ??
+      "all",
   };
 }
 

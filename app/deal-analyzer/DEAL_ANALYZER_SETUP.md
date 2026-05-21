@@ -14,6 +14,12 @@ NEXT_PUBLIC_SITE_URL=https://yourdomain.com
 # OpenAI — Chris-style Playbook narratives (v3)
 OPENAI_API_KEY=sk-...
 OPENAI_MODEL=gpt-4o-mini
+
+# CRM push (v9) — server-only
+GHL_WEBHOOK_URL=
+ZAPIER_WEBHOOK_URL=
+CRM_PUSH_SECRET=
+CRM_AUTO_PUSH=false
 ```
 
 | Variable | Required | Purpose |
@@ -183,3 +189,35 @@ Run migration `005_deal_analyzer_agent_branding.sql` after `004`.
 **Reports:** co-branded header (Prepared for / Shared by / Financing strategy by Chris Butler), agent contact card, print/PDF chrome includes agent logo and partner lines.
 
 **Admin** (`/admin/deal-analyzer/agents`): branding fields, preview partner page, preview sample report (`/partners/{slug}/sample-report`), Agent Invite Kit (text, email, social, video script, QR placeholder).
+
+## v9 — CRM push (GHL / Zapier)
+
+Run migration `006_deal_analyzer_crm_push.sql` after `005`.
+
+**Report columns:** `crm_push_status` (`not_pushed` | `pushed` | `failed`), `crm_last_pushed_at`, `crm_push_error`, `crm_external_id`.
+
+**Environment** (server-only — never exposed to the browser):
+
+```env
+GHL_WEBHOOK_URL=https://your-ghl-or-rad-inbound-webhook
+ZAPIER_WEBHOOK_URL=https://hooks.zapier.com/...
+CRM_PUSH_SECRET=your-shared-secret
+CRM_AUTO_PUSH=false
+```
+
+| Variable | Purpose |
+|----------|---------|
+| `GHL_WEBHOOK_URL` | Primary GoHighLevel / RAD CRM inbound webhook |
+| `ZAPIER_WEBHOOK_URL` | Fallback if GHL fails or is unset |
+| `CRM_PUSH_SECRET` | Optional `Authorization` / `X-Deal-Analyzer-CRM-Secret` header on outbound posts |
+| `CRM_AUTO_PUSH` | `true` pushes automatically after each new report is saved |
+
+**Admin** (`/admin/deal-analyzer`): CRM setup panel (config status + test push), CRM status column, Push / Retry buttons, filters (Not pushed / Failed / Pushed).
+
+**API routes** (admin auth):
+
+- `GET /api/deal-analyzer/admin/crm/test` — integration status (no webhook URLs)
+- `POST /api/deal-analyzer/admin/crm/test` — send sample test payload
+- `POST /api/deal-analyzer/admin/crm/push-report` — body `{ reportId }`
+
+Webhook JSON includes lead, consent, deal type, inputs, analysis, report URL, agent attribution, lead score, follow-up copy, lead status, and created date.

@@ -4,7 +4,10 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Select } from "@/app/components/ui/select";
 import { dealPathMeta } from "@/app/deal-analyzer/lib/constants";
-import type { DealAnalyzerAdminFilters } from "@/app/deal-analyzer/lib/admin/types";
+import {
+  defaultAdminFilters,
+  type DealAnalyzerAdminFilters,
+} from "@/app/deal-analyzer/lib/admin/types";
 import type { ClientRole, DealPath } from "@/app/deal-analyzer/lib/types";
 
 const ROLES: Array<ClientRole | "all"> = [
@@ -42,17 +45,7 @@ export function AdminFilters({ filters, onChange, resultCount }: AdminFiltersPro
         <button
           type="button"
           className="font-mono text-[9px] tracking-[0.16em] text-zinc-500 uppercase hover:text-zinc-300"
-          onClick={() =>
-            onChange({
-              search: "",
-              role: "all",
-              dealType: "all",
-              datePreset: "all",
-              dateFrom: "",
-              dateTo: "",
-              needsFollowUp: false,
-            })
-          }
+          onClick={() => onChange({ ...defaultAdminFilters })}
         >
           Clear all
         </button>
@@ -102,6 +95,33 @@ export function AdminFilters({ filters, onChange, resultCount }: AdminFiltersPro
         >
           Needs follow-up
         </button>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <span className="w-full font-mono text-[9px] tracking-[0.16em] text-zinc-600 uppercase">
+          CRM status
+        </span>
+        {(
+          [
+            ["all", "All CRM"],
+            ["not_pushed", "Not pushed"],
+            ["failed", "Failed"],
+            ["pushed", "Pushed"],
+          ] as const
+        ).map(([value, label]) => (
+          <button
+            key={value}
+            type="button"
+            className={
+              filters.crmPush === value
+                ? "rounded-full border border-[#7c3aed]/50 bg-[#7c3aed]/20 px-3 py-1 font-mono text-[9px] tracking-[0.14em] text-[#c4b5fd] uppercase"
+                : "rounded-full border border-white/[0.08] px-3 py-1 font-mono text-[9px] tracking-[0.14em] text-zinc-500 uppercase hover:border-white/[0.15] hover:text-zinc-300"
+            }
+            onClick={() => onChange({ ...filters, crmPush: value })}
+          >
+            {label}
+          </button>
+        ))}
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

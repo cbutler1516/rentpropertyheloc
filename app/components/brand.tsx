@@ -1,73 +1,98 @@
-type BrandMarkProps = {
-  size?: "sm" | "md" | "lg";
+import Image from "next/image";
+
+export const BRAND_ICON_SRC = "/brand/loan-playbook-icon.svg";
+export const BRAND_WORDMARK_SRC = "/brand/loan-playbook-wordmark.svg";
+export const BRAND_HORIZONTAL_SRC = "/brand/loan-playbook-horizontal.svg";
+
+type BrandSize = "sm" | "md" | "lg";
+
+const iconPixelSize: Record<BrandSize, number> = {
+  sm: 40,
+  md: 52,
+  lg: 68,
+};
+
+type BrandIconProps = {
+  size?: BrandSize;
+  className?: string;
+  priority?: boolean;
+};
+
+export function BrandIcon({
+  size = "md",
+  className = "",
+  priority = false,
+}: BrandIconProps) {
+  const px = iconPixelSize[size];
+
+  return (
+    <span
+      className={`brand-icon brand-icon-${size} ${className}`.trim()}
+      aria-hidden
+    >
+      <Image
+        src={BRAND_ICON_SRC}
+        alt=""
+        width={px}
+        height={px}
+        className="brand-icon-image"
+        priority={priority}
+      />
+    </span>
+  );
+}
+
+/** @deprecated Use BrandIcon — kept for existing imports */
+export function BrandMark(props: BrandIconProps) {
+  return <BrandIcon {...props} />;
+}
+
+type WordmarkLockupProps = {
+  className?: string;
+  /** Hide stacked wordmark (nav mobile / tight layouts) */
+  iconOnly?: boolean;
+  priority?: boolean;
+};
+
+export function WordmarkLockup({
+  className = "",
+  iconOnly = false,
+  priority = false,
+}: WordmarkLockupProps) {
+  return (
+    <span className={`brand-lockup ${className}`.trim()}>
+      <BrandIcon size="md" priority={priority} />
+      <Image
+        src={BRAND_WORDMARK_SRC}
+        alt="The Loan Playbook"
+        width={168}
+        height={68}
+        className={
+          iconOnly
+            ? "brand-wordmark-image sr-only"
+            : "brand-wordmark-image hidden min-[860px]:block"
+        }
+        priority={priority}
+      />
+    </span>
+  );
+}
+
+type FooterBrandProps = {
   className?: string;
 };
 
-export function BrandMark({ size = "md", className = "" }: BrandMarkProps) {
+export function FooterBrand({ className = "" }: FooterBrandProps) {
   return (
-    <span className={`brand-mark brand-mark-${size} ${className}`} aria-hidden>
-      <svg viewBox="0 0 72 72" role="img" focusable="false">
-        <rect
-          className="brand-mark-frame"
-          x="7"
-          y="7"
-          width="58"
-          height="58"
-          rx="16"
-        />
-        <rect
-          className="brand-mark-inner"
-          x="12"
-          y="12"
-          width="48"
-          height="48"
-          rx="12"
-        />
-        <path
-          className="brand-mark-route"
-          d="M 17 51 C 28 57 45 54 55 44"
-        />
-        <path
-          className="brand-mark-arrow"
-          d="M 55 44 L 49 44 M 55 44 L 53 38"
-        />
-        <path
-          className="brand-mark-x"
-          d="M 20 21 L 26 27 M 26 21 L 20 27"
-        />
-        <circle className="brand-mark-o" cx="51" cy="23" r="4" />
-        <text className="brand-mark-lp" x="36" y="45" textAnchor="middle">
-          LP
-        </text>
-      </svg>
-    </span>
-  );
-}
-
-export function BrandIcon({ className = "" }: { className?: string }) {
-  return <BrandMark size="sm" className={className} />;
-}
-
-export function WordmarkLockup({ className = "" }: { className?: string }) {
-  return (
-    <span className={`brand-lockup ${className}`}>
-      <BrandMark size="md" />
-      <span className="brand-wordmark">
-        <span>THE LOAN</span>
-        <strong>PLAYBOOK</strong>
-      </span>
-    </span>
-  );
-}
-
-export function FooterBrand({ className = "" }: { className?: string }) {
-  return (
-    <div className={`footer-brand ${className}`}>
-      <BrandMark size="md" />
-      <div>
-        <p>The Loan Playbook</p>
-        <p>Strategy before submission</p>
-      </div>
+    <div className={`footer-brand ${className}`.trim()}>
+      <BrandIcon size="md" />
+      <Image
+        src={BRAND_WORDMARK_SRC}
+        alt="The Loan Playbook — Smarter financing. Stronger futures."
+        width={196}
+        height={80}
+        className="brand-wordmark-image brand-wordmark-footer"
+      />
     </div>
   );
 }

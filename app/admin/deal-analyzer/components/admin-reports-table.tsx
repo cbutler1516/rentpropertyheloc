@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
 import { CopyButton } from "@/app/content-engine/components/copy-button";
@@ -11,6 +12,7 @@ type AdminReportsTableProps = {
   reports: DealAnalyzerReportRow[];
   siteUrl: string;
   onOpenFollowUp: (row: DealAnalyzerReportRow) => void;
+  onCrmPushComplete?: () => void;
 };
 
 function formatDate(iso: string) {
@@ -42,11 +44,53 @@ function leadStatusVariant(
   return "default";
 }
 
+function crmStatusVariant(
+  status: DealAnalyzerReportRow["crmPushStatus"],
+): "success" | "warning" | "default" {
+  if (status === "pushed") return "success";
+  if (status === "failed") return "warning";
+  return "default";
+}
+
+function crmStatusLabel(status: DealAnalyzerReportRow["crmPushStatus"]): string {
+  if (status === "pushed") return "Pushed";
+  if (status === "failed") return "Failed";
+  return "Not pushed";
+}
+
 export function AdminReportsTable({
   reports,
   siteUrl,
   onOpenFollowUp,
+  onCrmPushComplete,
 }: AdminReportsTableProps) {
+  const [pushingId, setPushingId] = useState<string | null>(null);
+  const [pushError, setPushError] = useState<string | null>(null);
+
+  async function pushToCrm(row: DealAnalyzerReportRow) {
+    setPushingId(row.id);
+    setPushError(null);
+    try {
+      const res = await fetch("/api/deal-analyzer/admin/crm/push-report", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reportId: row.id }),
+      });
+      const data = (await res.json()) as { message?: string; error?: string };
+      if (!res.ok) {
+        setPushError(data.error ?? data.message ?? "CRM push failed.");
+        onCrmPushComplete?.();
+        return;
+      }
+      onCrmPushComplete?.();
+    } catch {
+      setPushError("Could not reach CRM push API.");
+    } finally {
+      setPushingId(null);
+    }
+  }
+
   if (reports.length === 0) {
     return (
       <p className="rounded-2xl border border-dashed border-white/[0.08] px-6 py-12 text-center text-sm text-zinc-500">
@@ -57,8 +101,13 @@ export function AdminReportsTable({
 
   return (
     <>
+      {pushError ? (
+        <p className="mb-3 text-sm text-red-400" role="alert">
+          {pushError}
+        </p>
+      ) : null}
       <div className="hidden overflow-x-auto rounded-2xl border border-white/[0.06] bg-zinc-950/50 lg:block">
-        <table className="w-full min-w-[1200px] text-left text-sm">
+        <table className="w-full min-w-[1320px] text-left text-sm">
           <thead>
             <tr className="border-b border-white/[0.06] font-mono text-[9px] tracking-[0.16em] text-zinc-500 uppercase">
               <th className="px-4 py-3">Lead</th>
@@ -66,6 +115,7 @@ export function AdminReportsTable({
               <th className="px-4 py-3">Deal</th>
               <th className="px-4 py-3">Score</th>
               <th className="px-4 py-3">Workflow</th>
+              <th className="px-4 py-3">CRM</th>
               <th className="px-4 py-3">Consent</th>
               <th className="px-4 py-3">Created</th>
               <th className="px-4 py-3">Actions</th>
@@ -74,6 +124,7 @@ export function AdminReportsTable({
           <tbody>
             {reports.map((row) => {
               const reportUrl = `${siteUrl}/deal-analyzer/report/${row.slug}`;
+              const isPushing = pushingId === row.id;
               return (
                 <tr
                   key={row.id}
@@ -109,18 +160,38 @@ export function AdminReportsTable({
                       {row.needsFollowUp ? (
                         <Badge variant="warning">Needs follow-up</Badge>
                       ) : null}
-                      {row.followUpId ? (
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-col gap-1.5">
+                      <Badge variant={crmStatusVariant(row.crmPushStatus)}>
+                        {crmStatusLabel(row.crmPushStatus)}
+                      </Badge>
+                      {row.crmLastPushedAt ? (
                         <p className="text-[10px] text-zinc-600">
-                          Follow-up · {row.followUpStatus ?? "draft"}
-                        </p>
-                      ) : (
-                        <p className="text-[10px] text-zinc-600">No follow-up yet</p>
-                      )}
-                      {row.nextFollowUpAt ? (
-                        <p className="text-[10px] text-zinc-500">
-                          Next: {formatDate(row.nextFollowUpAt)}
+                          {formatDate(row.crmLastPushedAt)}
                         </p>
                       ) : null}
+                      {row.crmPushError ? (
+                        <p className="max-w-[140px] text-[10px] text-red-400/80">
+                          {row.crmPushError}
+                        </p>
+                      ) : null}
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        disabled={isPushing}
+                        onClick={() => void pushToCrm(row)}
+                      >
+                        {isPushing
+                          ? "Pushing…"
+                          : row.crmPushStatus === "failed"
+                            ? "Retry CRM push"
+                            : row.crmPushStatus === "pushed"
+                              ? "Push again"
+                              : "Push to CRM"}
+                      </Button>
                     </div>
                   </td>
                   <td className="px-4 py-3">
@@ -161,6 +232,7 @@ export function AdminReportsTable({
       <div className="space-y-3 lg:hidden">
         {reports.map((row) => {
           const reportUrl = `${siteUrl}/deal-analyzer/report/${row.slug}`;
+          const isPushing = pushingId === row.id;
           return (
             <article
               key={row.id}
@@ -173,23 +245,30 @@ export function AdminReportsTable({
                     {row.dealTypeLabel} · {formatCurrency(row.loanAmount)}
                   </p>
                 </div>
-                <Badge variant={leadStatusVariant(row.leadStatus)}>
-                  {row.leadStatus}
+                <Badge variant={crmStatusVariant(row.crmPushStatus)}>
+                  {crmStatusLabel(row.crmPushStatus)}
                 </Badge>
               </div>
-              {row.needsFollowUp ? (
-                <Badge variant="warning" className="mt-2">
-                  Needs follow-up
-                </Badge>
+              {row.crmPushError ? (
+                <p className="mt-2 text-xs text-red-400">{row.crmPushError}</p>
               ) : null}
               <div className="mt-4 flex flex-wrap gap-2">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  disabled={isPushing}
+                  onClick={() => void pushToCrm(row)}
+                >
+                  {isPushing ? "Pushing…" : "Push to CRM"}
+                </Button>
                 <Button
                   type="button"
                   variant="gold"
                   size="sm"
                   onClick={() => onOpenFollowUp(row)}
                 >
-                  {row.followUpId ? "View follow-up" : "Generate follow-up"}
+                  Follow-up
                 </Button>
                 <Link href={`/deal-analyzer/report/${row.slug}`}>
                   <Button type="button" variant="secondary" size="sm">
