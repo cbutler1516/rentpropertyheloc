@@ -1,4 +1,5 @@
 export const PRIMARY_CTA_LABEL = "Check My Rental HELOC Options.";
+export const PRIMARY_CTA_SHORT = "Check My Options";
 export const SECONDARY_CTA_LABEL = "See How It Works";
 
 export const PRIMARY_CTA_HREF = "/check-options";

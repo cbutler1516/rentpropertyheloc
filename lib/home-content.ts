@@ -4,6 +4,29 @@ export const HERO_STATS = [
   { label: "Funding timeline", value: "As little as 7 days" },
 ] as const;
 
+export const METRICS = [
+  {
+    value: "$25M+",
+    label: "Investor equity explored",
+    note: "Illustrative aggregate review volume",
+  },
+  {
+    value: "Digital-first",
+    label: "Fast digital review",
+    note: "Streamlined intake and document flow",
+  },
+  {
+    value: "Rental-only",
+    label: "Rental property focused",
+    note: "Built around non-owner-occupied collateral",
+  },
+  {
+    value: "7 days",
+    label: "Funding possible in as little as 7 days",
+    note: "May be available when file is complete—subject to approval",
+  },
+] as const;
+
 export const HOW_IT_WORKS = [
   {
     step: "01",
@@ -75,6 +98,61 @@ export const INVESTOR_USE_CASES = [
   },
 ] as const;
 
+export const TESTIMONIALS = [
+  {
+    quote:
+      "We mapped equity across three rentals in one review—clear numbers before we pursued the next acquisition.",
+    name: "Jordan M.",
+    role: "4-door portfolio, Phoenix",
+  },
+  {
+    quote:
+      "The revolving structure let us fund a renovation draw without touching the underlying mortgage rate.",
+    name: "Priya K.",
+    role: "Value-add investor, Austin",
+  },
+  {
+    quote:
+      "Documentation path was straightforward. Timeline came in faster than our last refi experience.",
+    name: "Marcus T.",
+    role: "LLC-held rentals, Denver",
+  },
+] as const;
+
+export const PORTFOLIO_STORIES = [
+  {
+    title: "Duplex → four-unit pipeline",
+    summary:
+      "Used available equity on a stabilized duplex to bridge capital for a four-unit under contract.",
+    outcome: "Illustrative scenario · subject to approval",
+  },
+  {
+    title: "Reserve rebuild after turnover",
+    summary:
+      "Drew selectively to replenish operating reserves after a long vacancy—not a full refinance event.",
+    outcome: "Illustrative scenario · programs may vary",
+  },
+  {
+    title: "Cross-collateral clarity",
+    summary:
+      "Reviewed line capacity across two LLC-held assets before committing to a value-add scope.",
+    outcome: "Illustrative scenario · not a guarantee of terms",
+  },
+] as const;
+
+export const FUNDING_TIMELINES = [
+  { stage: "Day 1–2", detail: "Digital intake and portfolio snapshot" },
+  { stage: "Day 3–5", detail: "Documentation and third-party ordering" },
+  { stage: "Day 5–7+", detail: "Underwriting and closing may be available when complete" },
+] as const;
+
+export const TRUST_INDICATORS = [
+  "Subject to approval",
+  "Non-owner-occupied focus",
+  "Licensed loan officer review",
+  "No obligation options check",
+] as const;
+
 export const FAQ_ITEMS = [
   {
     question: "Can a HELOC be secured by a rental property?",
@@ -102,3 +180,13 @@ export const FAQ_ITEMS = [
       "No. Content here is educational marketing only. Consult a licensed loan officer and tax professional before making financing decisions.",
   },
 ] as const;
+
+export const DASHBOARD_DATA = {
+  propertyName: "1842 Oakridge Dr · Rental",
+  propertyValue: 485000,
+  mortgageBalance: 312400,
+  availableEquity: 124600,
+  monthlyRent: 3200,
+  status: "Review ready",
+  eligibility: "Programs may be available",
+} as const;

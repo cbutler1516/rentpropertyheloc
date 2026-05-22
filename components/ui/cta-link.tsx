@@ -1,5 +1,8 @@
+"use client";
+
 import { cn } from "@/lib/cn";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import type { ComponentProps } from "react";
 
 type CtaVariant = "primary" | "secondary" | "ghost";
@@ -14,9 +17,9 @@ const variantClasses: Record<CtaVariant, string> = {
 };
 
 const sizeClasses: Record<CtaSize, string> = {
-  sm: "h-9 px-4 text-sm",
-  md: "h-11 px-6 text-sm",
-  lg: "h-12 px-8 text-base sm:whitespace-nowrap",
+  sm: "h-11 min-h-[44px] px-4 text-sm",
+  md: "h-11 min-h-[44px] px-6 text-sm",
+  lg: "h-12 min-h-[48px] px-8 text-base sm:whitespace-nowrap",
 };
 
 type CtaLinkProps = ComponentProps<typeof Link> & {
@@ -30,15 +33,24 @@ export function CtaLink({
   size = "md",
   ...props
 }: CtaLinkProps) {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <Link
-      className={cn(
-        "inline-flex items-center justify-center rounded-full text-center font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
-        variantClasses[variant],
-        sizeClasses[size],
-        className,
-      )}
-      {...props}
-    />
+    <motion.div
+      className="inline-flex w-full sm:w-auto"
+      whileHover={reduceMotion ? undefined : { scale: 1.02 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+      transition={{ duration: 0.2 }}
+    >
+      <Link
+        className={cn(
+          "inline-flex w-full items-center justify-center rounded-full text-center font-semibold transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
+          variantClasses[variant],
+          sizeClasses[size],
+          className,
+        )}
+        {...props}
+      />
+    </motion.div>
   );
 }
