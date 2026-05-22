@@ -110,6 +110,7 @@ export function ReportSlugView({ slug }: { slug: string }) {
         <CardContent className="py-4 sm:py-5">
           <ReportActions
             slug={slug}
+            dealType={data.inputs.path}
             reportTitle={reportTitle}
             agentShareMessage={narrative?.agentShareMessage}
             onNewAnalysis={() => {

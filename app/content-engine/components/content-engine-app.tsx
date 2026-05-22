@@ -47,6 +47,7 @@ import {
   type LeadCaptureRecord,
   type CrmIntegrationRecord,
   type AnalyticsRecord,
+  type ComplianceRecord,
   type PublishedPageStatus,
   type LeadMagnetSectionKey,
   type LandingPageSectionKey,
@@ -75,6 +76,8 @@ import { CrmHubPanel } from "./crm-hub-panel";
 import { createDefaultCrmIntegration } from "../lib/crm-integration-defaults";
 import { createDefaultAnalytics } from "../lib/analytics-defaults";
 import { AnalyticsPanel } from "./analytics-panel";
+import { CompliancePanel } from "./compliance-panel";
+import { applyComplianceRewrites } from "../lib/compliance-apply";
 import { LeadMagnetGeneratorCard } from "./lead-magnet-generator-card";
 import { LeadMagnetOutputsPanel } from "./lead-magnet-outputs-panel";
 import { LaunchHubPanel } from "./launch-hub-panel";
@@ -87,6 +90,18 @@ import { type LeadCapturePreset } from "../lib/lead-capture-presets";
 import { type LeadMagnetType } from "../lib/lead-magnet-types";
 import { type LandingPageIntent } from "../lib/landing-page-intents";
 import { landingPageToMarkdown } from "../lib/landing-page-export";
+import {
+  initialBuildSteps,
+  runFullCampaignBuild,
+  type CampaignBuildStepState,
+} from "../lib/campaign-template-build";
+import {
+  CAMPAIGN_TEMPLATES,
+  type CampaignTemplate,
+  type CampaignTemplateId,
+} from "../lib/campaign-templates";
+import { CampaignTemplatesPanel } from "./campaign-templates-panel";
+import { CampaignBuildProgress } from "./campaign-build-progress";
 
 const SINGLE_PLACEHOLDER = `Paste a market update, video transcript, Fed commentary, borrower scenario, or rough idea…
 
@@ -146,6 +161,7 @@ function buildExportPackage(draft: {
   leadCapture?: LeadCaptureRecord;
   crmIntegration?: CrmIntegrationRecord;
   analytics?: AnalyticsRecord;
+  compliance?: ComplianceRecord;
 }): ContentPackage {
   return {
     id: draft.id ?? "draft",
@@ -167,6 +183,7 @@ function buildExportPackage(draft: {
     leadCapture: draft.leadCapture,
     crmIntegration: draft.crmIntegration,
     analytics: draft.analytics,
+    compliance: draft.compliance,
     tags: parseTagsInput(draft.tagsInput),
   };
 }
@@ -268,7 +285,14 @@ export function ContentEngineApp() {
   const [tagsInput, setTagsInput] = useState("");
   const [activePackageId, setActivePackageId] = useState<string | null>(null);
   const [isUnsaved, setIsUnsaved] = useState(false);
-  const [sidebarView, setSidebarView] = useState<"studio" | "history">("studio");
+  const [sidebarView, setSidebarView] = useState<
+    "studio" | "templates" | "history"
+  >("studio");
+  const [selectedTemplateId, setSelectedTemplateId] =
+    useState<CampaignTemplateId | null>(CAMPAIGN_TEMPLATES[0]?.id ?? null);
+  const [templateBuilding, setTemplateBuilding] = useState(false);
+  const [templateBuildSteps, setTemplateBuildSteps] =
+    useState<CampaignBuildStepState[]>(initialBuildSteps);
   const [filters, setFilters] = useState<PackageFilters>(DEFAULT_FILTERS);
   const [mobileHistoryOpen, setMobileHistoryOpen] = useState(false);
   const [landingPage, setLandingPage] = useState<LandingPageRecord | null>(null);
@@ -297,6 +321,7 @@ export function ContentEngineApp() {
   const [crmIntegration, setCrmIntegration] =
     useState<CrmIntegrationRecord | null>(null);
   const [analytics, setAnalytics] = useState<AnalyticsRecord | null>(null);
+  const [compliance, setCompliance] = useState<ComplianceRecord | null>(null);
   const [publishedStatus, setPublishedStatus] =
     useState<PublishedPageStatus | null>(null);
 
@@ -324,6 +349,42 @@ export function ContentEngineApp() {
       Boolean(leadCapture) ||
       Boolean(crmIntegration),
     [launchHub, landingPage, leadCapture, crmIntegration],
+  );
+
+  const showCompliance = useMemo(
+    () =>
+      hasResults ||
+      Boolean(landingPage) ||
+      Boolean(leadMagnet) ||
+      Boolean(leadCapture) ||
+      Boolean(publishedStatus),
+    [hasResults, landingPage, leadMagnet, leadCapture, publishedStatus],
+  );
+
+  const complianceScanRequest = useMemo(
+    () => ({
+      title: title || packageTitleFromInput(input),
+      topic,
+      generationMode,
+      outputs: outputs ?? undefined,
+      campaignOutputs: campaignOutputs ?? undefined,
+      landingPage: landingPage ?? undefined,
+      leadMagnet: leadMagnet ?? undefined,
+      leadCapture: leadCapture ?? undefined,
+      publishedStatus,
+    }),
+    [
+      campaignOutputs,
+      generationMode,
+      input,
+      landingPage,
+      leadCapture,
+      leadMagnet,
+      outputs,
+      publishedStatus,
+      title,
+      topic,
+    ],
   );
 
   const analyticsAssetFlags = useMemo(
@@ -426,6 +487,7 @@ export function ContentEngineApp() {
       leadCapture: leadCapture ?? undefined,
       crmIntegration: crmIntegration ?? undefined,
       analytics: analytics ?? undefined,
+      compliance: compliance ?? undefined,
     });
   }, [
     activePackageId,
@@ -436,6 +498,7 @@ export function ContentEngineApp() {
     hasResults,
     input,
     analytics,
+    compliance,
     calendar,
     crmIntegration,
     launchHub,
@@ -531,6 +594,7 @@ export function ContentEngineApp() {
     setLeadCapture(null);
     setCrmIntegration(null);
     setAnalytics(null);
+    setCompliance(null);
     setPublishedStatus(null);
     setOutputView("content");
     setMode(null);
@@ -651,6 +715,7 @@ export function ContentEngineApp() {
         leadCapture: leadCapture ?? undefined,
         crmIntegration: crmIntegration ?? undefined,
         analytics: analytics ?? undefined,
+        compliance: compliance ?? undefined,
         tags: parseTagsInput(tagsInput),
       });
       setActivePackageId(result.package.id);
@@ -675,6 +740,7 @@ export function ContentEngineApp() {
     hasResults,
     input,
     analytics,
+    compliance,
     crmIntegration,
     launchHub,
     leadCapture,
@@ -698,6 +764,51 @@ export function ContentEngineApp() {
     setAnalytics(next);
     setIsUnsaved(true);
   }, []);
+
+  const handleComplianceChange = useCallback((next: ComplianceRecord) => {
+    setCompliance(next);
+    setIsUnsaved(true);
+  }, []);
+
+  const handleApplyComplianceRewrites = useCallback(
+    (issueIds?: string[]) => {
+      if (!compliance) return;
+      const onlyIssueId = issueIds?.length === 1 ? issueIds[0] : undefined;
+      const result = applyComplianceRewrites({
+        issues: compliance.issues,
+        generationMode,
+        outputs,
+        campaignOutputs,
+        landingPage,
+        leadMagnet,
+        leadCapture,
+        onlyIssueId,
+      });
+      if (result.outputs) setOutputs(result.outputs);
+      if (result.campaignOutputs) setCampaignOutputs(result.campaignOutputs);
+      if (result.landingPage) setLandingPage(result.landingPage);
+      if (result.leadMagnet) setLeadMagnet(result.leadMagnet);
+      if (result.leadCapture) setLeadCapture(result.leadCapture);
+      setCompliance({
+        ...compliance,
+        issues: compliance.issues.map((issue) =>
+          result.appliedIssueIds.includes(issue.id)
+            ? { ...issue, applied: true }
+            : issue,
+        ),
+      });
+      setIsUnsaved(true);
+    },
+    [
+      campaignOutputs,
+      compliance,
+      generationMode,
+      landingPage,
+      leadCapture,
+      leadMagnet,
+      outputs,
+    ],
+  );
 
   const handlePublishedStatusChange = useCallback(
     (next: PublishedPageStatus | null) => {
@@ -1010,6 +1121,7 @@ export function ContentEngineApp() {
             })
           : null),
     );
+    setCompliance(pkg.compliance ?? null);
     setLandingIntent(
       pkg.landingPage?.intent ?? inferLandingIntent(pkg.audience, pkg.topic),
     );
@@ -1073,12 +1185,117 @@ export function ContentEngineApp() {
     [activePackageId, refreshPackages],
   );
 
+  const updateBuildStep = useCallback(
+    (
+      id: CampaignBuildStepState["id"],
+      patch: Partial<Pick<CampaignBuildStepState, "status" | "message">>,
+    ) => {
+      setTemplateBuildSteps((prev) =>
+        prev.map((step) =>
+          step.id === id ? { ...step, ...patch } : step,
+        ),
+      );
+    },
+    [],
+  );
+
+  const handleBuildFromTemplate = useCallback(
+    async (template: CampaignTemplate) => {
+      setTemplateBuilding(true);
+      setError(null);
+      setSaveMessage(null);
+      setTemplateBuildSteps(initialBuildSteps());
+      setSidebarView("studio");
+
+      try {
+        const result = await runFullCampaignBuild(template, updateBuildStep);
+
+        setGenerationMode("campaign");
+        setInput(result.sourceInput);
+        setCampaignOutputs(result.campaignOutputs);
+        setOutputs(null);
+        setLandingPage(result.landingPage);
+        setCalendar(result.calendar);
+        setLeadMagnet(result.leadMagnet);
+        setLaunchHub(result.launchHub);
+        setLeadCapture(result.leadCapture);
+        setCrmIntegration(result.crmIntegration);
+        setAnalytics(result.analytics);
+        setTitle(result.title);
+        setAudience(result.audience);
+        setTone(result.tone);
+        setTopic(result.topic);
+        setTagsInput(result.tags.join(", "));
+        setBrandVoiceId(result.brandVoiceId);
+        setModelUsed(result.modelUsed);
+        setMode(result.mode);
+        setLandingIntent(template.landingPageIntent);
+        setLeadCapturePreset(template.leadCapturePreset);
+        setLeadMagnetType(template.leadMagnetType);
+        setCampaignActiveTab("shortFormVideoIdeas");
+        setLandingActiveSection("heroHeadline");
+        setLeadMagnetActiveSection("coverTitle");
+        setOutputView("launchHub");
+        setPublishedStatus(null);
+        setActivePackageId(null);
+        setIsUnsaved(true);
+
+        updateBuildStep("save", { status: "running", message: "Saving…" });
+        const saveResult = await savePackage({
+          title: result.title,
+          sourceInput: result.sourceInput,
+          audience: result.audience,
+          tone: result.tone,
+          topic: result.topic,
+          modelUsed: result.modelUsed,
+          brandVoiceId: result.brandVoiceId,
+          generationMode: result.generationMode,
+          outputs: emptySingleOutputs(),
+          campaignOutputs: result.campaignOutputs,
+          landingPage: result.landingPage,
+          calendar: result.calendar,
+          leadMagnet: result.leadMagnet,
+          launchHub: result.launchHub,
+          leadCapture: result.leadCapture,
+          crmIntegration: result.crmIntegration,
+          analytics: result.analytics,
+          tags: result.tags,
+        });
+        setActivePackageId(saveResult.package.id);
+        setIsUnsaved(false);
+        updateBuildStep("save", {
+          status: "done",
+          message: `Saved (${saveResult.source})`,
+        });
+        setSaveMessage(
+          `Campaign "${result.title}" built and saved to ${saveResult.source === "supabase" ? "Supabase" : "local storage"}.`,
+        );
+        await refreshPackages();
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Campaign build failed.";
+        setError(message);
+        setTemplateBuildSteps((prev) =>
+          prev.map((step) =>
+            step.status === "running"
+              ? { ...step, status: "error", message }
+              : step,
+          ),
+        );
+      } finally {
+        setTemplateBuilding(false);
+      }
+    },
+    [refreshPackages, updateBuildStep],
+  );
+
   const sidebar = (
     <div className="flex min-h-0 flex-1 flex-col">
       <nav className="flex gap-1 border-b border-white/[0.06] px-3 py-3">
         {(
           [
             ["studio", "Studio"],
+            ["templates", "Templates"],
             ["history", "History"],
           ] as const
         ).map(([key, label]) => (
@@ -1123,6 +1340,15 @@ export function ContentEngineApp() {
                 Load sample
               </Button>
             </Card>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className="w-full"
+              onClick={() => setSidebarView("templates")}
+            >
+              Browse templates
+            </Button>
             <p className="rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-[11px] text-zinc-400">
               Storage:{" "}
               <span className="text-zinc-200">
@@ -1131,6 +1357,22 @@ export function ContentEngineApp() {
                   : "Local only"}
               </span>
             </p>
+          </div>
+        ) : sidebarView === "templates" ? (
+          <div className="space-y-3">
+            <p className="text-xs leading-relaxed text-zinc-400">
+              {CAMPAIGN_TEMPLATES.length} preset campaigns with one-click full
+              build.
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="w-full"
+              onClick={() => setSidebarView("studio")}
+            >
+              Back to studio
+            </Button>
           </div>
         ) : (
           <PackageHistoryPanel
@@ -1151,6 +1393,16 @@ export function ContentEngineApp() {
   return (
     <ContentEngineShell sidebar={sidebar}>
       <div className="space-y-6 p-5 lg:p-8">
+        {sidebarView === "templates" ? (
+          <CampaignTemplatesPanel
+            selectedId={selectedTemplateId}
+            onSelect={setSelectedTemplateId}
+            onBuild={(template) => void handleBuildFromTemplate(template)}
+            building={templateBuilding}
+            buildSteps={templateBuildSteps}
+          />
+        ) : (
+          <>
         <div className="flex flex-wrap items-center gap-3 lg:hidden">
           <Button
             type="button"
@@ -1164,7 +1416,13 @@ export function ContentEngineApp() {
             <Badge variant={mode === "ai" ? "purple" : "gold"}>{mode}</Badge>
           )}
           {isUnsaved && <Badge variant="warning">Unsaved</Badge>}
+          {templateBuilding && <Badge variant="purple">Building</Badge>}
         </div>
+
+        <CampaignBuildProgress
+          steps={templateBuildSteps}
+          active={templateBuilding}
+        />
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {[
@@ -1279,6 +1537,7 @@ export function ContentEngineApp() {
                   showLeadCapture={showLeadCapture}
                   showCrmHub={showCrmHub}
                   showAnalytics={showAnalytics}
+                  showCompliance={showCompliance}
                   activeView={outputView}
                   onViewChange={setOutputView}
                   contentLabel="Campaign"
@@ -1332,6 +1591,14 @@ export function ContentEngineApp() {
                     assetFlags={analyticsAssetFlags}
                     onAnalyticsChange={handleAnalyticsChange}
                   />
+                ) : outputView === "compliance" && showCompliance ? (
+                  <CompliancePanel
+                    compliance={compliance}
+                    packageTitle={title || packageTitleFromInput(input)}
+                    scanRequest={complianceScanRequest}
+                    onComplianceChange={handleComplianceChange}
+                    onApplyRewrites={handleApplyComplianceRewrites}
+                  />
                 ) : outputView === "launchHub" && launchHub ? (
                   <LaunchHubPanel
                     launchHub={launchHub}
@@ -1358,6 +1625,7 @@ export function ContentEngineApp() {
                   showLeadCapture={showLeadCapture}
                   showCrmHub={showCrmHub}
                   showAnalytics={showAnalytics}
+                  showCompliance={showCompliance}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -1383,6 +1651,7 @@ export function ContentEngineApp() {
                   showLeadCapture={showLeadCapture}
                   showCrmHub={showCrmHub}
                   showAnalytics={showAnalytics}
+                  showCompliance={showCompliance}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -1406,6 +1675,7 @@ export function ContentEngineApp() {
                   showLeadCapture={showLeadCapture}
                   showCrmHub={showCrmHub}
                   showAnalytics={showAnalytics}
+                  showCompliance={showCompliance}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -1426,6 +1696,7 @@ export function ContentEngineApp() {
                   showLeadCapture
                   showCrmHub={showCrmHub}
                   showAnalytics={showAnalytics}
+                  showCompliance={showCompliance}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -1445,6 +1716,7 @@ export function ContentEngineApp() {
                   showLeadCapture={showLeadCapture}
                   showCrmHub
                   showAnalytics={showAnalytics}
+                  showCompliance={showCompliance}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -1466,6 +1738,7 @@ export function ContentEngineApp() {
                   showLeadCapture={showLeadCapture}
                   showCrmHub={showCrmHub}
                   showAnalytics
+                  showCompliance={showCompliance}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -1479,6 +1752,28 @@ export function ContentEngineApp() {
                   onAnalyticsChange={handleAnalyticsChange}
                 />
               </div>
+            ) : outputView === "compliance" && showCompliance ? (
+              <div className="flex flex-1 flex-col overflow-hidden p-6">
+                <OutputViewTabs
+                  showLanding={Boolean(landingPage)}
+                  showCalendar={Boolean(calendar)}
+                  showLeadMagnet={Boolean(leadMagnet)}
+                  showLaunchHub={showLaunchHub}
+                  showLeadCapture={showLeadCapture}
+                  showCrmHub={showCrmHub}
+                  showAnalytics={showAnalytics}
+                  showCompliance
+                  activeView={outputView}
+                  onViewChange={setOutputView}
+                />
+                <CompliancePanel
+                  compliance={compliance}
+                  packageTitle={title || packageTitleFromInput(input)}
+                  scanRequest={complianceScanRequest}
+                  onComplianceChange={handleComplianceChange}
+                  onApplyRewrites={handleApplyComplianceRewrites}
+                />
+              </div>
             ) : outputView === "launchHub" && launchHub ? (
               <div className="flex flex-1 flex-col overflow-hidden p-6">
                 <OutputViewTabs
@@ -1489,6 +1784,7 @@ export function ContentEngineApp() {
                   showLeadCapture={showLeadCapture}
                   showCrmHub={showCrmHub}
                   showAnalytics={showAnalytics}
+                  showCompliance={showCompliance}
                   activeView={outputView}
                   onViewChange={setOutputView}
                 />
@@ -1511,6 +1807,7 @@ export function ContentEngineApp() {
                     showLeadCapture={showLeadCapture}
                     showCrmHub={showCrmHub}
                     showAnalytics={showAnalytics}
+                  showCompliance={showCompliance}
                     activeView={outputView}
                     onViewChange={setOutputView}
                   />
@@ -1715,6 +2012,8 @@ export function ContentEngineApp() {
               </Card>
             )}
           </>
+        )}
+        </>
         )}
       </div>
     </ContentEngineShell>

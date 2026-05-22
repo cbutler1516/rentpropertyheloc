@@ -10,7 +10,8 @@ export type OutputView =
   | "launchHub"
   | "leadCapture"
   | "crmHub"
-  | "analytics";
+  | "analytics"
+  | "compliance";
 
 type OutputViewTabsProps = {
   showLanding?: boolean;
@@ -20,6 +21,7 @@ type OutputViewTabsProps = {
   showLeadCapture?: boolean;
   showCrmHub?: boolean;
   showAnalytics?: boolean;
+  showCompliance?: boolean;
   activeView: OutputView;
   onViewChange: (view: OutputView) => void;
   contentLabel?: string;
@@ -33,6 +35,7 @@ export function OutputViewTabs({
   showLeadCapture = false,
   showCrmHub = false,
   showAnalytics = false,
+  showCompliance = false,
   activeView,
   onViewChange,
   contentLabel = "Content",
@@ -44,7 +47,8 @@ export function OutputViewTabs({
     !showLaunchHub &&
     !showLeadCapture &&
     !showCrmHub &&
-    !showAnalytics
+    !showAnalytics &&
+    !showCompliance
   ) {
     return null;
   }
@@ -86,6 +90,14 @@ export function OutputViewTabs({
       id: "analytics",
       label: "Analytics",
       activeClass: "bg-amber-500/25 text-amber-200",
+    });
+  }
+
+  if (showCompliance) {
+    tabs.push({
+      id: "compliance",
+      label: "Compliance",
+      activeClass: "bg-red-500/25 text-red-200",
     });
   }
 

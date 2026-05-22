@@ -66,6 +66,31 @@ export function getSeoLandingHref(slug: SeoLandingSlug): string {
   return `/deal-analyzer/${slug}`;
 }
 
+export function isSeoLandingSlug(value: string): value is SeoLandingSlug {
+  return (SEO_LANDING_SLUGS as readonly string[]).includes(value);
+}
+
+export function partnerSeoLandingPath(
+  agentSlug: string,
+  calculatorSlug: SeoLandingSlug,
+): string {
+  return `/partners/${agentSlug}/deal-analyzer/${calculatorSlug}`;
+}
+
+export function getPartnerSeoLandingHref(
+  agentSlug: string,
+  slug: SeoLandingSlug,
+): string {
+  return partnerSeoLandingPath(agentSlug, slug);
+}
+
+export function getPartnerAnalyzeHref(
+  agentSlug: string,
+  path: DealPath,
+): string {
+  return `/partners/${agentSlug}/deal-analyzer/analyze?path=${path}`;
+}
+
 export function getAnalyzeHref(path: DealPath): string {
   return `/deal-analyzer/analyze?path=${path}`;
 }
@@ -664,9 +689,29 @@ export function getSeoLandingContent(
 export function buildSeoLandingMetadata(slug: SeoLandingSlug): Metadata {
   const { metadata } = getSeoLandingContent(slug);
   const title = `${metadata.title} | The Loan Playbook`;
+  return buildSeoLandingMetadataFromParts(
+    title,
+    metadata.description,
+  );
+}
+
+export function buildPartnerSeoLandingMetadata(
+  slug: SeoLandingSlug,
+  agentName: string,
+): Metadata {
+  const { metadata } = getSeoLandingContent(slug);
+  const title = `${metadata.title} | ${agentName} | The Loan Playbook`;
+  const description = `${metadata.description} Shared by ${agentName} with financing strategy from Chris Butler at Broadview Lending.`;
+  return buildSeoLandingMetadataFromParts(title, description);
+}
+
+function buildSeoLandingMetadataFromParts(
+  title: string,
+  description: string,
+): Metadata {
   return {
     title,
-    description: metadata.description,
+    description,
     openGraph: {
       title,
       description: metadata.description,

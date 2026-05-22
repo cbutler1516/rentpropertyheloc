@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/app/components/ui/button";
+import { PartnerLandingAnalytics } from "./partner-landing-analytics";
 import { partnerDealAnalyzerBase } from "../lib/agent-types";
 import type { PartnerAgent } from "../lib/agent-types";
 import {
@@ -27,6 +28,11 @@ export function PartnerLandingView({ agent }: PartnerLandingViewProps) {
       className="relative min-h-screen overflow-hidden bg-[#030712] text-white"
       style={brandStyle}
     >
+      <PartnerLandingAnalytics
+        agentId={agent.id}
+        referralCode={agent.referralCode}
+        agentSlug={agent.slug}
+      />
       <div
         className="pointer-events-none absolute inset-0 playbook-grid opacity-30"
         aria-hidden

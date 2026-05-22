@@ -5,7 +5,9 @@ import {
   getUserAgentFromHeaders,
 } from "@/app/deal-analyzer/lib/request-meta";
 import { isCrmAutoPushEnabled } from "@/app/deal-analyzer/lib/crm/env";
+import type { DealAnalyzerUtm } from "@/app/deal-analyzer/lib/analytics/types";
 import { pushDealAnalyzerReportAfterCreate } from "@/app/deal-analyzer/lib/crm/push-report";
+import { insertDealAnalyzerEvent } from "@/app/deal-analyzer/lib/supabase/events";
 import { isSupabaseConfigured } from "@/app/deal-analyzer/lib/supabase/env";
 import { saveReportToSupabase } from "@/app/deal-analyzer/lib/supabase/save-report";
 import type {
@@ -23,6 +25,8 @@ type PostBody = {
   narrative: PlaybookNarrative;
   agentId?: string | null;
   referralCode?: string | null;
+  sessionId?: string | null;
+  utm?: DealAnalyzerUtm | null;
 };
 
 export async function POST(request: Request) {
@@ -69,15 +73,40 @@ export async function POST(request: Request) {
     consent,
     agentId: body.agentId ?? null,
     referralCode: body.referralCode ?? null,
+    sessionId: body.sessionId ?? null,
+    utm: body.utm ?? null,
   });
 
   if ("error" in result) {
     return NextResponse.json({ error: result.error }, { status: 500 });
   }
 
+  const eventBase = {
+    sessionId: body.sessionId ?? null,
+    leadId: result.leadId,
+    reportId: result.reportId,
+    agentId: body.agentId ?? null,
+    referralCode: body.referralCode ?? null,
+    dealType: body.inputs.path,
+    pagePath: "/deal-analyzer/analyze",
+  };
+
+  void insertDealAnalyzerEvent({
+    ...eventBase,
+    eventName: "lead_submitted",
+  });
+  void insertDealAnalyzerEvent({
+    ...eventBase,
+    eventName: "report_generated",
+  });
+
   if (isCrmAutoPushEnabled()) {
     void pushDealAnalyzerReportAfterCreate(result.reportId);
   }
 
-  return NextResponse.json({ slug: result.slug });
+  return NextResponse.json({
+    slug: result.slug,
+    reportId: result.reportId,
+    leadId: result.leadId,
+  });
 }

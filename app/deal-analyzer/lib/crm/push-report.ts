@@ -4,6 +4,7 @@ import { logCrmPush } from "./log";
 import { pushPayloadToCrmWebhooks } from "./webhook";
 import type { CrmPushReportResult, CrmPushStatus, DealAnalyzerCrmReportPayload } from "./types";
 import { fetchAgentById } from "../supabase/agents";
+import { insertDealAnalyzerEvent } from "../supabase/events";
 import { fetchFollowUpByReportId } from "../supabase/follow-ups";
 import { createServerSupabaseClient } from "../supabase/server";
 
@@ -147,6 +148,12 @@ export async function pushDealAnalyzerReportToCrm(options: {
       error: null,
       externalId: webhookResult.externalId ?? null,
     });
+    void insertDealAnalyzerEvent({
+      eventName: "crm_push_succeeded",
+      reportId: options.reportId,
+      dealType: payload.dealType,
+      metadata: { provider: webhookResult.provider },
+    });
     return {
       success: true,
       reportId: options.reportId,
@@ -161,6 +168,16 @@ export async function pushDealAnalyzerReportToCrm(options: {
     status: "failed",
     error: webhookResult.message,
     externalId: webhookResult.externalId ?? null,
+  });
+
+  void insertDealAnalyzerEvent({
+    eventName: "crm_push_failed",
+    reportId: options.reportId,
+    dealType: payload.dealType,
+    metadata: {
+      provider: webhookResult.provider,
+      error: webhookResult.message.slice(0, 200),
+    },
   });
 
   return {

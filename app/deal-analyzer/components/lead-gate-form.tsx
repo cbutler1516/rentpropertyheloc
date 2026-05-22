@@ -14,6 +14,10 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Select } from "@/app/components/ui/select";
 import { Textarea } from "@/app/components/ui/textarea";
+import {
+  trackDealAnalyzerEvent,
+  trackDealAnalyzerEventOnce,
+} from "../lib/analytics/track-client";
 import { SMS_CALL_CONSENT_TEXT } from "../lib/consent";
 import type { ClientRole, LeadCapture } from "../lib/types";
 import { useDealAnalyzer } from "./deal-analyzer-provider";
@@ -58,6 +62,15 @@ export function LeadGateForm() {
   });
 
   useEffect(() => {
+    trackDealAnalyzerEventOnce("lead_form_viewed", {
+      eventName: "lead_form_viewed",
+      dealType: analysis?.path,
+      agentId: partner?.agent?.id,
+      referralCode: partner?.agent?.referralCode,
+    });
+  }, [analysis?.path, partner?.agent?.id, partner?.agent?.referralCode]);
+
+  useEffect(() => {
     if (!partner?.agent) return;
     setForm((prev) => ({
       ...prev,
@@ -87,6 +100,20 @@ export function LeadGateForm() {
     if (!result.ok) {
       setError(result.error);
       return;
+    }
+
+    if (result.source === "local") {
+      void trackDealAnalyzerEvent({
+        eventName: "lead_submitted",
+        dealType: analysis?.path,
+        agentId: partner?.agent?.id,
+        referralCode: partner?.agent?.referralCode,
+      });
+      void trackDealAnalyzerEvent({
+        eventName: "report_generated",
+        dealType: analysis?.path,
+        metadata: { source: "local" },
+      });
     }
 
     router.push(`/deal-analyzer/report/${result.slug}`);
@@ -241,7 +268,16 @@ export function LeadGateForm() {
                 type="checkbox"
                 className="mt-1 h-4 w-4 shrink-0 rounded border-zinc-600 bg-zinc-950 text-[#c9a227] focus:ring-[#7c3aed]/40"
                 checked={consentChecked}
-                onChange={(e) => setConsentChecked(e.target.checked)}
+                onChange={(e) => {
+                  const checked = e.target.checked;
+                  setConsentChecked(checked);
+                  if (checked) {
+                    void trackDealAnalyzerEvent({
+                      eventName: "consent_checked",
+                      dealType: analysis?.path,
+                    });
+                  }
+                }}
                 required
                 aria-describedby="consent-description"
               />

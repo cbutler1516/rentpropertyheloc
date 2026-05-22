@@ -2,6 +2,7 @@ import Link from "next/link";
 
 const resourceLinks = [
   { href: "/guides", label: "Financing Guides" },
+  { href: "/market", label: "Market Center" },
   { href: "/markets", label: "Markets" },
   { href: "/learn", label: "Learn" },
   { href: "/deal-analyzer", label: "Compare Financing Options" },

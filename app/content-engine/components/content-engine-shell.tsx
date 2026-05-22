@@ -40,10 +40,16 @@ export function ContentEngineShell({
           </p>
         </div>
         {sidebar}
-        <div className="mt-auto border-t border-white/[0.06] px-5 py-4">
+        <div className="mt-auto space-y-2 border-t border-white/[0.06] px-5 py-4">
+          <Link
+            href="/content-engine/admin"
+            className="block font-mono text-[9px] tracking-[0.18em] text-red-400/80 uppercase transition-colors hover:text-red-300"
+          >
+            QA admin →
+          </Link>
           <Link
             href="/"
-            className="font-mono text-[9px] tracking-[0.18em] text-zinc-500 uppercase transition-colors hover:text-zinc-300"
+            className="block font-mono text-[9px] tracking-[0.18em] text-zinc-500 uppercase transition-colors hover:text-zinc-300"
           >
             ← Main site
           </Link>

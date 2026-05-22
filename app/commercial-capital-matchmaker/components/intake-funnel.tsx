@@ -83,7 +83,7 @@ export function IntakeFunnel() {
       setError("Complete each step above—then we will build your capital strategy.");
       return;
     }
-    router.push("/commercial-capital-matchmaker/results");
+    router.push("/commercial-capital-matchmaker/confirmation");
   };
 
   if (!hydrated) {

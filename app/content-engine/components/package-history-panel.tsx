@@ -168,6 +168,9 @@ export function PackageHistoryPanel({
                   {pkg.analytics && (
                     <Badge variant="gold">analytics</Badge>
                   )}
+                  {pkg.compliance && (
+                    <Badge variant="warning">compliance</Badge>
+                  )}
                   <Badge variant={pkg.modelUsed === "demo" ? "gold" : "purple"}>
                     {pkg.modelUsed === "demo" ? "demo" : "ai"}
                   </Badge>

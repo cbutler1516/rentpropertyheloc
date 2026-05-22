@@ -18,5 +18,11 @@ export type StoredReportPayload = {
 };
 
 export type PersistReportResult =
-  | { ok: true; slug: string; source: "supabase" | "local" }
+  | {
+      ok: true;
+      slug: string;
+      source: "supabase" | "local";
+      reportId?: string;
+      leadId?: string;
+    }
   | { ok: false; error: string };

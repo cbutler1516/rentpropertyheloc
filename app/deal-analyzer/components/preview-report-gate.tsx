@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { trackDealAnalyzerEventOnce } from "../lib/analytics/track-client";
 import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
@@ -62,6 +64,14 @@ export function PreviewReportGate() {
   const basePath = useDealAnalyzerBasePath();
   const partner = usePartnerAgent();
   const { inputs, analysis } = useDealAnalyzer();
+
+  useEffect(() => {
+    if (!inputs) return;
+    trackDealAnalyzerEventOnce("preview_viewed", {
+      eventName: "preview_viewed",
+      dealType: inputs.path,
+    });
+  }, [inputs?.path]);
 
   if (!inputs || !analysis) {
     return (

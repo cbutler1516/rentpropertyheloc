@@ -23,7 +23,7 @@ import type {
 import { defaultSession } from "../lib/types";
 
 type SubmitLeadResult =
-  | { ok: true; slug: string }
+  | { ok: true; slug: string; source: "supabase" | "local"; reportId?: string }
   | { ok: false; error: string };
 
 type DealAnalyzerContextValue = DealAnalyzerSession & {
@@ -107,7 +107,12 @@ export function DealAnalyzerProvider({ children }: { children: ReactNode }) {
         reportUnlocked: true,
       }));
 
-      return { ok: true, slug: result.slug };
+      return {
+        ok: true,
+        slug: result.slug,
+        source: result.source,
+        reportId: result.reportId,
+      };
     },
     [],
   );

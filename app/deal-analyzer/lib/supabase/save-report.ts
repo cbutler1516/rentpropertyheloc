@@ -7,6 +7,8 @@ import type {
   LeadCapture,
 } from "../types";
 import type { LeadConsentRecord } from "../consent";
+import type { DealAnalyzerUtm } from "../analytics/types";
+import { utmToDbColumns } from "../analytics/utm";
 import type { Json } from "./database.types";
 import { fetchAgentById } from "./agents";
 import { createServerSupabaseClient } from "./server";
@@ -20,11 +22,13 @@ export type SaveReportInput = {
   consent?: LeadConsentRecord;
   agentId?: string | null;
   referralCode?: string | null;
+  sessionId?: string | null;
+  utm?: DealAnalyzerUtm | null;
 };
 
 export async function saveReportToSupabase(
   input: SaveReportInput,
-): Promise<{ slug: string; reportId: string } | { error: string }> {
+): Promise<{ slug: string; reportId: string; leadId: string } | { error: string }> {
   const supabase = createServerSupabaseClient();
   if (!supabase) {
     return { error: "Supabase is not configured." };
@@ -44,6 +48,7 @@ export async function saveReportToSupabase(
     }));
 
   const consent = input.consent;
+  const utmCols = utmToDbColumns(input.utm);
 
   const { data: leadRow, error: leadError } = await supabase
     .from("deal_analyzer_leads")
@@ -62,6 +67,8 @@ export async function saveReportToSupabase(
       consent_timestamp: consent?.consentTimestamp ?? null,
       consent_ip: consent?.consentIp ?? null,
       consent_user_agent: consent?.consentUserAgent ?? null,
+      session_id: input.sessionId ?? null,
+      ...utmCols,
     })
     .select("id")
     .single();
@@ -97,6 +104,8 @@ export async function saveReportToSupabase(
       agent_id: input.agentId ?? null,
       referral_code: input.referralCode ?? null,
       crm_push_status: "not_pushed",
+      session_id: input.sessionId ?? null,
+      ...utmCols,
     })
     .select("id")
     .single();
@@ -105,7 +114,11 @@ export async function saveReportToSupabase(
     return { error: reportError?.message ?? "Failed to save report." };
   }
 
-  return { slug: input.slug, reportId: reportRow.id };
+  return {
+    slug: input.slug,
+    reportId: reportRow.id,
+    leadId: leadRow.id,
+  };
 }
 
 export async function fetchReportFromSupabase(slug: string) {

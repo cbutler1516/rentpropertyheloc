@@ -115,6 +115,14 @@ export function buildExecutiveSummary(
     dealTitle: `${propertyLabel} — ${purposeLabel}`,
     preparedFor: intake.sponsorName.trim() || "Sponsor",
     generatedAt: new Date().toISOString(),
+    memoClassification: "Confidential preliminary financing memo",
+    informationDisclaimer:
+      "This memo is based on user-provided information and illustrative lender categories only. It is subject to lender review, third-party reports, and final underwriting—not an approval or commitment to lend.",
+    preparedBy: {
+      name: "Chris Butler",
+      organization: "Broadview Lending",
+      role: "Commercial & Residential Capital Strategy",
+    },
     advisorOpening: `This preliminary capital strategy memo summarizes how your ${propertyLabel.toLowerCase()} scenario may read to institutional and specialty lenders. It is intended to guide conversation—not replace formal underwriting.`,
     snapshot: {
       propertyType: propertyLabel,

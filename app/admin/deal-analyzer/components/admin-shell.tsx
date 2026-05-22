@@ -42,6 +42,12 @@ export function AdminShell({
         ) : null}
         <div className="mt-auto space-y-2 border-t border-white/[0.06] px-5 py-4">
           <Link
+            href="/admin/market-center"
+            className="block font-mono text-[9px] tracking-[0.18em] text-zinc-500 uppercase transition-colors hover:text-zinc-300"
+          >
+            Market Center →
+          </Link>
+          <Link
             href="/admin/deal-analyzer/agents"
             className="block font-mono text-[9px] tracking-[0.18em] text-zinc-500 uppercase transition-colors hover:text-zinc-300"
           >

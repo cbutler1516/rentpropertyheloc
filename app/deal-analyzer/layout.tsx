@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DealAnalyzerAnalyticsTracker } from "./components/deal-analyzer-analytics-tracker";
 import { DealAnalyzerProvider } from "./components/deal-analyzer-provider";
 import { DealAnalyzerShell } from "./components/deal-analyzer-shell";
 import "./deal-analyzer-preview.css";
@@ -16,6 +17,7 @@ export default function DealAnalyzerLayout({
 }) {
   return (
     <DealAnalyzerProvider>
+      <DealAnalyzerAnalyticsTracker />
       <DealAnalyzerShell>{children}</DealAnalyzerShell>
     </DealAnalyzerProvider>
   );

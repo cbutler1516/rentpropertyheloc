@@ -69,6 +69,12 @@ export type Database = {
           lead_status: string;
           last_contacted_at: string | null;
           next_follow_up_at: string | null;
+          session_id: string | null;
+          utm_source: string | null;
+          utm_medium: string | null;
+          utm_campaign: string | null;
+          utm_term: string | null;
+          utm_content: string | null;
         };
         Insert: {
           id?: string;
@@ -90,6 +96,12 @@ export type Database = {
           lead_status?: string;
           last_contacted_at?: string | null;
           next_follow_up_at?: string | null;
+          session_id?: string | null;
+          utm_source?: string | null;
+          utm_medium?: string | null;
+          utm_campaign?: string | null;
+          utm_term?: string | null;
+          utm_content?: string | null;
         };
         Update: Partial<Database["public"]["Tables"]["deal_analyzer_leads"]["Insert"]>;
       };
@@ -128,6 +140,12 @@ export type Database = {
           crm_last_pushed_at: string | null;
           crm_push_error: string | null;
           crm_external_id: string | null;
+          session_id: string | null;
+          utm_source: string | null;
+          utm_medium: string | null;
+          utm_campaign: string | null;
+          utm_term: string | null;
+          utm_content: string | null;
         };
         Insert: {
           id?: string;
@@ -144,8 +162,43 @@ export type Database = {
           crm_last_pushed_at?: string | null;
           crm_push_error?: string | null;
           crm_external_id?: string | null;
+          session_id?: string | null;
+          utm_source?: string | null;
+          utm_medium?: string | null;
+          utm_campaign?: string | null;
+          utm_term?: string | null;
+          utm_content?: string | null;
         };
         Update: Partial<Database["public"]["Tables"]["deal_analyzer_reports"]["Insert"]>;
+      };
+      deal_analyzer_events: {
+        Row: {
+          id: string;
+          event_name: string;
+          session_id: string | null;
+          lead_id: string | null;
+          report_id: string | null;
+          agent_id: string | null;
+          referral_code: string | null;
+          deal_type: string | null;
+          page_path: string | null;
+          metadata: Json;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          event_name: string;
+          session_id?: string | null;
+          lead_id?: string | null;
+          report_id?: string | null;
+          agent_id?: string | null;
+          referral_code?: string | null;
+          deal_type?: string | null;
+          page_path?: string | null;
+          metadata?: Json;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["deal_analyzer_events"]["Insert"]>;
       };
       deal_analyzer_followups: {
         Row: {

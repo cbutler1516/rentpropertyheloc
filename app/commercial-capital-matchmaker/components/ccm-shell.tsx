@@ -47,6 +47,15 @@ export function CcmShell({
             aria-label="Matchmaker navigation"
           >
             <span className="text-[#c9a227]">{eyebrow}</span>
+            <Link href="/commercial-capital-matchmaker/sample" className="hover:text-zinc-300">
+              Sample
+            </Link>
+            <Link
+              href="/commercial-capital-matchmaker/strategy-review"
+              className="hover:text-zinc-300"
+            >
+              Review
+            </Link>
             <Link href="/commercial-capital-matchmaker/intake" className="hover:text-zinc-300">
               Intake
             </Link>

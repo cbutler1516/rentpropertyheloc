@@ -1,18 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import {
-  CAPITAL_PATH_META,
-  dealPurposeOptions,
-  loanAmountOptions,
-  propertyTypeOptions,
-} from "../lib/form-options";
+import { CAPITAL_PATH_META, propertyTypeOptions } from "../lib/form-options";
 import {
   LEAD_QUALITY_LABELS,
   LEAD_QUALITY_TAGS,
 } from "../lib/lead-quality";
-import { ccmAccentLabel, ccmPanel, ccmPanelElevated } from "../lib/ccm-ui";
-import type { CcmLeadRecord, LeadQualityTag } from "../lib/types";
+import { LEAD_SOURCE_LABELS } from "../lib/leads";
+import { ccmAccentLabel, ccmPanelElevated } from "../lib/ccm-ui";
+import type { CcmLeadRecord, LeadQualityTag, LeadStatus } from "../lib/types";
+import { LeadDetailPanel } from "./lead-detail-panel";
 import { useCcm } from "./ccm-provider";
 
 function labelFor<T extends string>(
@@ -22,6 +19,17 @@ function labelFor<T extends string>(
   return options.find((o) => o.value === value)?.label ?? value;
 }
 
+type FilterKey = "all" | LeadQualityTag | "archived";
+
+const FILTER_OPTIONS: { key: FilterKey; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "hot", label: LEAD_QUALITY_LABELS.hot },
+  { key: "lender-ready", label: LEAD_QUALITY_LABELS["lender-ready"] },
+  { key: "docs-needed", label: LEAD_QUALITY_LABELS["docs-needed"] },
+  { key: "needs-review", label: LEAD_QUALITY_LABELS["needs-review"] },
+  { key: "archived", label: "Archived" },
+];
+
 const qualityStyles: Record<LeadQualityTag, string> = {
   hot: "bg-[#c9a227]/15 text-[#e8c547] ring-[#c9a227]/30",
   "needs-review": "bg-[#7c3aed]/10 text-[#c4b5fd] ring-[#7c3aed]/30",
@@ -30,24 +38,52 @@ const qualityStyles: Record<LeadQualityTag, string> = {
 };
 
 export function AdminLeadsDashboard() {
-  const { leads, updateLeadQuality, clearAll, hydrated } = useCcm();
-  const [filter, setFilter] = useState<LeadQualityTag | "all">("all");
+  const {
+    leads,
+    updateLeadQuality,
+    updateLeadNotes,
+    markLeadReviewed,
+    markLeadDocsNeeded,
+    markLeadLenderReady,
+    archiveLead,
+    clearAll,
+    hydrated,
+  } = useCcm();
+  const [filter, setFilter] = useState<FilterKey>("all");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
-    if (filter === "all") return leads;
-    return leads.filter((lead) => lead.qualityTag === filter);
+    if (filter === "all") {
+      return leads.filter((l) => l.status !== "archived");
+    }
+    if (filter === "archived") {
+      return leads.filter((l) => l.status === "archived");
+    }
+    return leads.filter(
+      (l) => l.qualityTag === filter && l.status !== "archived",
+    );
   }, [leads, filter]);
 
+  const selectedLead = useMemo(
+    () => leads.find((l) => l.id === selectedId) ?? null,
+    [leads, selectedId],
+  );
+
   const counts = useMemo(() => {
-    const base: Record<LeadQualityTag | "all", number> = {
-      all: leads.length,
+    const base: Record<FilterKey, number> = {
+      all: leads.filter((l) => l.status !== "archived").length,
       hot: 0,
-      "needs-review": 0,
-      "docs-needed": 0,
       "lender-ready": 0,
+      "docs-needed": 0,
+      "needs-review": 0,
+      archived: 0,
     };
     for (const lead of leads) {
-      base[lead.qualityTag] += 1;
+      if (lead.status === "archived") {
+        base.archived += 1;
+      } else {
+        base[lead.qualityTag] += 1;
+      }
     }
     return base;
   }, [leads]);
@@ -65,8 +101,8 @@ export function AdminLeadsDashboard() {
             Commercial capital leads
           </h1>
           <p className="text-base leading-relaxed text-zinc-400">
-            Boutique dashboard view for Chris / Broadview follow-up. Stored in
-            your browser until CRM is connected.
+            Click a row for source, contact, documents, and local notes. Status
+            actions sync to your browser until CRM is connected.
           </p>
         </div>
         {leads.length > 0 ? (
@@ -75,6 +111,7 @@ export function AdminLeadsDashboard() {
             onClick={() => {
               if (window.confirm("Clear all local leads and session data?")) {
                 clearAll();
+                setSelectedId(null);
               }
             }}
             className="rounded-full px-5 py-2.5 font-mono text-[10px] tracking-[0.16em] text-zinc-500 uppercase ring-1 ring-white/10 transition hover:text-red-300 hover:ring-red-500/30"
@@ -84,20 +121,19 @@ export function AdminLeadsDashboard() {
         ) : null}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        {(["all", ...LEAD_QUALITY_TAGS] as const).map((tag) => (
+      <div className="flex flex-wrap gap-2">
+        {FILTER_OPTIONS.map(({ key, label }) => (
           <button
-            key={tag}
+            key={key}
             type="button"
-            onClick={() => setFilter(tag)}
-            className={`${ccmPanel} p-6 text-left transition ${
-              filter === tag ? "ring-[#7c3aed]/40" : "hover:ring-white/10"
+            onClick={() => setFilter(key)}
+            className={`rounded-full px-4 py-2 font-mono text-[10px] tracking-[0.14em] uppercase transition ${
+              filter === key
+                ? "bg-[#7c3aed]/20 text-[#e9d5ff] ring-1 ring-[#7c3aed]/40"
+                : "bg-white/[0.04] text-zinc-500 ring-1 ring-white/[0.06] hover:text-zinc-300"
             }`}
           >
-            <p className="font-mono text-[9px] tracking-[0.2em] text-zinc-500 uppercase">
-              {tag === "all" ? "All leads" : LEAD_QUALITY_LABELS[tag]}
-            </p>
-            <p className="mt-3 text-3xl font-semibold text-white">{counts[tag]}</p>
+            {label} ({counts[key]})
           </button>
         ))}
       </div>
@@ -106,7 +142,7 @@ export function AdminLeadsDashboard() {
         <div className={`${ccmPanelElevated} p-12 text-center`}>
           <p className="text-lg font-medium text-white">No leads in this view</p>
           <p className="mt-2 text-sm text-zinc-500">
-            Run a deal through intake to populate the pipeline.
+            Complete intake or submit a strategy review to populate the pipeline.
           </p>
         </div>
       ) : (
@@ -115,87 +151,71 @@ export function AdminLeadsDashboard() {
             <thead className="font-mono text-[9px] tracking-[0.18em] text-zinc-500 uppercase">
               <tr className="border-b border-white/[0.06]">
                 <th className="px-6 py-4 font-normal">Sponsor</th>
+                <th className="px-6 py-4 font-normal">Source</th>
                 <th className="px-6 py-4 font-normal">Deal</th>
-                <th className="px-6 py-4 font-normal">Primary path</th>
+                <th className="px-6 py-4 font-normal">Path</th>
                 <th className="px-6 py-4 font-normal">Quality</th>
-                <th className="px-6 py-4 font-normal">Recommended follow-up</th>
-                <th className="px-6 py-4 font-normal">Created</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((lead) => (
-                <LeadRow
+                <tr
                   key={lead.id}
-                  lead={lead}
-                  onQualityChange={(tag) => updateLeadQuality(lead.id, tag)}
-                />
+                  onClick={() =>
+                    setSelectedId((id) => (id === lead.id ? null : lead.id))
+                  }
+                  className={`cursor-pointer border-b border-white/[0.04] transition hover:bg-white/[0.03] ${
+                    selectedId === lead.id ? "bg-[#7c3aed]/10" : ""
+                  }`}
+                >
+                  <td className="px-6 py-5 align-top">
+                    <p className="font-medium text-white">
+                      {lead.intake.sponsorName || "—"}
+                    </p>
+                    <p className="text-xs text-zinc-500">
+                      {lead.intake.sponsorEmail}
+                    </p>
+                  </td>
+                  <td className="px-6 py-5 align-top text-xs text-zinc-500">
+                    {LEAD_SOURCE_LABELS[lead.source]}
+                  </td>
+                  <td className="px-6 py-5 align-top text-zinc-400">
+                    {lead.strategyReview?.transactionType ??
+                      (lead.intake.propertyType
+                        ? labelFor(propertyTypeOptions, lead.intake.propertyType)
+                        : "—")}
+                  </td>
+                  <td className="px-6 py-5 align-top text-zinc-300">
+                    {lead.recommendation
+                      ? CAPITAL_PATH_META[lead.recommendation.primaryPath].label
+                      : "—"}
+                  </td>
+                  <td className="px-6 py-5 align-top">
+                    <span
+                      className={`inline-block rounded-full px-3 py-1 font-mono text-[9px] tracking-[0.12em] uppercase ring-1 ${qualityStyles[lead.qualityTag]}`}
+                    >
+                      {LEAD_QUALITY_LABELS[lead.qualityTag]}
+                    </span>
+                  </td>
+                </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
+
+      {selectedLead ? (
+        <LeadDetailPanel
+          lead={selectedLead}
+          onNotesChange={(notes) => updateLeadNotes(selectedLead.id, notes)}
+          onQualityChange={(tag) => updateLeadQuality(selectedLead.id, tag)}
+          onMarkReviewed={() => markLeadReviewed(selectedLead.id)}
+          onMarkDocsNeeded={() => markLeadDocsNeeded(selectedLead.id)}
+          onMarkLenderReady={() => markLeadLenderReady(selectedLead.id)}
+          onArchive={() => archiveLead(selectedLead.id)}
+          onClose={() => setSelectedId(null)}
+        />
+      ) : null}
     </div>
-  );
-}
-
-function LeadRow({
-  lead,
-  onQualityChange,
-}: {
-  lead: CcmLeadRecord;
-  onQualityChange: (tag: LeadQualityTag) => void;
-}) {
-  const { intake, recommendation } = lead;
-  const created = new Date(lead.createdAt).toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  });
-
-  return (
-    <tr className="border-b border-white/[0.04] transition hover:bg-white/[0.02]">
-      <td className="px-6 py-5 align-top">
-        <p className="font-medium text-white">{intake.sponsorName}</p>
-        <p className="text-xs text-zinc-500">{intake.sponsorEmail}</p>
-        {intake.companyName ? (
-          <p className="text-xs text-zinc-600">{intake.companyName}</p>
-        ) : null}
-      </td>
-      <td className="px-6 py-5 align-top text-zinc-400">
-        {labelFor(propertyTypeOptions, intake.propertyType)}
-        <br />
-        <span className="text-zinc-500">
-          {labelFor(dealPurposeOptions, intake.dealPurpose)}
-        </span>
-        <br />
-        <span className="text-xs text-zinc-600">
-          {labelFor(loanAmountOptions, intake.loanAmountRange)}
-        </span>
-      </td>
-      <td className="px-6 py-5 align-top text-zinc-300">
-        {CAPITAL_PATH_META[recommendation.primaryPath].label}
-        <p className="mt-1 text-xs text-zinc-600">
-          Fit {recommendation.capitalFitScore} · {lead.matchCount} lanes
-        </p>
-      </td>
-      <td className="px-6 py-5 align-top">
-        <select
-          value={lead.qualityTag}
-          onChange={(e) => onQualityChange(e.target.value as LeadQualityTag)}
-          className={`rounded-full px-3 py-1.5 font-mono text-[9px] tracking-[0.12em] uppercase ring-1 outline-none ${qualityStyles[lead.qualityTag]}`}
-        >
-          {LEAD_QUALITY_TAGS.map((tag) => (
-            <option key={tag} value={tag} className="bg-zinc-900 text-white">
-              {LEAD_QUALITY_LABELS[tag]}
-            </option>
-          ))}
-        </select>
-      </td>
-      <td className="max-w-xs px-6 py-5 align-top text-sm leading-relaxed text-zinc-400">
-        {lead.recommendedFollowUp}
-      </td>
-      <td className="px-6 py-5 align-top text-xs text-zinc-600">{created}</td>
-    </tr>
   );
 }

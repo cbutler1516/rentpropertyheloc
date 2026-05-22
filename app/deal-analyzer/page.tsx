@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { PathSelector } from "./components/path-selector";
+import {
+  getSeoLandingHref,
+  SEO_LANDING_SLUGS,
+  seoLandingContent,
+} from "./lib/seo-landing-content";
 
 const features = [
   {
@@ -69,6 +74,25 @@ export default function DealAnalyzerLandingPage() {
             </CardHeader>
           </Card>
         ))}
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-medium text-white">Calculator guides</h2>
+        <p className="max-w-2xl text-sm text-zinc-500">
+          Educational landing pages for each strategy—each CTA opens the analyzer with the
+          right path preselected.
+        </p>
+        <nav className="flex flex-wrap gap-2" aria-label="Deal Analyzer calculator guides">
+          {SEO_LANDING_SLUGS.map((slug) => (
+            <Link
+              key={slug}
+              href={getSeoLandingHref(slug)}
+              className="rounded-full border border-zinc-700 px-4 py-2 font-mono text-[9px] tracking-[0.14em] text-zinc-400 uppercase transition-colors hover:border-[#7c3aed]/50 hover:text-zinc-200"
+            >
+              {seoLandingContent[slug].navLabel}
+            </Link>
+          ))}
+        </nav>
       </section>
     </div>
   );

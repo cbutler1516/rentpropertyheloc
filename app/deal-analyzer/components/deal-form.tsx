@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { trackDealAnalyzerEvent, trackDealAnalyzerEventOnce } from "../lib/analytics/track-client";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { Select } from "@/app/components/ui/select";
@@ -72,6 +73,22 @@ export function DealForm({ initialPath }: { initialPath?: DealPath }) {
 
   const meta = dealPathMeta[path];
 
+  useEffect(() => {
+    trackDealAnalyzerEventOnce("analyzer_started", {
+      eventName: "analyzer_started",
+    });
+  }, []);
+
+  useEffect(() => {
+    if (initialPath) {
+      trackDealAnalyzerEventOnce(`path:url:${initialPath}`, {
+        eventName: "path_selected",
+        dealType: initialPath,
+        metadata: { source: "url" },
+      });
+    }
+  }, [initialPath]);
+
   const update = <K extends keyof typeof defaultFormValues>(
     key: K,
     value: (typeof defaultFormValues)[K],
@@ -91,7 +108,16 @@ export function DealForm({ initialPath }: { initialPath?: DealPath }) {
         <p className="font-mono text-[10px] tracking-[0.28em] text-[#7c3aed] uppercase">
           Step 1 — Choose your path
         </p>
-        <PathSelector selected={path} onSelect={setPath} />
+        <PathSelector
+          selected={path}
+          onSelect={(next) => {
+            setPath(next);
+            trackDealAnalyzerEvent({
+              eventName: "path_selected",
+              dealType: next,
+            });
+          }}
+        />
       </section>
 
       <Card>

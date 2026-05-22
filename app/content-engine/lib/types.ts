@@ -414,6 +414,7 @@ export type ContentPackage = {
   leadCapture?: LeadCaptureRecord;
   crmIntegration?: CrmIntegrationRecord;
   analytics?: AnalyticsRecord;
+  compliance?: ComplianceRecord;
   tags: string[];
   mode?: "ai" | "demo";
 };
@@ -436,7 +437,78 @@ export type PackageDraft = {
   leadCapture?: LeadCaptureRecord;
   crmIntegration?: CrmIntegrationRecord;
   analytics?: AnalyticsRecord;
+  compliance?: ComplianceRecord;
   tags: string[];
+};
+
+export type ComplianceRiskLevel = "low" | "medium" | "high";
+
+export type ComplianceIssueSeverity = "low" | "medium" | "high" | "critical";
+
+export type ComplianceIssueCategory =
+  | "guaranteedApproval"
+  | "misleadingRates"
+  | "missingAprTerms"
+  | "triggerTerms"
+  | "overpromising"
+  | "unsupportedSuperlatives"
+  | "fairLending"
+  | "missingDisclaimer"
+  | "missingConsent"
+  | "urgencyScarcity";
+
+export type ComplianceIssue = {
+  id: string;
+  severity: ComplianceIssueSeverity;
+  category: ComplianceIssueCategory;
+  source: string;
+  excerpt: string;
+  message: string;
+  suggestedRewrite: string;
+  saferVersion?: string;
+  applied?: boolean;
+};
+
+export type ComplianceDisclaimerItem = {
+  id: string;
+  label: string;
+  present: boolean;
+  required: boolean;
+};
+
+export type ComplianceApprovalItem = {
+  id: string;
+  label: string;
+  checked: boolean;
+};
+
+export type ComplianceRecord = {
+  riskScore: ComplianceRiskLevel;
+  issues: ComplianceIssue[];
+  missingDisclaimers: ComplianceDisclaimerItem[];
+  finalApprovalChecklist: ComplianceApprovalItem[];
+  reviewerNotes: string;
+  reviewed: boolean;
+  reviewedAt: string | null;
+  scannedAt: string;
+  modelUsed: string;
+};
+
+export type ComplianceScanRequest = {
+  title: string;
+  topic: string;
+  generationMode: GenerationMode;
+  outputs?: ContentOutputs;
+  campaignOutputs?: CampaignOutputs;
+  landingPage?: LandingPageRecord;
+  leadMagnet?: LeadMagnetRecord;
+  leadCapture?: LeadCaptureRecord;
+  publishedStatus?: PublishedPageStatus | null;
+};
+
+export type ComplianceScanResponse = {
+  compliance: ComplianceRecord;
+  mode: "ai" | "demo";
 };
 
 export type AnalyticsRecommendRequest = {

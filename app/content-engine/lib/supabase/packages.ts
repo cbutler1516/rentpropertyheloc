@@ -58,6 +58,7 @@ export async function savePackageToSupabase(
     leadCapture: draft.leadCapture,
     crmIntegration: draft.crmIntegration,
     analytics: draft.analytics,
+    compliance: draft.compliance,
     tags: draft.tags,
   };
 

@@ -118,6 +118,13 @@ export type ExecutiveSummary = {
   dealTitle: string;
   preparedFor: string;
   generatedAt: string;
+  memoClassification: string;
+  informationDisclaimer: string;
+  preparedBy: {
+    name: string;
+    organization: string;
+    role: string;
+  };
   advisorOpening: string;
   snapshot: {
     propertyType: string;
@@ -143,14 +150,46 @@ export type LeadQualityTag =
   | "docs-needed"
   | "lender-ready";
 
+export type LeadSource =
+  | "intake"
+  | "sample"
+  | "strategy-review"
+  | "memo-cta";
+
+export type LeadStatus =
+  | "new"
+  | "reviewed"
+  | "docs-needed"
+  | "lender-ready"
+  | "archived";
+
+export type StrategyReviewSubmission = {
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  propertyAddress: string;
+  transactionType: string;
+  estimatedValue: string;
+  requestedLoanAmount: string;
+  notes: string;
+  consent: boolean;
+};
+
 export type CcmLeadRecord = {
   id: string;
+  source: LeadSource;
   createdAt: string;
+  lastUpdatedAt: string;
+  status: LeadStatus;
   qualityTag: LeadQualityTag;
   recommendedFollowUp: string;
+  missingDocuments: string[];
+  notes: string;
   intake: DealIntake;
-  recommendation: CapitalPathRecommendation;
+  recommendation: CapitalPathRecommendation | null;
   matchCount: number;
+  strategyReview?: StrategyReviewSubmission;
 };
 
 export type CcmSession = {

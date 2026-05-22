@@ -28,6 +28,44 @@ const processCards = [
   },
 ];
 
+const trustCards = [
+  {
+    title: "Owner-user purchases",
+    body: "Professional practices, operating companies, and occupancy-driven acquisitions—including SBA and bank comparisons.",
+  },
+  {
+    title: "Investor refinances",
+    body: "Recaps, cash-out, and portfolio repricing with clarity on which lenders still lean in.",
+  },
+  {
+    title: "Bridge-to-perm strategies",
+    body: "Transitional timelines with a documented takeout before you accept bridge terms.",
+  },
+  {
+    title: "Construction and development",
+    body: "Ground-up and major rehab plays with equity, bank, and specialty lender sequencing.",
+  },
+  {
+    title: "SBA and bank comparisons",
+    body: "Side-by-side framing of 504, 7(a), and conventional owner-user paths—not a single-lane quote.",
+  },
+  {
+    title: "Seller financing insight",
+    body: "When seller paper helps—or when it complicates the institutional read on your deal.",
+  },
+];
+
+const documentPreview = [
+  "Rent roll",
+  "T12 / operating statement",
+  "Purchase agreement",
+  "Sponsor financial statement",
+  "Tax returns or business financials",
+  "Entity documents",
+  "Property debt schedule",
+  "Construction budget (if applicable)",
+];
+
 const lenderSources = [
   "Banks & credit unions",
   "Agency multifamily",
@@ -94,6 +132,27 @@ export default function CommercialCapitalMatchmakerPage() {
 
       <section className="space-y-10">
         <div className="max-w-2xl space-y-3">
+          <p className={ccmAccentLabel}>Expertise</p>
+          <h2 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
+            Built for complex commercial financing scenarios
+          </h2>
+          <p className="text-sm leading-relaxed text-zinc-500">
+            The Matchmaker is designed for deals that rarely fit a single retail
+            mortgage checkbox.
+          </p>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {trustCards.map((card) => (
+            <div key={card.title} className={`${ccmPanel} space-y-3 p-8`}>
+              <h3 className="text-base font-medium text-white">{card.title}</h3>
+              <p className="text-sm leading-relaxed text-zinc-400">{card.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-10">
+        <div className="max-w-2xl space-y-3">
           <p className={ccmAccentLabel}>How it works</p>
           <h2 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
             Three moves. One clear capital story.
@@ -112,16 +171,43 @@ export default function CommercialCapitalMatchmakerPage() {
         </div>
       </section>
 
+      <section className={`${ccmPanelElevated} space-y-8 p-10 md:p-14`}>
+        <div className="max-w-2xl space-y-3">
+          <p className={ccmGoldLabel}>Before you start</p>
+          <h2 className="text-xl font-semibold text-white md:text-2xl">
+            Know what lenders will ask for before they ask.
+          </h2>
+          <p className="text-sm leading-relaxed text-zinc-500">
+            Use this checklist to prepare—your executive memo will tailor documents
+            to your deal type.
+          </p>
+        </div>
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {documentPreview.map((doc) => (
+            <li
+              key={doc}
+              className="flex items-center gap-2 rounded-2xl bg-white/[0.03] px-4 py-3 text-sm text-zinc-300 ring-1 ring-white/[0.05]"
+            >
+              <span className="text-[#c9a227]" aria-hidden>
+                □
+              </span>
+              {doc}
+            </li>
+          ))}
+        </ul>
+        <div className="pt-2">
+          <Link href="/commercial-capital-matchmaker/intake" className={ccmBtnPrimary}>
+            Start deal intake
+          </Link>
+        </div>
+      </section>
+
       <section className="space-y-8">
         <div className="max-w-2xl space-y-3">
           <p className={ccmAccentLabel}>Lender universe</p>
           <h2 className="text-xl font-medium text-white md:text-2xl">
             Capital sources we help you navigate
           </h2>
-          <p className="text-sm leading-relaxed text-zinc-500">
-            Your strategy may combine multiple paths—we show where to start and
-            what to run in parallel.
-          </p>
         </div>
         <ul className="flex flex-wrap gap-3">
           {lenderSources.map((item) => (

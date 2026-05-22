@@ -221,3 +221,65 @@ CRM_AUTO_PUSH=false
 - `POST /api/deal-analyzer/admin/crm/push-report` — body `{ reportId }`
 
 Webhook JSON includes lead, consent, deal type, inputs, analysis, report URL, agent attribution, lead score, follow-up copy, lead status, and created date.
+
+## v10 — SEO calculator landing pages
+
+Educational, compliance-safe landing pages for each calculator strategy. No migration required.
+
+### Routes
+
+| URL | Analyzer path (`?path=`) |
+|-----|---------------------------|
+| `/deal-analyzer/homebuyer` | `buy-home` |
+| `/deal-analyzer/refinance` | `refinance` |
+| `/deal-analyzer/investor-dscr` | `investor-dscr` |
+| `/deal-analyzer/commercial` | `commercial` |
+| `/deal-analyzer/seller-concessions` | `buy-home` |
+| `/deal-analyzer/rate-buydown` | `buy-home` |
+| `/deal-analyzer/heloc-vs-cash-out` | `refinance` |
+| `/deal-analyzer/wait-vs-buy` | `buy-home` |
+
+Strategy pages (seller concessions, rate buydown, HELOC vs cash-out, wait vs buy) use the buy-home or refinance analyzer path with educational framing; CTAs open `/deal-analyzer/analyze?path=…` with the path preselected.
+
+### Implementation
+
+| File | Purpose |
+|------|---------|
+| `app/deal-analyzer/lib/seo-landing-content.ts` | Copy, metadata, FAQ, related links per slug |
+| `app/deal-analyzer/lib/seo-landing-route.tsx` | `createSeoLandingPage` + `createSeoLandingGenerateMetadata` |
+| `app/deal-analyzer/components/deal-analyzer-seo-landing.tsx` | Shared landing layout (hero, problem/solution, FAQ, disclaimer) |
+| `app/deal-analyzer/{slug}/page.tsx` | Thin route files per slug |
+| `app/lib/sitemap-inventory.ts` | All SEO slugs in sitemap (priority `0.75`) |
+
+Each page exports `generateMetadata` and renders FAQ **FAQPage** JSON-LD via `JsonLd`. Main hub `/deal-analyzer` links to all calculator guides.
+
+Copy is educational only—no promises of approval, savings, or specific loan terms.
+
+## v11 — Conversion analytics
+
+Run migration `007_deal_analyzer_events.sql` after `006`.
+
+**Table:** `deal_analyzer_events` — product funnel events (anonymous `session_id`, optional `lead_id` / `report_id` / `agent_id`, `metadata` jsonb).
+
+**UTM on leads/reports:** `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`, plus `session_id`. Captured from URL on first visit (sessionStorage) and stored when a report is saved.
+
+**Client tracking:** `POST /api/deal-analyzer/events` (no PII in metadata; consent events are separate from page-view events).
+
+| Event | When |
+|-------|------|
+| `seo_landing_view` | SEO calculator landing page |
+| `partner_landing_view` | `/partners/{slug}` |
+| `analyzer_started` | Deal form first load |
+| `path_selected` | Path change |
+| `preview_viewed` | Preview gate |
+| `lead_form_viewed` | Lead gate |
+| `consent_checked` | SMS/call checkbox checked |
+| `lead_submitted` | Lead saved (server + local fallback) |
+| `report_generated` | Report saved |
+| `report_link_copied` / `report_message_copied` / `report_pdf_printed` | Report actions |
+| `crm_push_succeeded` / `crm_push_failed` | CRM webhooks |
+| `follow_up_generated` | Admin follow-up AI |
+
+**Admin** (`/admin/deal-analyzer`): Conversion analytics panel — funnel, by deal type, by agent, top SEO pages, report engagement, CRM push rate. API: `GET /api/deal-analyzer/admin/analytics?days=30`.
+
+Session id: `localStorage` + cookie `da_session_id` (30-day). No browser fingerprinting.

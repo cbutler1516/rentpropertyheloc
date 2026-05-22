@@ -3,10 +3,13 @@
 import { useCallback, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/app/components/ui/button";
+import { trackDealAnalyzerEvent } from "../lib/analytics/track-client";
 import { STRATEGY_CALL_URL } from "../lib/constants";
 
 type ReportActionsProps = {
   slug: string;
+  reportId?: string | null;
+  dealType?: string | null;
   agentShareMessage?: string;
   reportTitle?: string;
   onNewAnalysis?: () => void;
@@ -14,6 +17,8 @@ type ReportActionsProps = {
 
 export function ReportActions({
   slug,
+  reportId,
+  dealType,
   agentShareMessage,
   reportTitle,
   onNewAnalysis,
@@ -32,6 +37,12 @@ export function ReportActions({
       await navigator.clipboard.writeText(reportUrl);
       setLinkCopied(true);
       setTimeout(() => setLinkCopied(false), 2500);
+      void trackDealAnalyzerEvent({
+        eventName: "report_link_copied",
+        reportId: reportId ?? undefined,
+        dealType: dealType ?? undefined,
+        metadata: { slug },
+      });
     } catch {
       setLinkCopied(false);
     }
@@ -44,6 +55,12 @@ export function ReportActions({
       await navigator.clipboard.writeText(text);
       setShareCopied(true);
       setTimeout(() => setShareCopied(false), 2500);
+      void trackDealAnalyzerEvent({
+        eventName: "report_message_copied",
+        reportId: reportId ?? undefined,
+        dealType: dealType ?? undefined,
+        metadata: { slug },
+      });
     } catch {
       setShareCopied(false);
     }
@@ -65,10 +82,17 @@ export function ReportActions({
     };
 
     window.addEventListener("afterprint", cleanup);
+    void trackDealAnalyzerEvent({
+      eventName: "report_pdf_printed",
+      reportId: reportId ?? undefined,
+      dealType: dealType ?? undefined,
+      metadata: { slug },
+    });
+
     window.setTimeout(() => {
       window.print();
     }, 150);
-  }, [reportTitle]);
+  }, [reportTitle, reportId, dealType, slug]);
 
   return (
     <div className="space-y-4">

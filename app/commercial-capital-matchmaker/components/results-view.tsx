@@ -13,6 +13,7 @@ import {
   ccmPanelElevated,
   ccmPanelGold,
 } from "../lib/ccm-ui";
+import { BroadviewReviewCta } from "./broadview-review-cta";
 import { CcmCtaBand } from "./ccm-cta-band";
 import { useCcm } from "./ccm-provider";
 import { CapitalMatchCard } from "./capital-match-card";
@@ -157,6 +158,8 @@ export function ResultsView() {
           ))}
         </div>
       </section>
+
+      <BroadviewReviewCta />
 
       <CcmCtaBand location="results" variant="compact" />
     </div>

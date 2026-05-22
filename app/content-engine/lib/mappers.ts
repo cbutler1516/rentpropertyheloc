@@ -5,6 +5,7 @@ import {
 import type { ContentEnginePackageRow } from "./database.types";
 import { isLandingPageIntent } from "./landing-page-intents";
 import { parseAnalyticsJson } from "./analytics-parse";
+import { parseComplianceJson } from "./compliance-parse";
 import { parseCrmIntegrationJson } from "./crm-integration-parse";
 import { isLeadCapturePreset } from "./lead-capture-presets";
 import { isLeadMagnetType } from "./lead-magnet-types";
@@ -73,6 +74,7 @@ export function rowToPackage(row: ContentEnginePackageRow): ContentPackage {
     leadCapture: parseLeadCaptureJson(row.lead_capture_json),
     crmIntegration: parseCrmIntegrationJson(row.crm_integration_json),
     analytics: parseAnalyticsJson(row.analytics_json),
+    compliance: parseComplianceJson(row.compliance_json),
     tags: row.tags ?? [],
   };
 }
@@ -115,6 +117,9 @@ export function packageToRow(pkg: ContentPackage): PackageRowInsert {
       : null,
     analytics_json: pkg.analytics
       ? (pkg.analytics as unknown as ContentEnginePackageRow["analytics_json"])
+      : null,
+    compliance_json: pkg.compliance
+      ? (pkg.compliance as unknown as ContentEnginePackageRow["compliance_json"])
       : null,
     tags: pkg.tags,
   };
@@ -537,6 +542,10 @@ export function normalizeLegacyPackage(raw: unknown): ContentPackage | null {
     analytics:
       record.analytics && typeof record.analytics === "object"
         ? parseAnalyticsJson(record.analytics)
+        : undefined,
+    compliance:
+      record.compliance && typeof record.compliance === "object"
+        ? parseComplianceJson(record.compliance)
         : undefined,
     tags: Array.isArray(record.tags)
       ? record.tags.filter((t): t is string => typeof t === "string")

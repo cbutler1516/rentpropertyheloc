@@ -1,3 +1,6 @@
+import type { DealAnalyzerUtm } from "./analytics/types";
+import { getDealAnalyzerSessionId } from "./analytics/session";
+import { getStoredUtm } from "./analytics/utm";
 import { generateReportSlug } from "./generate-slug";
 import { saveLocalReport } from "./local-reports";
 import type { PlaybookNarrative } from "./narrative-types";
@@ -13,6 +16,17 @@ export type SaveReportPayload = {
   referralCode?: string | null;
   partnerAgentName?: string | null;
 };
+
+function getAttributionForSave(): {
+  sessionId: string;
+  utm: DealAnalyzerUtm | null;
+} {
+  return {
+    sessionId:
+      typeof window !== "undefined" ? getDealAnalyzerSessionId() : "",
+    utm: typeof window !== "undefined" ? getStoredUtm() : null,
+  };
+}
 
 async function fetchNarrative(
   payload: SaveReportPayload,
@@ -62,6 +76,7 @@ export async function persistDealReport(
 
   if (isSupabaseConfigured()) {
     try {
+      const { sessionId, utm } = getAttributionForSave();
       const res = await fetch("/api/deal-analyzer/reports", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -73,10 +88,17 @@ export async function persistDealReport(
           narrative,
           agentId: payload.agentId ?? null,
           referralCode: payload.referralCode ?? null,
+          sessionId: sessionId || null,
+          utm,
         }),
       });
 
-      const data = (await res.json()) as { slug?: string; error?: string };
+      const data = (await res.json()) as {
+        slug?: string;
+        reportId?: string;
+        leadId?: string;
+        error?: string;
+      };
 
       if (!res.ok) {
         return {
@@ -89,6 +111,8 @@ export async function persistDealReport(
         ok: true,
         slug: data.slug ?? slug,
         source: "supabase",
+        reportId: data.reportId,
+        leadId: data.leadId,
       };
     } catch {
       return {

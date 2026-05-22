@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/app/deal-analyzer/lib/admin/auth";
+import { insertDealAnalyzerEvent } from "@/app/deal-analyzer/lib/supabase/events";
 import { generateAndSaveFollowUp } from "@/app/deal-analyzer/lib/supabase/follow-ups";
 
 type PostBody = {
@@ -27,6 +28,13 @@ export async function POST(request: Request) {
   if ("error" in result) {
     return NextResponse.json({ error: result.error }, { status: 500 });
   }
+
+  void insertDealAnalyzerEvent({
+    eventName: "follow_up_generated",
+    reportId: result.followUp.reportId,
+    leadId: result.followUp.leadId,
+    metadata: { source: result.source },
+  });
 
   return NextResponse.json({
     followUp: {

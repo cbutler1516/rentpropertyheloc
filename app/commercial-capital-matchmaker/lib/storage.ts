@@ -15,9 +15,7 @@ export function loadCcmSession(): CcmSession {
       ...defaultSession,
       ...parsed,
       intake: { ...defaultSession.intake, ...parsed.intake },
-      leads: (parsed.leads ?? []).map((lead) =>
-        normalizeLeadRecord(lead as Parameters<typeof normalizeLeadRecord>[0]),
-      ),
+      leads: (parsed.leads ?? []).map((lead) => normalizeLeadRecord(lead)),
     };
   } catch {
     return defaultSession;

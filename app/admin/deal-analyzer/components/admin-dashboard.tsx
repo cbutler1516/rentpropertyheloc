@@ -16,6 +16,7 @@ import { AdminHighlights } from "./admin-highlights";
 import { AdminFollowUpDrawer } from "./admin-follow-up-drawer";
 import { AdminReportsTable } from "./admin-reports-table";
 import { AdminShell } from "./admin-shell";
+import { AdminAnalyticsPanel } from "./admin-analytics-panel";
 import { AdminCrmPanel } from "./admin-crm-panel";
 import { AdminStatCards } from "./admin-stat-cards";
 
@@ -97,7 +98,15 @@ export function AdminDashboard({ siteUrl, initialData }: AdminDashboardProps) {
     () => (
       <ul className="space-y-1 text-sm text-zinc-400">
         <li className="rounded-lg bg-[#7c3aed]/10 px-3 py-2 text-[#c4b5fd]">
-          Overview
+          Overview & analytics
+        </li>
+        <li>
+          <Link
+            href="/admin/market-center"
+            className="block rounded-lg px-3 py-2 hover:bg-white/[0.04] hover:text-zinc-200"
+          >
+            Market Center
+          </Link>
         </li>
         <li>
           <Link
@@ -142,6 +151,7 @@ export function AdminDashboard({ siteUrl, initialData }: AdminDashboardProps) {
         ) : null}
 
         <AdminStatCards stats={data.stats} />
+        <AdminAnalyticsPanel />
         <AdminBreakdown stats={data.stats} />
         <AdminHighlights
           topOpportunities={data.highlights.topOpportunities}
