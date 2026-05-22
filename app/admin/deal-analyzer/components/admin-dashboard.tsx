@@ -105,7 +105,23 @@ export function AdminDashboard({ siteUrl, initialData }: AdminDashboardProps) {
             href="/admin/market-center"
             className="block rounded-lg px-3 py-2 hover:bg-white/[0.04] hover:text-zinc-200"
           >
-            Market Center
+            Market Brief
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/admin/deal-analyzer/launch"
+            className="block rounded-lg px-3 py-2 hover:bg-white/[0.04] hover:text-zinc-200"
+          >
+            Launch readiness
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/admin/deal-analyzer/launch-pack"
+            className="block rounded-lg px-3 py-2 hover:bg-white/[0.04] hover:text-zinc-200"
+          >
+            Launch pack
           </Link>
         </li>
         <li>

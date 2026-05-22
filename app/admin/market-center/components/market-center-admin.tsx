@@ -4,25 +4,31 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CopyButton } from "@/app/content-engine/components/copy-button";
+import { AdminShell } from "@/app/admin/deal-analyzer/components/admin-shell";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Textarea } from "@/app/components/ui/textarea";
-import { AdminShell } from "@/app/admin/deal-analyzer/components/admin-shell";
 import { createEditableMarketUpdate } from "@/app/lib/market-center/form-defaults";
 import { normalizeDailyMarketUpdate } from "@/app/lib/market-center/normalize";
 import {
   generateRealtorEmailPreview,
   generateSocialCaptionPreview,
 } from "@/app/lib/market-center/previews";
+import {
+  MARKET_MOOD_LABELS,
+  REAL_ESTATE_PULSE_IDS,
+} from "@/app/lib/market-center/types";
 import type {
   DailyMarketUpdate,
   MarketCenterStoreSnapshot,
-  MarketPulseCardId,
+  MarketMood,
   MarketTrend,
 } from "@/app/lib/market-center/types";
 
 const TREND_OPTIONS: MarketTrend[] = ["up", "down", "flat", "neutral"];
+const MOOD_OPTIONS = Object.keys(MARKET_MOOD_LABELS) as MarketMood[];
+const BIG_THREE_KEYS = ["rates", "bonds", "housing"] as const;
 
 type MarketCenterAdminProps = {
   initialSnapshot: MarketCenterStoreSnapshot;
@@ -43,6 +49,43 @@ function Field({
   );
 }
 
+function TrendSelect({
+  value,
+  onChange,
+}: {
+  value: MarketTrend;
+  onChange: (value: MarketTrend) => void;
+}) {
+  return (
+    <select
+      className="flex h-11 w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-4 text-sm text-white"
+      value={value}
+      onChange={(e) => onChange(e.target.value as MarketTrend)}
+    >
+      {TREND_OPTIONS.map((t) => (
+        <option key={t} value={t}>
+          {t}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+function AdminSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="space-y-4 rounded-2xl border border-white/[0.08] bg-zinc-950/50 p-6">
+      <h3 className="text-sm font-medium text-zinc-200">{title}</h3>
+      {children}
+    </section>
+  );
+}
+
 function formatSavedAt(iso: string | undefined) {
   if (!iso) return "—";
   return new Intl.DateTimeFormat("en-US", {
@@ -51,30 +94,28 @@ function formatSavedAt(iso: string | undefined) {
   }).format(new Date(iso));
 }
 
-function editionToForm(edition: DailyMarketUpdate): DailyMarketUpdate {
-  return normalizeDailyMarketUpdate(edition);
-}
-
 export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
   const router = useRouter();
   const [snapshot, setSnapshot] = useState(initialSnapshot);
   const [form, setForm] = useState<DailyMarketUpdate>(() => {
     const source = initialSnapshot.draft ?? initialSnapshot.published;
-    return source ? editionToForm(source) : createEditableMarketUpdate();
+    return source
+      ? normalizeDailyMarketUpdate(source)
+      : createEditableMarketUpdate();
   });
   const [status, setStatus] = useState<"idle" | "saving" | "publishing">("idle");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const emailPreview = useMemo(() => generateRealtorEmailPreview(form), [form]);
-  const socialPreview = useMemo(() => generateSocialCaptionPreview(form), [form]);
-
-  const patch = useCallback(
-    (partial: Partial<DailyMarketUpdate>) => {
-      setForm((prev) => normalizeDailyMarketUpdate({ ...prev, ...partial }));
-    },
-    [],
+  const socialPreview = useMemo(
+    () => generateSocialCaptionPreview(form),
+    [form],
   );
+
+  const patch = useCallback((partial: Partial<DailyMarketUpdate>) => {
+    setForm((prev) => normalizeDailyMarketUpdate({ ...prev, ...partial }));
+  }, []);
 
   const refreshSnapshot = useCallback(async () => {
     const res = await fetch("/api/admin/market-center", { credentials: "include" });
@@ -84,7 +125,6 @@ export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
     }
     const json = (await res.json()) as MarketCenterStoreSnapshot;
     setSnapshot(json);
-    return json;
   }, [router]);
 
   useEffect(() => {
@@ -112,7 +152,7 @@ export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
         return;
       }
       setSnapshot(json);
-      if (json.draft) setForm(editionToForm(json.draft));
+      if (json.draft) setForm(normalizeDailyMarketUpdate(json.draft));
       setMessage("Draft saved.");
     } catch {
       setError("Could not reach the server.");
@@ -142,55 +182,12 @@ export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
         return;
       }
       setSnapshot(json);
-      setMessage("Published — /market now shows this edition.");
+      setMessage("Published — /market is live with this brief.");
     } catch {
       setError("Could not reach the server.");
     } finally {
       setStatus("idle");
     }
-  }
-
-  function loadDraftIntoForm() {
-    if (snapshot.draft) {
-      setForm(editionToForm(snapshot.draft));
-      setMessage("Loaded draft into editor.");
-    }
-  }
-
-  function loadPublishedIntoForm() {
-    if (snapshot.published) {
-      setForm(editionToForm(snapshot.published));
-      setMessage("Loaded published edition into editor.");
-    }
-  }
-
-  function updatePulse(
-    id: MarketPulseCardId,
-    field: keyof DailyMarketUpdate["pulse"][number],
-    value: string,
-  ) {
-    setForm((prev) => ({
-      ...prev,
-      pulse: prev.pulse.map((card) =>
-        card.id === id ? { ...card, [field]: value } : card,
-      ),
-    }));
-  }
-
-  function updateSeattleMetric(
-    index: number,
-    field: "label" | "value" | "context",
-    value: string,
-  ) {
-    setForm((prev) => ({
-      ...prev,
-      seattle: {
-        ...prev.seattle,
-        metrics: prev.seattle.metrics.map((metric, i) =>
-          i === index ? { ...metric, [field]: value } : metric,
-        ),
-      },
-    }));
   }
 
   const sidebar = (
@@ -204,7 +201,7 @@ export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
         </Link>
       </li>
       <li className="rounded-lg bg-[#7c3aed]/10 px-3 py-2 text-[#c4b5fd]">
-        Market Center
+        Market Brief
       </li>
       <li>
         <Link
@@ -219,11 +216,6 @@ export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
     </ul>
   );
 
-  async function handleLogout() {
-    await fetch("/api/deal-analyzer/admin/auth", { method: "DELETE" });
-    router.refresh();
-  }
-
   return (
     <AdminShell
       sidebar={sidebar}
@@ -233,11 +225,19 @@ export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
             href="/market"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-9 items-center justify-center rounded-full px-4 font-mono text-[9px] tracking-[0.16em] text-zinc-400 uppercase transition-colors hover:bg-white/5 hover:text-white"
+            className="inline-flex h-9 items-center justify-center rounded-full px-4 font-mono text-[9px] tracking-[0.16em] text-zinc-400 uppercase hover:bg-white/5 hover:text-white"
           >
             Preview /market
           </Link>
-          <Button type="button" variant="ghost" size="sm" onClick={handleLogout}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={async () => {
+              await fetch("/api/deal-analyzer/admin/auth", { method: "DELETE" });
+              router.refresh();
+            }}
+          >
             Sign out
           </Button>
         </div>
@@ -246,14 +246,13 @@ export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
       <div className="mx-auto max-w-4xl space-y-8">
         <div>
           <h2 className="text-xl font-medium tracking-tight text-white">
-            Market Center Admin
+            Market Brief Admin
           </h2>
           <p className="mt-1 text-sm text-zinc-500">
-            Edit the daily realtor briefing published on{" "}
+            Daily agent briefing for{" "}
             <Link href="/market" className="text-[#c4b5fd] hover:text-white">
               /market
             </Link>
-            .
           </p>
         </div>
 
@@ -263,7 +262,7 @@ export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
               Published
             </p>
             <p className="mt-1 text-sm text-zinc-200">
-              {snapshot.published ? snapshot.published.title : "None"}
+              {snapshot.published?.title ?? "None"}
             </p>
             <p className="text-xs text-zinc-500">
               {formatSavedAt(snapshot.published?.savedAt)}
@@ -274,7 +273,7 @@ export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
               Draft
             </p>
             <p className="mt-1 text-sm text-zinc-200">
-              {snapshot.draft ? snapshot.draft.title : "None"}
+              {snapshot.draft?.title ?? "None"}
             </p>
             <p className="text-xs text-zinc-500">
               {formatSavedAt(snapshot.draft?.savedAt)}
@@ -312,41 +311,44 @@ export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
           >
             {status === "publishing" ? "Publishing…" : "Publish edition"}
           </Button>
-          <Button type="button" variant="ghost" size="sm" onClick={loadDraftIntoForm}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() =>
+              snapshot.draft &&
+              setForm(normalizeDailyMarketUpdate(snapshot.draft))
+            }
+          >
             Load draft
           </Button>
-          <Button type="button" variant="ghost" size="sm" onClick={loadPublishedIntoForm}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() =>
+              snapshot.published &&
+              setForm(normalizeDailyMarketUpdate(snapshot.published))
+            }
+          >
             Load published
           </Button>
         </div>
 
         <form
-          className="space-y-10"
-          onSubmit={(event) => {
-            event.preventDefault();
+          className="space-y-6"
+          onSubmit={(e) => {
+            e.preventDefault();
             void saveDraft();
           }}
         >
-          <section className="space-y-4 rounded-2xl border border-white/[0.08] bg-zinc-950/50 p-6">
-            <h3 className="text-sm font-medium text-zinc-200">Edition metadata</h3>
+          <AdminSection title="Brief hero">
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="ID">
-                <Input
-                  value={form.id}
-                  onChange={(e) => patch({ id: e.target.value })}
-                />
+              <Field label="Edition title">
+                <Input value={form.title} onChange={(e) => patch({ title: e.target.value })} />
               </Field>
               <Field label="Slug">
-                <Input
-                  value={form.slug}
-                  onChange={(e) => patch({ slug: e.target.value })}
-                />
-              </Field>
-              <Field label="Title">
-                <Input
-                  value={form.title}
-                  onChange={(e) => patch({ title: e.target.value })}
-                />
+                <Input value={form.slug} onChange={(e) => patch({ slug: e.target.value })} />
               </Field>
               <Field label="Published at (ISO)">
                 <Input
@@ -354,11 +356,29 @@ export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
                   onChange={(e) => patch({ publishedAt: e.target.value })}
                 />
               </Field>
+              <Field label="Market mood">
+                <select
+                  className="flex h-11 w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-4 text-sm text-white"
+                  value={form.marketMood}
+                  onChange={(e) =>
+                    patch({ marketMood: e.target.value as MarketMood })
+                  }
+                >
+                  {MOOD_OPTIONS.map((m) => (
+                    <option key={m} value={m}>
+                      {MARKET_MOOD_LABELS[m]}
+                    </option>
+                  ))}
+                </select>
+              </Field>
             </div>
-          </section>
-
-          <section className="space-y-4 rounded-2xl border border-white/[0.08] bg-zinc-950/50 p-6">
-            <h3 className="text-sm font-medium text-zinc-200">Featured commentary</h3>
+            <Field label="Agent takeaway (one sentence)">
+              <Textarea
+                rows={2}
+                value={form.agentTakeaway}
+                onChange={(e) => patch({ agentTakeaway: e.target.value })}
+              />
+            </Field>
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Video title">
                 <Input
@@ -379,290 +399,527 @@ export function MarketCenterAdmin({ initialSnapshot }: MarketCenterAdminProps) {
                 onChange={(e) => patch({ videoUrl: e.target.value })}
               />
             </Field>
-            <Field label="Rate summary">
-              <Textarea
-                rows={3}
-                value={form.rateSummary}
-                onChange={(e) => patch({ rateSummary: e.target.value })}
-              />
-            </Field>
-            <Field label="Treasury summary">
-              <Textarea
-                rows={2}
-                value={form.treasurySummary}
-                onChange={(e) => patch({ treasurySummary: e.target.value })}
-              />
-            </Field>
-            <Field label="Local market summary">
-              <Textarea
-                rows={3}
-                value={form.localMarketSummary}
-                onChange={(e) => patch({ localMarketSummary: e.target.value })}
-              />
-            </Field>
-          </section>
+          </AdminSection>
 
-          <section className="space-y-4 rounded-2xl border border-white/[0.08] bg-zinc-950/50 p-6">
-            <h3 className="text-sm font-medium text-zinc-200">Today&apos;s play & CTA</h3>
-            <Field label="Today's play">
-              <Textarea
-                rows={3}
-                value={form.todaysPlay}
-                onChange={(e) => patch({ todaysPlay: e.target.value })}
-              />
-            </Field>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="CTA label">
-                <Input
-                  value={form.cta.label}
-                  onChange={(e) =>
-                    patch({ cta: { ...form.cta, label: e.target.value } })
-                  }
-                />
-              </Field>
-              <Field label="CTA href">
-                <Input
-                  value={form.cta.href}
-                  onChange={(e) =>
-                    patch({ cta: { ...form.cta, href: e.target.value } })
-                  }
-                />
-              </Field>
-            </div>
-          </section>
-
-          <section className="space-y-4 rounded-2xl border border-white/[0.08] bg-zinc-950/50 p-6">
-            <h3 className="text-sm font-medium text-zinc-200">Market pulse</h3>
-            <div className="grid gap-4">
-              {form.pulse.map((card) => (
-                <div
-                  key={card.id}
-                  className="grid gap-3 rounded-xl border border-white/[0.06] p-4 sm:grid-cols-2 lg:grid-cols-4"
-                >
-                  <p className="font-mono text-[9px] tracking-[0.18em] text-[#c9a227] uppercase sm:col-span-2 lg:col-span-4">
-                    {card.label}
-                  </p>
-                  <Field label="Value">
-                    <Input
-                      value={card.value}
-                      onChange={(e) => updatePulse(card.id, "value", e.target.value)}
-                    />
-                  </Field>
-                  <Field label="Delta">
-                    <Input
-                      value={card.delta ?? ""}
-                      onChange={(e) => updatePulse(card.id, "delta", e.target.value)}
-                    />
-                  </Field>
-                  <Field label="Trend">
-                    <select
-                      className="flex h-11 w-full rounded-xl border border-zinc-800 bg-zinc-950/80 px-4 text-sm text-white"
-                      value={card.trend}
-                      onChange={(e) =>
-                        updatePulse(card.id, "trend", e.target.value as MarketTrend)
-                      }
-                    >
-                      {TREND_OPTIONS.map((t) => (
-                        <option key={t} value={t}>
-                          {t}
-                        </option>
-                      ))}
-                    </select>
-                  </Field>
-                  <Field label="Note">
-                    <Input
-                      value={card.note ?? ""}
-                      onChange={(e) => updatePulse(card.id, "note", e.target.value)}
-                    />
-                  </Field>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="space-y-4 rounded-2xl border border-white/[0.08] bg-zinc-950/50 p-6">
-            <h3 className="text-sm font-medium text-zinc-200">Seattle snapshot</h3>
-            <Field label="Headline">
-              <Input
-                value={form.seattle.headline}
-                onChange={(e) =>
-                  patch({ seattle: { ...form.seattle, headline: e.target.value } })
-                }
-              />
-            </Field>
-            <Field label="Summary">
-              <Textarea
-                rows={3}
-                value={form.seattle.summary}
-                onChange={(e) =>
-                  patch({ seattle: { ...form.seattle, summary: e.target.value } })
-                }
-              />
-            </Field>
-            {form.seattle.metrics.map((metric, index) => (
+          <AdminSection title="The 3 big things">
+            {BIG_THREE_KEYS.map((key) => (
               <div
-                key={`${metric.label}-${index}`}
-                className="grid gap-3 rounded-xl border border-white/[0.06] p-4 sm:grid-cols-3"
+                key={key}
+                className="space-y-3 rounded-xl border border-white/[0.06] p-4"
               >
-                <Field label={`Metric ${index + 1} label`}>
-                  <Input
-                    value={metric.label}
-                    onChange={(e) => updateSeattleMetric(index, "label", e.target.value)}
+                <p className="font-mono text-[9px] tracking-[0.18em] text-[#c9a227] uppercase">
+                  {key}
+                </p>
+                <Field label="Direction">
+                  <TrendSelect
+                    value={form.bigThree[key].direction}
+                    onChange={(direction) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        bigThree: {
+                          ...prev.bigThree,
+                          [key]: { ...prev.bigThree[key], direction },
+                        },
+                      }))
+                    }
                   />
                 </Field>
-                <Field label="Value">
-                  <Input
-                    value={metric.value}
-                    onChange={(e) => updateSeattleMetric(index, "value", e.target.value)}
-                  />
-                </Field>
-                <Field label="Context">
-                  <Input
-                    value={metric.context ?? ""}
+                <Field label="Summary">
+                  <Textarea
+                    rows={2}
+                    value={form.bigThree[key].summary}
                     onChange={(e) =>
-                      updateSeattleMetric(index, "context", e.target.value)
+                      setForm((prev) => ({
+                        ...prev,
+                        bigThree: {
+                          ...prev.bigThree,
+                          [key]: { ...prev.bigThree[key], summary: e.target.value },
+                        },
+                      }))
+                    }
+                  />
+                </Field>
+                <Field label="Agent takeaway">
+                  <Textarea
+                    rows={2}
+                    value={form.bigThree[key].agentTakeaway}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        bigThree: {
+                          ...prev.bigThree,
+                          [key]: {
+                            ...prev.bigThree[key],
+                            agentTakeaway: e.target.value,
+                          },
+                        },
+                      }))
                     }
                   />
                 </Field>
               </div>
             ))}
-          </section>
+          </AdminSection>
 
-          <section className="space-y-4 rounded-2xl border border-white/[0.08] bg-zinc-950/50 p-6">
-            <h3 className="text-sm font-medium text-zinc-200">Agent talking points</h3>
-            <Field label="Buyer talking point">
-              <Textarea
-                rows={2}
-                value={form.buyerTalkingPoint}
-                onChange={(e) => patch({ buyerTalkingPoint: e.target.value })}
-              />
-            </Field>
-            <Field label="Seller talking point">
-              <Textarea
-                rows={2}
-                value={form.sellerTalkingPoint}
-                onChange={(e) => patch({ sellerTalkingPoint: e.target.value })}
-              />
-            </Field>
-            <Field label="Agent script">
-              <Textarea
-                rows={3}
-                value={form.agentScript}
-                onChange={(e) => patch({ agentScript: e.target.value })}
-              />
-            </Field>
-          </section>
-
-          <section className="space-y-4 rounded-2xl border border-white/[0.08] bg-zinc-950/50 p-6">
-            <h3 className="text-sm font-medium text-zinc-200">Refi / HELOC watch</h3>
+          <AdminSection title="Rate movement visual">
             <Field label="Headline">
               <Input
-                value={form.refiHeloc.headline}
+                value={form.rateTrendVisual.headline}
                 onChange={(e) =>
                   patch({
-                    refiHeloc: { ...form.refiHeloc, headline: e.target.value },
-                  })
-                }
-              />
-            </Field>
-            <Field label="Summary">
-              <Textarea
-                rows={3}
-                value={form.refiHeloc.summary}
-                onChange={(e) =>
-                  patch({
-                    refiHeloc: { ...form.refiHeloc, summary: e.target.value },
-                  })
-                }
-              />
-            </Field>
-            <Field label="Bullets (one per line)">
-              <Textarea
-                rows={4}
-                value={form.refiHeloc.bullets.join("\n")}
-                onChange={(e) =>
-                  patch({
-                    refiHeloc: {
-                      ...form.refiHeloc,
-                      bullets: e.target.value
-                        .split("\n")
-                        .map((line) => line.trim())
-                        .filter(Boolean),
+                    rateTrendVisual: {
+                      ...form.rateTrendVisual,
+                      headline: e.target.value,
                     },
                   })
                 }
               />
             </Field>
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="CTA href">
+              <Field label="30-year label">
                 <Input
-                  value={form.refiHeloc.href}
+                  value={form.rateTrendVisual.thirtyYearLabel}
                   onChange={(e) =>
                     patch({
-                      refiHeloc: { ...form.refiHeloc, href: e.target.value },
+                      rateTrendVisual: {
+                        ...form.rateTrendVisual,
+                        thirtyYearLabel: e.target.value,
+                      },
                     })
                   }
                 />
               </Field>
-              <Field label="CTA label">
+              <Field label="30-year value">
                 <Input
-                  value={form.refiHeloc.ctaLabel}
+                  value={form.rateTrendVisual.thirtyYearValue}
                   onChange={(e) =>
                     patch({
-                      refiHeloc: { ...form.refiHeloc, ctaLabel: e.target.value },
+                      rateTrendVisual: {
+                        ...form.rateTrendVisual,
+                        thirtyYearValue: e.target.value,
+                      },
                     })
                   }
                 />
               </Field>
             </div>
-          </section>
-
-          <section className="space-y-4 rounded-2xl border border-white/[0.08] bg-zinc-950/50 p-6">
-            <h3 className="text-sm font-medium text-zinc-200">Commercial corner</h3>
-            <Field label="Headline">
-              <Input
-                value={form.commercial.headline}
+            {form.rateTrendVisual.points.map((point, index) => (
+              <div
+                key={point.label}
+                className="grid gap-3 rounded-lg border border-white/[0.06] p-3 sm:grid-cols-3"
+              >
+                <Field label="Label">
+                  <Input
+                    value={point.label}
+                    onChange={(e) => {
+                      const points = [...form.rateTrendVisual.points];
+                      points[index] = { ...point, label: e.target.value };
+                      patch({ rateTrendVisual: { ...form.rateTrendVisual, points } });
+                    }}
+                  />
+                </Field>
+                <Field label="Value">
+                  <Input
+                    value={point.value}
+                    onChange={(e) => {
+                      const points = [...form.rateTrendVisual.points];
+                      points[index] = { ...point, value: e.target.value };
+                      patch({ rateTrendVisual: { ...form.rateTrendVisual, points } });
+                    }}
+                  />
+                </Field>
+                <Field label="Direction">
+                  <TrendSelect
+                    value={point.direction}
+                    onChange={(direction) => {
+                      const points = [...form.rateTrendVisual.points];
+                      points[index] = { ...point, direction };
+                      patch({ rateTrendVisual: { ...form.rateTrendVisual, points } });
+                    }}
+                  />
+                </Field>
+              </div>
+            ))}
+            <Field label="Detail note (collapsed on site)">
+              <Textarea
+                rows={2}
+                value={form.rateTrendVisual.detailNote ?? ""}
                 onChange={(e) =>
                   patch({
-                    commercial: { ...form.commercial, headline: e.target.value },
+                    rateTrendVisual: {
+                      ...form.rateTrendVisual,
+                      detailNote: e.target.value,
+                    },
                   })
                 }
               />
             </Field>
-            <Field label="Summary">
+          </AdminSection>
+
+          <AdminSection title="Bond & Fed watch">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="10-year Treasury value">
+                <Input
+                  value={form.bondFedWatch.treasury10Year.value}
+                  onChange={(e) =>
+                    patch({
+                      bondFedWatch: {
+                        ...form.bondFedWatch,
+                        treasury10Year: {
+                          ...form.bondFedWatch.treasury10Year,
+                          value: e.target.value,
+                        },
+                      },
+                    })
+                  }
+                />
+              </Field>
+              <Field label="10-year direction">
+                <TrendSelect
+                  value={form.bondFedWatch.treasury10Year.direction}
+                  onChange={(direction) =>
+                    patch({
+                      bondFedWatch: {
+                        ...form.bondFedWatch,
+                        treasury10Year: {
+                          ...form.bondFedWatch.treasury10Year,
+                          direction,
+                        },
+                      },
+                    })
+                  }
+                />
+              </Field>
+            </div>
+            <Field label="10-year note">
+              <Input
+                value={form.bondFedWatch.treasury10Year.note}
+                onChange={(e) =>
+                  patch({
+                    bondFedWatch: {
+                      ...form.bondFedWatch,
+                      treasury10Year: {
+                        ...form.bondFedWatch.treasury10Year,
+                        note: e.target.value,
+                      },
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="MBS label">
+              <Input
+                value={form.bondFedWatch.mbs.label}
+                onChange={(e) =>
+                  patch({
+                    bondFedWatch: {
+                      ...form.bondFedWatch,
+                      mbs: { ...form.bondFedWatch.mbs, label: e.target.value },
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="MBS direction">
+              <TrendSelect
+                value={form.bondFedWatch.mbs.direction}
+                onChange={(direction) =>
+                  patch({
+                    bondFedWatch: {
+                      ...form.bondFedWatch,
+                      mbs: { ...form.bondFedWatch.mbs, direction },
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="MBS note">
+              <Input
+                value={form.bondFedWatch.mbs.note}
+                onChange={(e) =>
+                  patch({
+                    bondFedWatch: {
+                      ...form.bondFedWatch,
+                      mbs: { ...form.bondFedWatch.mbs, note: e.target.value },
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="Fed narrative">
+              <Textarea
+                rows={2}
+                value={form.bondFedWatch.fedNarrative}
+                onChange={(e) =>
+                  patch({
+                    bondFedWatch: {
+                      ...form.bondFedWatch,
+                      fedNarrative: e.target.value,
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="Inflation / rate pressure note">
+              <Textarea
+                rows={2}
+                value={form.bondFedWatch.inflationNote}
+                onChange={(e) =>
+                  patch({
+                    bondFedWatch: {
+                      ...form.bondFedWatch,
+                      inflationNote: e.target.value,
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="Why agents should care">
+              <Textarea
+                rows={2}
+                value={form.bondFedWatch.whyAgentsCare}
+                onChange={(e) =>
+                  patch({
+                    bondFedWatch: {
+                      ...form.bondFedWatch,
+                      whyAgentsCare: e.target.value,
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="Detail note (collapsed)">
+              <Textarea
+                rows={2}
+                value={form.bondFedWatch.detailNote ?? ""}
+                onChange={(e) =>
+                  patch({
+                    bondFedWatch: {
+                      ...form.bondFedWatch,
+                      detailNote: e.target.value,
+                    },
+                  })
+                }
+              />
+            </Field>
+          </AdminSection>
+
+          <AdminSection title="Real estate pulse">
+            {form.realEstatePulse.cards.map((card, index) => (
+              <div
+                key={card.id}
+                className="grid gap-3 rounded-lg border border-white/[0.06] p-3"
+              >
+                <p className="font-mono text-[9px] uppercase text-zinc-500">
+                  {REAL_ESTATE_PULSE_IDS[index] ?? card.id}
+                </p>
+                <Field label="Label">
+                  <Input
+                    value={card.label}
+                    onChange={(e) => {
+                      const cards = [...form.realEstatePulse.cards];
+                      cards[index] = { ...card, label: e.target.value };
+                      patch({ realEstatePulse: { ...form.realEstatePulse, cards } });
+                    }}
+                  />
+                </Field>
+                <Field label="Value">
+                  <Input
+                    value={card.value}
+                    onChange={(e) => {
+                      const cards = [...form.realEstatePulse.cards];
+                      cards[index] = { ...card, value: e.target.value };
+                      patch({ realEstatePulse: { ...form.realEstatePulse, cards } });
+                    }}
+                  />
+                </Field>
+                <Field label="Direction">
+                  <TrendSelect
+                    value={card.direction}
+                    onChange={(direction) => {
+                      const cards = [...form.realEstatePulse.cards];
+                      cards[index] = { ...card, direction };
+                      patch({ realEstatePulse: { ...form.realEstatePulse, cards } });
+                    }}
+                  />
+                </Field>
+                <Field label="Plain English">
+                  <Textarea
+                    rows={2}
+                    value={card.plainEnglish}
+                    onChange={(e) => {
+                      const cards = [...form.realEstatePulse.cards];
+                      cards[index] = { ...card, plainEnglish: e.target.value };
+                      patch({ realEstatePulse: { ...form.realEstatePulse, cards } });
+                    }}
+                  />
+                </Field>
+              </div>
+            ))}
+            <Field label="Seattle / local note">
+              <Textarea
+                rows={2}
+                value={form.realEstatePulse.seattleNote}
+                onChange={(e) =>
+                  patch({
+                    realEstatePulse: {
+                      ...form.realEstatePulse,
+                      seattleNote: e.target.value,
+                    },
+                  })
+                }
+              />
+            </Field>
+          </AdminSection>
+
+          <AdminSection title="What agents should say">
+            <Field label="Buyer script">
+              <Textarea
+                rows={2}
+                value={form.agentScripts.buyerScript}
+                onChange={(e) =>
+                  patch({
+                    agentScripts: {
+                      ...form.agentScripts,
+                      buyerScript: e.target.value,
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="Seller script">
+              <Textarea
+                rows={2}
+                value={form.agentScripts.sellerScript}
+                onChange={(e) =>
+                  patch({
+                    agentScripts: {
+                      ...form.agentScripts,
+                      sellerScript: e.target.value,
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="Social post idea">
               <Textarea
                 rows={3}
-                value={form.commercial.summary}
+                value={form.agentScripts.socialPostIdea}
                 onChange={(e) =>
                   patch({
-                    commercial: { ...form.commercial, summary: e.target.value },
+                    agentScripts: {
+                      ...form.agentScripts,
+                      socialPostIdea: e.target.value,
+                    },
                   })
                 }
               />
             </Field>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="CTA href">
-                <Input
-                  value={form.commercial.href}
-                  onChange={(e) =>
-                    patch({
-                      commercial: { ...form.commercial, href: e.target.value },
-                    })
-                  }
-                />
-              </Field>
-              <Field label="CTA label">
-                <Input
-                  value={form.commercial.ctaLabel}
-                  onChange={(e) =>
-                    patch({
-                      commercial: { ...form.commercial, ctaLabel: e.target.value },
-                    })
-                  }
-                />
-              </Field>
-            </div>
-          </section>
+            <Field label="Listing appointment talking point">
+              <Textarea
+                rows={2}
+                value={form.agentScripts.listingAppointmentPoint}
+                onChange={(e) =>
+                  patch({
+                    agentScripts: {
+                      ...form.agentScripts,
+                      listingAppointmentPoint: e.target.value,
+                    },
+                  })
+                }
+              />
+            </Field>
+          </AdminSection>
+
+          <AdminSection title="Today's play">
+            <Field label="Action">
+              <Textarea
+                rows={2}
+                value={form.todayPlay.action}
+                onChange={(e) =>
+                  patch({
+                    todayPlay: { ...form.todayPlay, action: e.target.value },
+                  })
+                }
+              />
+            </Field>
+            <Field label="Who to call">
+              <Textarea
+                rows={2}
+                value={form.todayPlay.whoToCall}
+                onChange={(e) =>
+                  patch({
+                    todayPlay: { ...form.todayPlay, whoToCall: e.target.value },
+                  })
+                }
+              />
+            </Field>
+            <Field label="What to say">
+              <Textarea
+                rows={2}
+                value={form.todayPlay.whatToSay}
+                onChange={(e) =>
+                  patch({
+                    todayPlay: { ...form.todayPlay, whatToSay: e.target.value },
+                  })
+                }
+              />
+            </Field>
+            <Field label="Why now">
+              <Textarea
+                rows={2}
+                value={form.todayPlay.whyNow}
+                onChange={(e) =>
+                  patch({
+                    todayPlay: { ...form.todayPlay, whyNow: e.target.value },
+                  })
+                }
+              />
+            </Field>
+          </AdminSection>
+
+          <AdminSection title="Newsletter CTA">
+            <Field label="Headline">
+              <Input
+                value={form.newsletterCta.headline}
+                onChange={(e) =>
+                  patch({
+                    newsletterCta: {
+                      ...form.newsletterCta,
+                      headline: e.target.value,
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="Subhead">
+              <Textarea
+                rows={2}
+                value={form.newsletterCta.subhead}
+                onChange={(e) =>
+                  patch({
+                    newsletterCta: {
+                      ...form.newsletterCta,
+                      subhead: e.target.value,
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="Button label">
+              <Input
+                value={form.newsletterCta.buttonLabel}
+                onChange={(e) =>
+                  patch({
+                    newsletterCta: {
+                      ...form.newsletterCta,
+                      buttonLabel: e.target.value,
+                    },
+                  })
+                }
+              />
+            </Field>
+          </AdminSection>
         </form>
 
         <section className="space-y-6 rounded-2xl border border-[#c9a227]/20 bg-zinc-950/50 p-6">

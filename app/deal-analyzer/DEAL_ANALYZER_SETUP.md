@@ -304,3 +304,35 @@ No new migration. Reuses v10 SEO content, v8 co-branding, and v11 analytics.
 - Per-calculator **Copy** links in the landing kit table
 - **Landing views / Landing leads** columns (90-day event rollup)
 - Edit agent to see per-page views and leads breakdown
+
+## v13 — Production launch readiness
+
+No new migration.
+
+### Launch admin
+
+**Route:** `/admin/deal-analyzer/launch`
+
+**API:** `GET /api/deal-analyzer/admin/launch` (admin auth)
+
+Includes:
+- Required / optional env var matrix
+- Supabase migration probes for `001`–`007`
+- OpenAI, CRM webhook, sitemap inventory, robots.txt checks
+- Manual checklists: report share, PDF print, event tracking
+- Test funnel links (standard + partner when an agent exists)
+- CRM test push button
+- Go-live checklist + known limitations
+
+### UX hardening
+
+- Report slug: loading skeleton, clearer 404 vs error states
+- Invalid partner slug: friendly fallback (no redirect) with links to public analyzer
+- Admin empty states for filtered reports table
+- Preview gate empty state copy
+
+## Launch pack (admin)
+
+**Route:** `/admin/deal-analyzer/launch-pack`
+
+Chris-facing rollout hub: client + agent copy, social posts, email/text templates, QR download, first-10 agent outreach tracker (saved in browser localStorage), test link checklist, and editable launch notes.

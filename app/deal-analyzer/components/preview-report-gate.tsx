@@ -75,13 +75,20 @@ export function PreviewReportGate() {
 
   if (!inputs || !analysis) {
     return (
-      <Card>
+      <Card className="border-white/[0.08]">
         <CardHeader>
+          <p className="font-mono text-[10px] tracking-[0.28em] text-zinc-500 uppercase">
+            Preview unavailable
+          </p>
           <CardTitle>Build your scenario first</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-zinc-500">
+            Enter deal details on step 1, then return here to preview strategy headlines
+            before unlocking your full Playbook Report.
+          </p>
           <Button variant="gold" onClick={() => router.push(`${basePath}/analyze`)}>
-            Back to analyzer
+            Go to deal form
           </Button>
         </CardContent>
       </Card>

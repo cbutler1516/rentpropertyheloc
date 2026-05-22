@@ -7,6 +7,7 @@ import { Button } from "@/app/components/ui/button";
 import { CopyButton } from "@/app/content-engine/components/copy-button";
 import type { DealAnalyzerReportRow } from "@/app/deal-analyzer/lib/admin/types";
 import { formatCurrency } from "@/lib/utils";
+import { AdminEmptyState } from "./admin-empty-state";
 
 type AdminReportsTableProps = {
   reports: DealAnalyzerReportRow[];
@@ -93,9 +94,18 @@ export function AdminReportsTable({
 
   if (reports.length === 0) {
     return (
-      <p className="rounded-2xl border border-dashed border-white/[0.08] px-6 py-12 text-center text-sm text-zinc-500">
-        No reports match your filters.
-      </p>
+      <AdminEmptyState
+        title="No reports to show"
+        description="Saved Playbook Reports appear here after leads complete the analyzer. Try clearing filters or run a test funnel from Launch readiness."
+        action={
+          <Link
+            href="/admin/deal-analyzer/launch"
+            className="inline-flex h-10 items-center justify-center rounded-full border border-zinc-700 px-5 font-mono text-[9px] tracking-[0.16em] text-zinc-300 uppercase hover:border-[#7c3aed]/50"
+          >
+            Open launch checklist
+          </Link>
+        }
+      />
     );
   }
 

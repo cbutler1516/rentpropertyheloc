@@ -7,12 +7,13 @@ import { fetchDealReportBySlug } from "../../lib/persist-report";
 import { normalizeStoredNarrative } from "../../lib/generate-narrative";
 import type { StoredReportPayload } from "../../lib/supabase/types";
 import { PlaybookReportDocument } from "../../components/playbook-report-document";
+import { ReportLoadingSkeleton } from "../../components/deal-analyzer-skeleton";
 import { ReportActions } from "../../components/report-actions";
 import { useDealAnalyzer } from "../../components/deal-analyzer-provider";
 
 type LoadState =
   | { status: "loading" }
-  | { status: "error"; message: string }
+  | { status: "error"; message: string; notFound?: boolean }
   | { status: "ready"; data: StoredReportPayload };
 
 export function ReportSlugView({ slug }: { slug: string }) {
@@ -70,33 +71,46 @@ export function ReportSlugView({ slug }: { slug: string }) {
   }, [readyData, slug]);
 
   if (state.status === "loading") {
-    return (
-      <div className="flex min-h-[40vh] flex-col items-center justify-center gap-4 px-4">
-        <div
-          className="h-8 w-8 animate-spin rounded-full border-2 border-[#7c3aed] border-t-transparent"
-          aria-hidden
-        />
-        <p className="text-center font-mono text-[10px] tracking-[0.2em] text-zinc-500 uppercase">
-          Loading Playbook Report…
-        </p>
-      </div>
-    );
+    return <ReportLoadingSkeleton />;
   }
 
   if (state.status === "error") {
+    const isNotFound = state.notFound ?? /not found/i.test(state.message);
     return (
-      <Card className="mx-auto max-w-lg">
+      <Card className="mx-auto max-w-lg border-white/[0.08]">
         <CardHeader>
-          <CardTitle>Report not found</CardTitle>
+          <p className="font-mono text-[10px] tracking-[0.28em] text-zinc-500 uppercase">
+            {isNotFound ? "404" : "Error"}
+          </p>
+          <CardTitle>
+            {isNotFound ? "This Playbook Report link isn’t available" : "Couldn’t load report"}
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-sm text-zinc-400">{state.message}</p>
-          <Link
-            href="/deal-analyzer/analyze"
-            className="inline-flex h-11 w-full items-center justify-center rounded-full bg-gradient-to-r from-[#c9a227] to-[#e8c547] px-6 font-mono text-[10px] tracking-[0.16em] text-black uppercase sm:w-auto"
-          >
-            Start a new analysis
-          </Link>
+          <p className="text-sm leading-relaxed text-zinc-400">
+            {isNotFound
+              ? "The link may be mistyped, expired, or the report was never saved to the cloud. If you just completed the analyzer on this device, try unlocking the report again from the lead step."
+              : state.message}
+          </p>
+          {slug ? (
+            <p className="break-all font-mono text-[10px] text-zinc-600">
+              Slug: {slug}
+            </p>
+          ) : null}
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Link
+              href="/deal-analyzer/analyze"
+              className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-gradient-to-r from-[#c9a227] to-[#e8c547] px-6 font-mono text-[10px] tracking-[0.16em] text-black uppercase"
+            >
+              Start new analysis
+            </Link>
+            <Link
+              href="/deal-analyzer"
+              className="inline-flex h-11 flex-1 items-center justify-center rounded-full border border-zinc-700 px-6 font-mono text-[10px] tracking-[0.16em] text-zinc-400 uppercase"
+            >
+              Deal Analyzer home
+            </Link>
+          </div>
         </CardContent>
       </Card>
     );

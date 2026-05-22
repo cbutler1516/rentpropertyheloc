@@ -21,24 +21,6 @@ function defaultPublishedEdition(): MarketCenterEdition {
   };
 }
 
-function readStoreFile(): MarketCenterStoreSnapshot {
-  try {
-    const raw = readFileSync(STORE_PATH, "utf8");
-    const parsed = JSON.parse(raw) as MarketCenterStoreSnapshot;
-    return {
-      draft: parsed.draft ?? null,
-      published: parsed.published ?? null,
-    };
-  } catch {
-    return { draft: null, published: null };
-  }
-}
-
-function writeStoreFile(snapshot: MarketCenterStoreSnapshot): void {
-  mkdirSync(STORE_DIR, { recursive: true });
-  writeFileSync(STORE_PATH, `${JSON.stringify(snapshot, null, 2)}\n`, "utf8");
-}
-
 function wrapEdition(
   update: DailyMarketUpdate,
   status: MarketUpdateStatus,
@@ -48,6 +30,35 @@ function wrapEdition(
     status,
     savedAt: new Date().toISOString(),
   };
+}
+
+function normalizeEdition(
+  edition: MarketCenterEdition | null,
+): MarketCenterEdition | null {
+  if (!edition) return null;
+  return {
+    ...normalizeDailyMarketUpdate(edition),
+    status: edition.status,
+    savedAt: edition.savedAt,
+  };
+}
+
+function readStoreFile(): MarketCenterStoreSnapshot {
+  try {
+    const raw = readFileSync(STORE_PATH, "utf8");
+    const parsed = JSON.parse(raw) as MarketCenterStoreSnapshot;
+    return {
+      draft: normalizeEdition(parsed.draft ?? null),
+      published: normalizeEdition(parsed.published ?? null),
+    };
+  } catch {
+    return { draft: null, published: null };
+  }
+}
+
+function writeStoreFile(snapshot: MarketCenterStoreSnapshot): void {
+  mkdirSync(STORE_DIR, { recursive: true });
+  writeFileSync(STORE_PATH, `${JSON.stringify(snapshot, null, 2)}\n`, "utf8");
 }
 
 /** Future: swap implementation for Supabase repository */

@@ -45,7 +45,19 @@ export function AdminShell({
             href="/admin/market-center"
             className="block font-mono text-[9px] tracking-[0.18em] text-zinc-500 uppercase transition-colors hover:text-zinc-300"
           >
-            Market Center →
+            Market Brief →
+          </Link>
+          <Link
+            href="/admin/deal-analyzer/launch"
+            className="block font-mono text-[9px] tracking-[0.18em] text-zinc-500 uppercase transition-colors hover:text-zinc-300"
+          >
+            Launch readiness →
+          </Link>
+          <Link
+            href="/admin/deal-analyzer/launch-pack"
+            className="block font-mono text-[9px] tracking-[0.18em] text-zinc-500 uppercase transition-colors hover:text-zinc-300"
+          >
+            Launch pack →
           </Link>
           <Link
             href="/admin/deal-analyzer/agents"

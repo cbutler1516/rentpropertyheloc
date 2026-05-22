@@ -1,14 +1,17 @@
 import { LeadCaptureForm } from "@/app/components/lead-capture-form";
 import { RevealGroup } from "@/app/components/reveal-group";
+import type { DailyMarketUpdate } from "@/app/lib/market-center";
 import { MarketSection } from "./market-section";
 
-export function MarketEmailSignup() {
+export function NewsletterBriefCta({ update }: { update: DailyMarketUpdate }) {
+  const { newsletterCta: cta } = update;
+
   return (
     <MarketSection
       id="market-email"
-      eyebrow="Agent market updates"
-      title="Get the morning briefing in your inbox"
-      lead="Rates, Seattle signal, and talking points—built for listing appointments and buyer consults."
+      eyebrow="Daily brief"
+      title={cta.headline}
+      lead={cta.subhead}
       variant="warm"
       className="border-t border-zinc-200/80"
     >
@@ -16,7 +19,7 @@ export function MarketEmailSignup() {
         <div className="reveal-item content-panel-light mx-auto max-w-2xl rounded-2xl p-6 md:p-10">
           <LeadCaptureForm
             formType="Newsletter Signup"
-            submitLabel="Subscribe to market updates"
+            submitLabel={cta.buttonLabel}
             intent="agent"
           />
           <p className="mt-4 text-center text-xs leading-relaxed text-zinc-500">

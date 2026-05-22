@@ -1,3 +1,4 @@
+import { MARKET_MOOD_LABELS } from "./types";
 import type { DailyMarketUpdate } from "./types";
 
 export function generateRealtorEmailPreview(update: DailyMarketUpdate): string {
@@ -9,63 +10,51 @@ export function generateRealtorEmailPreview(update: DailyMarketUpdate): string {
     timeZone: "America/Los_Angeles",
   }).format(new Date(update.publishedAt));
 
-  const pulseLines = update.pulse
-    .map((card) => `• ${card.label}: ${card.value}${card.delta ? ` (${card.delta})` : ""}`)
-    .join("\n");
-
   return [
-    `Subject: Market Center — ${update.title}`,
+    `Subject: Agent Market Brief — ${update.title}`,
     "",
     `Good morning,`,
     "",
-    `Here's your ${date} briefing from The Loan Playbook Market Center.`,
+    `Your ${date} brief · Mood: ${MARKET_MOOD_LABELS[update.marketMood]}`,
+    "",
+    update.agentTakeaway,
+    "",
+    `RATES — ${update.bigThree.rates.summary}`,
+    `→ ${update.bigThree.rates.agentTakeaway}`,
+    "",
+    `BONDS — ${update.bigThree.bonds.summary}`,
+    `→ ${update.bigThree.bonds.agentTakeaway}`,
+    "",
+    `HOUSING — ${update.bigThree.housing.summary}`,
+    `→ ${update.bigThree.housing.agentTakeaway}`,
     "",
     `TODAY'S PLAY`,
-    update.todaysPlay,
+    update.todayPlay.action,
+    `Who: ${update.todayPlay.whoToCall}`,
+    `Say: ${update.todayPlay.whatToSay}`,
+    `Why now: ${update.todayPlay.whyNow}`,
     "",
-    `RATE SUMMARY`,
-    update.rateSummary,
+    `BUYER SCRIPT`,
+    update.agentScripts.buyerScript,
     "",
-    `TREASURY`,
-    update.treasurySummary,
+    `SELLER SCRIPT`,
+    update.agentScripts.sellerScript,
     "",
-    `SEATTLE / LOCAL`,
-    update.localMarketSummary,
-    "",
-    `MARKET PULSE`,
-    pulseLines,
-    "",
-    `BUYER TALKING POINT`,
-    update.buyerTalkingPoint,
-    "",
-    `SELLER TALKING POINT`,
-    update.sellerTalkingPoint,
-    "",
-    `AGENT SCRIPT`,
-    update.agentScript,
-    "",
-    `Watch today's commentary: ${update.videoTitle}`,
-    `${update.cta.label}: ${update.cta.href}`,
+    `Watch: ${update.videoTitle}`,
+    "theloanplaybook.com/market",
     "",
     "— The Loan Playbook · Educational market commentary, not a commitment to lend.",
   ].join("\n");
 }
 
 export function generateSocialCaptionPreview(update: DailyMarketUpdate): string {
-  const play =
-    update.todaysPlay.length > 140
-      ? `${update.todaysPlay.slice(0, 137)}…`
-      : update.todaysPlay;
-
   return [
-    `📊 ${update.title}`,
+    update.agentScripts.socialPostIdea,
     "",
-    play,
+    `${MARKET_MOOD_LABELS[update.marketMood]} · ${update.rateTrendVisual.thirtyYearValue} 30-yr est.`,
     "",
-    `30-yr ${update.pulse.find((p) => p.id === "thirty-year-fixed")?.value ?? "—"} · Seattle inventory watch`,
+    "Full brief → theloanplaybook.com/market",
     "",
-    `Full market read → theloanplaybook.com/market`,
-    "",
-    "#SeattleRealEstate #MortgageStrategy #MarketUpdate",
+    "#SeattleRealEstate #RealtorTips #MarketBrief",
   ].join("\n");
 }
