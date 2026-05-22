@@ -17,4 +17,11 @@ body {
   background: var(--color-navy-950);
   color: white;
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.35);
+  color: white;
 }

@@ -1,3 +1,4 @@
+import { CtaBand } from "@/components/home/cta-band";
 import { FaqSection } from "@/components/home/faq-section";
 import { HeroSection } from "@/components/home/hero-section";
 import { HowItWorksSection } from "@/components/home/how-it-works-section";
@@ -12,6 +13,7 @@ export default function HomePage() {
       <HowItWorksSection />
       <ProgramHighlightsSection />
       <InvestorUseCasesSection />
+      <CtaBand />
       <FaqSection />
       <LeadFormSection />
     </>

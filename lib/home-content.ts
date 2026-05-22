@@ -1,104 +1,104 @@
 export const HERO_STATS = [
-  { label: "Typical draw window", value: "10 years" },
-  { label: "Investor-friendly", value: "Rental OK" },
-  { label: "Use of funds", value: "Flexible" },
+  { label: "Typical draw period", value: "10 years" },
+  { label: "Collateral focus", value: "Non-owner-occupied" },
+  { label: "Funding timeline", value: "As little as 7 days" },
 ] as const;
 
 export const HOW_IT_WORKS = [
   {
     step: "01",
-    title: "Review your rental portfolio",
+    title: "Map portfolio equity",
     description:
-      "Share property addresses, ownership structure, and existing liens so we can map eligible equity.",
+      "Outline rental addresses, ownership structure, and existing liens so available equity can be evaluated against program guidelines.",
   },
   {
     step: "02",
-    title: "Match program structure",
+    title: "Review structure options",
     description:
-      "We align line size, index, and documentation to your hold strategy—long-term cash flow or value-add.",
+      "Line size, index, and documentation paths are aligned to your hold period—cash-flow hold or value-add execution.",
   },
   {
     step: "03",
-    title: "Close and deploy capital",
+    title: "Draw when capital is needed",
     description:
-      "Draw on your HELOC for acquisitions, renovations, reserves, or debt repositioning as opportunities appear.",
+      "Use approved revolving capacity for acquisitions, renovations, reserves, or balance-sheet repositioning as deals surface.",
   },
 ] as const;
 
 export const PROGRAM_HIGHLIGHTS = [
   {
-    title: "Rental property eligible",
+    title: "Rental collateral considered",
     description:
-      "Programs designed for non-owner-occupied collateral—not just your primary residence.",
+      "Investor-oriented HELOC structures may be available on non-owner-occupied rentals—not limited to a primary residence.",
     icon: "building",
   },
   {
-    title: "Revolving liquidity",
+    title: "Revolving access",
     description:
-      "Access capital when you need it without refinancing the entire property each time.",
+      "Draw, repay, and redraw within the draw period instead of resetting the entire mortgage for each capital need.",
     icon: "cycle",
   },
   {
-    title: "Portfolio-scale thinking",
+    title: "Portfolio-level planning",
     description:
-      "Structure lines across multiple assets to support disciplined, repeatable investing.",
+      "Coordinate lines across multiple assets to support disciplined deployment—not one-off, reactive financing.",
     icon: "chart",
   },
   {
-    title: "Transparent terms",
+    title: "Defined mechanics upfront",
     description:
-      "Clear draw periods, repayment expectations, and rate mechanics before you commit.",
+      "Draw periods, repayment expectations, and rate behavior are reviewed before you proceed—subject to final approval.",
     icon: "shield",
   },
 ] as const;
 
 export const INVESTOR_USE_CASES = [
   {
-    title: "Acquire the next rental",
+    title: "Fund the next acquisition",
     description:
-      "Bridge down payment or closing costs while long-term financing is arranged.",
+      "Bridge down payment or closing needs while permanent financing is lined up—without pausing your pipeline.",
   },
   {
-    title: "Fund value-add renovations",
+    title: "Execute value-add work",
     description:
-      "Finance kitchen, bath, or systems upgrades that lift rent and property value.",
+      "Finance renovations that improve rent, reduce turnover, or prepare a unit for repositioning.",
   },
   {
-    title: "Stabilize cash reserves",
+    title: "Protect operating reserves",
     description:
-      "Maintain operating liquidity for vacancies, capex, or insurance deductibles.",
+      "Keep liquidity for vacancies, maintenance spikes, or insurance events without selling performing assets.",
   },
   {
-    title: "Reposition existing debt",
+    title: "Simplify higher-cost debt",
     description:
-      "Pay off higher-cost balances and simplify monthly obligations across the portfolio.",
+      "Consolidate expensive balances where structure and approval support a cleaner monthly picture.",
   },
 ] as const;
 
 export const FAQ_ITEMS = [
   {
-    question: "Can I use a HELOC on a rental property?",
+    question: "Can a HELOC be secured by a rental property?",
     answer:
-      "Yes—select investor-focused lenders allow HELOCs secured by non-owner-occupied rentals. Eligibility depends on equity, occupancy, and your overall financial profile.",
+      "In many cases, yes. Investor-focused programs may be available on non-owner-occupied collateral. Eligibility is subject to approval, equity, occupancy, and lender guidelines.",
   },
   {
-    question: "How is this different from a cash-out refinance?",
+    question: "How does a HELOC compare with a cash-out refinance?",
     answer:
-      "A HELOC is revolving: you draw, repay, and draw again during the draw period. Cash-out refis replace your entire mortgage with a new fixed loan—better when you want a one-time lump sum and long-term rate lock.",
+      "A HELOC is revolving—you draw, repay, and access again during the draw period. A cash-out refinance replaces the existing mortgage with a new term loan, which can make sense for a single, long-term rate lock.",
   },
   {
-    question: "What documentation will I need?",
+    question: "What documentation is typically required?",
     answer:
-      "Expect property details, rent rolls or leases, entity documents if applicable, tax returns, and proof of reserves. Requirements vary by lender and line size.",
+      "Expect property details, rent rolls or leases, entity documents where applicable, income verification, and reserves. Alternative documentation paths may be available on select programs, subject to approval.",
   },
   {
-    question: "How fast can I close?",
+    question: "How quickly can funding happen?",
     answer:
-      "Timelines depend on appraisal, title, and underwriting volume. Many investor lines close in a few weeks when files are complete upfront.",
+      "Timelines depend on appraisal, title, and underwriting conditions. Closings in as little as 7 days may be available when the file is complete and third-party items are in place.",
   },
   {
-    question: "Is this financial advice?",
+    question: "Is this site offering financial advice?",
     answer:
-      "No. This site provides educational marketing information. Speak with a licensed loan officer and tax advisor before acting.",
+      "No. Content here is educational marketing only. Consult a licensed loan officer and tax professional before making financing decisions.",
   },
 ] as const;
