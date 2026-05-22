@@ -1,4 +1,14 @@
-import type { AgentDashboardStats, PartnerAgent, PartnerAgentInput } from "../agent-types";
+import {
+  SEO_LANDING_SLUGS,
+  getSeoLandingContent,
+  partnerSeoLandingPath,
+} from "../seo-landing-content";
+import type {
+  AgentDashboardStats,
+  PartnerAgent,
+  PartnerAgentInput,
+  PartnerLandingPageStat,
+} from "../agent-types";
 import { mapBrandingFromRow } from "../agent-branding";
 import { createServerSupabaseClient } from "./server";
 
@@ -169,11 +179,76 @@ export async function deleteAgent(
   return { ok: true };
 }
 
+async function fetchPartnerLandingPageStats(): Promise<
+  Map<string, PartnerLandingPageStat[]>
+> {
+  const supabase = createServerSupabaseClient();
+  const byAgent = new Map<string, PartnerLandingPageStat[]>();
+
+  if (!supabase) return byAgent;
+
+  const since = new Date();
+  since.setDate(since.getDate() - 90);
+  const sinceIso = since.toISOString();
+
+  const { data: events } = await supabase
+    .from("deal_analyzer_events")
+    .select("agent_id, event_name, page_path, metadata")
+    .gte("created_at", sinceIso)
+    .in("event_name", ["seo_landing_view", "lead_submitted"])
+    .not("agent_id", "is", null);
+
+  const viewCounts = new Map<string, Map<string, number>>();
+  const leadCounts = new Map<string, Map<string, number>>();
+
+  for (const row of events ?? []) {
+    if (!row.agent_id) continue;
+    const meta = row.metadata as { landingSlug?: string } | null;
+    const landingSlug =
+      meta?.landingSlug ??
+      (row.page_path?.match(/\/deal-analyzer\/([^/]+)$/)?.[1] ?? null);
+    if (!landingSlug || !(SEO_LANDING_SLUGS as readonly string[]).includes(landingSlug)) {
+      continue;
+    }
+
+    if (row.event_name === "seo_landing_view") {
+      const agentViews = viewCounts.get(row.agent_id) ?? new Map<string, number>();
+      agentViews.set(landingSlug, (agentViews.get(landingSlug) ?? 0) + 1);
+      viewCounts.set(row.agent_id, agentViews);
+    }
+
+    if (row.event_name === "lead_submitted") {
+      const agentLeads = leadCounts.get(row.agent_id) ?? new Map<string, number>();
+      agentLeads.set(landingSlug, (agentLeads.get(landingSlug) ?? 0) + 1);
+      leadCounts.set(row.agent_id, agentLeads);
+    }
+  }
+
+  const { data: agentRows } = await supabase
+    .from("deal_analyzer_agents")
+    .select("id, slug");
+
+  for (const agent of agentRows ?? []) {
+    const stats: PartnerLandingPageStat[] = SEO_LANDING_SLUGS.map((slug) => ({
+      slug,
+      label: getSeoLandingContent(slug).navLabel,
+      path: partnerSeoLandingPath(agent.slug as string, slug),
+      views: viewCounts.get(agent.id)?.get(slug) ?? 0,
+      leads: leadCounts.get(agent.id)?.get(slug) ?? 0,
+    }));
+    byAgent.set(agent.id, stats);
+  }
+
+  return byAgent;
+}
+
 export async function fetchAgentDashboardStats(): Promise<
   AgentDashboardStats[] | { error: string }
 > {
   const supabase = createServerSupabaseClient();
   if (!supabase) return { error: "Supabase is not configured." };
+
+  const landingByAgent = await fetchPartnerLandingPageStats();
 
   const { data: reports, error: reportsError } = await supabase
     .from("deal_analyzer_reports")
@@ -234,6 +309,7 @@ export async function fetchAgentDashboardStats(): Promise<
       appointmentSetCount,
       conversionRate,
       createdAt: row.created_at as string,
+      landingPageStats: landingByAgent.get(row.id) ?? [],
     };
   });
 }

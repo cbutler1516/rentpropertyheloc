@@ -120,6 +120,7 @@ export async function runFullFunnelTest(): Promise<FunnelTestReport> {
       outputs: emptyOutputs,
       landingPage: landing,
       leadCapture,
+      tags: [],
     });
     if ("error" in saved) throw new Error(saved.error);
     packageId = saved.id;

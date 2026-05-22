@@ -14,6 +14,7 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Select } from "@/app/components/ui/select";
 import { Textarea } from "@/app/components/ui/textarea";
+import { getPartnerLandingAttribution } from "../lib/analytics/partner-landing-attribution";
 import {
   trackDealAnalyzerEvent,
   trackDealAnalyzerEventOnce,
@@ -102,12 +103,18 @@ export function LeadGateForm() {
       return;
     }
 
+    const landing = getPartnerLandingAttribution();
+
     if (result.source === "local") {
       void trackDealAnalyzerEvent({
         eventName: "lead_submitted",
         dealType: analysis?.path,
         agentId: partner?.agent?.id,
         referralCode: partner?.agent?.referralCode,
+        pagePath: landing?.path,
+        metadata: landing
+          ? { landingSlug: landing.slug, partner: true }
+          : undefined,
       });
       void trackDealAnalyzerEvent({
         eventName: "report_generated",

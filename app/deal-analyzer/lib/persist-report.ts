@@ -1,4 +1,5 @@
 import type { DealAnalyzerUtm } from "./analytics/types";
+import { getPartnerLandingAttribution } from "./analytics/partner-landing-attribution";
 import { getDealAnalyzerSessionId } from "./analytics/session";
 import { getStoredUtm } from "./analytics/utm";
 import { generateReportSlug } from "./generate-slug";
@@ -77,6 +78,7 @@ export async function persistDealReport(
   if (isSupabaseConfigured()) {
     try {
       const { sessionId, utm } = getAttributionForSave();
+      const landing = getPartnerLandingAttribution();
       const res = await fetch("/api/deal-analyzer/reports", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -90,6 +92,8 @@ export async function persistDealReport(
           referralCode: payload.referralCode ?? null,
           sessionId: sessionId || null,
           utm,
+          landingSlug: landing?.slug ?? null,
+          landingPagePath: landing?.path ?? null,
         }),
       });
 

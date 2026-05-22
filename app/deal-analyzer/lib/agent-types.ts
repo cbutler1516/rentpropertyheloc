@@ -26,12 +26,21 @@ export type PartnerAgentInput = {
   brandColor?: string;
 };
 
+export type PartnerLandingPageStat = {
+  slug: string;
+  label: string;
+  path: string;
+  views: number;
+  leads: number;
+};
+
 export type AgentDashboardStats = PartnerAgent & {
   totalReports: number;
   totalLeads: number;
   appointmentSetCount: number;
   conversionRate: number;
   createdAt: string;
+  landingPageStats: PartnerLandingPageStat[];
 };
 
 export function slugifyAgent(value: string): string {
@@ -66,4 +75,19 @@ export function partnerLink(siteUrl: string, slug: string): string {
 
 export function partnerSampleReportPath(slug: string): string {
   return `/partners/${slug}/sample-report`;
+}
+
+export function partnerCalculatorLandingPath(
+  agentSlug: string,
+  calculatorSlug: string,
+): string {
+  return `${partnerDealAnalyzerBase(agentSlug)}/${calculatorSlug}`;
+}
+
+export function partnerCalculatorLandingLink(
+  siteUrl: string,
+  agentSlug: string,
+  calculatorSlug: string,
+): string {
+  return `${siteUrl.replace(/\/$/, "")}${partnerCalculatorLandingPath(agentSlug, calculatorSlug)}`;
 }

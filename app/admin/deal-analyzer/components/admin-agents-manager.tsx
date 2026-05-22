@@ -16,6 +16,7 @@ import {
   slugifyAgent,
 } from "@/app/deal-analyzer/lib/agent-types";
 import { AdminAgentInviteKit } from "./admin-agent-invite-kit";
+import { AdminAgentLandingKit } from "./admin-agent-landing-kit";
 import { AdminShell } from "./admin-shell";
 
 type AgentFormState = {
@@ -117,6 +118,11 @@ export function AdminAgentsManager({
       ctaEmail: form.ctaEmail || null,
     };
   }, [form]);
+
+  const selectedLandingStats = useMemo(() => {
+    if (!form.id) return [];
+    return stats.find((s) => s.id === form.id)?.landingPageStats ?? [];
+  }, [form.id, stats]);
 
   const sidebar = useMemo(
     () => (
@@ -452,16 +458,25 @@ export function AdminAgentsManager({
         </form>
 
         {inviteAgent ? (
-          <AdminAgentInviteKit agent={inviteAgent} siteUrl={siteUrl} />
+          <>
+            <AdminAgentLandingKit
+              agent={{ name: inviteAgent.name, slug: inviteAgent.slug }}
+              siteUrl={siteUrl}
+              landingPageStats={selectedLandingStats}
+            />
+            <AdminAgentInviteKit agent={inviteAgent} siteUrl={siteUrl} />
+          </>
         ) : null}
 
         <div className="overflow-x-auto rounded-2xl border border-white/[0.06]">
-          <table className="w-full min-w-[1000px] text-left text-sm">
+          <table className="w-full min-w-[1100px] text-left text-sm">
             <thead>
               <tr className="border-b border-white/[0.06] font-mono text-[9px] tracking-[0.16em] text-zinc-500 uppercase">
                 <th className="px-4 py-3">Agent</th>
                 <th className="px-4 py-3">Reports</th>
                 <th className="px-4 py-3">Leads</th>
+                <th className="px-4 py-3">Landing views</th>
+                <th className="px-4 py-3">Landing leads</th>
                 <th className="px-4 py-3">Appts</th>
                 <th className="px-4 py-3">Conv.</th>
                 <th className="px-4 py-3">Partner link</th>
@@ -471,7 +486,7 @@ export function AdminAgentsManager({
             <tbody>
               {stats.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-10 text-center text-zinc-500">
+                  <td colSpan={9} className="px-4 py-10 text-center text-zinc-500">
                     No partner agents yet.
                   </td>
                 </tr>
@@ -504,6 +519,12 @@ export function AdminAgentsManager({
                     </td>
                     <td className="px-4 py-3 text-zinc-300">{row.totalReports}</td>
                     <td className="px-4 py-3 text-zinc-300">{row.totalLeads}</td>
+                    <td className="px-4 py-3 text-zinc-300">
+                      {row.landingPageStats.reduce((n, s) => n + s.views, 0)}
+                    </td>
+                    <td className="px-4 py-3 text-zinc-300">
+                      {row.landingPageStats.reduce((n, s) => n + s.leads, 0)}
+                    </td>
                     <td className="px-4 py-3 text-zinc-300">
                       {row.appointmentSetCount}
                     </td>

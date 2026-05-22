@@ -37,9 +37,15 @@ export async function POST(request: Request) {
     );
   }
 
-  let body: PostBody;
+  let body: PostBody & {
+    landingSlug?: string | null;
+    landingPagePath?: string | null;
+  };
   try {
-    body = (await request.json()) as PostBody;
+    body = (await request.json()) as PostBody & {
+      landingSlug?: string | null;
+      landingPagePath?: string | null;
+    };
   } catch {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
@@ -81,6 +87,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: result.error }, { status: 500 });
   }
 
+  const eventMetadata: Record<string, string | number | boolean | null> = {};
+  if (body.agentId) eventMetadata.partner = true;
+  if (body.landingSlug) eventMetadata.landingSlug = body.landingSlug;
+
   const eventBase = {
     sessionId: body.sessionId ?? null,
     leadId: result.leadId,
@@ -88,7 +98,9 @@ export async function POST(request: Request) {
     agentId: body.agentId ?? null,
     referralCode: body.referralCode ?? null,
     dealType: body.inputs.path,
-    pagePath: "/deal-analyzer/analyze",
+    pagePath: body.landingPagePath ?? "/deal-analyzer/analyze",
+    metadata:
+      Object.keys(eventMetadata).length > 0 ? eventMetadata : undefined,
   };
 
   void insertDealAnalyzerEvent({

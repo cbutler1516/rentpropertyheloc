@@ -283,3 +283,24 @@ Run migration `007_deal_analyzer_events.sql` after `006`.
 **Admin** (`/admin/deal-analyzer`): Conversion analytics panel — funnel, by deal type, by agent, top SEO pages, report engagement, CRM push rate. API: `GET /api/deal-analyzer/admin/analytics?days=30`.
 
 Session id: `localStorage` + cookie `da_session_id` (30-day). No browser fingerprinting.
+
+## v12 — Partner-branded SEO calculator pages
+
+No new migration. Reuses v10 SEO content, v8 co-branding, and v11 analytics.
+
+### Partner routes
+
+`/partners/{agentSlug}/deal-analyzer/{calculatorSlug}` for each v10 slug (`homebuyer`, `refinance`, `investor-dscr`, `commercial`, `seller-concessions`, `rate-buydown`, `heloc-vs-cash-out`, `wait-vs-buy`).
+
+- Co-branded header (headshot, logo, agent CTA when set)
+- Financing strategy by Chris Butler · The Loan Playbook + Broadview Lending
+- CTA → `/partners/{slug}/deal-analyzer/analyze?path=...`
+- FAQ JSON-LD + partner-aware metadata
+- `seo_landing_view` events with `agent_id` and `metadata.landingSlug`
+
+### Admin (`/admin/deal-analyzer/agents`)
+
+- **Copy full landing page kit** — all branded calculator URLs
+- Per-calculator **Copy** links in the landing kit table
+- **Landing views / Landing leads** columns (90-day event rollup)
+- Edit agent to see per-page views and leads breakdown

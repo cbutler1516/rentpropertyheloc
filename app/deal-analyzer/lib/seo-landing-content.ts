@@ -714,7 +714,7 @@ function buildSeoLandingMetadataFromParts(
     description,
     openGraph: {
       title,
-      description: metadata.description,
+      description,
       type: "website",
       images: [
         {
@@ -728,7 +728,7 @@ function buildSeoLandingMetadataFromParts(
     twitter: {
       card: "summary_large_image",
       title,
-      description: metadata.description,
+      description,
       images: ["/loan-playbook-social-preview.svg"],
     },
   };

@@ -1,32 +1,68 @@
 import Link from "next/link";
 import { JsonLd } from "@/app/components/json-ld";
 import { Card, CardDescription, CardHeader } from "@/app/components/ui/card";
+import type { PartnerAgent } from "../lib/agent-types";
 import { getSeoLandingContent } from "../lib/seo-landing-content";
 import { DEAL_ANALYZER_DISCLAIMER } from "../lib/constants";
 import {
   buildFaqJsonLd,
   getAnalyzeHref,
+  getPartnerAnalyzeHref,
+  getPartnerSeoLandingHref,
   getSeoLandingHref,
   type SeoLandingContent,
 } from "../lib/seo-landing-content";
+import { PartnerSeoLandingAnalytics } from "./partner-seo-landing-analytics";
+import { PartnerSeoLandingHeader } from "./partner-seo-landing-header";
 
 type DealAnalyzerSeoLandingProps = {
   content: SeoLandingContent;
+  partner?: {
+    agent: PartnerAgent;
+    agentSlug: string;
+  };
 };
 
-export function DealAnalyzerSeoLanding({ content }: DealAnalyzerSeoLandingProps) {
-  const analyzeHref = getAnalyzeHref(content.analyzerPath);
+export function DealAnalyzerSeoLanding({
+  content,
+  partner,
+}: DealAnalyzerSeoLandingProps) {
+  const analyzeHref = partner
+    ? getPartnerAnalyzeHref(partner.agentSlug, content.analyzerPath)
+    : getAnalyzeHref(content.analyzerPath);
+
   const related = content.relatedSlugs.map((slug) => ({
     slug,
-    href: getSeoLandingHref(slug),
+    href: partner
+      ? getPartnerSeoLandingHref(partner.agentSlug, slug)
+      : getSeoLandingHref(slug),
     label: getSeoLandingContent(slug).navLabel,
   }));
+
+  const calculatorsHubHref = partner
+    ? `/partners/${partner.agentSlug}/deal-analyzer/analyze`
+    : "/deal-analyzer";
 
   return (
     <>
       <JsonLd data={buildFaqJsonLd(content.faq)} />
+      {partner ? (
+        <PartnerSeoLandingAnalytics
+          agentId={partner.agent.id}
+          referralCode={partner.agent.referralCode}
+          agentSlug={partner.agentSlug}
+          calculatorSlug={content.slug}
+        />
+      ) : null}
 
       <article className="space-y-20 pb-8">
+        {partner ? (
+          <PartnerSeoLandingHeader
+            agent={partner.agent}
+            calculatorLabel={content.navLabel}
+          />
+        ) : null}
+
         <section className="max-w-3xl space-y-6">
           <p className="font-mono text-[10px] tracking-[0.32em] text-[#c9a227] uppercase">
             {content.hero.eyebrow}
@@ -45,10 +81,10 @@ export function DealAnalyzerSeoLanding({ content }: DealAnalyzerSeoLandingProps)
               {content.hero.ctaLabel}
             </Link>
             <Link
-              href="/deal-analyzer"
+              href={calculatorsHubHref}
               className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-700 px-6 font-mono text-[10px] tracking-[0.16em] text-zinc-300 uppercase hover:border-[#7c3aed]/50"
             >
-              All calculators
+              {partner ? "All partner calculators" : "All calculators"}
             </Link>
           </div>
         </section>
