@@ -1,63 +1,30 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Analytics } from "./components/analytics";
-import { JsonLd } from "./components/json-ld";
-import { organizationSchema, webSiteSchema } from "./lib/structured-data";
-import {
-  DEFAULT_OG_IMAGE,
-  SITE_NAME,
-  SITE_URL,
-  siteRobots,
-} from "./lib/site-seo";
+import { DM_Sans } from "next/font/google";
+import { SiteFooter } from "@/components/layout/site-footer";
+import { SiteHeader } from "@/components/layout/site-header";
+import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: SITE_NAME,
-  description:
-    "Know the move before you make it. Clear mortgage strategy for buyers, homeowners, agents, and investors.",
-  icons: {
-    icon: [
-      { url: "/brand/loan-playbook-icon.svg", type: "image/svg+xml" },
-      { url: "/brand/loan-playbook-icon.png", type: "image/png", sizes: "512x512" },
-    ],
-    apple: [
-      { url: "/brand/loan-playbook-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    shortcut: "/brand/loan-playbook-icon.png",
+  title: {
+    default: `${SITE_NAME} | Rental Property HELOC Programs`,
+    template: `%s | ${SITE_NAME}`,
   },
+  description: SITE_TAGLINE,
   openGraph: {
     title: SITE_NAME,
-    description:
-      "Know the move before you make it. Watch, read, and make the next mortgage decision with context.",
-    images: [
-      {
-        url: DEFAULT_OG_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: `${SITE_NAME} social preview`,
-      },
-    ],
+    description: SITE_TAGLINE,
+    url: SITE_URL,
+    siteName: SITE_NAME,
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_NAME,
-    description:
-      "Know the move before you make it. Watch, read, and make the next mortgage decision with context.",
-    images: [DEFAULT_OG_IMAGE],
-  },
-  robots: siteRobots(),
 };
 
 export default function RootLayout({
@@ -66,14 +33,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-[#050505] text-white">
-        <JsonLd data={[organizationSchema(), webSiteSchema()]} />
-        {children}
-        <Analytics />
+    <html lang="en" className={`${dmSans.variable} h-full scroll-smooth antialiased`}>
+      <body className="min-h-full flex flex-col">
+        <SiteHeader />
+        <main className="flex-1">{children}</main>
+        <SiteFooter />
       </body>
     </html>
   );
