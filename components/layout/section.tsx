@@ -5,12 +5,14 @@ import { Container } from "./container";
 type SectionProps = HTMLAttributes<HTMLElement> & {
   id?: string;
   muted?: boolean;
+  light?: boolean;
   divider?: boolean;
 };
 
 export function Section({
   id,
   muted,
+  light,
   divider = false,
   className,
   children,
@@ -22,6 +24,7 @@ export function Section({
       className={cn(
         "relative py-20 sm:py-24 lg:py-28",
         muted && "bg-navy-900/50",
+        light && "section-light",
         divider &&
           "before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/15 before:to-transparent",
         className,

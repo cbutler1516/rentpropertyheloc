@@ -1,12 +1,16 @@
-export const SITE_NAME = "RentPropertyHELOC";
+import { BRAND } from "@/lib/brand";
+
+export const SITE_NAME = BRAND.name;
 export const SITE_URL = "https://rentpropertyheloc.com";
-export const SITE_TAGLINE =
-  "Access revolving equity on rental collateral—structured for investors who move on opportunity, not slogans.";
+export const SITE_HEADLINE = BRAND.headline;
+export const SITE_TAGLINE = BRAND.subheadline;
+export const SITE_DESCRIPTOR = BRAND.descriptor;
 
 export const NAV_LINKS = [
+  { href: "/#overview", label: "Overview" },
+  { href: "/#dashboard", label: "Dashboard" },
   { href: "/#how-it-works", label: "How it works" },
   { href: "/#program", label: "Program" },
-  { href: "/#use-cases", label: "Use cases" },
   { href: "/#faq", label: "FAQ" },
 ] as const;
 

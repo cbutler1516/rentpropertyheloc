@@ -1,5 +1,6 @@
 "use client";
 
+import { trackVideoPlayed } from "@/lib/analytics/events";
 import { cn } from "@/lib/cn";
 import { useRef, useState } from "react";
 
@@ -8,11 +9,35 @@ type VideoPlayerProps = {
   poster?: string;
   className?: string;
   label?: string;
+  /** Explainer: audio on by default; background cards stay muted */
+  withAudio?: boolean;
+  muted?: boolean;
+  autoPlay?: boolean;
+  loop?: boolean;
+  controls?: boolean;
 };
 
-export function VideoPlayer({ src, poster, className, label = "Video" }: VideoPlayerProps) {
+export function VideoPlayer({
+  src,
+  poster,
+  className,
+  label = "Video",
+  withAudio = false,
+  muted,
+  autoPlay = false,
+  loop = false,
+  controls = true,
+}: VideoPlayerProps) {
   const ref = useRef<HTMLVideoElement>(null);
   const [failed, setFailed] = useState(false);
+  const playedRef = useRef(false);
+  const isMuted = muted ?? !withAudio;
+
+  function handlePlay() {
+    if (playedRef.current) return;
+    playedRef.current = true;
+    trackVideoPlayed(src);
+  }
 
   return (
     <div
@@ -30,17 +55,21 @@ export function VideoPlayer({ src, poster, className, label = "Video" }: VideoPl
           <div className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
             <p className="text-sm font-medium text-white/80">{label}</p>
             <p className="text-xs text-white/50">
-              Add <span className="font-mono text-accent/90">{src}</span> to enable playback.
+              Place <span className="font-mono text-accent/90">{src}</span> in public/videos.
             </p>
           </div>
         ) : (
           <video
             ref={ref}
             className="h-full w-full object-cover"
-            controls
+            controls={controls}
             playsInline
             preload="metadata"
             poster={poster}
+            muted={isMuted}
+            autoPlay={autoPlay}
+            loop={loop}
+            onPlay={handlePlay}
             onError={() => setFailed(true)}
           >
             <source src={src} type="video/mp4" />

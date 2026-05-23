@@ -22,7 +22,7 @@ export function CtaBand() {
           <div className="absolute inset-0 rounded-3xl bg-grid opacity-30" aria-hidden />
           <div className="relative mx-auto max-w-2xl text-center">
             <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-              See what may be available on your rentals
+              Explore rental equity options—without tax returns
             </h2>
             <p className="mt-4 text-base leading-relaxed text-white/70">
               Start a no-obligation options review. Eligibility and terms are subject to approval.
@@ -35,7 +35,7 @@ export function CtaBand() {
                 href={SECONDARY_CTA_HREF}
                 variant="secondary"
                 size="lg"
-                className="w-full sm:w-auto"
+                className="w-full border-white/10 text-sm sm:w-auto sm:opacity-90"
               >
                 {SECONDARY_CTA_LABEL}
               </CtaLink>

@@ -50,28 +50,28 @@ export const HOW_IT_WORKS = [
 
 export const PROGRAM_HIGHLIGHTS = [
   {
-    title: "Rental collateral considered",
+    title: "No tax return path may be available",
     description:
-      "Investor-oriented HELOC structures may be available on non-owner-occupied rentals—not limited to a primary residence.",
+      "Select programs may allow alternative documentation for self-employed investors and LLC owners—subject to approval.",
+    icon: "shield",
+  },
+  {
+    title: "Rental collateral focus",
+    description:
+      "Duplexes, townhomes, long-term rentals, and STR assets—not primary-residence consumer HELOC positioning.",
     icon: "building",
   },
   {
-    title: "Revolving access",
+    title: "Revolving liquidity",
     description:
-      "Draw, repay, and redraw within the draw period instead of resetting the entire mortgage for each capital need.",
+      "Draw, repay, and redeploy without replacing a low-rate first mortgage each time capital is needed.",
     icon: "cycle",
   },
   {
-    title: "Portfolio-level planning",
+    title: "Portfolio-scale strategy",
     description:
-      "Coordinate lines across multiple assets to support disciplined deployment—not one-off, reactive financing.",
+      "Coordinate equity access across assets to fund acquisitions, renovations, and reserves with discipline.",
     icon: "chart",
-  },
-  {
-    title: "Defined mechanics upfront",
-    description:
-      "Draw periods, repayment expectations, and rate behavior are reviewed before you proceed—subject to final approval.",
-    icon: "shield",
   },
 ] as const;
 

@@ -7,9 +7,18 @@ type BackgroundVideoProps = {
   src: string;
   className?: string;
   overlayClassName?: string;
+  /** Hero loads immediately; sections defer via LazyBackgroundVideo */
+  priority?: boolean;
+  videoClassName?: string;
 };
 
-export function BackgroundVideo({ src, className, overlayClassName }: BackgroundVideoProps) {
+export function BackgroundVideo({
+  src,
+  className,
+  overlayClassName,
+  priority = false,
+  videoClassName,
+}: BackgroundVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [active, setActive] = useState(false);
 
@@ -22,7 +31,6 @@ export function BackgroundVideo({ src, className, overlayClassName }: Background
 
     video.addEventListener("canplay", onCanPlay);
     video.addEventListener("error", onError);
-
     video.load();
 
     return () => {
@@ -34,27 +42,28 @@ export function BackgroundVideo({ src, className, overlayClassName }: Background
   return (
     <div className={cn("absolute inset-0", className)}>
       <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(34,211,238,0.2),transparent_50%),linear-gradient(160deg,#06101f_0%,#0c1a30_45%,#06101f_100%)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(34,211,238,0.18),transparent_50%),linear-gradient(160deg,#06101f_0%,#0c1a30_45%,#06101f_100%)]"
         aria-hidden
       />
       <video
         ref={videoRef}
         className={cn(
           "absolute inset-0 h-full w-full object-cover transition-opacity duration-1000",
-          active ? "opacity-100" : "opacity-0",
+          active ? "opacity-70 sm:opacity-80" : "opacity-0",
+          videoClassName,
         )}
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
+        preload={priority ? "auto" : "metadata"}
         aria-hidden
       >
         <source src={src} type="video/mp4" />
       </video>
       <div
         className={cn(
-          "absolute inset-0 bg-navy-950/75 bg-gradient-to-b from-navy-950/60 via-navy-950/80 to-navy-950",
+          "absolute inset-0 bg-navy-950/80 bg-gradient-to-b from-navy-950/70 via-navy-950/85 to-navy-950",
           overlayClassName,
         )}
         aria-hidden

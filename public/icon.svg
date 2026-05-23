@@ -1,5 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect width="64" height="64" rx="14" fill="#06101f"/>
-  <path d="M18 44V24l14-8 14 8v20H18Z" stroke="#22d3ee" stroke-width="2.5" stroke-linejoin="round"/>
-  <path d="M28 44v-8h8v8" stroke="#4ade80" stroke-width="2.5"/>
+<svg width="64" height="64" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="48" height="48" rx="12" fill="#040810"/>
+  <defs>
+    <linearGradient id="g" x1="8" y1="36" x2="40" y2="12">
+      <stop stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#4ade80"/>
+    </linearGradient>
+  </defs>
+  <circle cx="24" cy="24" r="18" stroke="url(#g)" stroke-width="1.25"/>
+  <path d="M15 30V22l9-7 9 7v8" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/>
+  <rect x="17" y="28" width="3" height="5" rx="0.5" fill="url(#g)"/>
+  <rect x="22.25" y="25" width="3" height="8" rx="0.5" fill="url(#g)"/>
+  <rect x="27.5" y="22" width="3" height="11" rx="0.5" fill="url(#g)"/>
 </svg>

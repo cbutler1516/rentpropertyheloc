@@ -5,6 +5,7 @@ import { ProgramIcon } from "@/components/icons/program-icons";
 import { MotionCard } from "@/components/motion/motion-card";
 import { Reveal, StaggerItem, StaggerReveal } from "@/components/motion/reveal";
 import { Card } from "@/components/ui/card";
+import { SectionLeadCta } from "@/components/ui/section-lead-cta";
 import { PROGRAM_HIGHLIGHTS } from "@/lib/home-content";
 
 export function ProgramHighlightsSection() {
@@ -13,8 +14,8 @@ export function ProgramHighlightsSection() {
       <Reveal>
         <SectionHeader
           eyebrow="Program"
-          title="Structured for rental investors"
-          description="Revolving lines on non-owner-occupied collateral—reviewed against your hold strategy and approval criteria."
+          title="Built for scaling rental portfolios"
+          description="Liquidity, leverage, and growth—without the traditional mortgage funnel. Programs may be available, subject to approval."
         />
       </Reveal>
       <StaggerReveal className="grid gap-5 sm:grid-cols-2 sm:gap-6">
@@ -36,6 +37,9 @@ export function ProgramHighlightsSection() {
           </StaggerItem>
         ))}
       </StaggerReveal>
+      <Reveal delay={0.12}>
+        <SectionLeadCta className="mt-12" />
+      </Reveal>
     </Section>
   );
 }

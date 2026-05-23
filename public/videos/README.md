@@ -1,8 +1,15 @@
-# Hero & founder videos
+# Video assets
 
-Place MP4 files here for production playback:
+All paths are configured in `lib/videos.ts`.
 
-- `hero-rental-equity-loop.mp4` — cinematic hero background (muted loop)
-- `founder-talking-head.mp4` — founder section player
+| File | Role |
+|------|------|
+| `blonde-pitch.mp4` | Primary explainer (audio, controls) |
+| `drone-neighborhood-loop.mp4` | Hero background (muted loop) |
+| `drone-neighborhood-loop-alt.mp4` | Optional hero alternate |
+| `investor-fintech-commercial.mp4` | How-it-works ambient + card |
+| `investor-fintech-commercial-alt.mp4` | Portfolio growth card |
+| `investor-rental-review.mp4` | Equity dashboard ambient |
+| `investor-rental-review-alt.mp4` | Optional portfolio ambient |
 
-The site renders gradient fallbacks automatically when files are missing.
+Swap files here and update `lib/videos.ts` if filenames change.
