@@ -1,7 +1,9 @@
 "use client";
 
 import { TCPA_CONSENT_DETAIL, TCPA_CONSENT_TEXT } from "@/lib/leads/constants";
+import { PRIVACY_POLICY_PATH, TERMS_OF_USE_PATH } from "@/lib/legal/routes";
 import { cn } from "@/lib/cn";
+import Link from "next/link";
 
 type FunnelConsentSectionProps = {
   tcpaConsent: boolean;
@@ -50,9 +52,26 @@ export function FunnelConsentSection({
       {TCPA_CONSENT_DETAIL ? (
         <details id="tcpa-consent-detail" className="rounded-lg border border-slate-200/80 bg-slate-50/80 px-3 py-2">
           <summary className="cursor-pointer text-[11px] font-medium text-slate-600 marker:content-none [&::-webkit-details-marker]:hidden">
-            View consent details
+            View Consent Details
           </summary>
           <p className="mt-2 text-[11px] leading-relaxed text-slate-500">{TCPA_CONSENT_DETAIL}</p>
+          <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
+            See our{" "}
+            <Link
+              href={PRIVACY_POLICY_PATH}
+              className="font-medium text-teal-700 underline-offset-2 hover:underline"
+            >
+              Privacy Policy
+            </Link>{" "}
+            and{" "}
+            <Link
+              href={TERMS_OF_USE_PATH}
+              className="font-medium text-teal-700 underline-offset-2 hover:underline"
+            >
+              Terms of Use
+            </Link>
+            .
+          </p>
         </details>
       ) : null}
     </div>

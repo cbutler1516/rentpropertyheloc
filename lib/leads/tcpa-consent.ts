@@ -32,9 +32,9 @@ export const TCPA_CONSENT_VARIANTS: Record<TcpaConsentVariantId, TcpaConsentVari
   "short-with-detail": {
     id: "short-with-detail",
     label: "Short label + expandable detail",
-    text: "I agree to be contacted about my inquiry.",
+    text: "I agree to be contacted about my financing options.",
     detail:
-      "By checking this box, you agree RentPropertyHELOC.com and its lending or marketing partners may call, text, and email you at the contact information provided regarding HELOC and related financing options. Consent is not a condition of purchase. Message and data rates may apply. You may opt out at any time, including by replying STOP to texts where applicable.",
+      "By submitting this form, you agree that Rent Property LLC and its lending partners may contact you by phone call, text message, or email regarding your financing request and available financing options. Consent is not required as a condition of obtaining financing. Message and data rates may apply. Message frequency may vary.",
   },
 };
 
