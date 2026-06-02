@@ -13,8 +13,11 @@ export const ADVISOR_HEADSHOT_PORTRAIT_CLASS = "object-cover object-[center_12%]
 export const ADVISOR_HEADSHOT_CLASS = ADVISOR_HEADSHOT_PORTRAIT_CLASS;
 export const ADVISOR_HEADSHOT_HOMEPAGE_CLASS = ADVISOR_HEADSHOT_PORTRAIT_CLASS;
 
-/** Circular avatars */
+/** Circular avatars (larger circles) */
 export const ADVISOR_HEADSHOT_AVATAR_CLASS = "object-cover object-[center_18%]";
+
+/** Compact advisor strip — same focal point as portrait for full head visibility */
+export const ADVISOR_HEADSHOT_COMPACT_CLASS = ADVISOR_HEADSHOT_PORTRAIT_CLASS;
 
 export { BOOK_STRATEGY_CALL_LABEL as HOMEPAGE_ADVISOR_CTA_PRIMARY } from "@/lib/contact";
 

@@ -5,7 +5,7 @@ type PhoneLinkProps = {
   className?: string;
   showIcon?: boolean;
   size?: "sm" | "md";
-  /** Override visible label, e.g. "Call (206) 222-5650" */
+  /** Override visible label, e.g. "Call (206) 558-3048" */
   label?: string;
 };
 

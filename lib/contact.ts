@@ -2,9 +2,9 @@ import { NMLS_NUMBER } from "@/lib/legal/nmls";
 
 /** Display format for site-wide click-to-call */
 export const CONTACT_PHONE_DISPLAY =
-  process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "(206) 222-5650";
+  process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "(206) 558-3048";
 
-/** E.164 tel link — tel:+12062225650 */
+/** E.164 tel link — tel:+12065583048 */
 export const CONTACT_PHONE_TEL = `+1${CONTACT_PHONE_DISPLAY.replace(/\D/g, "")}`;
 
 export const CONTACT_EMAIL =

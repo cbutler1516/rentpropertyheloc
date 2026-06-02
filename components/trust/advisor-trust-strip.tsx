@@ -20,7 +20,7 @@ export function AdvisorTrustStrip({ className }: AdvisorTrustStripProps) {
     >
       <div className="flex items-center gap-3.5">
         <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-slate-200 ring-2 ring-teal-100/90 sm:h-14 sm:w-14">
-          <AdvisorImage variant="avatar" sizes="56px" />
+          <AdvisorImage variant="compact" sizes="56px" />
         </div>
 
         <div className="min-w-0 flex-1 space-y-1">
