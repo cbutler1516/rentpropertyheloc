@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
+import { MobileStickyCta } from "@/components/layout/mobile-sticky-cta";
 import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -41,12 +42,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full scroll-smooth antialiased`}>
-      <body className="min-h-full flex flex-col bg-navy-950 text-white">
+      <body className="min-h-full flex flex-col bg-surface-50 text-ink">
         <OrganizationJsonLd />
         <AnalyticsProvider>
           <SiteHeader />
           <main className="main-with-sticky-cta flex-1">{children}</main>
           <SiteFooter />
+          <MobileStickyCta />
         </AnalyticsProvider>
       </body>
     </html>

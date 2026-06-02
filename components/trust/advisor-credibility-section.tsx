@@ -29,6 +29,7 @@ export function AdvisorCredibilitySection({
       <Section id="advisor" divider className={cn("bg-white py-12 sm:py-16", className)}>
         <Reveal>
           <SectionHeader
+            tone="light"
             eyebrow="Licensed guidance"
             title="Meet Your Investor Lending Advisor"
             description="Personalized strategy for rental property equity—not just an online form."

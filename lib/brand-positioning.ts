@@ -50,4 +50,4 @@ export const CREDIBILITY_ITEMS = [
   "Secure online process",
 ] as const;
 
-export const FUNNEL_INTRO_COPY = "Start your personalized financing review.";
+export const FUNNEL_INTRO_COPY = "Let's check your options.";

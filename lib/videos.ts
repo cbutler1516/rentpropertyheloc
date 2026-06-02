@@ -2,45 +2,55 @@
  * Central video asset map — swap filenames here when replacing media.
  * Files live in /public/videos/
  */
+
+/** Homepage hero talking-head explainer */
+export const EXPLAINER_VIDEO = "/videos/brunette-heloc-vid-1.mp4" as const;
+
 export const SITE_VIDEOS = {
   /** Cinematic aerial — hero background (muted loop) */
   heroBackground: "/videos/drone-neighborhood-loop.mp4",
-  /** Primary talking-head explainer — audio on, controls */
-  explainer: "/videos/blonde-pitch.mp4",
-  /** How-it-works section ambient + card */
+  /** Primary talking-head explainer — hero column */
+  explainer: EXPLAINER_VIDEO,
   howItWorks: "/videos/investor-fintech-commercial.mp4",
-  /** Rental equity / portfolio review */
   rentalEquity: "/videos/investor-rental-review.mp4",
-  /** Investor growth / commercial variant */
   investorGrowth: "/videos/investor-fintech-commercial-alt.mp4",
-  /** Alternate portfolio ambient */
   portfolioAmbient: "/videos/investor-rental-review-alt.mp4",
-  /** Optional hero alternate */
   heroBackgroundAlt: "/videos/drone-neighborhood-loop-alt.mp4",
+  ambientResidential: "/videos/drone-neighborhood-loop.mp4",
+  ambientPortfolio: "/videos/drone-neighborhood-loop-alt.mp4",
+  ambientRenovated: "/videos/drone-neighborhood-loop-alt.mp4",
 } as const;
 
 export type SiteVideoKey = keyof typeof SITE_VIDEOS;
 
+export type AmbientOverlayVariant = "property" | "portfolio" | "interior";
+
 export const VIDEO_CARDS = [
   {
-    key: "howItWorks" as const,
-    title: "How it works",
+    key: "residential",
+    tag: "Residential",
+    title: "Rental neighborhoods",
     description:
-      "See the digital review flow investors use before drawing on rental equity—programs may be available, subject to approval.",
-    src: SITE_VIDEOS.howItWorks,
+      "Slow aerial context around income properties—built for investors reviewing financing options, not consumer home tours.",
+    src: SITE_VIDEOS.ambientResidential,
+    overlay: "property" as AmbientOverlayVariant,
   },
   {
-    key: "rentalEquity" as const,
-    title: "Rental equity in focus",
+    key: "portfolio",
+    tag: "Portfolio",
+    title: "Scale across assets",
     description:
-      "Property value, lien position, and available equity reviewed together—not a commitment to lend.",
-    src: SITE_VIDEOS.rentalEquity,
+      "Portfolio-level visuals that support a personalized review—subject to approval.",
+    src: SITE_VIDEOS.ambientPortfolio,
+    overlay: "portfolio" as AmbientOverlayVariant,
   },
   {
-    key: "investorGrowth" as const,
-    title: "Portfolio momentum",
+    key: "renovated",
+    tag: "Asset quality",
+    title: "Renovated rentals",
     description:
-      "Funding possible in as little as 7 days when documentation and third-party items are complete.",
-    src: SITE_VIDEOS.investorGrowth,
+      "Modern interiors and curb appeal—context for value-add scenarios, not a commitment to lend.",
+    src: SITE_VIDEOS.ambientRenovated,
+    overlay: "interior" as AmbientOverlayVariant,
   },
 ] as const;

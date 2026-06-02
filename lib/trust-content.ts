@@ -4,17 +4,17 @@ import { COMPANY_NMLS_LABEL, NMLS_LABEL } from "@/lib/legal/nmls";
 export const ADVISOR_HEADSHOT_SRC = "/advisors/chris-butler.png";
 export const ADVISOR_HEADSHOT_ALT = "Chris Butler, mortgage loan officer";
 
-/** Matches source portrait (681×1024 ≈ 2:3) to avoid vertical crop */
-export const ADVISOR_HEADSHOT_FRAME_CLASS = "aspect-[2/3]";
+/** Head-and-shoulders portrait frame */
+export const ADVISOR_HEADSHOT_FRAME_CLASS = "aspect-[4/5]";
 
-/** Anchor from top so hair is never clipped */
-export const ADVISOR_HEADSHOT_CLASS = "object-cover object-top";
+/** Full head visible, face centered */
+export const ADVISOR_HEADSHOT_CLASS = "object-cover object-center";
 
-export const ADVISOR_HEADSHOT_HOMEPAGE_CLASS = "object-cover object-top";
+export const ADVISOR_HEADSHOT_HOMEPAGE_CLASS = "object-cover object-center";
 
-/** Circular avatars — zoom face, anchor top so hair stays in frame */
+/** Circular avatars — face centered */
 export const ADVISOR_HEADSHOT_AVATAR_CLASS =
-  "object-cover object-top scale-[1.2] origin-top";
+  "object-cover object-center scale-[1.05] origin-center";
 
 export { BOOK_STRATEGY_CALL_LABEL as HOMEPAGE_ADVISOR_CTA_PRIMARY } from "@/lib/contact";
 

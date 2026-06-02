@@ -1,54 +1,85 @@
 "use client";
 
+import { trackCtaClicked } from "@/lib/analytics/conversion-events";
 import { cn } from "@/lib/cn";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import type { ComponentProps } from "react";
+import type { ComponentProps, MouseEvent } from "react";
 
 type CtaVariant = "primary" | "secondary" | "ghost";
 type CtaSize = "sm" | "md" | "lg";
 
 const variantClasses: Record<CtaVariant, string> = {
   primary:
-    "bg-accent text-navy-950 shadow-[0_0_24px_rgba(34,211,238,0.35)] hover:bg-accent-bright",
+    "bg-accent text-white shadow-[0_1px_2px_rgba(15,23,42,0.06),0_4px_14px_rgba(13,148,136,0.22)] hover:bg-teal-600 active:bg-teal-700",
   secondary:
-    "border border-white/20 bg-white/5 text-white hover:border-accent/50 hover:bg-white/10",
-  ghost: "text-white/80 hover:bg-white/10 hover:text-white",
+    "border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50",
+  ghost: "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+};
+
+const variantClassesDark: Partial<Record<CtaVariant, string>> = {
+  primary:
+    "bg-[#22d3ee] text-navy-950 shadow-[0_4px_20px_rgba(34,211,238,0.25)] hover:bg-[#4ade80] hover:text-navy-950",
+  ghost: "text-white/70 hover:bg-white/10 hover:text-white",
+  secondary:
+    "border border-white/15 bg-white/5 text-white/80 hover:border-white/25 hover:bg-white/10",
 };
 
 const sizeClasses: Record<CtaSize, string> = {
-  sm: "h-11 min-h-[44px] px-4 text-sm",
-  md: "h-11 min-h-[44px] px-6 text-sm",
-  lg: "h-12 min-h-[48px] px-8 text-base sm:whitespace-nowrap",
+  sm: "min-h-[44px] h-11 px-5 text-sm",
+  md: "min-h-[44px] h-11 px-6 text-sm",
+  lg: "min-h-[48px] h-12 px-6 text-[0.9375rem] sm:px-8 sm:text-base",
 };
 
 type CtaLinkProps = ComponentProps<typeof Link> & {
   variant?: CtaVariant;
   size?: CtaSize;
+  onDark?: boolean;
+  /** When set, fires cta_clicked for conversion / retargeting audiences */
+  ctaLocation?: string;
 };
 
 export function CtaLink({
   className,
   variant = "primary",
   size = "md",
+  onDark = false,
+  ctaLocation,
+  onClick,
+  href,
   ...props
 }: CtaLinkProps) {
   const reduceMotion = useReducedMotion();
 
+  function handleClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (ctaLocation) {
+      trackCtaClicked({
+        ctaLocation,
+        href: typeof href === "string" ? href : undefined,
+      });
+    }
+    onClick?.(event);
+  }
+
   return (
     <motion.div
-      className="inline-flex w-full sm:w-auto"
-      whileHover={reduceMotion ? undefined : { scale: 1.02 }}
+      className="flex w-full sm:inline-flex sm:w-auto"
+      whileHover={reduceMotion ? undefined : { scale: 1.01 }}
       whileTap={reduceMotion ? undefined : { scale: 0.98 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.15 }}
     >
       <Link
         className={cn(
-          "inline-flex w-full items-center justify-center rounded-full text-center font-semibold transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
-          variantClasses[variant],
+          "inline-flex w-full items-center justify-center rounded-full text-center font-semibold transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
+          onDark && variantClassesDark[variant]
+            ? variantClassesDark[variant]
+            : variantClasses[variant],
+          !onDark && variant === "primary" && "text-white",
           sizeClasses[size],
           className,
         )}
+        href={href}
+        onClick={handleClick}
         {...props}
       />
     </motion.div>

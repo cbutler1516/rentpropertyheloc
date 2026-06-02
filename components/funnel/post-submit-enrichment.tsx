@@ -25,7 +25,6 @@ import {
   MORTGAGE_BALANCE_RANGES,
   PROPERTY_COUNT_OPTIONS,
   PROPERTY_RENTED_OPTIONS,
-  PROPERTY_VALUE_RANGES,
   type CreditScoreRangeId,
   type FundingTimelineId,
   type MortgageBalanceRangeId,
@@ -305,17 +304,22 @@ export function PostSubmitEnrichment({
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-teal-700">
-                Step {step} of {ENRICHMENT_STEP_COUNT}
+                Review started — finish your investor profile
               </p>
               <h4 className="mt-1 text-base font-semibold text-slate-900 sm:text-lg">
-                {stepHeadlines[step]}
+                Step {step} of {ENRICHMENT_STEP_COUNT}: {stepHeadlines[step]}
               </h4>
             </div>
-            <AnimatePresence mode="wait">
-              {boostMessage ? (
-                <ProfileStrengthBoostToast key={boostMessage} message={boostMessage} />
-              ) : null}
-            </AnimatePresence>
+            <div className="flex flex-col items-end gap-1">
+              <AnimatePresence mode="wait">
+                {boostMessage ? (
+                  <ProfileStrengthBoostToast key={boostMessage} message={boostMessage} />
+                ) : null}
+              </AnimatePresence>
+              <span className="rounded-full bg-teal-50 px-2.5 py-1 text-[11px] font-bold tabular-nums text-teal-800 ring-1 ring-teal-100">
+                {profileStrength}% profile
+              </span>
+            </div>
           </div>
         )}
 
@@ -351,7 +355,7 @@ export function PostSubmitEnrichment({
                     ))}
                   </div>
                 </EnrichmentGroup>
-                <EnrichmentGroup title="Estimated mortgage balance">
+                <EnrichmentGroup title="Mortgage balance">
                   <div className="grid gap-2 sm:grid-cols-2">
                     {MORTGAGE_BALANCE_RANGES.map((option) => (
                       <FunnelOptionCard
@@ -371,7 +375,7 @@ export function PostSubmitEnrichment({
 
             {step === 2 ? (
               <>
-                <EnrichmentGroup title="Estimated credit score">
+                <EnrichmentGroup title="Credit score">
                   <div className="grid gap-2 sm:grid-cols-2">
                     {CREDIT_SCORE_RANGES.map((option) => (
                       <FunnelOptionCard
