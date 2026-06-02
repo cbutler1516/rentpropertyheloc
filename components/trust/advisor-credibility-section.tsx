@@ -5,14 +5,9 @@ import { Reveal } from "@/components/motion/reveal";
 import { PhoneLink } from "@/components/trust/phone-link";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
 import { NMLS_CONSUMER_ACCESS_URL } from "@/lib/contact";
-import {
-  ADVISOR,
-  ADVISOR_HEADSHOT_CLASS,
-  ADVISOR_HEADSHOT_FRAME_CLASS,
-  ADVISOR_HEADSHOT_HOMEPAGE_CLASS,
-} from "@/lib/trust-content";
+import { AdvisorImage } from "@/components/trust/advisor-image";
+import { ADVISOR, ADVISOR_HEADSHOT_FRAME_CLASS } from "@/lib/trust-content";
 import { cn } from "@/lib/cn";
-import Image from "next/image";
 import Link from "next/link";
 
 type AdvisorCredibilitySectionProps = {
@@ -67,11 +62,8 @@ export function AdvisorCredibilitySection({
               compact ? "w-32 sm:w-36" : "w-36 sm:w-40",
             )}
           >
-            <Image
-              src={ADVISOR.headshotSrc}
-              alt={ADVISOR.headshotAlt}
-              fill
-              className={cn(ADVISOR_HEADSHOT_CLASS)}
+            <AdvisorImage
+              variant="portrait"
               sizes={compact ? "128px" : "160px"}
             />
           </div>
@@ -160,11 +152,8 @@ function HomepageAdvisorCard() {
               "w-40 sm:w-44 lg:w-48",
             )}
           >
-            <Image
-              src={ADVISOR.headshotSrc}
-              alt={ADVISOR.headshotAlt}
-              fill
-              className={ADVISOR_HEADSHOT_HOMEPAGE_CLASS}
+            <AdvisorImage
+              variant="portrait"
               sizes="(max-width: 1024px) 176px, 192px"
               priority
             />

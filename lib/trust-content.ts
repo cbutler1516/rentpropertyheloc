@@ -7,14 +7,14 @@ export const ADVISOR_HEADSHOT_ALT = "Chris Butler, mortgage loan officer";
 /** Head-and-shoulders portrait frame */
 export const ADVISOR_HEADSHOT_FRAME_CLASS = "aspect-[4/5]";
 
-/** Full head visible, face centered */
-export const ADVISOR_HEADSHOT_CLASS = "object-cover object-center";
+/** Portrait frames — full head visible */
+export const ADVISOR_HEADSHOT_PORTRAIT_CLASS = "object-cover object-[center_12%]";
 
-export const ADVISOR_HEADSHOT_HOMEPAGE_CLASS = "object-cover object-center";
+export const ADVISOR_HEADSHOT_CLASS = ADVISOR_HEADSHOT_PORTRAIT_CLASS;
+export const ADVISOR_HEADSHOT_HOMEPAGE_CLASS = ADVISOR_HEADSHOT_PORTRAIT_CLASS;
 
-/** Circular avatars — face centered */
-export const ADVISOR_HEADSHOT_AVATAR_CLASS =
-  "object-cover object-center scale-[1.05] origin-center";
+/** Circular avatars */
+export const ADVISOR_HEADSHOT_AVATAR_CLASS = "object-cover object-[center_18%]";
 
 export { BOOK_STRATEGY_CALL_LABEL as HOMEPAGE_ADVISOR_CTA_PRIMARY } from "@/lib/contact";
 
