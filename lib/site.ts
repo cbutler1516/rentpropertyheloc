@@ -40,7 +40,7 @@ export const FOOTER_LINKS = {
   legal: [
     { href: PRIVACY_POLICY_PATH, label: "Privacy Policy" },
     { href: TERMS_OF_USE_PATH, label: "Terms of Use" },
-    { href: "/disclosures", label: "Disclosures" },
+    { href: "/disclosures", label: "Licensing & Disclosures" },
     { href: "/brand", label: "Brand system" },
   ],
 } as const satisfies {

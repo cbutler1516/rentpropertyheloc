@@ -12,7 +12,7 @@ export const CONTACT_EMAIL =
 
 export const NMLS_CONSUMER_ACCESS_URL = `https://www.nmlsconsumeraccess.org/EntityDetails.aspx/INDIVIDUAL/${NMLS_NUMBER}`;
 
-export const LICENSED_STATES = ["WA", "OR", "ID", "CA", "AZ", "TX", "CO"] as const;
+export const LICENSED_STATES = ["AZ", "CA", "CO", "FL", "IL", "MI", "OR", "TX", "WA"] as const;
 
 export const LICENSED_STATES_LABEL = LICENSED_STATES.join(" · ");
 

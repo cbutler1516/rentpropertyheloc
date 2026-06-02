@@ -5,6 +5,7 @@ import { StrategyCallLink } from "@/components/trust/strategy-call-link";
 import { PhoneLink } from "@/components/trust/phone-link";
 import { StateAvailabilitySection } from "@/components/trust/state-availability-section";
 import { CtaLink } from "@/components/ui/cta-link";
+import { ABOUT_COMPLIANCE_BLOCK } from "@/lib/legal/compliance";
 import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from "@/lib/cta";
 import { NMLS_CONSUMER_ACCESS_URL } from "@/lib/contact";
 import { ADVISOR } from "@/lib/trust-content";
@@ -107,6 +108,8 @@ export default function AboutPage() {
         <div className="mt-10">
           <StateAvailabilitySection variant="inline" />
         </div>
+
+        <p className="mt-10 text-xs leading-relaxed text-slate-500">{ABOUT_COMPLIANCE_BLOCK}</p>
       </Container>
     </div>
   );

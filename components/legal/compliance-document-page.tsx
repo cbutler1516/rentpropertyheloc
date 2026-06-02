@@ -1,0 +1,41 @@
+import { Container } from "@/components/layout/container";
+import type { LegalSection } from "@/lib/legal/document-sections";
+
+type ComplianceDocumentPageProps = {
+  title: string;
+  sections: LegalSection[];
+};
+
+export function ComplianceDocumentPage({ title, sections }: ComplianceDocumentPageProps) {
+  return (
+    <div className="section-light py-10 sm:py-14">
+      <Container className="max-w-3xl">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{title}</h1>
+        <div className="mt-8 space-y-8">
+          {sections.map((section) => (
+            <section key={section.id} aria-labelledby={`${section.id}-heading`}>
+              <h2
+                id={`${section.id}-heading`}
+                className="text-lg font-semibold text-slate-900 sm:text-xl"
+              >
+                {section.title}
+              </h2>
+              <div className="mt-3 space-y-3 text-sm leading-relaxed text-slate-600">
+                {section.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+              {section.bullets?.length ? (
+                <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-slate-600">
+                  {section.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </section>
+          ))}
+        </div>
+      </Container>
+    </div>
+  );
+}

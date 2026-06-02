@@ -1,5 +1,6 @@
 "use client";
 
+import { FunnelComplianceNote } from "@/components/funnel/funnel-compliance-note";
 import { FunnelIntro } from "@/components/funnel/funnel-intro";
 import { LeadFunnel } from "@/components/funnel/lead-funnel";
 import { AdvisorCredibilitySection } from "@/components/trust/advisor-credibility-section";
@@ -41,7 +42,8 @@ export function CheckOptionsPageContent() {
           <LeadFunnel onSubmittedChange={setIsPostSubmit} />
         </Suspense>
       </div>
+      <FunnelComplianceNote className="mt-4 px-1" />
     </>
   );
 }
-
+

@@ -1,5 +1,6 @@
 "use client";
 
+import { FunnelComplianceNote } from "@/components/funnel/funnel-compliance-note";
 import { PostSubmitEnrichment } from "@/components/funnel/post-submit-enrichment";
 import {
   CompactReviewSummary,
@@ -174,11 +175,7 @@ export function FunnelConfirmation({
 function ComplianceFooter() {
   return (
     <div className="border-t border-slate-100 px-5 py-4 sm:px-6 lg:px-8">
-      <p className="text-[11px] leading-relaxed text-slate-500">
-        This is not a loan application or commitment to lend. Programs may be available for
-        qualifying rental properties, subject to approval, property eligibility, and lender
-        guidelines.
-      </p>
+      <FunnelComplianceNote />
       <p className="mt-3 text-center">
         <Link
           href="/"

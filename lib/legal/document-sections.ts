@@ -1,6 +1,6 @@
-import { CONTACT_PHONE_DISPLAY, LICENSED_STATES_LABEL } from "@/lib/contact";
+import { CONTACT_PHONE_DISPLAY } from "@/lib/contact";
+import { MORTGAGE_COMPANY_NAME, MORTGAGE_STANDARD_DISCLAIMER } from "@/lib/legal/compliance";
 import { NMLS_LABEL, NMLS_NUMBER, COMPANY_NMLS_LABEL } from "@/lib/legal/nmls";
-import { ADVISOR } from "@/lib/trust-content";
 
 export type LegalSection = {
   id: string;
@@ -201,47 +201,48 @@ export const TERMS_OF_USE_SECTIONS: LegalSection[] = [
 
 export const DISCLOSURES_SECTIONS: LegalSection[] = [
   {
-    id: "overview",
-    title: "Overview",
+    id: "licensing",
+    title: "Licensing",
     paragraphs: [
-      "RentPropertyHELOC.com provides educational information and a digital intake experience for real estate investors exploring rental property equity options. This page summarizes important disclosures about licensing, lead generation, and the nature of services described on this site.",
-      "Nothing on this site is a loan application, commitment to lend, guarantee of rates or terms, or financial, legal, or tax advice. Programs may be available for qualifying properties, subject to approval, property eligibility, investor/lender guidelines, and state availability.",
+      `Chris Butler — ${NMLS_LABEL}.`,
+      `${MORTGAGE_COMPANY_NAME} — ${COMPANY_NMLS_LABEL}.`,
     ],
   },
   {
-    id: "licensing",
-    title: "Licensing and NMLS",
-    paragraphs: [
-      `Chris Butler, ${ADVISOR.title} — ${NMLS_LABEL}. You may verify licensing status through the Nationwide Multistate Licensing System (NMLS) Consumer Access website at nmlsconsumeraccess.org by searching individual NMLS #${NMLS_NUMBER}.`,
-      `RentPropertyHELOC.com is an educational and lead-generation platform operated in connection with Broadview Lending powered by Barrett Financial Group, LLC (${COMPANY_NMLS_LABEL}). The platform connects interested investors with licensed mortgage professionals who may review whether financing programs may be available, subject to approval.`,
-    ],
+    id: "licensed-states",
+    title: "Licensed states",
+    paragraphs: ["Chris Butler is licensed in the following states:"],
     bullets: [
-      "Equal Housing Lender",
-      `Licensed states: ${LICENSED_STATES_LABEL}`,
-      "Additional states may be available through lending partners, subject to licensing requirements.",
+      "Arizona",
+      "California",
+      "Colorado",
+      "Florida",
+      "Illinois",
+      "Michigan",
+      "Oregon",
+      "Texas",
+      "Washington",
     ],
+  },
+  {
+    id: "mortgage-disclaimer",
+    title: "Mortgage disclaimer",
+    paragraphs: [MORTGAGE_STANDARD_DISCLAIMER],
   },
   {
     id: "lead-generation",
-    title: "Lead generation disclosure",
+    title: "Lead generation",
     paragraphs: [
-      "When you submit information through RentPropertyHELOC.com, you are requesting that a licensed mortgage professional review your rental property scenario. Your information may be stored in customer relationship management systems and shared with licensed professionals or lending partners for that purpose.",
+      "When you submit information through this website, you are requesting that a licensed mortgage professional review your property scenario. Your information may be stored in customer relationship management systems and shared with licensed professionals or lending partners for that purpose.",
       "Submitting a form does not create a lender-borrower relationship, loan application, or commitment to lend. A licensed professional may contact you by phone, text, or email where you have provided consent.",
     ],
   },
   {
-    id: "illustrative-content",
-    title: "Illustrative examples and estimates",
-    paragraphs: [
-      "Examples, calculator outputs, funding timelines, and scenario illustrations on this site are for informational purposes only. They may not reflect actual available terms, rates, payments, or program availability for your property or financial profile.",
-    ],
-  },
-  {
     id: "contact",
-    title: "Contact information",
+    title: "Contact",
     paragraphs: [
-      `Questions about disclosures, licensing, or your submitted request may be directed through the contact options on RentPropertyHELOC.com, including ${CONTACT_PHONE_DISPLAY} and the email address on the About page.`,
-      "For privacy-related requests, see our Privacy Policy. For site terms, see our Terms of Use.",
+      `Questions about disclosures or licensing may be directed through the contact options on this site, including ${CONTACT_PHONE_DISPLAY}.`,
+      `You may verify licensing status through the Nationwide Multistate Licensing System (NMLS) Consumer Access website at nmlsconsumeraccess.org by searching individual NMLS #${NMLS_NUMBER}.`,
     ],
   },
 ];
