@@ -28,9 +28,9 @@ export const CLIENT_TESTIMONIALS: ClientTestimonial[] = [
       "The team helped us secure a great financing solution and guided us through every step of the process.",
   },
   {
-    id: "kathirilango-t",
-    reviewerDisplayName: "Kathirilango T.",
+    id: "kathir-i",
+    reviewerDisplayName: "Kathir I.",
     excerpt:
-      "What felt like a complicated transaction became surprisingly simple. The communication and service were outstanding.",
+      "What felt like a complicated process became surprisingly simple. Communication was excellent throughout, and the entire experience was smooth and professional.",
   },
 ];
