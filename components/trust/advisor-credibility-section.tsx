@@ -25,9 +25,9 @@ export function AdvisorCredibilitySection({
         <Reveal>
           <SectionHeader
             tone="light"
-            eyebrow="Licensed guidance"
-            title="Meet Your Investor Lending Advisor"
-            description="Personalized strategy for rental property equity—not just an online form."
+            eyebrow="Real guidance"
+            title={ADVISOR.homepageHeadline}
+            description="Not an automated form—a licensed professional reviews every request."
           />
         </Reveal>
         <Reveal delay={0.06} className="mt-8 lg:mt-10">
@@ -81,26 +81,33 @@ export function AdvisorCredibilitySection({
               compact ? "text-lg sm:text-xl" : "text-xl sm:text-2xl",
             )}
           >
-            {variant === "full" ? "Meet Your Investor Lending Advisor" : ADVISOR.name}
+            {variant === "full"
+              ? "Meet Your Investor Lending Advisor"
+              : ADVISOR.homepageHeadline}
           </h2>
           {variant === "full" ? (
             <p className="mt-2 text-lg font-semibold text-slate-900">{ADVISOR.name}</p>
-          ) : null}
-          {compact ? (
-            <p className="mt-1 text-xs leading-snug text-slate-600 sm:text-sm">
-              {ADVISOR.titleLine}
-            </p>
           ) : (
+            <p className="mt-1 text-sm font-medium text-slate-700">{ADVISOR.name}</p>
+          )}
+          {variant === "full" ? (
             <>
               <p className="mt-1 text-sm font-medium text-slate-700">{ADVISOR.title}</p>
               <p className="mt-0.5 text-sm font-medium text-teal-800">{ADVISOR.nmls}</p>
+              <p className="mt-2 text-xs leading-relaxed text-slate-500">
+                {ADVISOR.company} · {ADVISOR.companyNmls}
+              </p>
+            </>
+          ) : compact ? (
+            <p className="mt-3 text-xs leading-relaxed text-slate-600 sm:text-sm">
+              {ADVISOR.homepageLead} {ADVISOR.homepageBody}
+            </p>
+          ) : (
+            <>
+              <p className="mt-3 text-sm font-medium text-slate-800">{ADVISOR.homepageLead}</p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">{ADVISOR.homepageBody}</p>
             </>
           )}
-          {variant === "full" ? (
-            <p className="mt-2 text-xs leading-relaxed text-slate-500">
-              {ADVISOR.company} · {ADVISOR.companyNmls}
-            </p>
-          ) : null}
 
           <ul className={cn("space-y-1.5 text-sm text-slate-600", compact ? "mt-3" : "mt-4")}>
             {trustItems.map((item) => (
@@ -143,8 +150,8 @@ export function AdvisorCredibilitySection({
 function HomepageAdvisorCard() {
   return (
     <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br from-slate-50/80 via-white to-teal-50/30 shadow-sm">
-      <div className="flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:gap-10 lg:p-10">
-        <div className="mx-auto shrink-0 lg:mx-0">
+      <div className="flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-start lg:gap-10 lg:p-10">
+        <div className="mx-auto shrink-0 text-center lg:mx-0 lg:text-left">
           <div
             className={cn(
               "relative overflow-hidden rounded-2xl bg-slate-100 shadow-md ring-1 ring-slate-200/80",
@@ -158,17 +165,15 @@ function HomepageAdvisorCard() {
               priority
             />
           </div>
+          <p className="mt-3 text-sm font-semibold text-slate-900">{ADVISOR.name}</p>
         </div>
 
         <div className="min-w-0 flex-1 text-center lg:text-left">
-          <h3 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            {ADVISOR.name}
-          </h3>
-          <p className="mt-1 text-sm font-semibold text-teal-800 sm:text-base">
-            {ADVISOR.titleLine}
+          <p className="text-base font-semibold leading-snug text-slate-900 sm:text-lg">
+            {ADVISOR.homepageLead}
           </p>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base lg:mx-0 lg:max-w-lg">
-            {ADVISOR.homepageBio}
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base lg:max-w-lg">
+            {ADVISOR.homepageBody}
           </p>
 
           <ul className="mt-5 flex flex-col items-center gap-2 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-6 lg:justify-start">

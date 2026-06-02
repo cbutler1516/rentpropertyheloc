@@ -32,12 +32,15 @@ export const ADVISOR = {
   companyNmls: COMPANY_NMLS_LABEL,
   headshotSrc: ADVISOR_HEADSHOT_SRC,
   headshotAlt: ADVISOR_HEADSHOT_ALT,
-  homepageBio:
-    "Helping investors and homeowners navigate financing strategies with personalized guidance and modern technology.",
+  homepageHeadline: "Your Dedicated Lending Advisor",
+  homepageLead:
+    "Questions? Stuck on a scenario? Need a second opinion?",
+  homepageBody:
+    "You're not navigating this alone. Every request is reviewed by an experienced mortgage professional who can help evaluate financing options, explain next steps, and answer questions along the way.",
   homepageTrustPoints: [
     "15+ Years Experience",
     "$100M+ Funded",
-    "Investor-Focused Mortgage Expertise",
+    "Investor-Focused Financing",
   ] as const,
   credentials: [
     "15+ years real estate & mortgage experience",
