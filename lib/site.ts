@@ -87,7 +87,6 @@ export const PUBLIC_ROUTE_CHECKLIST = [
   { path: "/about", label: "About", public: true },
   { path: "/disclosures", label: "Disclosures", public: true },
   { path: "/brand", label: "Brand system (noindex)", public: true },
-  { path: "/brand/logos", label: "Logo concepts (noindex)", public: true },
   { path: "/admin/leads-health", label: "Lead pipeline health", public: false },
   { path: "/admin/conversions", label: "Conversion overview", public: false },
   { path: "/admin/partial-leads", label: "Partial leads", public: false },
