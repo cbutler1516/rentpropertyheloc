@@ -1,5 +1,5 @@
 import { Container } from "@/components/layout/container";
-import { AdvisorCredibilitySection } from "@/components/trust/advisor-credibility-section";
+import { CompanyTrustSection } from "@/components/trust/company-trust-section";
 import { BorrowerTrustSection } from "@/components/trust/borrower-trust-section";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
 import { PhoneLink } from "@/components/trust/phone-link";
@@ -9,6 +9,7 @@ import { ABOUT_COMPLIANCE_BLOCK } from "@/lib/legal/compliance";
 import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from "@/lib/cta";
 import { NMLS_CONSUMER_ACCESS_URL } from "@/lib/contact";
 import { ADVISOR } from "@/lib/trust-content";
+import { ABOUT_PLATFORM } from "@/lib/trust-content";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -36,10 +37,7 @@ export default function AboutPage() {
           About {SITE_NAME}
         </h1>
         <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-          {ADVISOR.name} leads investor lending guidance through {ADVISOR.company}. With{" "}
-          {ADVISOR.credentials[0].toLowerCase()} and a real estate investor background, the
-          platform helps rental property owners compare HELOC, second mortgage, and other equity
-          paths—with a licensed professional who understands portfolio strategy.
+          {ABOUT_PLATFORM.summary}
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <CtaLink href={PRIMARY_CTA_HREF} size="md">
@@ -49,7 +47,7 @@ export default function AboutPage() {
         </div>
 
         <div className="mt-10">
-          <AdvisorCredibilitySection variant="full" />
+          <CompanyTrustSection variant="full" />
         </div>
 
         <div className="mt-10">

@@ -3,7 +3,7 @@
 import { FunnelComplianceNote } from "@/components/funnel/funnel-compliance-note";
 import { FunnelIntro } from "@/components/funnel/funnel-intro";
 import { LeadFunnel } from "@/components/funnel/lead-funnel";
-import { AdvisorCredibilitySection } from "@/components/trust/advisor-credibility-section";
+import { CompanyTrustSection } from "@/components/trust/company-trust-section";
 import { cn } from "@/lib/cn";
 import { scrollToPostSubmitTop } from "@/lib/funnel/scroll-to-post-submit-top";
 import { Suspense, useEffect, useState } from "react";
@@ -22,7 +22,7 @@ export function CheckOptionsPageContent() {
     <>
       {!isPostSubmit ? <FunnelIntro /> : null}
       {!isPostSubmit ? (
-        <AdvisorCredibilitySection variant="compact" className="mb-4 lg:hidden" />
+        <CompanyTrustSection variant="compact" className="mb-4 lg:hidden" />
       ) : null}
       <div
         className={cn(
@@ -32,7 +32,7 @@ export function CheckOptionsPageContent() {
         )}
       >
         {!isPostSubmit ? (
-          <AdvisorCredibilitySection variant="funnel" className="hidden lg:block" />
+          <CompanyTrustSection variant="funnel" className="hidden lg:block" />
         ) : null}
         <Suspense
           fallback={

@@ -1,6 +1,6 @@
 import { PhoneLink } from "@/components/trust/phone-link";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
-import { ADVISOR } from "@/lib/trust-content";
+import { CALL_OUR_TEAM_LABEL } from "@/lib/contact";
 import { cn } from "@/lib/cn";
 
 type CompactReviewSummaryProps = {
@@ -71,7 +71,7 @@ export function EnrichmentAdvisorHelp({ className }: EnrichmentAdvisorHelpProps)
         <PhoneLink
           size="sm"
           showIcon={false}
-          label={`Call ${ADVISOR.phone}`}
+          label={CALL_OUR_TEAM_LABEL}
           className="inline-flex min-h-[40px] w-full items-center justify-center rounded-lg border border-slate-200 bg-slate-50 px-3 text-xs font-semibold text-slate-800 no-underline transition hover:bg-slate-100"
         />
       </div>

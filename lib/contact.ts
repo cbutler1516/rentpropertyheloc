@@ -22,6 +22,8 @@ export const BOOKING_URL =
 
 export const BOOK_STRATEGY_CALL_LABEL = "Book A Strategy Call";
 
+export const CALL_OUR_TEAM_LABEL = "Call Our Team";
+
 /** @deprecated Use BOOKING_URL */
 export function getSchedulingUrl(): string {
   return BOOKING_URL;

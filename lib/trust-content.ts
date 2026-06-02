@@ -4,6 +4,14 @@ import { COMPANY_NMLS_LABEL, NMLS_LABEL } from "@/lib/legal/nmls";
 export const ADVISOR_HEADSHOT_SRC = "/advisors/chris-butler.png";
 export const ADVISOR_HEADSHOT_ALT = "Chris Butler, mortgage loan officer";
 
+/** Team-oriented trust visual (homepage & guidance sections) */
+export const TEAM_TRUST_IMAGE_SRC = "/trust/team-guidance.svg";
+export const TEAM_TRUST_IMAGE_ALT =
+  "Financing specialists reviewing investor property scenarios in a modern office";
+
+/** Landscape frame for team imagery */
+export const TEAM_TRUST_IMAGE_FRAME_CLASS = "aspect-[5/3]";
+
 /** Head-and-shoulders portrait frame */
 export const ADVISOR_HEADSHOT_FRAME_CLASS = "aspect-[4/5]";
 
@@ -21,6 +29,19 @@ export const ADVISOR_HEADSHOT_COMPACT_CLASS = ADVISOR_HEADSHOT_PORTRAIT_CLASS;
 
 export { BOOK_STRATEGY_CALL_LABEL as HOMEPAGE_ADVISOR_CTA_PRIMARY } from "@/lib/contact";
 
+export const COMPANY_TRUST = {
+  headline: "Real People. Real Guidance.",
+  body: [
+    "Unlike fully automated platforms, every request is reviewed by an experienced financing specialist.",
+    "Whether you're exploring options, comparing scenarios, or have questions along the way, our team is available to help.",
+  ],
+  trustPoints: [
+    "Investor-Focused Financing",
+    "Licensed Mortgage Professionals",
+    "Personalized Review & Follow-Up",
+  ] as const,
+} as const;
+
 export const ADVISOR = {
   name: "Chris Butler",
   title: "Branch Manager / Sr. Loan Originator",
@@ -32,31 +53,13 @@ export const ADVISOR = {
   companyNmls: COMPANY_NMLS_LABEL,
   headshotSrc: ADVISOR_HEADSHOT_SRC,
   headshotAlt: ADVISOR_HEADSHOT_ALT,
-  homepageHeadline: "Your Dedicated Lending Advisor",
-  homepageLead:
-    "Questions? Stuck on a scenario? Need a second opinion?",
-  homepageBody:
-    "You're not navigating this alone. Every request is reviewed by an experienced mortgage professional who can help evaluate financing options, explain next steps, and answer questions along the way.",
-  homepageTrustPoints: [
-    "15+ Years Experience",
-    "$100M+ Funded",
-    "Investor-Focused Financing",
-  ] as const,
-  credentials: [
-    "15+ years real estate & mortgage experience",
-    "Nearly 50 real estate development projects",
-    "$100M+ in recent mortgage transactions",
-    "250+ transactions",
-    "University of Washington alum",
-    "Real estate investor background",
-  ],
   licensedStates: LICENSED_STATES_LABEL,
 } as const;
 
 export const ABOUT_PLATFORM = {
   headline: "About This Platform",
   summary:
-    "RentPropertyHELOC.com is operated by licensed mortgage professionals who specialize in rental property equity strategies. We built this platform for real estate investors who want more than a generic online form—clear guidance, multiple financing paths to review, and a human advisor who understands portfolio goals. Every request is reviewed by a licensed professional who can help you compare HELOC, second mortgage, and other equity options subject to approval.",
+    "RentPropertyHELOC.com is operated by licensed mortgage professionals who specialize in rental property equity strategies. We built this platform for real estate investors who want more than a generic online form—clear guidance, multiple financing paths to review, and a specialist team that understands portfolio goals. Every request is reviewed by licensed professionals who can help you compare HELOC, second mortgage, and other equity options subject to approval.",
   aboutHref: "/about",
   aboutLinkLabel: "Learn more about us",
 } as const;
@@ -73,7 +76,7 @@ export const PLATFORM_COMPARISON = {
     {
       label: "Guidance",
       online: "Automated, product-first flow",
-      us: "Licensed advisor who understands investing",
+      us: "Licensed specialists who understand investing",
     },
     {
       label: "Options reviewed",

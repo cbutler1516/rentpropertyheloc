@@ -7,7 +7,7 @@ import { InvestorEducationSection } from "@/components/home/investor-education-s
 import { InvestorUseCasesSection } from "@/components/home/investor-use-cases-section";
 import { WhyInvestorsChooseSection } from "@/components/home/why-investors-choose-section";
 import { AboutPlatformSection } from "@/components/trust/about-platform-section";
-import { AdvisorCredibilitySection } from "@/components/trust/advisor-credibility-section";
+import { CompanyTrustSection } from "@/components/trust/company-trust-section";
 import { BorrowerTrustSection } from "@/components/trust/borrower-trust-section";
 import { PlatformComparisonTable } from "@/components/trust/platform-comparison-table";
 
@@ -17,7 +17,7 @@ export default function HomePage() {
       <CinematicHero />
       <BorrowerTrustSection variant="hero" />
       <HowItWorksSection />
-      <AdvisorCredibilitySection />
+      <CompanyTrustSection />
       <AboutPlatformSection />
       <WhyInvestorsChooseSection />
       <PlatformComparisonTable />
