@@ -39,7 +39,9 @@ export function FunnelOptionCard({
       )}
     >
       <span className="flex min-w-0 flex-col gap-0.5 pr-3">
-        <span className="text-base font-semibold text-slate-900">{label}</span>
+        <span className="text-[1.0625rem] font-semibold leading-snug text-slate-900 sm:text-lg">
+          {label}
+        </span>
         {badge ? (
           <span className="text-[11px] font-medium leading-snug text-slate-500 group-hover:text-teal-700 transition-colors">
             {badge}

@@ -33,6 +33,7 @@ import {
   type PropertyValueRangeId,
 } from "@/lib/leads/funnel-ranges";
 import type { PropertyTypeId } from "@/lib/leads/types";
+import { cn } from "@/lib/cn";
 import { trackEnrichmentCompleted } from "@/lib/analytics/conversion-events";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -275,12 +276,12 @@ export function PostSubmitEnrichment({
             <div className="border-t border-slate-100 pt-4 lg:border-t-0 lg:pt-0">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-teal-700">
-                    Step {step} of {ENRICHMENT_STEP_COUNT}
-                  </p>
-                  <h4 className="mt-1 text-sm font-semibold text-slate-900 sm:text-base lg:text-lg">
-                    {stepHeadlines[step]}
+                  <h4 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+                    {stepSectionTitles[step]}
                   </h4>
+                  <p className="mt-1 text-xs text-slate-500">
+                    Section {step} of {ENRICHMENT_STEP_COUNT}
+                  </p>
                 </div>
                 <div className="flex flex-col items-end gap-1">
                   <AnimatePresence mode="wait">
@@ -301,26 +302,11 @@ export function PostSubmitEnrichment({
             </div>
           </div>
         ) : (
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-teal-700">
-                Review started — finish your investor profile
-              </p>
-              <h4 className="mt-1 text-base font-semibold text-slate-900 sm:text-lg">
-                Step {step} of {ENRICHMENT_STEP_COUNT}: {stepHeadlines[step]}
-              </h4>
-            </div>
-            <div className="flex flex-col items-end gap-1">
-              <AnimatePresence mode="wait">
-                {boostMessage ? (
-                  <ProfileStrengthBoostToast key={boostMessage} message={boostMessage} />
-                ) : null}
-              </AnimatePresence>
-              <span className="rounded-full bg-teal-50 px-2.5 py-1 text-[11px] font-bold tabular-nums text-teal-800 ring-1 ring-teal-100">
-                {profileStrength}% profile
-              </span>
-            </div>
-          </div>
+          <EnrichmentProfileHeader
+            title={stepSectionTitles[step]}
+            profileStrength={profileStrength}
+            boostMessage={boostMessage}
+          />
         )}
 
         {!focused ? (
@@ -336,12 +322,12 @@ export function PostSubmitEnrichment({
             animate={{ opacity: 1, x: 0 }}
             exit={reduceMotion ? undefined : { opacity: 0, x: -8 }}
             transition={{ duration: reduceMotion ? 0 : 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="space-y-4"
+            className="space-y-0"
           >
             {step === 1 ? (
               <>
-                <EnrichmentGroup title="Property type">
-                  <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                <EnrichmentGroup title="Property Type">
+                  <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
                     {FUNNEL_PROPERTY_OPTIONS.map((option) => (
                       <FunnelOptionCard
                         key={option.id}
@@ -355,8 +341,8 @@ export function PostSubmitEnrichment({
                     ))}
                   </div>
                 </EnrichmentGroup>
-                <EnrichmentGroup title="Mortgage balance">
-                  <div className="grid gap-2 sm:grid-cols-2">
+                <EnrichmentGroup title="Mortgage Balance" showDivider>
+                  <div className="grid gap-2.5 sm:grid-cols-2">
                     {MORTGAGE_BALANCE_RANGES.map((option) => (
                       <FunnelOptionCard
                         key={option.id}
@@ -375,8 +361,8 @@ export function PostSubmitEnrichment({
 
             {step === 2 ? (
               <>
-                <EnrichmentGroup title="Credit score">
-                  <div className="grid gap-2 sm:grid-cols-2">
+                <EnrichmentGroup title="Credit Score">
+                  <div className="grid gap-2.5 sm:grid-cols-2">
                     {CREDIT_SCORE_RANGES.map((option) => (
                       <FunnelOptionCard
                         key={option.id}
@@ -390,8 +376,8 @@ export function PostSubmitEnrichment({
                     ))}
                   </div>
                 </EnrichmentGroup>
-                <EnrichmentGroup title="Investment properties owned">
-                  <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-3">
+                <EnrichmentGroup title="Investment Properties Owned" showDivider>
+                  <div className="grid grid-cols-1 gap-2.5 min-[400px]:grid-cols-3">
                     {PROPERTY_COUNT_OPTIONS.map((option) => (
                       <FunnelOptionCard
                         key={option.id}
@@ -405,8 +391,8 @@ export function PostSubmitEnrichment({
                     ))}
                   </div>
                 </EnrichmentGroup>
-                <EnrichmentGroup title="Funding timeline">
-                  <div className="grid gap-2 sm:grid-cols-2">
+                <EnrichmentGroup title="Funding Timeline" showDivider>
+                  <div className="grid gap-2.5 sm:grid-cols-2">
                     {FUNDING_TIMELINE_OPTIONS.map((option) => (
                       <FunnelOptionCard
                         key={option.id}
@@ -424,8 +410,8 @@ export function PostSubmitEnrichment({
             ) : null}
 
             {step === 3 ? (
-              <EnrichmentGroup title="Is the property currently rented?">
-                <div className="grid grid-cols-2 gap-2 sm:max-w-md">
+              <EnrichmentGroup title="Currently Rented?">
+                <div className="grid grid-cols-2 gap-2.5 sm:max-w-md">
                   {PROPERTY_RENTED_OPTIONS.map((option) => (
                     <FunnelOptionCard
                       key={option.id}
@@ -439,7 +425,7 @@ export function PostSubmitEnrichment({
                     />
                   ))}
                 </div>
-                <p className="text-xs text-slate-500">
+                <p className="mt-4 text-sm leading-relaxed text-slate-500">
                   Selecting an option saves your profile and continues your review.
                 </p>
               </EnrichmentGroup>
@@ -503,23 +489,67 @@ export function PostSubmitEnrichment({
   );
 }
 
+const stepSectionTitles: Record<number, string> = {
+  1: "Tell Us About Your Property",
+  2: "Tell Us About Your Investor Profile",
+  3: "Rental Status",
+};
+
+/** @deprecated Use stepSectionTitles — kept for non-focused enrichment layout */
 const stepHeadlines: Record<number, string> = {
   1: "Property details",
   2: "Investor profile",
   3: "Rental status",
 };
 
+function EnrichmentProfileHeader({
+  title,
+  profileStrength,
+  boostMessage,
+}: {
+  title: string;
+  profileStrength: number;
+  boostMessage: string | null;
+}) {
+  return (
+    <div className="mb-6 flex flex-wrap items-start justify-between gap-3 border-b border-slate-100 pb-5">
+      <h2 className="min-w-0 flex-1 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+        {title}
+      </h2>
+      <div className="flex shrink-0 flex-col items-end gap-1.5">
+        <AnimatePresence mode="wait">
+          {boostMessage ? (
+            <ProfileStrengthBoostToast key={boostMessage} message={boostMessage} />
+          ) : null}
+        </AnimatePresence>
+        <span className="rounded-full bg-teal-50 px-2.5 py-1 text-[11px] font-bold tabular-nums text-teal-800 ring-1 ring-teal-100">
+          {profileStrength}% profile
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function EnrichmentGroup({
   title,
   children,
+  showDivider = false,
 }: {
   title: string;
   children: React.ReactNode;
+  showDivider?: boolean;
 }) {
   return (
-    <div className="space-y-2">
-      <p className="text-xs font-semibold text-slate-700">{title}</p>
+    <section
+      className={cn(
+        showDivider && "mt-8 border-t border-slate-100/90 pt-8",
+        !showDivider && "pt-1",
+      )}
+    >
+      <h3 className="mb-5 text-lg font-semibold tracking-tight text-slate-900 sm:text-xl">
+        {title}
+      </h3>
       {children}
-    </div>
+    </section>
   );
 }
