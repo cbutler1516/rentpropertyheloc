@@ -1,11 +1,12 @@
 "use client";
 
 import { PostSubmitEnrichment } from "@/components/funnel/post-submit-enrichment";
-import { PostSubmitBookingPrompt } from "@/components/funnel/post-submit-booking-prompt";
+import {
+  CompactReviewSummary,
+  EnrichmentAdvisorHelp,
+} from "@/components/funnel/enrichment-compact-sidebar";
 import { PostSubmitProfileStrength } from "@/components/funnel/gamification/post-submit-profile-strength";
 import { ProfileSavedState } from "@/components/funnel/gamification/profile-saved-state";
-import { ReviewStartedBanner } from "@/components/funnel/review-started-banner";
-import { AdvisorTrustStrip } from "@/components/trust/advisor-trust-strip";
 import {
   BASE_PROFILE_STRENGTH,
   isProfileComplete,
@@ -124,29 +125,19 @@ export function FunnelConfirmation({
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left shadow-sm lg:rounded-3xl lg:shadow-[0_12px_48px_rgba(15,23,42,0.08)]"
     >
-      <div className="border-b border-slate-100 px-4 py-5 sm:px-6 lg:px-8 lg:py-6">
-        <ReviewStartedBanner showPriority={showPriority} />
-        <dl className="mt-5 grid gap-2 rounded-xl border border-slate-200/80 bg-slate-50/70 p-4 text-sm">
-          <SummaryRow label="Property" value={address} />
-          <SummaryRow label="Requested funds" value={requestedFunds || "On file"} />
-          <SummaryRow label="Next step" value="Licensed advisor review and follow-up" />
-        </dl>
-        <h3 className="mt-6 text-lg font-semibold text-slate-900 sm:text-xl">
-          Review started — finish your investor profile
-        </h3>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
-          A few quick answers help a licensed mortgage professional prepare for your follow-up.
-        </p>
-        <div className="mt-4 lg:hidden">
-          <PostSubmitProfileStrength strength={profileStrength} />
-        </div>
-      </div>
+      <div className="px-4 py-5 sm:px-6 lg:px-8 lg:py-6">
+        <header className="max-w-2xl">
+          <h2 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+            Complete Your Investor Profile
+          </h2>
+          <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
+            Help us identify the best financing options for your property.
+          </p>
+        </header>
 
-      {leadId ? (
-        <div className="px-3 py-4 sm:px-6 lg:px-8 lg:py-6">
-          <div className="lg:grid lg:grid-cols-10 lg:items-start lg:gap-8">
+        {leadId ? (
+          <div className="mt-5 lg:mt-6 lg:grid lg:grid-cols-10 lg:items-start lg:gap-6">
             <div className="min-w-0 lg:col-span-7">
-              <PostSubmitBookingPrompt />
               <PostSubmitEnrichment
                 leadId={leadId}
                 embedded
@@ -163,15 +154,17 @@ export function FunnelConfirmation({
               />
             </div>
 
-            <aside className="mt-6 space-y-4 lg:col-span-3 lg:mt-0">
-              <div className="hidden lg:block">
-                <PostSubmitProfileStrength strength={profileStrength} />
-              </div>
-              <AdvisorTrustStrip />
+            <aside className="mt-5 space-y-3 lg:col-span-3 lg:mt-0">
+              <CompactReviewSummary
+                propertyAddress={address}
+                requestedFunds={requestedFunds}
+                showPriority={showPriority}
+              />
+              <EnrichmentAdvisorHelp />
             </aside>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
 
       <ComplianceFooter />
     </motion.div>
@@ -197,13 +190,3 @@ function ComplianceFooter() {
     </div>
   );
 }
-
-function SummaryRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex flex-col gap-0.5 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-      <dt className="font-medium text-slate-700">{label}</dt>
-      <dd className="text-slate-600 sm:text-right">{value}</dd>
-    </div>
-  );
-}
-

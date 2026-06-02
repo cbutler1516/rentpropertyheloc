@@ -11,14 +11,43 @@ import { motion } from "framer-motion";
 type PostSubmitProfileStrengthProps = {
   strength: number;
   className?: string;
+  variant?: "panel" | "inline";
 };
+
+const ENRICHMENT_PROGRESS_HELPER =
+  "Complete a few quick questions to help us review your financing options.";
 
 export function PostSubmitProfileStrength({
   strength,
   className,
+  variant = "panel",
 }: PostSubmitProfileStrengthProps) {
   const complete = isProfileComplete(strength);
   const nextLabel = getProfileStrengthNextUnlockLabel(strength);
+
+  if (variant === "inline") {
+    return (
+      <div className={cn("rounded-xl border border-slate-200/80 bg-slate-50/60 p-3.5", className)}>
+        <p className="text-sm font-semibold text-slate-900">
+          Profile {strength}% Complete
+        </p>
+        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-teal-100">
+          <motion.div
+            className={cn(
+              "h-full rounded-full",
+              complete ? "bg-gradient-to-r from-teal-500 to-emerald-500" : "bg-teal-600",
+            )}
+            initial={false}
+            animate={{ width: `${Math.min(strength, MAX_PROFILE_STRENGTH)}%` }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </div>
+        <p className="mt-2 text-xs leading-relaxed text-slate-500">
+          {ENRICHMENT_PROGRESS_HELPER}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div
