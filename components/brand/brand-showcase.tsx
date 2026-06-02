@@ -62,6 +62,14 @@ export function BrandShowcase() {
         </p>
         <h1 className="mt-4 text-3xl font-bold text-white sm:text-4xl">{BRAND.name} brand kit</h1>
         <p className="mt-4 max-w-2xl text-white/70">{BRAND.descriptor}</p>
+        <p className="mt-3">
+          <a
+            href="/brand/logos"
+            className="text-sm font-medium text-accent-bright underline-offset-2 hover:underline"
+          >
+            View logo concept exploration →
+          </a>
+        </p>
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {mockups.map((item) => (
