@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
+import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { MobileStickyCta } from "@/components/layout/mobile-sticky-cta";
 import { BRAND } from "@/lib/brand";
 import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -40,11 +41,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full scroll-smooth antialiased`}>
-      <body className="min-h-full flex flex-col bg-navy-950">
-        <SiteHeader />
-        <main className="main-with-sticky-cta flex-1">{children}</main>
-        <SiteFooter />
-        <MobileStickyCta />
+      <body className="min-h-full flex flex-col bg-navy-950 text-white">
+        <OrganizationJsonLd />
+        <AnalyticsProvider>
+          <SiteHeader />
+          <main className="main-with-sticky-cta flex-1">{children}</main>
+          <SiteFooter />
+        </AnalyticsProvider>
       </body>
     </html>
   );

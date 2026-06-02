@@ -4,7 +4,6 @@ import { Section, SectionHeader } from "@/components/layout/section";
 import { MotionCard } from "@/components/motion/motion-card";
 import { Reveal, StaggerItem, StaggerReveal } from "@/components/motion/reveal";
 import { Card } from "@/components/ui/card";
-import { SectionLeadCta } from "@/components/ui/section-lead-cta";
 import {
   FUNDING_TIMELINES,
   PORTFOLIO_STORIES,
@@ -83,9 +82,6 @@ export function SocialProofSection() {
         </div>
       </Reveal>
 
-      <Reveal delay={0.16}>
-        <SectionLeadCta className="mt-10" />
-      </Reveal>
       <Reveal delay={0.14} className="mt-14">
         <div className="flex flex-wrap items-center justify-center gap-3">
           {TRUST_INDICATORS.map((label) => (

@@ -1,16 +1,32 @@
+import { processLeadSubmission } from "@/lib/leads/process-lead-submission";
+import { extractLeadSubmissionContext } from "@/lib/leads/submission-context";
 import { NextResponse } from "next/server";
-import type { LeadFunnelData } from "@/lib/lead-funnel";
 
-/** Placeholder API route — wire Supabase, Resend, CRM webhook here. */
 export async function POST(request: Request) {
-  const data = (await request.json()) as LeadFunnelData;
+  let body: unknown;
 
-  if (process.env.NODE_ENV === "development") {
-    console.debug("[api/leads]", data);
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ success: false, error: "Invalid JSON body." }, { status: 400 });
+  }
+
+  const sourceUrl =
+    body && typeof body === "object" && typeof (body as Record<string, unknown>).sourceUrl === "string"
+      ? ((body as Record<string, unknown>).sourceUrl as string)
+      : undefined;
+
+  const context = extractLeadSubmissionContext(request, sourceUrl);
+  const result = await processLeadSubmission(body, context);
+
+  if (!result.success) {
+    return NextResponse.json({ success: false, error: result.error }, { status: result.status });
   }
 
   return NextResponse.json({
-    ok: true,
-    message: "Lead endpoint ready for integration.",
+    success: true,
+    id: result.storedLead.id,
+    submissionId: result.submissionId,
+    routingTier: result.storedLead.routingTier,
   });
 }

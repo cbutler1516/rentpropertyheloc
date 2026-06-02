@@ -1,6 +1,5 @@
 "use client";
 
-import { trackVideoPlayed } from "@/lib/analytics/events";
 import { cn } from "@/lib/cn";
 import { useRef, useState } from "react";
 
@@ -30,14 +29,7 @@ export function VideoPlayer({
 }: VideoPlayerProps) {
   const ref = useRef<HTMLVideoElement>(null);
   const [failed, setFailed] = useState(false);
-  const playedRef = useRef(false);
   const isMuted = muted ?? !withAudio;
-
-  function handlePlay() {
-    if (playedRef.current) return;
-    playedRef.current = true;
-    trackVideoPlayed(src);
-  }
 
   return (
     <div
@@ -69,7 +61,6 @@ export function VideoPlayer({
             muted={isMuted}
             autoPlay={autoPlay}
             loop={loop}
-            onPlay={handlePlay}
             onError={() => setFailed(true)}
           >
             <source src={src} type="video/mp4" />

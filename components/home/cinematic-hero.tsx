@@ -1,7 +1,6 @@
 "use client";
 
 import { HeroPreviewDashboard } from "@/components/home/hero-preview-dashboard";
-import { HeroQuickStart } from "@/components/forms/hero-quick-start";
 import { Container } from "@/components/layout/container";
 import { ComplianceNote } from "@/components/layout/compliance-note";
 import { FloatingGlow } from "@/components/motion/floating-glow";
@@ -10,7 +9,7 @@ import { BackgroundVideo } from "@/components/video/background-video";
 import { Badge } from "@/components/ui/badge";
 import { CtaLink } from "@/components/ui/cta-link";
 import { BRAND } from "@/lib/brand";
-import { COMPLIANCE_SHORT, PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL, PRIMARY_CTA_SHORT, SECONDARY_CTA_HREF, SECONDARY_CTA_LABEL } from "@/lib/cta";
+import { COMPLIANCE_SHORT, PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL, SECONDARY_CTA_LABEL } from "@/lib/cta";
 import { SITE_DESCRIPTOR } from "@/lib/site";
 import { SITE_VIDEOS } from "@/lib/videos";
 
@@ -50,21 +49,12 @@ export function CinematicHero() {
                 {SITE_DESCRIPTOR}
               </p>
             </Reveal>
-            <Reveal delay={0.15}>
-              <HeroQuickStart className="mt-6 sm:mt-8" />
-            </Reveal>
             <Reveal delay={0.18}>
-              <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap">
+              <div className="mt-10 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
                 <CtaLink href={PRIMARY_CTA_HREF} size="lg" className="glow-accent w-full sm:w-auto">
-                  <span className="md:hidden">{PRIMARY_CTA_SHORT}</span>
-                  <span className="hidden md:inline">{PRIMARY_CTA_LABEL}</span>
+                  {PRIMARY_CTA_LABEL}
                 </CtaLink>
-                <CtaLink
-                  href={SECONDARY_CTA_HREF}
-                  variant="secondary"
-                  size="lg"
-                  className="w-full border-white/10 text-sm sm:w-auto sm:opacity-90"
-                >
+                <CtaLink href="#overview" variant="secondary" size="lg" className="w-full sm:w-auto">
                   {SECONDARY_CTA_LABEL}
                 </CtaLink>
               </div>

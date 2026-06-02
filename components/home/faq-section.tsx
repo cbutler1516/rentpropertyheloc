@@ -2,7 +2,6 @@
 
 import { Section, SectionHeader } from "@/components/layout/section";
 import { Reveal, StaggerItem, StaggerReveal } from "@/components/motion/reveal";
-import { SectionLeadCta } from "@/components/ui/section-lead-cta";
 import { FAQ_ITEMS, TRUST_INDICATORS } from "@/lib/home-content";
 
 export function FaqSection() {
@@ -35,9 +34,6 @@ export function FaqSection() {
           </StaggerItem>
         ))}
       </StaggerReveal>
-      <Reveal delay={0.14}>
-        <SectionLeadCta className="mt-10" />
-      </Reveal>
       <Reveal delay={0.1} className="mt-10 flex flex-wrap justify-center gap-3">
         {TRUST_INDICATORS.map((label) => (
           <span

@@ -6,7 +6,6 @@ import { SITE_VIDEOS } from "@/lib/videos";
 import { MotionCard } from "@/components/motion/motion-card";
 import { Reveal, StaggerItem, StaggerReveal } from "@/components/motion/reveal";
 import { Card } from "@/components/ui/card";
-import { SectionLeadCta } from "@/components/ui/section-lead-cta";
 import { INVESTOR_USE_CASES } from "@/lib/home-content";
 
 export function InvestorUseCasesSection() {
@@ -33,9 +32,6 @@ export function InvestorUseCasesSection() {
           </StaggerItem>
         ))}
       </StaggerReveal>
-      <Reveal delay={0.12}>
-        <SectionLeadCta className="mt-12" />
-      </Reveal>
       </div>
     </Section>
   );

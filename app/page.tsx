@@ -1,7 +1,6 @@
 import { CinematicHero } from "@/components/home/cinematic-hero";
 import { CinematicVideoCards } from "@/components/home/cinematic-video-cards";
 import { CtaBand } from "@/components/home/cta-band";
-import { EquityDashboardSection } from "@/components/home/equity-dashboard";
 import { FaqSection } from "@/components/home/faq-section";
 import { HowItWorksSection } from "@/components/home/how-it-works-section";
 import { InvestorUseCasesSection } from "@/components/home/investor-use-cases-section";
@@ -17,7 +16,6 @@ export default function HomePage() {
       <CinematicHero />
       <OverviewExplainerSection />
       <MetricsRow />
-      <EquityDashboardSection />
       <CinematicVideoCards />
       <HowItWorksSection />
       <ProgramHighlightsSection />

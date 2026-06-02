@@ -11,6 +11,12 @@ export const DASHBOARD_DEFAULTS = {
   maxLtvPercent: ILLUSTRATIVE_MAX_LTV,
 } as const;
 
+export type EquityStrategy = "rental_property" | "primary_residence";
+
+export function isEquityStrategy(value: string | null | undefined): value is EquityStrategy {
+  return value === "rental_property" || value === "primary_residence";
+}
+
 export type EquityInputs = {
   propertyValue: number;
   mortgageBalance: number;

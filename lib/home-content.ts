@@ -7,7 +7,7 @@ export const HERO_STATS = [
 export const METRICS = [
   {
     value: "$25M+",
-    label: "Investor equity explored",
+    label: "Investor reviews started",
     note: "Illustrative aggregate review volume",
   },
   {

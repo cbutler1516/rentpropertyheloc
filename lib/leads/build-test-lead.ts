@@ -1,0 +1,75 @@
+import type { LeadCreateRequest } from "@/lib/leads/types";
+import { FUNNEL_VERSION } from "@/lib/leads/funnel-config";
+
+export const TEST_LEAD_SOURCE = "check-options-health-test" as const;
+
+export function buildTestLeadPayload(): LeadCreateRequest {
+  const createdAt = new Date().toISOString();
+
+  return {
+    journey: "sfr",
+    funnelVersion: FUNNEL_VERSION,
+    propertyType: "single-family",
+    propertyValueRange: "",
+    mortgageBalanceRange: "",
+    equityAccessRange: "100k-250k",
+    creditScoreRange: "720-759",
+    propertyCount: "",
+    fundingTimeline: "",
+    propertyRented: "",
+    propertyStreet: "123 Main St",
+    propertyCity: "Austin",
+    propertyState: "TX",
+    propertyZip: "78701",
+    googlePlaceId: "",
+    propertyValue: 450_000,
+    mortgageBalance: 250_000,
+    desiredFunds: 87_500,
+    estimatedEquity: 200_000,
+    estimatedHeloc: 87_500,
+    estimatedHelocLow: 74_375,
+    estimatedHelocHigh: 87_500,
+    avmSource: "attom",
+    propertySqft: 1800,
+    propertyBeds: 3,
+    propertyBaths: 2,
+    propertyYearBuilt: 1998,
+    propertyLatitude: null,
+    propertyLongitude: null,
+    estimatedRent: 2400,
+    propertyValueLow: 414_000,
+    propertyValueHigh: 486_000,
+    mortgageBalanceLow: 230_000,
+    mortgageBalanceHigh: 265_000,
+    lastSaleDate: "2018-06-15",
+    lastSalePrice: 380_000,
+    recordedMortgageAmount: null,
+    actualMortgageBalance: null,
+    useMortgageEstimate: true,
+    fundingGoal: "buy-rental",
+    funnelStepCompleted: 5,
+    targetCltvPercent: 75,
+    investorScore: 72,
+    confidenceRating: "Medium",
+    valuationLastUpdated: createdAt,
+    creditScoreEstimate: 740,
+    firstName: "Pipeline",
+    lastName: "Healthcheck",
+    email: `healthcheck+${Date.now()}@example.com`,
+    phone: "5550100199",
+    tcpaConsent: true,
+    tcpaConsentAt: createdAt,
+    marketingOptIn: false,
+    sourceUrl: "https://rentpropertyheloc.com/admin/leads-health",
+    queryParams: { healthcheck: "true", source: TEST_LEAD_SOURCE },
+    utm: {
+      utm_source: "admin",
+      utm_medium: "healthcheck",
+      utm_campaign: "pipeline-test",
+    },
+    createdAt,
+    source: TEST_LEAD_SOURCE,
+  };
+}
+
+export const HEALTH_TEST_LEAD_SOURCE = TEST_LEAD_SOURCE;

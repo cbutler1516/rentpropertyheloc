@@ -35,7 +35,7 @@ export function CtaBand() {
                 href={SECONDARY_CTA_HREF}
                 variant="secondary"
                 size="lg"
-                className="w-full border-white/10 text-sm sm:w-auto sm:opacity-90"
+                className="w-full sm:w-auto"
               >
                 {SECONDARY_CTA_LABEL}
               </CtaLink>

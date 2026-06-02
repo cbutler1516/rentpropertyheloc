@@ -2,9 +2,7 @@
 
 import { RangeField } from "@/components/ui/range-field";
 import { CtaLink } from "@/components/ui/cta-link";
-import { PRIMARY_CTA_LABEL, PRIMARY_CTA_SHORT } from "@/lib/cta";
-import { trackCalculatorUsed } from "@/lib/analytics/events";
-import { buildCheckOptionsUrl } from "@/lib/lead-funnel";
+import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from "@/lib/cta";
 import {
   calculateEquity,
   DASHBOARD_DEFAULTS,
@@ -12,11 +10,10 @@ import {
   ILLUSTRATIVE_MAX_LTV,
 } from "@/lib/equity-calculator";
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export function InteractiveEquityDashboard() {
   const reduceMotion = useReducedMotion();
-  const calculatorTracked = useRef(false);
   const [propertyValue, setPropertyValue] = useState<number>(DASHBOARD_DEFAULTS.propertyValue);
   const [mortgageBalance, setMortgageBalance] = useState<number>(DASHBOARD_DEFAULTS.mortgageBalance);
   const [monthlyRent, setMonthlyRent] = useState<number>(DASHBOARD_DEFAULTS.monthlyRent);
@@ -40,25 +37,6 @@ export function InteractiveEquityDashboard() {
       }),
     [propertyValue, safeMortgage, monthlyRent, maxLtvPercent],
   );
-
-  const funnelHref = useMemo(
-    () =>
-      buildCheckOptionsUrl({
-        propertyValue,
-        mortgageBalance: safeMortgage,
-        rentalIncome: monthlyRent,
-        monthlyRent,
-        desiredFunds: result.availableEquity,
-        estimatedEquity: result.availableEquity,
-      }),
-    [propertyValue, safeMortgage, monthlyRent, result.availableEquity],
-  );
-
-  function trackCalculatorOnce() {
-    if (calculatorTracked.current) return;
-    calculatorTracked.current = true;
-    trackCalculatorUsed();
-  }
 
   const Bar = reduceMotion ? "div" : motion.div;
 
@@ -97,10 +75,7 @@ export function InteractiveEquityDashboard() {
             max={2_000_000}
             step={5_000}
             displayValue={formatUsd(propertyValue)}
-            onChange={(v) => {
-              trackCalculatorOnce();
-              setPropertyValue(v);
-            }}
+            onChange={setPropertyValue}
           />
           <RangeField
             id="mortgageBalance"
@@ -110,10 +85,7 @@ export function InteractiveEquityDashboard() {
             max={propertyValue}
             step={5_000}
             displayValue={formatUsd(safeMortgage)}
-            onChange={(v) => {
-              trackCalculatorOnce();
-              setMortgageBalance(v);
-            }}
+            onChange={setMortgageBalance}
           />
           <RangeField
             id="monthlyRent"
@@ -123,10 +95,7 @@ export function InteractiveEquityDashboard() {
             max={15_000}
             step={100}
             displayValue={`${formatUsd(monthlyRent)}/mo`}
-            onChange={(v) => {
-              trackCalculatorOnce();
-              setMonthlyRent(v);
-            }}
+            onChange={setMonthlyRent}
             hint="Income supports underwriting context—not a guarantee of approval."
           />
           <RangeField
@@ -137,10 +106,7 @@ export function InteractiveEquityDashboard() {
             max={80}
             step={1}
             displayValue={`${maxLtvPercent}%`}
-            onChange={(v) => {
-              trackCalculatorOnce();
-              setMaxLtvPercent(v);
-            }}
+            onChange={setMaxLtvPercent}
             hint={`Default illustrative cap ${ILLUSTRATIVE_MAX_LTV}%—actual programs vary.`}
           />
         </div>
@@ -195,9 +161,8 @@ export function InteractiveEquityDashboard() {
               Funding possible in as little as 7 days may be available when documentation is
               complete. Subject to approval.
             </p>
-            <CtaLink href={funnelHref} size="lg" className="mt-5 w-full">
-              <span className="md:hidden">{PRIMARY_CTA_SHORT}</span>
-              <span className="hidden md:inline">{PRIMARY_CTA_LABEL}</span>
+            <CtaLink href={PRIMARY_CTA_HREF} size="md" className="mt-5 w-full">
+              {PRIMARY_CTA_LABEL}
             </CtaLink>
           </div>
         </div>
