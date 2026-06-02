@@ -30,6 +30,7 @@ import {
   parseCheckOptionsPrefill,
 } from "@/lib/leads/parse-prefill";
 import { submitLead } from "@/lib/leads/submit-lead";
+import { scrollToPostSubmitTop } from "@/lib/funnel/scroll-to-post-submit-top";
 import { usePartialLeadSave } from "@/lib/leads/use-partial-lead-save";
 import { cn } from "@/lib/cn";
 import { normalizePhoneForStorage } from "@/lib/phone-format";
@@ -125,12 +126,11 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
   }, []);
 
   useEffect(() => {
-    if (!submitted || !confirmationRef.current) return;
-    confirmationRef.current.scrollIntoView({
-      behavior: reduceMotion ? "auto" : "smooth",
-      block: "start",
-    });
-  }, [submitted, reduceMotion]);
+    if (!submitted) return;
+    scrollToPostSubmitTop();
+    const timer = window.setTimeout(scrollToPostSubmitTop, 0);
+    return () => window.clearTimeout(timer);
+  }, [submitted]);
 
   useEffect(() => {
     if (step === 3) {
@@ -238,7 +238,11 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
 
   if (isConfirmationView) {
     return (
-      <div ref={confirmationRef} className="mx-auto w-full max-w-7xl">
+      <div
+        id="post-submit-start"
+        ref={confirmationRef}
+        className="mx-auto w-full max-w-7xl scroll-mt-20"
+      >
         <FunnelConfirmation
           propertyType={data.propertyType}
           leadId={leadId}
