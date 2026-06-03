@@ -23,7 +23,7 @@ export function CinematicHero() {
       <div className="absolute inset-0 cinematic-vignette opacity-80" aria-hidden />
 
       <Container className="relative z-10 py-8 sm:py-14 md:py-20 lg:py-24">
-        <div className="flex flex-col gap-7 md:grid md:grid-cols-2 md:items-center md:gap-10 lg:gap-12">
+        <div className="flex flex-col gap-6 md:grid md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10">
           <div>
             <Reveal>
               <BrandPillars className="mb-4" />
@@ -54,7 +54,7 @@ export function CinematicHero() {
             </Reveal>
           </div>
 
-          <HeroReviewPreviewCard />
+          <HeroReviewPreviewCard className="md:justify-self-end" />
         </div>
       </Container>
 

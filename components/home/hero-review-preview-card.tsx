@@ -2,10 +2,9 @@
 
 import { cn } from "@/lib/cn";
 import {
-  HERO_SAMPLE_PREVIEW_ITEMS,
-  HERO_SAMPLE_PREVIEW_LABEL,
   HERO_VALUE_BADGE,
   HERO_VALUE_BENEFITS,
+  HERO_VALUE_FOOTER_NOTE,
   HERO_VALUE_FOOTER_POINTS,
   HERO_VALUE_HEADLINE,
   HERO_VALUE_SUBHEADLINE,
@@ -21,52 +20,61 @@ export function HeroReviewPreviewCard({ className }: HeroReviewPreviewCardProps)
 
   return (
     <motion.div
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      className={cn("w-full max-w-md mx-auto md:max-w-none md:mx-0", className)}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className={cn(
+        "w-full max-w-[17.5rem] mx-auto sm:max-w-xs md:max-w-[19rem] md:mx-0 lg:max-w-[20rem]",
+        className,
+      )}
     >
       <div className="relative">
         <div
-          className="pointer-events-none absolute -inset-px rounded-[1.35rem] bg-gradient-to-br from-teal-400/35 via-transparent to-cyan-400/25 opacity-80"
+          className="pointer-events-none absolute -inset-px rounded-2xl bg-gradient-to-br from-teal-400/25 via-transparent to-cyan-400/15 opacity-70"
           aria-hidden
         />
-        <div className="relative overflow-hidden rounded-[1.25rem] border border-white/20 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.28)]">
+        <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/95 shadow-[0_12px_32px_rgba(15,23,42,0.18)] backdrop-blur-sm">
           <div
-            className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-teal-50/95 to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-teal-50/80 to-transparent"
             aria-hidden
           />
 
-          <div className="relative p-5 sm:p-6">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-teal-700">
+          <div className="relative px-4 py-4 sm:px-[1.125rem] sm:py-[1.125rem]">
+            <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-teal-700">
               {HERO_VALUE_BADGE}
             </p>
-            <h2 className="mt-2 text-lg font-bold tracking-tight text-navy-950 sm:text-xl">
+            <h2 className="mt-1.5 text-base font-bold leading-snug tracking-tight text-navy-950">
               {HERO_VALUE_HEADLINE}
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600">{HERO_VALUE_SUBHEADLINE}</p>
+            <p className="mt-1.5 text-xs leading-relaxed text-slate-600">{HERO_VALUE_SUBHEADLINE}</p>
 
-            <ul className="mt-5 space-y-2.5" aria-label="Review benefits">
+            <ul className="mt-3.5 space-y-1.5" aria-label="Review benefits">
               {HERO_VALUE_BENEFITS.map((benefit, index) => (
-                <BenefitRow
-                  key={benefit.title}
-                  benefit={benefit}
-                  index={index}
-                  reduceMotion={reduceMotion}
-                />
+                <motion.li
+                  key={benefit}
+                  initial={reduceMotion ? false : { opacity: 0, x: -4 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: reduceMotion ? 0 : 0.08 + index * 0.04, duration: 0.28 }}
+                  className="flex items-center gap-2 text-xs font-medium text-slate-800"
+                >
+                  <span
+                    aria-hidden
+                    className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-teal-100 text-[9px] text-teal-700"
+                  >
+                    ✓
+                  </span>
+                  {benefit}
+                </motion.li>
               ))}
             </ul>
 
-            <div className="mt-5 border-t border-slate-100 pt-4">
-              <ul className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-x-5 sm:gap-y-2">
+            <div className="mt-3.5 border-t border-slate-100 pt-3">
+              <ul className="flex flex-col gap-1.5">
                 {HERO_VALUE_FOOTER_POINTS.map((point) => (
-                  <li
-                    key={point}
-                    className="flex items-center gap-2 text-xs font-medium text-slate-600"
-                  >
+                  <li key={point} className="flex items-center gap-2 text-[11px] text-slate-600">
                     <span
                       aria-hidden
-                      className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-teal-100 text-[10px] text-teal-700"
+                      className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-teal-100 text-[9px] text-teal-700"
                     >
                       ✓
                     </span>
@@ -74,86 +82,10 @@ export function HeroReviewPreviewCard({ className }: HeroReviewPreviewCardProps)
                   </li>
                 ))}
               </ul>
+              <p className="mt-2.5 text-[10px] leading-relaxed text-slate-500">{HERO_VALUE_FOOTER_NOTE}</p>
             </div>
-
-            <SamplePreviewThumbnail className="mt-5" reduceMotion={reduceMotion} />
           </div>
         </div>
-      </div>
-    </motion.div>
-  );
-}
-
-function BenefitRow({
-  benefit,
-  index,
-  reduceMotion,
-}: {
-  benefit: (typeof HERO_VALUE_BENEFITS)[number];
-  index: number;
-  reduceMotion: boolean | null;
-}) {
-  return (
-    <motion.li
-      initial={reduceMotion ? false : { opacity: 0, y: 6 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: reduceMotion ? 0 : 0.1 + index * 0.06, duration: 0.32 }}
-      className="group rounded-xl border border-slate-100 bg-slate-50/70 p-3 transition hover:border-teal-200/80 hover:bg-teal-50/40 hover:shadow-sm sm:p-3.5"
-    >
-      <div className="flex gap-3">
-        <span
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-base shadow-sm ring-1 ring-slate-200/80 transition group-hover:ring-teal-200/80"
-          aria-hidden
-        >
-          {benefit.icon}
-        </span>
-        <div className="min-w-0">
-          <p className="text-sm font-semibold leading-tight text-slate-900">{benefit.title}</p>
-          <p className="mt-1 text-xs leading-relaxed text-slate-600 sm:text-[0.8125rem]">
-            {benefit.description}
-          </p>
-        </div>
-      </div>
-    </motion.li>
-  );
-}
-
-function SamplePreviewThumbnail({
-  className,
-  reduceMotion,
-}: {
-  className?: string;
-  reduceMotion: boolean | null;
-}) {
-  return (
-    <motion.div
-      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: reduceMotion ? 0 : 0.38, duration: 0.35 }}
-      className={cn("rounded-xl border border-slate-200/90 bg-gradient-to-br from-slate-50 to-white p-3.5", className)}
-      aria-hidden
-    >
-      <div className="flex items-center justify-between gap-2">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-          {HERO_SAMPLE_PREVIEW_LABEL}
-        </p>
-        <span className="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[9px] font-medium text-slate-500">
-          Illustrative
-        </span>
-      </div>
-
-      <div className="mt-3 grid grid-cols-2 gap-2">
-        {HERO_SAMPLE_PREVIEW_ITEMS.map((item) => (
-          <div
-            key={item}
-            className="rounded-lg border border-slate-200/80 bg-white px-2.5 py-2 shadow-sm"
-          >
-            <span className="mb-1.5 block h-1 w-8 rounded-full bg-teal-200/80" aria-hidden />
-            <p className="text-[10px] font-semibold leading-tight text-slate-700 sm:text-[11px]">
-              {item}
-            </p>
-          </div>
-        ))}
       </div>
     </motion.div>
   );
