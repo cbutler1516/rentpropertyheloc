@@ -19,6 +19,7 @@ export async function GET() {
     environment: health.environment,
     testLeadEndpointEnabled: health.testLeadEndpointEnabled,
     lastTestLead: health.lastTestLead,
+    deploymentCommitSha: process.env.VERCEL_GIT_COMMIT_SHA ?? null,
     analytics: getAnalyticsHealth(),
     hubspot: getHubSpotHealth(),
   });

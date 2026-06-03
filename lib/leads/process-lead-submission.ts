@@ -98,6 +98,11 @@ export async function processValidatedLead(
 
     let zapierWebhook: ZapierWebhookResult = { sent: false, skipped: true };
     try {
+      console.log("[leads/zapier] invoking webhook handler", {
+        leadId: storedLead.id,
+        submissionId: submission.submissionId,
+        configured: isZapierWebhookConfigured(),
+      });
       zapierWebhook = await notifyZapierLeadWebhook(storedLead, submission.submissionId);
     } catch (zapierError) {
       console.error("[leads] zapier webhook failed unexpectedly", zapierError);

@@ -17,6 +17,7 @@ export async function POST(request: Request) {
       : undefined;
 
   const context = extractLeadSubmissionContext(request, sourceUrl);
+  console.log("[leads] POST /api/leads received");
   const result = await processLeadSubmission(body, context);
 
   if (!result.success) {

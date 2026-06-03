@@ -100,10 +100,18 @@ export async function notifyZapierLeadWebhook(
   lead: StoredLead,
   submissionId: string,
 ): Promise<ZapierWebhookResult> {
+  const configured = isZapierWebhookConfigured();
   const webhookUrl = process.env.ZAPIER_WEBHOOK_URL?.trim();
 
-  if (!isZapierWebhookConfigured() || !webhookUrl) {
-    console.info("[leads/zapier] skipped — ZAPIER_WEBHOOK_URL not configured");
+  console.log("[leads/zapier] starting webhook", {
+    leadId: lead.id,
+    submissionId,
+    configured,
+    hasUrl: Boolean(webhookUrl),
+  });
+
+  if (!configured || !webhookUrl) {
+    console.log("[leads/zapier] webhook skipped — ZAPIER_WEBHOOK_URL not configured");
     return { sent: false, skipped: true };
   }
 
@@ -122,7 +130,7 @@ export async function notifyZapierLeadWebhook(
 
     if (!response.ok) {
       const detail = await response.text().catch(() => "");
-      console.error("[leads/zapier] webhook failed", {
+      console.log("[leads/zapier] webhook failed", {
         leadId: lead.id,
         submissionId,
         status: response.status,
@@ -135,7 +143,7 @@ export async function notifyZapierLeadWebhook(
       };
     }
 
-    console.info("[leads/zapier] webhook delivered", {
+    console.log("[leads/zapier] webhook delivered", {
       leadId: lead.id,
       submissionId,
       status: response.status,
@@ -144,7 +152,7 @@ export async function notifyZapierLeadWebhook(
     return { sent: true, status: response.status };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    console.error("[leads/zapier] webhook error", {
+    console.log("[leads/zapier] webhook failed", {
       leadId: lead.id,
       submissionId,
       error: message,
