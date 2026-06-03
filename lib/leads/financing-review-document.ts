@@ -24,6 +24,13 @@ export type FinancingReviewData = {
 /** @deprecated Use FinancingReviewData */
 export type InvestorSnapshotData = FinancingReviewData;
 
+export function canGenerateReviewSummaryPdf(data: FinancingReviewData): boolean {
+  return Boolean(
+    data.requestedFunds?.trim() &&
+      (data.propertyAddress?.trim() || data.submissionDate?.trim()),
+  );
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")

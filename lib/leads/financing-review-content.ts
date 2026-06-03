@@ -45,7 +45,7 @@ export const COMPLETION_TIMELINE = [
 export const COMPLETION_REVIEW_NOTE = "Most reviews are evaluated within 1 business day.";
 
 export const TALK_THROUGH_OPTIONS_LABEL = "Talk Through My Options";
-export const DOWNLOAD_REVIEW_SUMMARY_LABEL = "Download My Review Summary";
+export const DOWNLOAD_REVIEW_SUMMARY_LABEL = "Download Review Summary";
 
 /** @deprecated Use COMPLETION_STRATEGY_PATHS */
 export const FINANCING_REVIEW_PATHS = COMPLETION_STRATEGY_PATHS;

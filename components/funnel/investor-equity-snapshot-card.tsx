@@ -1,5 +1,6 @@
 "use client";
 
+import { ReviewSummaryDownloadButton } from "@/components/funnel/completion-cta-row";
 import { Button } from "@/components/ui/button";
 import { useFinancingReviewActions } from "@/components/funnel/financing-review-experience";
 import {
@@ -8,7 +9,6 @@ import {
   MAX_PROFILE_STRENGTH,
 } from "@/lib/leads/investor-review-gamification";
 import {
-  DOWNLOAD_REVIEW_SUMMARY_LABEL,
   FINANCING_REVIEW_DISCLAIMER,
   TALK_THROUGH_OPTIONS_LABEL,
 } from "@/lib/leads/financing-review-content";
@@ -52,7 +52,7 @@ export function InvestorEquitySnapshotCard({
     profileComplete: isComplete,
   };
 
-  const { experience, openCompletion, downloadPdf } = useFinancingReviewActions(reviewData);
+  const { experience, openCompletion } = useFinancingReviewActions(reviewData);
 
   if (compact) {
     return (
@@ -129,15 +129,10 @@ export function InvestorEquitySnapshotCard({
               <Button type="button" size="sm" className="rounded-xl" onClick={openCompletion}>
                 View My Review Summary
               </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="rounded-xl border border-slate-200"
-                onClick={downloadPdf}
-              >
-                {DOWNLOAD_REVIEW_SUMMARY_LABEL}
-              </Button>
+              <ReviewSummaryDownloadButton
+                data={reviewData}
+                className="min-h-[44px] w-full text-sm"
+              />
             </div>
             <p className="mt-2 text-[10px] leading-relaxed text-slate-500">
               {FINANCING_REVIEW_DISCLAIMER}

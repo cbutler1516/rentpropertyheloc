@@ -1,17 +1,13 @@
 "use client";
 
-import { StrategyCallLink } from "@/components/trust/strategy-call-link";
-import { Button } from "@/components/ui/button";
+import { CompletionCtaRow } from "@/components/funnel/completion-cta-row";
 import {
   COMPLETION_REVIEW_NOTE,
   COMPLETION_STRATEGY_PATHS,
   COMPLETION_TIMELINE,
-  DOWNLOAD_REVIEW_SUMMARY_LABEL,
   FINANCING_REVIEW_DISCLAIMER,
-  TALK_THROUGH_OPTIONS_LABEL,
 } from "@/lib/leads/financing-review-content";
 import type { FinancingReviewData } from "@/lib/leads/financing-review-document";
-import { printFinancingReviewPdf } from "@/lib/leads/financing-review-document";
 import { getReviewScenario, type ReviewScenarioTier } from "@/lib/leads/review-scenario";
 import { cn } from "@/lib/cn";
 import { motion, useReducedMotion } from "framer-motion";
@@ -199,24 +195,11 @@ export function PersonalizedReviewCompletion({
             <p className="mt-3 text-xs text-slate-500">{COMPLETION_REVIEW_NOTE}</p>
           </section>
 
-          <div className="flex flex-col gap-3 border-t border-slate-100 pt-6 sm:flex-row">
-            <StrategyCallLink
-              size="lg"
-              className="w-full sm:flex-1"
-              ctaLocation="review-completion-primary"
-            >
-              {TALK_THROUGH_OPTIONS_LABEL}
-            </StrategyCallLink>
-            <Button
-              type="button"
-              size="lg"
-              variant="ghost"
-              className="w-full rounded-xl border border-slate-200 sm:flex-1"
-              onClick={() => printFinancingReviewPdf(data)}
-            >
-              {DOWNLOAD_REVIEW_SUMMARY_LABEL}
-            </Button>
-          </div>
+          <CompletionCtaRow
+            data={data}
+            ctaLocation="review-completion"
+            className="border-t border-slate-100 pt-6"
+          />
 
           <p className="text-[10px] leading-relaxed text-slate-400">{FINANCING_REVIEW_DISCLAIMER}</p>
         </div>

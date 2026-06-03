@@ -2,11 +2,11 @@
 
 import { PhoneLink } from "@/components/trust/phone-link";
 import { CALL_OUR_TEAM_LABEL } from "@/lib/contact";
+import { ReviewSummaryDownloadButton } from "@/components/funnel/completion-cta-row";
 import { useFinancingReviewActions } from "@/components/funnel/financing-review-experience";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
 import { BOOK_STRATEGY_CALL_LABEL } from "@/lib/contact";
 import {
-  DOWNLOAD_REVIEW_SUMMARY_LABEL,
   FINANCING_REVIEW_DISCLAIMER,
   TALK_THROUGH_OPTIONS_LABEL,
 } from "@/lib/leads/financing-review-content";
@@ -22,7 +22,7 @@ type ProfileSavedStateProps = {
 export function ProfileSavedState({ snapshotData, className }: ProfileSavedStateProps) {
   const reduceMotion = useReducedMotion();
   const profileComplete = snapshotData.profileComplete ?? true;
-  const { experience, openCompletion, downloadPdf } = useFinancingReviewActions(snapshotData);
+  const { experience, openCompletion } = useFinancingReviewActions(snapshotData);
 
   return (
     <>
@@ -75,13 +75,10 @@ export function ProfileSavedState({ snapshotData, className }: ProfileSavedState
               >
                 View My Review Summary
               </button>
-              <button
-                type="button"
-                onClick={downloadPdf}
-                className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-slate-200 bg-white px-6 text-sm font-semibold text-slate-800 shadow-sm transition hover:bg-slate-50"
-              >
-                {DOWNLOAD_REVIEW_SUMMARY_LABEL}
-              </button>
+              <ReviewSummaryDownloadButton
+                data={snapshotData}
+                className="min-h-[44px] w-full sm:w-auto"
+              />
             </>
           ) : null}
           <PhoneLink
