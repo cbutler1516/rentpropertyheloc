@@ -59,10 +59,12 @@ export function CompanyTrustSection({
         <div
           className={cn(
             "shrink-0",
-            compact ? "mx-auto w-full max-w-[140px] sm:mx-0" : "mx-auto w-full max-w-md lg:mx-0 lg:max-w-[44%]",
+            compact
+              ? "mx-auto w-full max-w-[220px] sm:mx-0 sm:max-w-[240px]"
+              : "mx-auto w-full max-w-md lg:mx-0 lg:max-w-[44%]",
           )}
         >
-          <TeamTrustVisual compact={compact} frameClassName="w-full" sizes={compact ? "140px" : "384px"} />
+          <TeamTrustVisual compact={compact} frameClassName="w-full" sizes={compact ? "240px" : "384px"} />
         </div>
 
         <div className="min-w-0 flex-1 text-center sm:text-left">
@@ -87,12 +89,12 @@ function HomepageTrustCard() {
           <TrustCardContent ctaLocation="company-trust-homepage" />
         </div>
 
-        <div className="relative w-full shrink-0 lg:w-[46%] lg:min-h-[320px]">
+        <div className="relative w-full shrink-0 lg:w-[46%] lg:min-h-[340px]">
           <TeamTrustVisual
             priority
             sizes="(max-width: 1024px) 100vw, 520px"
-            className="h-full min-h-[200px] w-full lg:min-h-full"
-            frameClassName="h-full min-h-[200px] w-full rounded-none lg:min-h-full lg:rounded-none lg:rounded-r-2xl"
+            className="h-full min-h-[260px] w-full lg:min-h-full"
+            frameClassName="h-full min-h-[260px] w-full rounded-none lg:min-h-full lg:rounded-none lg:rounded-r-2xl"
           />
         </div>
       </div>

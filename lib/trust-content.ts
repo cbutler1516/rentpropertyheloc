@@ -4,9 +4,9 @@ import { COMPANY_NMLS_LABEL, NMLS_LABEL } from "@/lib/legal/nmls";
 export const ADVISOR_HEADSHOT_SRC = "/advisors/chris-butler.png";
 export const ADVISOR_HEADSHOT_ALT = "Chris Butler, mortgage loan officer";
 
-/** Branded abstract trust visual (inline component — see CompanyTrustVisual) */
+/** Branded review dashboard visual (see RequestReviewDashboard) */
 export const TEAM_TRUST_IMAGE_ALT =
-  "Abstract illustration representing property financing review and specialist guidance";
+  "Review status dashboard showing property identified, review started, priority review activated, and financing analysis in progress";
 
 /** Landscape frame for trust visuals */
 export const TEAM_TRUST_IMAGE_FRAME_CLASS = "aspect-[5/3]";
@@ -28,16 +28,29 @@ export const ADVISOR_HEADSHOT_COMPACT_CLASS = ADVISOR_HEADSHOT_PORTRAIT_CLASS;
 
 export { BOOK_STRATEGY_CALL_LABEL as HOMEPAGE_ADVISOR_CTA_PRIMARY } from "@/lib/contact";
 
+export type ReviewDashboardStepStatus = "complete" | "in-progress" | "pending";
+
+export const REVIEW_DASHBOARD = {
+  statusLabel: "Request Received",
+  tagline: "Every request receives a personalized review from a financing specialist.",
+  steps: [
+    { id: "property", label: "Property Identified", status: "complete" as const },
+    { id: "review", label: "Review Started", status: "complete" as const },
+    { id: "priority", label: "Priority Review Activated", status: "complete" as const },
+    { id: "analysis", label: "Financing Analysis In Progress", status: "in-progress" as const },
+  ],
+} as const;
+
 export const COMPANY_TRUST = {
   headline: "Real People. Real Guidance.",
   body: [
-    "Every request is reviewed by an experienced financing specialist — not just an automated system.",
-    "If you have questions, our team is available to help you understand your options and next steps.",
+    "Unlike fully automated platforms, every request is reviewed by a financing specialist.",
+    "If questions come up, our team is available to help you understand your options and next steps.",
   ],
   trustPoints: [
-    "Investor-Focused Financing",
-    "Licensed Mortgage Professionals",
-    "Personalized Review & Follow-Up",
+    "Personalized Review",
+    "Financing Strategy Support",
+    "Direct Access To Our Team",
   ] as const,
 } as const;
 

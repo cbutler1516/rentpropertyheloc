@@ -19,9 +19,17 @@ export function AdvisorTrustStrip({ className }: AdvisorTrustStripProps) {
       )}
     >
       <p className="text-sm font-semibold text-slate-900">{COMPANY_TRUST.headline}</p>
-      <p className="mt-1 text-xs leading-snug text-slate-600">
-        {COMPANY_TRUST.body[1]}
-      </p>
+      <p className="mt-1 text-xs leading-snug text-slate-600">{COMPANY_TRUST.body[0]}</p>
+      <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
+        {COMPANY_TRUST.trustPoints.map((point) => (
+          <li key={point} className="flex items-center gap-1 text-[11px] font-medium text-slate-700">
+            <span aria-hidden className="text-teal-600">
+              ✓
+            </span>
+            {point}
+          </li>
+        ))}
+      </ul>
       <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
         <StrategyCallLink
           variant="inline"

@@ -1,4 +1,4 @@
-import { CompanyTrustVisual } from "@/components/trust/company-trust-visual";
+import { RequestReviewDashboard } from "@/components/trust/request-review-dashboard";
 import { TEAM_TRUST_IMAGE_ALT } from "@/lib/trust-content";
 import { cn } from "@/lib/cn";
 
@@ -18,14 +18,18 @@ export function TeamTrustVisual({
   return (
     <div
       className={cn(
-        "relative overflow-hidden shadow-md ring-1 ring-slate-200/80",
+        "relative overflow-hidden shadow-md ring-1 ring-slate-900/10",
+        compact ? "rounded-xl" : "rounded-2xl lg:rounded-none lg:rounded-r-2xl",
         frameClassName,
         className,
       )}
       role="img"
       aria-label={TEAM_TRUST_IMAGE_ALT}
     >
-      <CompanyTrustVisual variant={compact ? "compact" : "full"} className="h-full w-full" />
+      <RequestReviewDashboard
+        variant={compact ? "compact" : "full"}
+        className={cn(compact ? "min-h-[160px]" : "min-h-[240px] lg:min-h-full")}
+      />
     </div>
   );
 }
