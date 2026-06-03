@@ -2,7 +2,8 @@ import { isValidPropertyType, FUNNEL_VERSION } from "@/lib/leads/funnel-config";
 import { LEAD_NUMERIC_LIMITS, LEAD_SOURCE } from "@/lib/leads/constants";
 import { isJourneySlug } from "@/lib/leads/investor-journeys";
 import { CREDIT_SCORE_RANGES, EQUITY_ACCESS_RANGES, inferEquityAccessRange } from "@/lib/leads/funnel-ranges";
-import { FUNDING_GOAL_OPTIONS, type FundingGoalId } from "@/lib/leads/funding-goals";
+import { normalizeFundingGoalId } from "@/lib/leads/funding-goals";
+import { isValidOwnershipType } from "@/lib/leads/ownership-type";
 import type { LeadCreateRequest } from "@/lib/leads/types";
 import {
   isValidPhone,
@@ -165,11 +166,9 @@ export function validateLeadCreateRequest(body: unknown): LeadValidationResult {
 
   const lastSaleDate = typeof raw.lastSaleDate === "string" ? raw.lastSaleDate.trim() : "";
   const fundingGoalRaw = typeof raw.fundingGoal === "string" ? raw.fundingGoal.trim() : "";
-  const fundingGoal: FundingGoalId | "" = FUNDING_GOAL_OPTIONS.some(
-    (option) => option.id === fundingGoalRaw,
-  )
-    ? (fundingGoalRaw as FundingGoalId)
-    : "";
+  const fundingGoal = normalizeFundingGoalId(fundingGoalRaw);
+  const ownershipTypeRaw = typeof raw.ownershipType === "string" ? raw.ownershipType.trim() : "";
+  const ownershipType = isValidOwnershipType(ownershipTypeRaw) ? ownershipTypeRaw : "";
   const useMortgageEstimate = raw.useMortgageEstimate !== false;
 
   const creditScoreEstimate =
@@ -246,6 +245,7 @@ export function validateLeadCreateRequest(body: unknown): LeadValidationResult {
       actualMortgageBalance,
       useMortgageEstimate,
       fundingGoal,
+      ownershipType,
       funnelStepCompleted,
       targetCltvPercent,
       investorScore,

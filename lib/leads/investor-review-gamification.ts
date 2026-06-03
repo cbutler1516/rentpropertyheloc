@@ -1,14 +1,16 @@
 export const BASE_POST_SUBMIT_SCORE = 75;
 export const MAX_INVESTOR_REVIEW_SCORE = 100;
-export const ENRICHMENT_FIELD_COUNT = 5;
+export const ENRICHMENT_FIELD_COUNT = 7;
 
 /** Fields that count toward post-submit profile completion */
 export const ENRICHMENT_PROFILE_FIELDS = [
   "propertyType",
+  "propertyValueRange",
   "mortgageBalanceRange",
   "creditScoreRange",
   "propertyCount",
   "fundingTimeline",
+  "fundingGoal",
 ] as const satisfies readonly ProfileStrengthField[];
 
 export const BASE_PROFILE_STRENGTH = 40;
@@ -20,15 +22,19 @@ export type ProfileStrengthField =
   | "mortgageBalanceRange"
   | "creditScoreRange"
   | "propertyCount"
-  | "fundingTimeline";
+  | "fundingTimeline"
+  | "fundingGoal"
+  | "ownershipType";
 
 export const PROFILE_STRENGTH_WEIGHTS: Record<ProfileStrengthField, number> = {
-  propertyType: 10,
-  propertyValueRange: 0,
-  mortgageBalanceRange: 15,
-  creditScoreRange: 15,
-  propertyCount: 10,
-  fundingTimeline: 10,
+  propertyType: 9,
+  propertyValueRange: 9,
+  mortgageBalanceRange: 9,
+  creditScoreRange: 9,
+  propertyCount: 8,
+  fundingTimeline: 8,
+  fundingGoal: 8,
+  ownershipType: 0,
 };
 
 export type MilestoneStatus = "complete" | "current" | "pending" | "locked";
@@ -64,7 +70,7 @@ export const ENRICHMENT_UNLOCK_CARDS: EnrichmentUnlockCard[] = [
     icon: "⚡",
     title: "Unlock Faster Review",
     line: "Property details on file",
-    unlockFields: ["propertyType", "mortgageBalanceRange"],
+    unlockFields: ["propertyType", "propertyValueRange", "mortgageBalanceRange"],
   },
   {
     id: "programs",
@@ -77,8 +83,8 @@ export const ENRICHMENT_UNLOCK_CARDS: EnrichmentUnlockCard[] = [
     id: "matches",
     icon: "🎯",
     title: "Unlock Better Financing Matches",
-    line: "Portfolio context added",
-    unlockFields: ["propertyCount", "fundingTimeline"],
+    line: "Investor goals added",
+    unlockFields: ["propertyCount", "fundingTimeline", "fundingGoal"],
   },
 ];
 
@@ -232,11 +238,18 @@ export function isEnrichmentStepComplete(
 ): boolean {
   switch (step) {
     case 1:
-      return Boolean(data.propertyType?.trim() && data.mortgageBalanceRange?.trim());
+      return Boolean(
+        data.propertyType?.trim() &&
+          data.propertyValueRange?.trim() &&
+          data.mortgageBalanceRange?.trim(),
+      );
     case 2:
-      return Boolean(data.creditScoreRange?.trim() && data.propertyCount?.trim());
-    case 3:
-      return Boolean(data.fundingTimeline?.trim());
+      return Boolean(
+        data.creditScoreRange?.trim() &&
+          data.propertyCount?.trim() &&
+          data.fundingTimeline?.trim() &&
+          data.fundingGoal?.trim(),
+      );
     default:
       return false;
   }

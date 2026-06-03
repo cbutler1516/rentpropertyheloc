@@ -8,6 +8,7 @@ export type ConversionEventName =
   | "lead_submitted"
   | "address_completed"
   | "enrichment_completed"
+  | "enrichment_field_saved"
   | "fast_track_lead"
   | "review_lead"
   | "nurture_lead"

@@ -72,6 +72,7 @@ export function buildLeadCreatePayload(
     actualMortgageBalance?: number | null;
     useMortgageEstimate?: boolean;
     fundingGoal?: string;
+    ownershipType?: string;
     funnelStepCompleted?: number;
     creditScoreEstimate?: number | null;
     firstName: string;
@@ -132,6 +133,7 @@ export function buildLeadCreatePayload(
     actualMortgageBalance: input.actualMortgageBalance ?? null,
     useMortgageEstimate: input.useMortgageEstimate ?? true,
     fundingGoal: input.fundingGoal ?? "",
+    ownershipType: input.ownershipType ?? "",
     funnelStepCompleted: input.funnelStepCompleted ?? 0,
     creditScoreEstimate: input.creditScoreEstimate ?? null,
     firstName: input.firstName,

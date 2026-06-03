@@ -48,6 +48,7 @@ const baseLead: LeadCreateRequest = {
   actualMortgageBalance: null,
   useMortgageEstimate: false,
   fundingGoal: "",
+  ownershipType: "",
   funnelStepCompleted: 3,
   targetCltvPercent: 0,
   investorScore: null,

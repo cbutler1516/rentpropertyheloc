@@ -1,8 +1,8 @@
 import { TCPA_CONSENT_TEXT } from "@/lib/leads/constants";
 import { resolveRecommendedProduct } from "@/lib/leads/recommended-product";
 import type { ScoredLeadCreateRequest, StoredLead, LeadCreateRequest } from "@/lib/leads/types";
-import type { FundingGoalId } from "@/lib/leads/funding-goals";
-import { FUNDING_GOAL_OPTIONS } from "@/lib/leads/funding-goals";
+import { FUNDING_GOAL_OPTIONS, normalizeFundingGoalId, type FundingGoalId } from "@/lib/leads/funding-goals";
+import { isValidOwnershipType, type OwnershipTypeId } from "@/lib/leads/ownership-type";
 import type { LeadSubmissionContext } from "@/lib/leads/submission-context";
 import {
   getSupabaseRestBase,
@@ -84,9 +84,7 @@ const devSubmissionStore = new Map<string, LeadSubmissionRecord>();
 
 function parseFundingGoal(value: unknown): FundingGoalId | "" {
   const raw = typeof value === "string" ? value.trim() : "";
-  return FUNDING_GOAL_OPTIONS.some((option) => option.id === raw)
-    ? (raw as FundingGoalId)
-    : "";
+  return normalizeFundingGoalId(raw);
 }
 
 export function getDevLeadSubmissions(): LeadSubmissionRecord[] {
@@ -137,6 +135,12 @@ export function buildFunnelAnswers(lead: ScoredLeadCreateRequest): Record<string
     actualMortgageBalance: lead.actualMortgageBalance,
     useMortgageEstimate: lead.useMortgageEstimate,
     fundingGoal: lead.fundingGoal,
+    ownershipType: lead.ownershipType,
+    profileStrength: lead.profileStrengthPercent,
+    enrichmentStatus: lead.enrichmentStatus,
+    enrichmentStartedAt: lead.enrichmentStartedAt,
+    enrichmentLastUpdatedAt: lead.enrichmentLastUpdatedAt,
+    enrichmentCompletedAt: lead.enrichmentCompletedAt,
     funnelStepCompleted: lead.funnelStepCompleted,
     property_value: lead.propertyValue,
     estimated_equity: lead.estimatedEquity,
@@ -555,6 +559,9 @@ export function submissionToLeadCreateRequest(submission: LeadSubmissionRecord):
       typeof fa.actualMortgageBalance === "number" ? fa.actualMortgageBalance : null,
     useMortgageEstimate: fa.useMortgageEstimate !== false,
     fundingGoal: parseFundingGoal(fa.fundingGoal),
+    ownershipType: isValidOwnershipType(String(fa.ownershipType ?? ""))
+      ? (String(fa.ownershipType) as OwnershipTypeId)
+      : "",
     funnelStepCompleted:
       typeof fa.funnelStepCompleted === "number" ? fa.funnelStepCompleted : 0,
     targetCltvPercent:
@@ -595,7 +602,9 @@ export async function updateLeadSubmissionAfterEnrichment(
   lead: ScoredLeadCreateRequest,
 ): Promise<void> {
   const funnelAnswers = buildFunnelAnswers(lead);
-  funnelAnswers.enrichmentCompletedAt = new Date().toISOString();
+  if (lead.enrichmentCompletedAt) {
+    funnelAnswers.enrichmentCompletedAt = lead.enrichmentCompletedAt;
+  }
 
   const existing = devSubmissionStore.get(submissionDbId);
   if (existing) {

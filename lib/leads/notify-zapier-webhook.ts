@@ -117,6 +117,91 @@ export function buildZapierLeadPayload(
   };
 }
 
+export async function notifyZapierEnrichmentWebhook(input: {
+  lead: StoredLead;
+  submissionId: string;
+  updatedField?: string;
+  updatedValue?: string;
+  enrichmentPayload: Record<string, string>;
+  enrichmentStatus: string;
+  profileStrength: number;
+  enrichmentLastUpdatedAt: string;
+}): Promise<ZapierWebhookResult> {
+  const configured = isZapierWebhookConfigured();
+  const webhookUrl = process.env.ZAPIER_WEBHOOK_URL?.trim();
+
+  if (!configured || !webhookUrl) {
+    return { sent: false, skipped: true };
+  }
+
+  const prioritization = buildPrioritizationPayload(input.lead);
+  const address = [
+    input.lead.propertyStreet,
+    input.lead.propertyCity,
+    input.lead.propertyState,
+    input.lead.propertyZip,
+  ]
+    .filter(Boolean)
+    .join(", ");
+
+  const basePayload = buildZapierLeadPayload(input.lead, input.submissionId);
+  const baseLead = basePayload.lead as Record<string, unknown>;
+
+  const payload = {
+    event: "enrichment_updated",
+    submissionId: input.submissionId,
+    leadId: input.lead.id,
+    email: input.lead.email,
+    phone: input.lead.phone,
+    address,
+    updatedField: input.updatedField ?? "",
+    updatedValue: input.updatedValue ?? "",
+    fullEnrichmentPayload: input.enrichmentPayload,
+    enrichment_status: input.enrichmentStatus,
+    enrichmentStatus: input.enrichmentStatus,
+    profile_strength: input.profileStrength,
+    profileStrength: input.profileStrength,
+    enrichment_last_updated_at: input.enrichmentLastUpdatedAt,
+    enrichmentLastUpdatedAt: input.enrichmentLastUpdatedAt,
+    ...input.enrichmentPayload,
+    ...prioritization,
+    funnelAnswers: buildFunnelAnswers(input.lead),
+    lead: {
+      ...baseLead,
+      ...input.enrichmentPayload,
+      profileStrength: input.profileStrength,
+      enrichmentStatus: input.enrichmentStatus,
+      enrichmentLastUpdatedAt: input.enrichmentLastUpdatedAt,
+    },
+  };
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      const detail = await response.text().catch(() => "");
+      return {
+        sent: false,
+        status: response.status,
+        error: detail.slice(0, 300) || `HTTP ${response.status}`,
+      };
+    }
+
+    return { sent: true, status: response.status };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return { sent: false, error: message };
+  }
+}
+
 export async function notifyZapierLeadWebhook(
   lead: StoredLead,
   submissionId: string,

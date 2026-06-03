@@ -106,6 +106,10 @@ export function trackAddressSkipped(payload?: ConversionEventPayload) {
   dispatchAnalyticsEvent("address_skipped", normalizeEventPayload(payload));
 }
 
+export function trackEnrichmentFieldSaved(payload?: ConversionEventPayload) {
+  dispatchAnalyticsEvent("enrichment_field_saved", normalizeEventPayload(payload));
+}
+
 export function trackEnrichmentCompleted(payload?: ConversionEventPayload) {
   dispatchAnalyticsEvent("enrichment_completed", normalizeEventPayload(payload));
 }

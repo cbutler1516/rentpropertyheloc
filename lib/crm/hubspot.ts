@@ -62,6 +62,11 @@ export const HUBSPOT_CUSTOM_CONTACT_PROPERTIES = [
   "property_baths",
   "investor_score",
   "funding_goal",
+  "ownership_type",
+  "profile_strength",
+  "enrichment_status",
+  "enrichment_last_updated_at",
+  "intended_use_of_funds",
   "potential_heloc_range",
   "confidence_level",
 ] as const;
@@ -196,7 +201,18 @@ export function mapLeadToHubSpotProperties(lead: StoredLead): Record<string, str
   if (lead.propertyBaths != null) properties.property_baths = String(lead.propertyBaths);
   if (lead.investorScore != null) properties.investor_score = String(lead.investorScore);
   if (lead.confidenceRating) properties.confidence_level = lead.confidenceRating;
-  if (lead.fundingGoal) properties.funding_goal = lead.fundingGoal;
+  if (lead.fundingGoal) {
+    properties.funding_goal = lead.fundingGoal;
+    properties.intended_use_of_funds = lead.fundingGoal;
+  }
+  if (lead.ownershipType) properties.ownership_type = lead.ownershipType;
+  if (lead.profileStrengthPercent != null) {
+    properties.profile_strength = String(lead.profileStrengthPercent);
+  }
+  if (lead.enrichmentStatus) properties.enrichment_status = lead.enrichmentStatus;
+  if (lead.enrichmentLastUpdatedAt) {
+    properties.enrichment_last_updated_at = lead.enrichmentLastUpdatedAt;
+  }
   if (lead.estimatedHelocLow != null && lead.estimatedHelocHigh != null) {
     properties.potential_heloc_range = `${lead.estimatedHelocLow}-${lead.estimatedHelocHigh}`;
   } else if (lead.estimatedHeloc != null && lead.estimatedHeloc > 0) {

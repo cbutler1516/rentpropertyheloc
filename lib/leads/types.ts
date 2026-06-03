@@ -8,7 +8,9 @@ import type {
   PropertyValueRangeId,
 } from "@/lib/leads/funnel-ranges";
 import type { FundingGoalId } from "@/lib/leads/funding-goals";
+import type { EnrichmentStatus } from "@/lib/leads/enrichment-status";
 import type { LeadPrioritization } from "@/lib/leads/lead-prioritization";
+import type { OwnershipTypeId } from "@/lib/leads/ownership-type";
 
 export type {
   CallPriority,
@@ -75,6 +77,7 @@ export type LeadFunnelData = {
   actualMortgageBalance: number | null;
   useMortgageEstimate: boolean;
   fundingGoal: FundingGoalId | "";
+  ownershipType: OwnershipTypeId | "";
   funnelStepCompleted: number;
   targetCltvPercent: number;
   investorScore: number | null;
@@ -165,6 +168,7 @@ export type LeadCreateRequest = {
   actualMortgageBalance: number | null;
   useMortgageEstimate: boolean;
   fundingGoal: FundingGoalId | "";
+  ownershipType: OwnershipTypeId | "";
   funnelStepCompleted: number;
   targetCltvPercent: number;
   investorScore: number | null;
@@ -188,7 +192,13 @@ export type LeadCreateRequest = {
 export type ScoredLeadCreateRequest = LeadCreateRequest &
   LeadQualification &
   LeadRouting &
-  LeadPrioritization;
+  LeadPrioritization & {
+    profileStrengthPercent?: number;
+    enrichmentStatus?: EnrichmentStatus | "";
+    enrichmentStartedAt?: string;
+    enrichmentLastUpdatedAt?: string;
+    enrichmentCompletedAt?: string;
+  };
 
 export type StoredLead = ScoredLeadCreateRequest & {
   id: string;

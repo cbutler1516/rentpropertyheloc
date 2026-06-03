@@ -75,6 +75,7 @@ export const DEFAULT_FUNNEL_DATA: LeadFunnelData = {
   actualMortgageBalance: null,
   useMortgageEstimate: true,
   fundingGoal: "",
+  ownershipType: "",
   funnelStepCompleted: 0,
   targetCltvPercent: 75,
   investorScore: null,

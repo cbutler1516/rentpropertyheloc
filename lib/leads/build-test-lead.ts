@@ -47,6 +47,7 @@ export function buildTestLeadPayload(): LeadCreateRequest {
     actualMortgageBalance: null,
     useMortgageEstimate: true,
     fundingGoal: "buy-rental",
+    ownershipType: "",
     funnelStepCompleted: 5,
     targetCltvPercent: 75,
     investorScore: 72,

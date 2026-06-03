@@ -11,6 +11,7 @@ import { PostSubmitProfileStrength } from "@/components/funnel/gamification/post
 import { FunnelOptionCard } from "@/components/funnel/funnel-option-card";
 import { Button } from "@/components/ui/button";
 import { AUTO_ADVANCE_DELAY_MS, FUNNEL_PROPERTY_OPTIONS } from "@/lib/leads/funnel-config";
+import { FUNDING_GOAL_OPTIONS } from "@/lib/leads/funding-goals";
 import {
   calculateProfileStrength,
   getProfileStrengthBoostMessage,
@@ -26,18 +27,21 @@ import {
   FUNDING_TIMELINE_OPTIONS,
   MORTGAGE_BALANCE_RANGES,
   PROPERTY_COUNT_OPTIONS,
+  PROPERTY_VALUE_RANGES,
   type CreditScoreRangeId,
   type FundingTimelineId,
   type MortgageBalanceRangeId,
   type PropertyCountId,
   type PropertyValueRangeId,
 } from "@/lib/leads/funnel-ranges";
+import { OWNERSHIP_TYPE_OPTIONS, type OwnershipTypeId } from "@/lib/leads/ownership-type";
+import type { FundingGoalId } from "@/lib/leads/funding-goals";
 import { getReviewStatusLabel } from "@/lib/leads/review-scenario";
+import { useEnrichmentAutosave } from "@/lib/leads/use-enrichment-autosave";
 import type { LeadQualityTier, PropertyTypeId } from "@/lib/leads/types";
 import { cn } from "@/lib/cn";
-import { trackEnrichmentCompleted } from "@/lib/analytics/conversion-events";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type EnrichmentData = {
   propertyType: PropertyTypeId | "";
@@ -46,6 +50,8 @@ type EnrichmentData = {
   creditScoreRange: CreditScoreRangeId | "";
   propertyCount: PropertyCountId | "";
   fundingTimeline: FundingTimelineId | "";
+  fundingGoal: FundingGoalId | "";
+  ownershipType: OwnershipTypeId | "";
 };
 
 type SnapshotContext = {
@@ -71,7 +77,7 @@ type PostSubmitEnrichmentProps = {
   }) => void;
 };
 
-const ENRICHMENT_STEP_COUNT = 3;
+const ENRICHMENT_STEP_COUNT = 2;
 
 export function PostSubmitEnrichment({
   leadId,
@@ -88,7 +94,7 @@ export function PostSubmitEnrichment({
 }: PostSubmitEnrichmentProps) {
   const reduceMotion = useReducedMotion();
   const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const submitTriggeredRef = useRef(false);
+  const completionNotifiedRef = useRef(false);
   const prevStrengthRef = useRef(calculateProfileStrength({}));
 
   const [step, setStep] = useState(1);
@@ -99,15 +105,18 @@ export function PostSubmitEnrichment({
     creditScoreRange: "",
     propertyCount: "",
     fundingTimeline: "",
+    fundingGoal: "",
+    ownershipType: "",
   });
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [skipped, setSkipped] = useState(false);
   const [pendingSelection, setPendingSelection] = useState<string | null>(null);
   const [boostMessage, setBoostMessage] = useState<string | null>(null);
   const [lastBoostField, setLastBoostField] = useState<ProfileStrengthField | null>(null);
   const [qualityScore, setQualityScore] = useState<number | undefined>(undefined);
   const [qualityTier, setQualityTier] = useState<LeadQualityTier | undefined>(undefined);
+  const [showComplete, setShowComplete] = useState(false);
+
+  const { saveField, savedField, isSaving, lastError } = useEnrichmentAutosave(leadId);
 
   const profileStrength = useMemo(() => calculateProfileStrength(data), [data]);
   const profileComplete = isProfileComplete(profileStrength);
@@ -123,7 +132,7 @@ export function PostSubmitEnrichment({
         : "Review Started",
       profileStrength: strength,
       priorityReviewActive: showPriority,
-      profileComplete: profileComplete && submitted,
+      profileComplete: profileComplete && showComplete,
       qualityScore,
       qualityTier,
     };
@@ -132,7 +141,7 @@ export function PostSubmitEnrichment({
     profileStrength,
     profileComplete,
     showPriority,
-    submitted,
+    showComplete,
     qualityScore,
     qualityTier,
   ]);
@@ -149,57 +158,19 @@ export function PostSubmitEnrichment({
   }, [profileStrength, onProfileStrengthChange, lastBoostField]);
 
   useEffect(() => {
+    if (profileComplete && !completionNotifiedRef.current) {
+      completionNotifiedRef.current = true;
+      onProfileComplete?.();
+      onEnrichmentSaved?.();
+      setShowComplete(true);
+    }
+  }, [profileComplete, onProfileComplete, onEnrichmentSaved]);
+
+  useEffect(() => {
     return () => {
       if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
     };
   }, []);
-
-  const submitEnrichment = useCallback(async () => {
-    if (submitTriggeredRef.current) return;
-    submitTriggeredRef.current = true;
-    setSubmitting(true);
-    try {
-      const response = await fetch("/api/leads/enrich", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          leadId,
-          propertyType: data.propertyType || undefined,
-          propertyValueRange: data.propertyValueRange || undefined,
-          mortgageBalanceRange: data.mortgageBalanceRange || undefined,
-          creditScoreRange: data.creditScoreRange || undefined,
-          propertyCount: data.propertyCount || undefined,
-          fundingTimeline: data.fundingTimeline || undefined,
-        }),
-      });
-      const body = (await response.json()) as {
-        success?: boolean;
-        qualityScore?: number;
-        qualityTier?: LeadQualityTier;
-      };
-      if (typeof body.qualityScore === "number" && body.qualityTier) {
-        setQualityScore(body.qualityScore);
-        setQualityTier(body.qualityTier);
-        onEnrichmentQualification?.({
-          qualityScore: body.qualityScore,
-          qualityTier: body.qualityTier,
-        });
-      }
-      setSubmitted(true);
-      trackEnrichmentCompleted({ leadId });
-      onEnrichmentSaved?.();
-      const complete = isEnrichmentDataComplete(data);
-      if (complete) {
-        onProfileComplete?.();
-      }
-    } catch {
-      setSubmitted(true);
-      trackEnrichmentCompleted({ leadId });
-      onEnrichmentSaved?.();
-    } finally {
-      setSubmitting(false);
-    }
-  }, [leadId, data, onProfileComplete, onEnrichmentSaved, onEnrichmentQualification, showPriority]);
 
   function patch(partial: Partial<EnrichmentData>, field?: ProfileStrengthField) {
     setData((prev) => ({ ...prev, ...partial }));
@@ -215,24 +186,27 @@ export function PostSubmitEnrichment({
     }, AUTO_ADVANCE_DELAY_MS);
   }
 
-  function handleSelect<K extends keyof EnrichmentData>(
+  async function handleSelect<K extends keyof EnrichmentData>(
     field: K,
     value: EnrichmentData[K],
     selectionKey: string,
   ) {
     const nextData = { ...data, [field]: value };
     patch({ [field]: value }, field as ProfileStrengthField);
-    const stepComplete = isEnrichmentStepComplete(step, nextData);
 
+    const result = await saveField(field as ProfileStrengthField, String(value));
+    if (result?.qualityScore != null && result.qualityTier) {
+      setQualityScore(result.qualityScore);
+      setQualityTier(result.qualityTier as LeadQualityTier);
+      onEnrichmentQualification?.({
+        qualityScore: result.qualityScore,
+        qualityTier: result.qualityTier as LeadQualityTier,
+      });
+    }
+
+    const stepComplete = isEnrichmentStepComplete(step, nextData);
     if (stepComplete && step < ENRICHMENT_STEP_COUNT) {
       scheduleAdvance(step + 1, selectionKey);
-    } else if (stepComplete && step === ENRICHMENT_STEP_COUNT) {
-      setPendingSelection(selectionKey);
-      if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
-      advanceTimerRef.current = setTimeout(() => {
-        setPendingSelection(null);
-        void submitEnrichment();
-      }, AUTO_ADVANCE_DELAY_MS);
     }
   }
 
@@ -240,33 +214,10 @@ export function PostSubmitEnrichment({
     return null;
   }
 
-  if (submitted && snapshotData && !focused) {
-    const reviewData: FinancingReviewData = snapshotData;
-
-    if (profileComplete) {
-      return (
-        <CompletionWithOverlay data={reviewData} className={className} reduceMotion={reduceMotion} />
-      );
-    }
-
+  if (showComplete && snapshotData && !focused) {
     return (
-      <motion.div
-        initial={reduceMotion ? false : { opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        className={className}
-      >
-        <>
-          <FastTrackHeroCard profileStrength={profileStrength} showPriority={showPriority} />
-          <p className="mt-3 text-center text-sm font-medium text-slate-700">
-            Review started — your details were saved. Our team will continue your review.
-          </p>
-        </>
-      </motion.div>
+      <CompletionWithOverlay data={snapshotData} className={className} reduceMotion={reduceMotion} />
     );
-  }
-
-  if (submitted && focused) {
-    return null;
   }
 
   return (
@@ -301,11 +252,22 @@ export function PostSubmitEnrichment({
                       <ProfileStrengthBoostToast key={boostMessage} message={boostMessage} />
                     ) : null}
                   </AnimatePresence>
-                  <span className="rounded-full bg-teal-50 px-2.5 py-1 text-[11px] font-bold tabular-nums text-teal-800 ring-1 ring-teal-100">
-                    {profileStrength}% strength
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {savedField ? (
+                      <span className="text-[11px] font-medium text-teal-700">Saved ✓</span>
+                    ) : null}
+                    {isSaving ? (
+                      <span className="text-[11px] text-slate-400">Saving…</span>
+                    ) : null}
+                    <span className="rounded-full bg-teal-50 px-2.5 py-1 text-[11px] font-bold tabular-nums text-teal-800 ring-1 ring-teal-100">
+                      {profileStrength}% strength
+                    </span>
+                  </div>
                 </div>
               </div>
+              {lastError ? (
+                <p className="mt-2 text-[11px] text-amber-700">{lastError}</p>
+              ) : null}
               <EnrichmentUnlockCards data={data} className="mt-4" compact />
             </div>
 
@@ -341,13 +303,32 @@ export function PostSubmitEnrichment({
                         selected={data.propertyType === option.id}
                         pending={pendingSelection === `type-${option.id}`}
                         onSelect={() =>
-                          handleSelect("propertyType", option.id, `type-${option.id}`)
+                          void handleSelect("propertyType", option.id, `type-${option.id}`)
                         }
                       />
                     ))}
                   </div>
                 </EnrichmentGroup>
-                <EnrichmentGroup icon="💰" title="Mortgage Balance" showDivider>
+                <EnrichmentGroup icon="📊" title="Estimated Property Value" showDivider>
+                  <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    {PROPERTY_VALUE_RANGES.map((option) => (
+                      <FunnelOptionCard
+                        key={option.id}
+                        label={option.label}
+                        selected={data.propertyValueRange === option.id}
+                        pending={pendingSelection === `value-${option.id}`}
+                        onSelect={() =>
+                          void handleSelect(
+                            "propertyValueRange",
+                            option.id,
+                            `value-${option.id}`,
+                          )
+                        }
+                      />
+                    ))}
+                  </div>
+                </EnrichmentGroup>
+                <EnrichmentGroup icon="💰" title="Current Mortgage Balance" showDivider>
                   <div className="grid gap-2 sm:grid-cols-2">
                     {MORTGAGE_BALANCE_RANGES.map((option) => (
                       <FunnelOptionCard
@@ -356,7 +337,11 @@ export function PostSubmitEnrichment({
                         selected={data.mortgageBalanceRange === option.id}
                         pending={pendingSelection === `mortgage-${option.id}`}
                         onSelect={() =>
-                          handleSelect("mortgageBalanceRange", option.id, `mortgage-${option.id}`)
+                          void handleSelect(
+                            "mortgageBalanceRange",
+                            option.id,
+                            `mortgage-${option.id}`,
+                          )
                         }
                       />
                     ))}
@@ -367,7 +352,7 @@ export function PostSubmitEnrichment({
 
             {step === 2 ? (
               <>
-                <EnrichmentGroup icon="📈" title="Credit Score">
+                <EnrichmentGroup icon="📈" title="Estimated Credit Score">
                   <div className="grid gap-2 sm:grid-cols-2">
                     {CREDIT_SCORE_RANGES.map((option) => (
                       <FunnelOptionCard
@@ -376,7 +361,7 @@ export function PostSubmitEnrichment({
                         selected={data.creditScoreRange === option.id}
                         pending={pendingSelection === `credit-${option.id}`}
                         onSelect={() =>
-                          handleSelect("creditScoreRange", option.id, `credit-${option.id}`)
+                          void handleSelect("creditScoreRange", option.id, `credit-${option.id}`)
                         }
                       />
                     ))}
@@ -391,33 +376,70 @@ export function PostSubmitEnrichment({
                         selected={data.propertyCount === option.id}
                         pending={pendingSelection === `count-${option.id}`}
                         onSelect={() =>
-                          handleSelect("propertyCount", option.id, `count-${option.id}`)
+                          void handleSelect("propertyCount", option.id, `count-${option.id}`)
+                        }
+                      />
+                    ))}
+                  </div>
+                </EnrichmentGroup>
+                <EnrichmentGroup icon="⏱️" title="Funding Timeline" showDivider>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {FUNDING_TIMELINE_OPTIONS.map((option) => (
+                      <FunnelOptionCard
+                        key={option.id}
+                        label={option.label}
+                        selected={data.fundingTimeline === option.id}
+                        pending={pendingSelection === `timeline-${option.id}`}
+                        onSelect={() =>
+                          void handleSelect(
+                            "fundingTimeline",
+                            option.id,
+                            `timeline-${option.id}`,
+                          )
+                        }
+                      />
+                    ))}
+                  </div>
+                </EnrichmentGroup>
+                <EnrichmentGroup icon="🎯" title="Intended Use of Funds" showDivider>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {FUNDING_GOAL_OPTIONS.map((option) => (
+                      <FunnelOptionCard
+                        key={option.id}
+                        label={option.label}
+                        selected={data.fundingGoal === option.id}
+                        pending={pendingSelection === `goal-${option.id}`}
+                        onSelect={() =>
+                          void handleSelect("fundingGoal", option.id, `goal-${option.id}`)
+                        }
+                      />
+                    ))}
+                  </div>
+                </EnrichmentGroup>
+                <EnrichmentGroup
+                  icon="🏢"
+                  title="Owned personally or in an LLC? (optional)"
+                  showDivider
+                >
+                  <div className="grid gap-2 sm:grid-cols-3">
+                    {OWNERSHIP_TYPE_OPTIONS.map((option) => (
+                      <FunnelOptionCard
+                        key={option.id}
+                        label={option.label}
+                        selected={data.ownershipType === option.id}
+                        pending={pendingSelection === `ownership-${option.id}`}
+                        onSelect={() =>
+                          void handleSelect(
+                            "ownershipType",
+                            option.id,
+                            `ownership-${option.id}`,
+                          )
                         }
                       />
                     ))}
                   </div>
                 </EnrichmentGroup>
               </>
-            ) : null}
-
-            {step === 3 ? (
-              <EnrichmentGroup icon="⏱️" title="Funding Timeline">
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {FUNDING_TIMELINE_OPTIONS.map((option) => (
-                    <FunnelOptionCard
-                      key={option.id}
-                      label={option.label}
-                      selected={data.fundingTimeline === option.id}
-                      pending={
-                        pendingSelection === `timeline-${option.id}` || submitting
-                      }
-                      onSelect={() =>
-                        handleSelect("fundingTimeline", option.id, `timeline-${option.id}`)
-                      }
-                    />
-                  ))}
-                </div>
-              </EnrichmentGroup>
             ) : null}
           </motion.div>
         </AnimatePresence>
@@ -453,8 +475,8 @@ export function PostSubmitEnrichment({
               >
                 Continue
               </Button>
-            ) : submitting ? (
-              <span className="text-sm font-medium text-slate-600">Saving your profile…</span>
+            ) : isEnrichmentDataComplete(data) ? (
+              <span className="text-sm font-medium text-teal-700">Profile complete ✓</span>
             ) : null}
           </div>
           <button
@@ -498,7 +520,6 @@ function CompletionWithOverlay({
 const stepSectionTitles: Record<number, string> = {
   1: "Tell Us About Your Property",
   2: "Tell Us About Your Investor Profile",
-  3: "When Do You Need Funding?",
 };
 
 function EnrichmentGroup({
