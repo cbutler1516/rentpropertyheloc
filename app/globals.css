@@ -86,6 +86,16 @@ body {
     0 4px 16px rgba(15, 23, 42, 0.2);
 }
 
+.hero-text-shadow {
+  text-shadow:
+    0 2px 24px rgba(4, 8, 16, 0.55),
+    0 1px 3px rgba(4, 8, 16, 0.4);
+}
+
+.hero-text-shadow-sm {
+  text-shadow: 0 1px 14px rgba(4, 8, 16, 0.5);
+}
+
 .text-gradient-brand {
   background: linear-gradient(135deg, #22d3ee 0%, #4ade80 100%);
   -webkit-background-clip: text;

@@ -7,6 +7,8 @@ type BackgroundVideoProps = {
   src: string;
   className?: string;
   overlayClassName?: string;
+  /** When true, overlayClassName replaces the default dark overlay stack */
+  replaceDefaultOverlay?: boolean;
   priority?: boolean;
   videoClassName?: string;
   /** Skip background video on small screens to save bandwidth */
@@ -17,6 +19,7 @@ export function BackgroundVideo({
   src,
   className,
   overlayClassName,
+  replaceDefaultOverlay = false,
   priority = false,
   videoClassName,
   mobileStatic = true,
@@ -58,7 +61,12 @@ export function BackgroundVideo({
   return (
     <div className={cn("absolute inset-0", className)}>
       <div
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(34,211,238,0.16),transparent_50%),linear-gradient(160deg,#040810_0%,#0a1220_50%,#040810_100%)]"
+        className={cn(
+          "absolute inset-0",
+          replaceDefaultOverlay
+            ? "bg-[linear-gradient(160deg,rgba(4,8,16,0.35)_0%,rgba(10,18,32,0.2)_50%,rgba(4,8,16,0.35)_100%)]"
+            : "bg-[radial-gradient(ellipse_at_30%_20%,rgba(34,211,238,0.16),transparent_50%),linear-gradient(160deg,#040810_0%,#0a1220_50%,#040810_100%)]",
+        )}
         aria-hidden
       />
       {loadVideo ? (
@@ -66,8 +74,7 @@ export function BackgroundVideo({
           ref={videoRef}
           className={cn(
             "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
-            active ? "opacity-60 md:opacity-75" : "opacity-0",
-            videoClassName,
+            active ? cn("opacity-70 md:opacity-85", videoClassName) : "opacity-0",
           )}
           autoPlay
           muted
@@ -81,8 +88,13 @@ export function BackgroundVideo({
       ) : null}
       <div
         className={cn(
-          "absolute inset-0 bg-navy-950/85 bg-gradient-to-b from-navy-950/75 via-navy-950/88 to-navy-950",
-          overlayClassName,
+          "absolute inset-0",
+          replaceDefaultOverlay
+            ? overlayClassName
+            : cn(
+                "bg-navy-950/85 bg-gradient-to-b from-navy-950/75 via-navy-950/88 to-navy-950",
+                overlayClassName,
+              ),
         )}
         aria-hidden
       />
