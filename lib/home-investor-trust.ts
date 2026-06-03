@@ -1,20 +1,26 @@
-export const HOME_INVESTOR_TRUST_HEADLINE = "Why Investors Choose Rent Property HELOC";
+export const HOME_INVESTOR_TRUST_HEADLINE = "Why Investors Use Rent Property HELOC";
+
+export const HOME_INVESTOR_TRUST_SUBHEADLINE =
+  "Built for rental property owners who want real guidance, flexible financing options, and a straightforward review process.";
 
 export const HOME_INVESTOR_TRUST_CARDS = [
   {
+    id: "investor-focused",
     title: "Investor Focused",
     description:
       "Built specifically for rental property owners—not primary residence lending.",
   },
   {
-    title: "Fast Review",
+    id: "human-review",
+    title: "Human Review",
     description:
-      "Most reviews take about 60 seconds to start. No lengthy application required.",
+      "Every request is reviewed by a financing specialist—not just an automated system.",
   },
   {
-    title: "Human Guidance",
+    id: "fast-process",
+    title: "Fast Process",
     description:
-      "Every request is reviewed by a financing professional—not just an automated system.",
+      "Start your review in about 60 seconds and receive personalized follow-up.",
   },
 ] as const;
 

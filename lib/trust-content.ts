@@ -4,7 +4,7 @@ import { COMPANY_NMLS_LABEL, NMLS_LABEL } from "@/lib/legal/nmls";
 export const ADVISOR_HEADSHOT_SRC = "/advisors/chris-butler.png";
 export const ADVISOR_HEADSHOT_ALT = "Chris Butler, mortgage loan officer";
 
-/** Branded review dashboard visual (see RequestReviewDashboard) */
+/** Branded trust visuals for company and advisor sections */
 export const TEAM_TRUST_IMAGE_ALT =
   "Review process steps showing property submission, review progress, and personalized follow-up";
 

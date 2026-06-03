@@ -1,5 +1,5 @@
 import { Container } from "@/components/layout/container";
-import { CompanyTrustSection } from "@/components/trust/company-trust-section";
+import { HomeInvestorTrustSection } from "@/components/home/home-investor-trust-section";
 import { BorrowerTrustSection } from "@/components/trust/borrower-trust-section";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
 import { PhoneLink } from "@/components/trust/phone-link";
@@ -46,8 +46,8 @@ export default function AboutPage() {
           <StrategyCallLink variant="secondary" ctaLocation="about-hero" />
         </div>
 
-        <div className="mt-10">
-          <CompanyTrustSection variant="full" />
+        <div className="mt-10 -mx-4 sm:mx-0">
+          <HomeInvestorTrustSection />
         </div>
 
         <div className="mt-10">
