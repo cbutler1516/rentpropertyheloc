@@ -13,7 +13,7 @@ export default function CheckOptionsPage() {
   return (
     <div className="min-h-[100dvh] bg-[var(--color-surface-50)] py-3 pb-[max(1rem,env(safe-area-inset-bottom))] text-[var(--color-ink)] sm:py-8">
       <FunnelPageTracker />
-      <Container className="max-w-xl px-4 lg:max-w-7xl">
+      <Container className="mx-auto max-w-xl px-4">
         <CheckOptionsPageContent />
       </Container>
     </div>

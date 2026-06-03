@@ -4,7 +4,6 @@ import { FunnelComplianceNote } from "@/components/funnel/funnel-compliance-note
 import { PostSubmitEnrichment } from "@/components/funnel/post-submit-enrichment";
 import {
   CompactReviewSummary,
-  EnrichmentAdvisorHelp,
 } from "@/components/funnel/enrichment-compact-sidebar";
 import { PersonalizedReviewCompletion } from "@/components/funnel/personalized-review-completion";
 import { useFinancingReviewActions } from "@/components/funnel/financing-review-experience";
@@ -206,13 +205,12 @@ export function FunnelConfirmation({
               />
             </div>
 
-            <aside className="mt-5 space-y-3 lg:col-span-3 lg:mt-0">
+            <aside className="mt-5 lg:col-span-3 lg:mt-0">
               <CompactReviewSummary
                 propertyAddress={address}
                 requestedFunds={requestedFunds}
                 showPriority={showPriority}
               />
-              <EnrichmentAdvisorHelp />
             </aside>
           </div>
         ) : null}

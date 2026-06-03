@@ -34,7 +34,6 @@ import { scrollToPostSubmitTop } from "@/lib/funnel/scroll-to-post-submit-top";
 import { usePartialLeadSave } from "@/lib/leads/use-partial-lead-save";
 import { cn } from "@/lib/cn";
 import { normalizePhoneForStorage } from "@/lib/phone-format";
-import type { ReviewProcessPhase } from "@/lib/trust/review-process";
 import type { LeadFunnelData, PropertyTypeId, RoutingTier } from "@/lib/leads/types";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
@@ -42,15 +41,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type LeadFunnelProps = {
   onSubmittedChange?: (submitted: boolean) => void;
-  onReviewPhaseChange?: (phase: ReviewProcessPhase) => void;
-  onFunnelStepChange?: (step: number) => void;
 };
 
-export function LeadFunnel({
-  onSubmittedChange,
-  onReviewPhaseChange,
-  onFunnelStepChange,
-}: LeadFunnelProps) {
+export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
   const searchParams = useSearchParams();
   const reduceMotion = useReducedMotion();
   const confirmationRef = useRef<HTMLDivElement>(null);
@@ -96,26 +89,6 @@ export function LeadFunnel({
   useEffect(() => {
     onSubmittedChange?.(isConfirmationView);
   }, [isConfirmationView, onSubmittedChange]);
-
-  useEffect(() => {
-    onFunnelStepChange?.(step);
-  }, [step, onFunnelStepChange]);
-
-  useEffect(() => {
-    if (!onReviewPhaseChange) return;
-
-    if (submitted) {
-      onReviewPhaseChange(profileComplete ? "profile-complete" : "post-contact");
-      return;
-    }
-
-    if (step === 1) {
-      onReviewPhaseChange("address");
-      return;
-    }
-
-    onReviewPhaseChange("post-address");
-  }, [step, submitted, profileComplete, onReviewPhaseChange]);
 
   const showPrimaryResidenceNote = equityStrategy === "primary_residence";
 
@@ -294,7 +267,7 @@ export function LeadFunnel({
   });
 
   return (
-    <div className="mx-auto flex w-full max-w-lg flex-col md:max-w-xl lg:max-w-2xl">
+    <div className="mx-auto w-full max-w-xl">
       {showPrimaryResidenceNote ? (
         <div className="mb-4 rounded-xl border border-sky-200/80 bg-sky-50/90 px-4 py-3 text-sm leading-relaxed text-sky-950">
           You selected a primary-residence equity scenario. A licensed mortgage professional will
