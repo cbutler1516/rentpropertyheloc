@@ -3,6 +3,7 @@
 import { FunnelOptionCard } from "@/components/funnel/funnel-option-card";
 import { AUTO_ADVANCE_DELAY_MS } from "@/lib/leads/funnel-config";
 import { FUNNEL_EQUITY_ACCESS_RANGES } from "@/lib/leads/funnel-ranges";
+import { cn } from "@/lib/cn";
 import type { LeadFunnelData } from "@/lib/leads/types";
 import { useEffect, useRef, useState } from "react";
 
@@ -37,22 +38,23 @@ export function FunnelRequestedFundsStep({
   }
 
   return (
-    <div className="space-y-4">
-      <p className="text-sm text-slate-600">
-        How much would you like to access? This helps our team prioritize your review.
-      </p>
-      <div className="grid gap-2 sm:grid-cols-2">
-        {FUNNEL_EQUITY_ACCESS_RANGES.map((option) => (
+    <div className="space-y-3 sm:space-y-4">
+      <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-6 lg:gap-3">
+        {FUNNEL_EQUITY_ACCESS_RANGES.map((option, index) => (
           <FunnelOptionCard
             key={option.id}
             label={option.label}
             selected={data.equityAccessRange === option.id}
             pending={pendingSelection === option.id}
             onSelect={() => handleSelect(option.id)}
+            className={cn(
+              "lg:col-span-2",
+              index === 3 && "lg:col-start-2",
+            )}
           />
         ))}
       </div>
-      <p className="text-[11px] leading-relaxed text-slate-500">
+      <p className="text-[11px] leading-relaxed text-slate-500 sm:text-xs">
         Not a loan offer or approval amount. A licensed mortgage professional will review your
         scenario.
       </p>

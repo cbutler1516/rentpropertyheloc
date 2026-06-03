@@ -54,8 +54,8 @@ export function FunnelContactStep({
 
   return (
     <>
-      <div className="funnel-contact-scroll space-y-4 sm:space-y-5">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="funnel-contact-scroll space-y-3.5 sm:space-y-4">
+        <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 sm:gap-4">
           <div className="space-y-2">
             <Label htmlFor="firstName">
               First name <RequiredMark />
@@ -90,40 +90,42 @@ export function FunnelContactStep({
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="email">
-            Email <RequiredMark />
-          </Label>
-          <Input
-            id="email"
-            type="email"
-            value={data.email}
-            onChange={(e) => onChange({ email: e.target.value })}
-            onBlur={() => markTouched("email")}
-            autoComplete="email"
-            inputMode="email"
-            placeholder="name@example.com"
-            aria-invalid={Boolean(visibleError("email"))}
-            aria-describedby={visibleError("email") ? "email-error" : undefined}
-            className="funnel-form-field h-12 text-base"
-          />
-          <FieldError id="email-error" message={visibleError("email")} />
-        </div>
+        <div className="grid grid-cols-1 gap-3.5 lg:grid-cols-2 lg:gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">
+              Email <RequiredMark />
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              value={data.email}
+              onChange={(e) => onChange({ email: e.target.value })}
+              onBlur={() => markTouched("email")}
+              autoComplete="email"
+              inputMode="email"
+              placeholder="name@example.com"
+              aria-invalid={Boolean(visibleError("email"))}
+              aria-describedby={visibleError("email") ? "email-error" : undefined}
+              className="funnel-form-field h-12 text-base"
+            />
+            <FieldError id="email-error" message={visibleError("email")} />
+          </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="phone">
-            Phone <RequiredMark />
-          </Label>
-          <PhoneInput
-            id="phone"
-            value={data.phone}
-            onChange={(digits) => onChange({ phone: digits })}
-            onBlur={() => markTouched("phone")}
-            aria-invalid={Boolean(visibleError("phone"))}
-            aria-describedby={visibleError("phone") ? "phone-error" : undefined}
-            className="funnel-form-field h-12 text-base"
-          />
-          <FieldError id="phone-error" message={visibleError("phone")} />
+          <div className="space-y-2">
+            <Label htmlFor="phone">
+              Phone <RequiredMark />
+            </Label>
+            <PhoneInput
+              id="phone"
+              value={data.phone}
+              onChange={(digits) => onChange({ phone: digits })}
+              onBlur={() => markTouched("phone")}
+              aria-invalid={Boolean(visibleError("phone"))}
+              aria-describedby={visibleError("phone") ? "phone-error" : undefined}
+              className="funnel-form-field h-12 text-base"
+            />
+            <FieldError id="phone-error" message={visibleError("phone")} />
+          </div>
         </div>
 
         <div className="space-y-2">
@@ -146,7 +148,7 @@ export function FunnelContactStep({
         <Button
           type="button"
           size="lg"
-          className="thumb-btn hidden h-12 w-full text-base md:flex"
+          className="thumb-btn hidden h-12 w-full text-base md:flex lg:max-w-md"
           disabled={submitting}
           onClick={handleSubmitClick}
         >

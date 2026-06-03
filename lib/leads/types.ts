@@ -8,6 +8,17 @@ import type {
   PropertyValueRangeId,
 } from "@/lib/leads/funnel-ranges";
 import type { FundingGoalId } from "@/lib/leads/funding-goals";
+import type { LeadPrioritization } from "@/lib/leads/lead-prioritization";
+
+export type {
+  CallPriority,
+  DataConfidence,
+  LeadType,
+  LeadPrioritization,
+  RevenueTier,
+  SalesQualityTier,
+  ScoringBreakdown,
+} from "@/lib/leads/lead-prioritization";
 
 export type PropertyTypeId =
   | "single-family"
@@ -174,7 +185,10 @@ export type LeadCreateRequest = {
   source: string;
 };
 
-export type ScoredLeadCreateRequest = LeadCreateRequest & LeadQualification & LeadRouting;
+export type ScoredLeadCreateRequest = LeadCreateRequest &
+  LeadQualification &
+  LeadRouting &
+  LeadPrioritization;
 
 export type StoredLead = ScoredLeadCreateRequest & {
   id: string;

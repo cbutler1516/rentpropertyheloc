@@ -1,4 +1,5 @@
 import { isZapierWebhookConfigured } from "@/lib/leads/pipeline-health";
+import { resolveStoredLeadPrioritization } from "@/lib/leads/lead-prioritization";
 import { resolveRecommendedProduct } from "@/lib/leads/recommended-product";
 import { buildFunnelAnswers } from "@/lib/leads/save-lead-submission";
 import type { StoredLead } from "@/lib/leads/types";
@@ -10,19 +11,39 @@ export type ZapierWebhookResult = {
   error?: string;
 };
 
+function buildPrioritizationPayload(lead: StoredLead) {
+  const prioritization = resolveStoredLeadPrioritization(lead);
+
+  return {
+    leadScore: prioritization.leadScore,
+    opportunityScore: prioritization.opportunityScore,
+    qualityTier: prioritization.salesQualityTier,
+    legacyQualityTier: lead.qualityTier,
+    revenueTier: prioritization.revenueTier,
+    leadType: prioritization.leadType,
+    completionPercent: prioritization.completionPercent,
+    dataConfidence: prioritization.dataConfidence,
+    callPriority: prioritization.callPriority,
+    estimatedEquity: prioritization.estimatedEquity,
+    desiredLoanAmount: prioritization.desiredLoanAmount,
+    creditTier: prioritization.creditTier,
+    scoringBreakdown: prioritization.scoringBreakdown,
+  };
+}
+
 export function buildZapierLeadPayload(
   lead: StoredLead,
   submissionId: string,
 ): Record<string, unknown> {
   const recommendedProduct = resolveRecommendedProduct(lead);
+  const prioritization = buildPrioritizationPayload(lead);
 
   return {
     event: "lead_submitted",
     submissionId,
     submissionTimestamp: lead.createdAt,
     leadId: lead.id,
-    leadScore: lead.qualityScore,
-    qualityTier: lead.qualityTier,
+    ...prioritization,
     recommendedProduct,
     recommendedFollowUp: lead.recommendedFollowUp,
     keyReasons: lead.keyReasons,
@@ -57,7 +78,6 @@ export function buildZapierLeadPayload(
       propertyValue: lead.propertyValue,
       mortgageBalance: lead.mortgageBalance,
       desiredFunds: lead.desiredFunds,
-      estimatedEquity: lead.estimatedEquity,
       estimatedHeloc: lead.estimatedHeloc,
       estimatedHelocLow: lead.estimatedHelocLow,
       estimatedHelocHigh: lead.estimatedHelocHigh,
@@ -92,6 +112,7 @@ export function buildZapierLeadPayload(
       queryParams: lead.queryParams,
       utm: lead.utm,
       createdAt: lead.createdAt,
+      ...prioritization,
     },
   };
 }

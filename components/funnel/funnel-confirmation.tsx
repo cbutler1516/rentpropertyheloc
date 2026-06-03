@@ -170,7 +170,7 @@ export function FunnelConfirmation({
       className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left shadow-sm lg:rounded-3xl lg:shadow-[0_12px_48px_rgba(15,23,42,0.08)]"
     >
       <div className="px-4 py-5 sm:px-6 lg:px-8 lg:py-6">
-        <header className="max-w-2xl">
+        <header className="max-w-3xl">
           <h2 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
             Complete Your Investor Profile
           </h2>

@@ -1,3 +1,5 @@
+import { computeLeadPrioritizationSafe } from "@/lib/leads/lead-prioritization";
+import type { CallPriority } from "@/lib/leads/lead-prioritization";
 import { isJourneySlug } from "@/lib/leads/investor-journeys";
 import { routeLead } from "@/lib/leads/routing";
 import { isValidEmail, isValidPhone } from "@/lib/leads/validation";
@@ -274,8 +276,15 @@ export function routeLeadSafe(lead: LeadCreateRequest): LeadRouting {
   }
 }
 
+const FOLLOW_UP_BY_CALL_PRIORITY: Record<CallPriority, string> = {
+  "CALL NOW": "Priority call within 1 business day",
+  "CALL TODAY": "Email or SMS within 24 hours; schedule a call within 2 business days",
+  AUTOMATION: "Add to nurture sequence; manual review within 5 business days",
+};
+
 export function applyLeadQualification(lead: LeadCreateRequest): ScoredLeadCreateRequest {
   const qualification = scoreLeadSafe(lead);
+  const prioritization = computeLeadPrioritizationSafe(lead);
   const routing = routeLeadSafe(lead);
 
   console.info("[leads] routing result", {
@@ -283,12 +292,25 @@ export function applyLeadQualification(lead: LeadCreateRequest): ScoredLeadCreat
     label: routing.routingLabel,
     secondLienFit: routing.secondLienFit,
     action: routing.recommendedAction,
+    leadScore: prioritization.leadScore,
+    salesQualityTier: prioritization.salesQualityTier,
+    callPriority: prioritization.callPriority,
+    leadType: prioritization.leadType,
   });
+
+  const keyReasons = [
+    prioritization.scoringBreakdown.scoringNote,
+    ...qualification.keyReasons,
+  ].filter((reason, index, list) => list.indexOf(reason) === index);
 
   return {
     ...lead,
     ...qualification,
     ...routing,
+    ...prioritization,
+    qualityScore: prioritization.leadScore,
+    recommendedFollowUp: FOLLOW_UP_BY_CALL_PRIORITY[prioritization.callPriority],
+    keyReasons,
   };
 }
 

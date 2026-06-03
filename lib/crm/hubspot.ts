@@ -22,6 +22,15 @@ export const HUBSPOT_CUSTOM_CONTACT_PROPERTIES = [
   "lead_utm_campaign",
   "lead_quality_score",
   "lead_quality_tier",
+  "legacy_lead_quality_tier",
+  "opportunity_score",
+  "revenue_tier",
+  "lead_type",
+  "completion_percent",
+  "data_confidence",
+  "call_priority",
+  "credit_tier",
+  "scoring_breakdown",
   "recommended_follow_up",
   "lead_key_reasons",
   "funnel_version",
@@ -203,8 +212,19 @@ export function mapLeadToHubSpotProperties(lead: StoredLead): Record<string, str
   if (utmMedium) properties.lead_utm_medium = utmMedium;
   if (utmCampaign) properties.lead_utm_campaign = utmCampaign;
 
-  properties.lead_quality_score = String(lead.qualityScore);
-  properties.lead_quality_tier = lead.qualityTier;
+  properties.lead_quality_score = String(lead.leadScore ?? lead.qualityScore ?? 0);
+  properties.lead_quality_tier = lead.salesQualityTier ?? "Unknown";
+  properties.legacy_lead_quality_tier = lead.qualityTier;
+  properties.opportunity_score = String(lead.opportunityScore ?? lead.leadScore ?? 0);
+  properties.revenue_tier = lead.revenueTier ?? "Unknown";
+  properties.lead_type = lead.leadType ?? "PARTIAL";
+  properties.completion_percent = String(lead.completionPercent ?? 40);
+  properties.data_confidence = lead.dataConfidence ?? "LOW";
+  properties.call_priority = lead.callPriority ?? "AUTOMATION";
+  properties.credit_tier = lead.creditTier ?? "Unknown";
+  if (lead.scoringBreakdown) {
+    properties.scoring_breakdown = JSON.stringify(lead.scoringBreakdown).slice(0, 65000);
+  }
   properties.recommended_follow_up = lead.recommendedFollowUp;
   if (lead.keyReasons.length > 0) {
     properties.lead_key_reasons = lead.keyReasons.join("; ").slice(0, 2000);
@@ -249,7 +269,11 @@ function buildLeadNoteBody(lead: StoredLead): string {
     `TCPA consent: ${lead.tcpaConsent ? "yes" : "no"} at ${lead.tcpaConsentAt}`,
     `Marketing opt-in: ${lead.marketingOptIn ? "yes" : "no"}`,
     "",
-    `Quality score: ${lead.qualityScore} (${lead.qualityTier})`,
+    `Lead score: ${lead.leadScore ?? lead.qualityScore} (${lead.salesQualityTier ?? lead.qualityTier})`,
+    `Call priority: ${lead.callPriority ?? "AUTOMATION"}`,
+    `Lead type: ${lead.leadType ?? "PARTIAL"} | Completion: ${lead.completionPercent ?? 40}% | Data confidence: ${lead.dataConfidence ?? "LOW"}`,
+    `Revenue tier: ${lead.revenueTier ?? "Unknown"} | Opportunity score: ${lead.opportunityScore ?? lead.leadScore ?? 0}`,
+    `Legacy quality tier: ${lead.qualityTier}`,
     `Recommended follow-up: ${lead.recommendedFollowUp}`,
     lead.keyReasons.length > 0 ? `Key reasons: ${lead.keyReasons.join("; ")}` : null,
     "",

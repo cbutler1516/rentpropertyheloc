@@ -29,7 +29,7 @@ export function FunnelOptionCard({
       disabled={pending}
       whileTap={reduceMotion ? undefined : { scale: 0.99 }}
       className={cn(
-        "funnel-tap-target group relative flex min-h-[56px] w-full items-center justify-between rounded-2xl border px-4 py-3.5 text-left transition-all duration-150 sm:py-4",
+        "funnel-tap-target group relative flex min-h-[52px] w-full items-center justify-between rounded-xl border px-4 py-3 text-left transition-all duration-150 sm:min-h-[56px] sm:rounded-2xl sm:py-3.5 lg:py-4",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600",
         selected || pending
           ? "border-teal-500 bg-teal-50/80 shadow-[0_0_0_1px_rgba(13,148,136,0.18),0_2px_8px_rgba(13,148,136,0.08)]"
@@ -39,7 +39,7 @@ export function FunnelOptionCard({
       )}
     >
       <span className="flex min-w-0 flex-col gap-0.5 pr-3">
-        <span className="text-[1.0625rem] font-semibold leading-snug text-slate-900 sm:text-lg">
+        <span className="text-balance text-[1rem] font-semibold leading-snug text-slate-900 sm:text-[1.0625rem] lg:text-lg">
           {label}
         </span>
         {badge ? (

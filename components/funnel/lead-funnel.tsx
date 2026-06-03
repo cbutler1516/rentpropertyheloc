@@ -267,78 +267,78 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
   });
 
   return (
-    <div className="mx-auto w-full max-w-xl">
+    <div className="funnel-container mx-auto w-full">
       {showPrimaryResidenceNote ? (
-        <div className="mb-4 rounded-xl border border-sky-200/80 bg-sky-50/90 px-4 py-3 text-sm leading-relaxed text-sky-950">
+        <div className="mb-3 rounded-xl border border-sky-200/80 bg-sky-50/90 px-4 py-2.5 text-sm leading-relaxed text-sky-950 sm:mb-4">
           You selected a primary-residence equity scenario. A licensed mortgage professional will
           review whether a primary-residence HELOC or similar option may fit your goals.
         </div>
       ) : null}
 
-      <div className="sticky top-0 z-10 -mx-4 border-b border-slate-100 bg-[var(--color-surface-50)]/95 px-4 py-3 backdrop-blur-sm sm:-mx-0 sm:rounded-t-2xl sm:border sm:border-b-0 sm:bg-white">
-        <div className="flex items-center gap-3">
+      <div className="funnel-app-shell overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_8px_32px_rgba(15,23,42,0.06)] lg:rounded-3xl lg:shadow-[0_16px_48px_rgba(15,23,42,0.08)]">
+        <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-slate-100 bg-white/95 px-3 py-2.5 backdrop-blur-sm sm:gap-3 sm:px-5 sm:py-3 lg:px-8">
           {step > 1 ? (
             <button
               type="button"
               onClick={goBack}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-600 transition hover:bg-slate-100"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-600 transition hover:bg-slate-100 sm:h-10 sm:w-10"
               aria-label="Go back"
             >
               ←
             </button>
           ) : (
-            <div className="w-10 shrink-0" aria-hidden />
+            <div className="w-9 shrink-0 sm:w-10" aria-hidden />
           )}
-          <div className="min-w-0 flex-1">
-            <FunnelProgress currentStep={step} totalSteps={FUNNEL_QUESTION_COUNT} compact />
-          </div>
+          <FunnelProgress currentStep={step} totalSteps={FUNNEL_QUESTION_COUNT} compact />
         </div>
-      </div>
 
-      <div
-        className={cn(
-          "card-surface flex-1 rounded-b-2xl px-4 py-5 sm:px-6 sm:py-7",
-          step === 3 && "max-md:pb-28",
-        )}
-      >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={step}
-            initial={reduceMotion ? false : { opacity: 0, x: 12 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={reduceMotion ? undefined : { opacity: 0, x: -8 }}
-            transition={{ duration: reduceMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="max-md:funnel-mobile-flat space-y-5 sm:space-y-6"
-          >
-            <FunnelStepHeader
-              title={getStepTitle(step)}
-              subtitle={getStepSubtitle(step)}
-              encouragement={encouragement}
-            />
-
-            {step === 1 ? (
-              <FunnelAddressStep data={data} onChange={patch} onContinue={() => goNext(1)} />
-            ) : null}
-
-            {step === 2 ? (
-              <FunnelRequestedFundsStep
-                data={data}
-                onChange={patch}
-                onContinue={() => goNext(2)}
+        <div
+          className={cn(
+            "px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6",
+            step === 3 && "max-md:pb-28",
+          )}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              initial={reduceMotion ? false : { opacity: 0, x: 12 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={reduceMotion ? undefined : { opacity: 0, x: -8 }}
+              transition={{ duration: reduceMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="max-md:funnel-mobile-flat space-y-4 sm:space-y-5"
+            >
+              <FunnelStepHeader
+                title={getStepTitle(step)}
+                subtitle={getStepSubtitle(step)}
+                encouragement={encouragement}
               />
-            ) : null}
 
-            {step === 3 ? (
-              <FunnelContactStep
-                data={data}
-                onChange={patch}
-                submitting={submitting}
-                submitError={submitError}
-                onSubmit={handleSubmit}
-              />
-            ) : null}
-          </motion.div>
-        </AnimatePresence>
+              <div className="funnel-step-body">
+                {step === 1 ? (
+                  <FunnelAddressStep data={data} onChange={patch} onContinue={() => goNext(1)} />
+                ) : null}
+
+                {step === 2 ? (
+                  <FunnelRequestedFundsStep
+                    data={data}
+                    onChange={patch}
+                    onContinue={() => goNext(2)}
+                  />
+                ) : null}
+
+                {step === 3 ? (
+                  <FunnelContactStep
+                    data={data}
+                    onChange={patch}
+                    submitting={submitting}
+                    submitError={submitError}
+                    onSubmit={handleSubmit}
+                  />
+                ) : null}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );

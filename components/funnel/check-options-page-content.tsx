@@ -26,7 +26,7 @@ export function CheckOptionsPageContent() {
       >
         <LeadFunnel onSubmittedChange={setIsPostSubmit} />
       </Suspense>
-      <FunnelComplianceNote className="mt-4 px-1" />
+      <FunnelComplianceNote className="mx-auto mt-3 max-w-3xl px-1 sm:mt-4 lg:max-w-4xl" />
     </>
   );
 }
