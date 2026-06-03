@@ -20,6 +20,7 @@ export type LeadPipelineHealth = {
   supabaseConfigured: boolean;
   hubspotConfigured: boolean;
   resendConfigured: boolean;
+  zapierConfigured: boolean;
   resend: ResendHealth;
   persistenceMode: PersistenceMode;
   scoringEnabled: boolean;
@@ -34,6 +35,10 @@ export function isHubSpotConfigured(): boolean {
 
 export function isResendConfigured(): boolean {
   return Boolean(process.env.RESEND_API_KEY?.trim());
+}
+
+export function isZapierWebhookConfigured(): boolean {
+  return Boolean(process.env.ZAPIER_WEBHOOK_URL?.trim());
 }
 
 export function getResendHealth(): ResendHealth {
@@ -59,6 +64,7 @@ export function getLeadPipelineHealth(): LeadPipelineHealth {
     supabaseConfigured: isSupabaseConfigured(),
     hubspotConfigured: isHubSpotConfigured(),
     resendConfigured: isResendConfigured(),
+    zapierConfigured: isZapierWebhookConfigured(),
     resend: getResendHealth(),
     persistenceMode: getPersistenceMode(),
     scoringEnabled: true,

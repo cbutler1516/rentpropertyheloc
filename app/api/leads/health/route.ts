@@ -12,6 +12,7 @@ export async function GET() {
     supabaseConfigured: health.supabaseConfigured,
     hubspotConfigured: health.hubspotConfigured,
     resendConfigured: health.resendConfigured,
+    zapierConfigured: health.zapierConfigured,
     resend: health.resend,
     persistenceMode: health.persistenceMode,
     scoringEnabled: health.scoringEnabled,

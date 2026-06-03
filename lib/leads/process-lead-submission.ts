@@ -1,10 +1,12 @@
 import { syncLeadToHubSpotDetailed } from "@/lib/crm/hubspot";
 import { SUBMIT_ERROR_MESSAGE } from "@/lib/leads/constants";
 import { notifyLeadReceived, type NotificationResult } from "@/lib/leads/notify-lead-received";
+import { notifyZapierLeadWebhook, type ZapierWebhookResult } from "@/lib/leads/notify-zapier-webhook";
 import {
   getPersistenceMode,
   isHubSpotConfigured,
   isResendConfigured,
+  isZapierWebhookConfigured,
 } from "@/lib/leads/pipeline-health";
 import { applyLeadQualification } from "@/lib/leads/score-lead";
 import {
@@ -26,6 +28,8 @@ export type ProcessLeadSuccess = {
   hubspotSyncStatus: "pending" | "synced" | "failed" | "skipped";
   resendConfigured: boolean;
   notification: NotificationResult;
+  zapierConfigured: boolean;
+  zapierWebhook: ZapierWebhookResult;
 };
 
 export type ProcessLeadFailure = {
@@ -92,6 +96,17 @@ export async function processValidatedLead(
       };
     }
 
+    let zapierWebhook: ZapierWebhookResult = { sent: false, skipped: true };
+    try {
+      zapierWebhook = await notifyZapierLeadWebhook(storedLead, submission.submissionId);
+    } catch (zapierError) {
+      console.error("[leads] zapier webhook failed unexpectedly", zapierError);
+      zapierWebhook = {
+        sent: false,
+        error: zapierError instanceof Error ? zapierError.message : "Unknown error",
+      };
+    }
+
     return {
       success: true,
       storedLead,
@@ -102,6 +117,8 @@ export async function processValidatedLead(
       hubspotSyncStatus,
       resendConfigured: isResendConfigured(),
       notification,
+      zapierConfigured: isZapierWebhookConfigured(),
+      zapierWebhook,
     };
   } catch (error) {
     console.error("[leads] pipeline failed", error);

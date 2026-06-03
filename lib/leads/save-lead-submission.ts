@@ -93,7 +93,7 @@ export function getDevLeadSubmissions(): LeadSubmissionRecord[] {
   return Array.from(devSubmissionStore.values());
 }
 
-function buildFunnelAnswers(lead: ScoredLeadCreateRequest): Record<string, unknown> {
+export function buildFunnelAnswers(lead: ScoredLeadCreateRequest): Record<string, unknown> {
   return {
     journey: lead.journey,
     funnelVersion: lead.funnelVersion,
