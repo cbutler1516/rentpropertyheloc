@@ -18,6 +18,7 @@ type ProfileSavedStateProps = {
 
 export function ProfileSavedState({ snapshotData, className }: ProfileSavedStateProps) {
   const reduceMotion = useReducedMotion();
+  const profileComplete = snapshotData.profileComplete ?? true;
 
   function handleDownload() {
     downloadInvestorSnapshot({
@@ -36,16 +37,33 @@ export function ProfileSavedState({ snapshotData, className }: ProfileSavedState
         className,
       )}
     >
-      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-teal-700">
-        Investor Profile Saved
-      </p>
-      <h2 className="mt-2 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-        Thanks — our team now has the details needed to continue your review.
-      </h2>
-      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
-        A licensed financing specialist will use your profile to evaluate paths that may fit your
-        scenario. This is not a loan approval or commitment to lend.
-      </p>
+      {profileComplete ? (
+        <>
+          <p className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-800">
+            <span aria-hidden>✓</span> Profile Complete
+          </p>
+          <h2 className="mt-3 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+            Your review has been submitted.
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
+            Our team will review your information and contact you regarding available financing
+            options.
+          </p>
+        </>
+      ) : (
+        <>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-teal-700">
+            Investor Profile Saved
+          </p>
+          <h2 className="mt-2 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+            Thanks — our team now has the details needed to continue your review.
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
+            A licensed financing specialist will use your profile to evaluate paths that may fit your
+            scenario. This is not a loan approval or commitment to lend.
+          </p>
+        </>
+      )}
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         <StrategyCallLink ctaLocation="profile-complete" />
         <button
@@ -67,4 +85,3 @@ export function ProfileSavedState({ snapshotData, className }: ProfileSavedState
     </motion.div>
   );
 }
-

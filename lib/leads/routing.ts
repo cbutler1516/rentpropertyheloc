@@ -272,22 +272,6 @@ export function routeLead(lead: LeadCreateRequest): LeadRouting {
 
 
 
-  if (lead.propertyRented === "yes") {
-
-    score += 4;
-
-    reasons.push("Property currently rented — rental income supports scenario");
-
-  } else if (lead.propertyRented === "part-time") {
-
-    score += 3;
-
-    reasons.push("Part-time rental");
-
-  }
-
-
-
   let secondLienFit: string;
 
   if (

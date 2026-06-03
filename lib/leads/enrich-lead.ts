@@ -27,7 +27,6 @@ export type LeadEnrichmentInput = {
   creditScoreRange?: string;
   propertyCount?: string;
   fundingTimeline?: string;
-  propertyRented?: string;
 };
 
 export type EnrichLeadResult =
@@ -62,7 +61,6 @@ function mergeEnrichment(lead: LeadCreateRequest, input: LeadEnrichmentInput): L
 
   if (input.propertyCount?.trim()) next.propertyCount = input.propertyCount.trim();
   if (input.fundingTimeline?.trim()) next.fundingTimeline = input.fundingTimeline.trim();
-  if (input.propertyRented?.trim()) next.propertyRented = input.propertyRented.trim();
 
   if (next.propertyValue != null && next.mortgageBalance != null) {
     next.estimatedEquity = computeEstimatedEquity(next.propertyValue, next.mortgageBalance);

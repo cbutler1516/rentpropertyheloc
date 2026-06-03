@@ -209,11 +209,6 @@ export function scoreLead(lead: LeadCreateRequest): LeadQualification {
     keyReasons.push("Active funding timeline");
   }
 
-  if (lead.propertyRented === "yes") {
-    points += 2;
-    keyReasons.push("Property currently generating rental income");
-  }
-
   const qualityScore = clampScore(points);
   const hasStrongEquity = hasDetails && availableEquity >= STRONG_EQUITY_MIN;
   const hasRealisticDraw = drawdownRatio == null || drawdownRatio <= REALISTIC_DRAWDOWN_RATIO;

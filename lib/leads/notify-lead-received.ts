@@ -106,12 +106,11 @@ function buildLeadNotificationBody(lead: StoredLead): string {
     sections.push("", "--- Routing reasons ---", ...lead.routingReasons.map((r) => `• ${r}`));
   }
 
-  const hasEnrichment = lead.propertyCount || lead.fundingTimeline || lead.propertyRented;
+  const hasEnrichment = lead.propertyCount || lead.fundingTimeline;
   if (hasEnrichment) {
     sections.push("", "--- Post-submit enrichment ---");
     if (lead.propertyCount) sections.push(`Investment properties: ${lead.propertyCount}`);
     if (lead.fundingTimeline) sections.push(`Funding timeline: ${lead.fundingTimeline}`);
-    if (lead.propertyRented) sections.push(`Property rented: ${lead.propertyRented}`);
   }
 
   sections.push(

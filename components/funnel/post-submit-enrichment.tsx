@@ -13,6 +13,7 @@ import { AUTO_ADVANCE_DELAY_MS, FUNNEL_PROPERTY_OPTIONS } from "@/lib/leads/funn
 import {
   calculateProfileStrength,
   getProfileStrengthBoostMessage,
+  isEnrichmentDataComplete,
   isEnrichmentStepComplete,
   isProfileComplete,
   MAX_PROFILE_STRENGTH,
@@ -25,12 +26,10 @@ import {
   FUNDING_TIMELINE_OPTIONS,
   MORTGAGE_BALANCE_RANGES,
   PROPERTY_COUNT_OPTIONS,
-  PROPERTY_RENTED_OPTIONS,
   type CreditScoreRangeId,
   type FundingTimelineId,
   type MortgageBalanceRangeId,
   type PropertyCountId,
-  type PropertyRentedId,
   type PropertyValueRangeId,
 } from "@/lib/leads/funnel-ranges";
 import type { PropertyTypeId } from "@/lib/leads/types";
@@ -46,7 +45,6 @@ type EnrichmentData = {
   creditScoreRange: CreditScoreRangeId | "";
   propertyCount: PropertyCountId | "";
   fundingTimeline: FundingTimelineId | "";
-  propertyRented: PropertyRentedId | "";
 };
 
 type SnapshotContext = {
@@ -95,7 +93,6 @@ export function PostSubmitEnrichment({
     creditScoreRange: "",
     propertyCount: "",
     fundingTimeline: "",
-    propertyRented: "",
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -106,10 +103,6 @@ export function PostSubmitEnrichment({
 
   const profileStrength = useMemo(() => calculateProfileStrength(data), [data]);
   const profileComplete = isProfileComplete(profileStrength);
-  const hasAnyAnswer = useMemo(
-    () => Object.values(data).some((value) => Boolean(value?.trim())),
-    [data],
-  );
 
   const snapshotData: InvestorSnapshotData | null = useMemo(() => {
     if (!snapshotContext) return null;
@@ -157,13 +150,12 @@ export function PostSubmitEnrichment({
           creditScoreRange: data.creditScoreRange || undefined,
           propertyCount: data.propertyCount || undefined,
           fundingTimeline: data.fundingTimeline || undefined,
-          propertyRented: data.propertyRented || undefined,
         }),
       });
       setSubmitted(true);
       trackEnrichmentCompleted({ leadId });
       onEnrichmentSaved?.();
-      const complete = isProfileComplete(calculateProfileStrength(data));
+      const complete = isEnrichmentDataComplete(data);
       if (complete) {
         onProfileComplete?.();
         if (snapshotContext) {
@@ -187,11 +179,6 @@ export function PostSubmitEnrichment({
     }
   }, [leadId, data, onProfileComplete, onEnrichmentSaved, snapshotContext, showPriority]);
 
-  const handleSubmit = useCallback(async () => {
-    if (!hasAnyAnswer) return;
-    await submitEnrichment();
-  }, [hasAnyAnswer, submitEnrichment]);
-
   function patch(partial: Partial<EnrichmentData>, field?: ProfileStrengthField) {
     setData((prev) => ({ ...prev, ...partial }));
     if (field) setLastBoostField(field);
@@ -213,19 +200,19 @@ export function PostSubmitEnrichment({
   ) {
     const nextData = { ...data, [field]: value };
     patch({ [field]: value }, field as ProfileStrengthField);
+    const stepComplete = isEnrichmentStepComplete(step, nextData);
 
-    if (isEnrichmentStepComplete(step, nextData) && step < ENRICHMENT_STEP_COUNT) {
+    if (stepComplete && step < ENRICHMENT_STEP_COUNT) {
       scheduleAdvance(step + 1, selectionKey);
+    } else if (stepComplete && step === ENRICHMENT_STEP_COUNT) {
+      setPendingSelection(selectionKey);
+      if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = setTimeout(() => {
+        setPendingSelection(null);
+        void submitEnrichment();
+      }, AUTO_ADVANCE_DELAY_MS);
     }
   }
-
-  useEffect(() => {
-    if (step !== 3 || !data.propertyRented || submitting || submitted) return;
-    if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
-    advanceTimerRef.current = setTimeout(() => {
-      void submitEnrichment();
-    }, AUTO_ADVANCE_DELAY_MS);
-  }, [step, data.propertyRented, submitting, submitted, submitEnrichment]);
 
   if (skipped) {
     return null;
@@ -373,7 +360,7 @@ export function PostSubmitEnrichment({
                     ))}
                   </div>
                 </EnrichmentGroup>
-                <EnrichmentGroup icon="🏘️" title="Properties Owned" showDivider>
+                <EnrichmentGroup icon="🏘️" title="Investment Properties Owned" showDivider>
                   <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-3">
                     {PROPERTY_COUNT_OPTIONS.map((option) => (
                       <FunnelOptionCard
@@ -388,37 +375,23 @@ export function PostSubmitEnrichment({
                     ))}
                   </div>
                 </EnrichmentGroup>
-                <EnrichmentGroup icon="⏱️" title="Funding Timeline" showDivider>
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    {FUNDING_TIMELINE_OPTIONS.map((option) => (
-                      <FunnelOptionCard
-                        key={option.id}
-                        label={option.label}
-                        selected={data.fundingTimeline === option.id}
-                        pending={pendingSelection === `timeline-${option.id}`}
-                        onSelect={() =>
-                          handleSelect("fundingTimeline", option.id, `timeline-${option.id}`)
-                        }
-                      />
-                    ))}
-                  </div>
-                </EnrichmentGroup>
               </>
             ) : null}
 
             {step === 3 ? (
-              <EnrichmentGroup icon="🔑" title="Rental Status">
-                <div className="grid grid-cols-2 gap-2 sm:max-w-md">
-                  {PROPERTY_RENTED_OPTIONS.map((option) => (
+              <EnrichmentGroup icon="⏱️" title="Funding Timeline">
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {FUNDING_TIMELINE_OPTIONS.map((option) => (
                     <FunnelOptionCard
                       key={option.id}
                       label={option.label}
-                      selected={data.propertyRented === option.id}
-                      pending={pendingSelection === `rented-${option.id}` || submitting}
-                      onSelect={() => {
-                        setPendingSelection(`rented-${option.id}`);
-                        patch({ propertyRented: option.id }, "propertyRented");
-                      }}
+                      selected={data.fundingTimeline === option.id}
+                      pending={
+                        pendingSelection === `timeline-${option.id}` || submitting
+                      }
+                      onSelect={() =>
+                        handleSelect("fundingTimeline", option.id, `timeline-${option.id}`)
+                      }
                     />
                   ))}
                 </div>
@@ -458,17 +431,9 @@ export function PostSubmitEnrichment({
               >
                 Continue
               </Button>
-            ) : (
-              <Button
-                type="button"
-                size="lg"
-                className="thumb-btn h-11 text-sm sm:max-w-xs"
-                disabled={submitting || !data.propertyRented}
-                onClick={handleSubmit}
-              >
-                {submitting ? "Saving…" : "Save & continue review"}
-              </Button>
-            )}
+            ) : submitting ? (
+              <span className="text-sm font-medium text-slate-600">Saving your profile…</span>
+            ) : null}
           </div>
           <button
             type="button"
@@ -486,14 +451,7 @@ export function PostSubmitEnrichment({
 const stepSectionTitles: Record<number, string> = {
   1: "Tell Us About Your Property",
   2: "Tell Us About Your Investor Profile",
-  3: "Rental Status",
-};
-
-/** @deprecated Use stepSectionTitles — kept for non-focused enrichment layout */
-const stepHeadlines: Record<number, string> = {
-  1: "Property details",
-  2: "Investor profile",
-  3: "Rental status",
+  3: "When Do You Need Funding?",
 };
 
 function EnrichmentGroup({

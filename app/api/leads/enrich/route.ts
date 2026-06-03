@@ -25,7 +25,6 @@ export async function POST(request: Request) {
       typeof body.creditScoreRange === "string" ? body.creditScoreRange : undefined,
     propertyCount: typeof body.propertyCount === "string" ? body.propertyCount : undefined,
     fundingTimeline: typeof body.fundingTimeline === "string" ? body.fundingTimeline : undefined,
-    propertyRented: typeof body.propertyRented === "string" ? body.propertyRented : undefined,
   });
 
   if (!result.success) {

@@ -110,7 +110,9 @@ export function FunnelConfirmation({
           <ProfileSavedState snapshotData={snapshotContext} />
           <div className="mt-6 lg:grid lg:grid-cols-10 lg:gap-6">
             <div className="lg:col-span-3 lg:col-start-8">
-              <PostSubmitProfileStrength strength={profileStrength} />
+              <PostSubmitProfileStrength
+                strength={complete ? MAX_PROFILE_STRENGTH : profileStrength}
+              />
             </div>
           </div>
         </div>

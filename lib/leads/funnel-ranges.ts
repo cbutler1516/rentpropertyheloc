@@ -94,13 +94,6 @@ export const FUNDING_TIMELINE_OPTIONS: { id: FundingTimelineId; label: string }[
   { id: "researching", label: "Just researching options" },
 ];
 
-export const PROPERTY_RENTED_OPTIONS: { id: PropertyRentedId; label: string }[] = [
-  { id: "yes", label: "Yes" },
-  { id: "no", label: "No" },
-  { id: "part-time", label: "Part-time" },
-  { id: "not-sure", label: "Not sure" },
-];
-
 export function getPropertyValueEstimate(rangeId: PropertyValueRangeId | ""): number | null {
   return PROPERTY_VALUE_RANGES.find((r) => r.id === rangeId)?.estimate ?? null;
 }

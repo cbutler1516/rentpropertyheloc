@@ -1,6 +1,15 @@
 export const BASE_POST_SUBMIT_SCORE = 75;
 export const MAX_INVESTOR_REVIEW_SCORE = 100;
-export const ENRICHMENT_FIELD_COUNT = 6;
+export const ENRICHMENT_FIELD_COUNT = 5;
+
+/** Fields that count toward post-submit profile completion */
+export const ENRICHMENT_PROFILE_FIELDS = [
+  "propertyType",
+  "mortgageBalanceRange",
+  "creditScoreRange",
+  "propertyCount",
+  "fundingTimeline",
+] as const satisfies readonly ProfileStrengthField[];
 
 export const BASE_PROFILE_STRENGTH = 40;
 export const MAX_PROFILE_STRENGTH = 100;
@@ -11,8 +20,7 @@ export type ProfileStrengthField =
   | "mortgageBalanceRange"
   | "creditScoreRange"
   | "propertyCount"
-  | "fundingTimeline"
-  | "propertyRented";
+  | "fundingTimeline";
 
 export const PROFILE_STRENGTH_WEIGHTS: Record<ProfileStrengthField, number> = {
   propertyType: 10,
@@ -21,7 +29,6 @@ export const PROFILE_STRENGTH_WEIGHTS: Record<ProfileStrengthField, number> = {
   creditScoreRange: 15,
   propertyCount: 10,
   fundingTimeline: 10,
-  propertyRented: 10,
 };
 
 export type MilestoneStatus = "complete" | "current" | "pending" | "locked";
@@ -73,13 +80,6 @@ export const ENRICHMENT_UNLOCK_CARDS: EnrichmentUnlockCard[] = [
     line: "Portfolio context added",
     unlockFields: ["propertyCount", "fundingTimeline"],
   },
-  {
-    id: "profile",
-    icon: "📈",
-    title: "Unlock Stronger Investor Profile",
-    line: "Rental status confirmed",
-    unlockFields: ["propertyRented"],
-  },
 ];
 
 /** @deprecated Use ENRICHMENT_UNLOCK_CARDS */
@@ -121,12 +121,18 @@ export function getProfileStrengthSupportingCopy(strength: number): string {
 
 export function calculateProfileStrength(data: Record<string, string | undefined>): number {
   let strength = BASE_PROFILE_STRENGTH;
-  for (const [field, weight] of Object.entries(PROFILE_STRENGTH_WEIGHTS)) {
+  for (const field of ENRICHMENT_PROFILE_FIELDS) {
     if (data[field]?.trim()) {
-      strength += weight;
+      strength += PROFILE_STRENGTH_WEIGHTS[field];
     }
   }
   return Math.min(MAX_PROFILE_STRENGTH, strength);
+}
+
+export function isEnrichmentDataComplete(
+  data: Record<string, string | undefined>,
+): boolean {
+  return ENRICHMENT_PROFILE_FIELDS.every((field) => Boolean(data[field]?.trim()));
 }
 
 export function isUnlockCardUnlocked(
@@ -192,7 +198,7 @@ export function getAchievementBadges(showPriority: boolean): AchievementBadge[] 
 }
 
 export function countEnrichmentAnswers(data: Record<string, string | undefined>): number {
-  return Object.values(data).filter((value) => Boolean(value?.trim())).length;
+  return ENRICHMENT_PROFILE_FIELDS.filter((field) => Boolean(data[field]?.trim())).length;
 }
 
 export function calculateInvestorReviewScore(enrichmentAnswerCount: number): number {
@@ -228,13 +234,9 @@ export function isEnrichmentStepComplete(
     case 1:
       return Boolean(data.propertyType?.trim() && data.mortgageBalanceRange?.trim());
     case 2:
-      return Boolean(
-        data.creditScoreRange?.trim() &&
-          data.propertyCount?.trim() &&
-          data.fundingTimeline?.trim(),
-      );
+      return Boolean(data.creditScoreRange?.trim() && data.propertyCount?.trim());
     case 3:
-      return Boolean(data.propertyRented?.trim());
+      return Boolean(data.fundingTimeline?.trim());
     default:
       return false;
   }
@@ -273,14 +275,6 @@ export const FINANCING_INSIGHTS: FinancingInsight[] = [
     lockedCopy: "Share property count and timeline to unlock",
     unlockedCopy: "Supports multi-property and timing-based recommendations",
     unlockFields: ["propertyCount", "fundingTimeline"],
-  },
-  {
-    id: "rental-income",
-    icon: "💵",
-    title: "Rental Income Context",
-    lockedCopy: "Confirm rental status to complete your profile",
-    unlockedCopy: "Rental status helps refine investor program options",
-    unlockFields: ["propertyRented"],
   },
 ];
 

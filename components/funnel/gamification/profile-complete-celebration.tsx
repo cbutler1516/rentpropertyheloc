@@ -54,15 +54,14 @@ export function ProfileCompleteCelebration({
       <div className="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-8">
         <div className="min-w-0 flex-1">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-teal-800">
-            <span aria-hidden>✓</span> Investor Profile Complete
+            <span aria-hidden>✓</span> Profile Complete
           </span>
           <h3 className="mt-3 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-            Your profile is ready for a deeper review
+            Your review has been submitted.
           </h3>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">
-            You&apos;ve unlocked all financing insights and paths for review. Our team will use
-            this profile to evaluate options that may fit your scenario — review is still in
-            progress.
+            Our team will review your information and contact you regarding available financing
+            options.
           </p>
           {showPriority ? (
             <p className="mt-2 text-xs font-medium text-amber-800">
