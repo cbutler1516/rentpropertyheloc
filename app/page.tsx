@@ -1,4 +1,5 @@
 import { CinematicHero } from "@/components/home/cinematic-hero";
+import { HomeExplainerVideoSection } from "@/components/home/home-explainer-video-section";
 import { CtaBand } from "@/components/home/cta-band";
 import { FaqSection } from "@/components/home/faq-section";
 import { FundingTimelineSection } from "@/components/home/funding-timeline-section";
@@ -16,6 +17,7 @@ export default function HomePage() {
     <>
       <CinematicHero />
       <BorrowerTrustSection variant="hero" />
+      <HomeExplainerVideoSection />
       <HowItWorksSection />
       <CompanyTrustSection />
       <AboutPlatformSection />

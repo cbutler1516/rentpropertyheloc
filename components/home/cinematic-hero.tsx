@@ -4,8 +4,8 @@ import { Container } from "@/components/layout/container";
 import { BrandPillars } from "@/components/marketing/brand-pillars";
 import { CtaReassurance } from "@/components/marketing/cta-reassurance";
 import { Reveal } from "@/components/motion/reveal";
+import { HeroReviewPreviewCard } from "@/components/home/hero-review-preview-card";
 import { BackgroundVideo } from "@/components/video/background-video";
-import { HeroExplainerVideo } from "@/components/video/hero-explainer-video";
 import { CtaLink } from "@/components/ui/cta-link";
 import { HERO_CTA_LABEL, HERO_FUNNEL_HREF } from "@/lib/cta";
 import { HERO_HEADLINE, HERO_SUPPORTING_COPY } from "@/lib/brand-positioning";
@@ -23,8 +23,8 @@ export function CinematicHero() {
       <div className="absolute inset-0 cinematic-vignette opacity-80" aria-hidden />
 
       <Container className="relative z-10 py-8 sm:py-14 md:py-20 lg:py-24">
-        <div className="flex flex-col gap-8 md:grid md:grid-cols-2 md:items-center md:gap-10 lg:gap-12">
-          <div className="order-2 md:order-1">
+        <div className="flex flex-col gap-7 md:grid md:grid-cols-2 md:items-center md:gap-10 lg:gap-12">
+          <div>
             <Reveal>
               <BrandPillars className="mb-4" />
             </Reveal>
@@ -54,9 +54,7 @@ export function CinematicHero() {
             </Reveal>
           </div>
 
-          <Reveal delay={0.06} y={12} className="order-1 md:order-2">
-            <HeroExplainerVideo label="Investor financing with real human guidance" />
-          </Reveal>
+          <HeroReviewPreviewCard />
         </div>
       </Container>
 
