@@ -19,8 +19,7 @@ import {
   MAX_PROFILE_STRENGTH,
   type ProfileStrengthField,
 } from "@/lib/leads/investor-review-gamification";
-import type { InvestorSnapshotData } from "@/lib/leads/investor-snapshot-document";
-import { downloadInvestorSnapshot } from "@/lib/leads/investor-snapshot-document";
+import type { FinancingReviewData } from "@/lib/leads/financing-review-document";
 import {
   CREDIT_SCORE_RANGES,
   FUNDING_TIMELINE_OPTIONS,
@@ -104,7 +103,7 @@ export function PostSubmitEnrichment({
   const profileStrength = useMemo(() => calculateProfileStrength(data), [data]);
   const profileComplete = isProfileComplete(profileStrength);
 
-  const snapshotData: InvestorSnapshotData | null = useMemo(() => {
+  const snapshotData: FinancingReviewData | null = useMemo(() => {
     if (!snapshotContext) return null;
     return {
       ...snapshotContext,
@@ -158,17 +157,6 @@ export function PostSubmitEnrichment({
       const complete = isEnrichmentDataComplete(data);
       if (complete) {
         onProfileComplete?.();
-        if (snapshotContext) {
-          downloadInvestorSnapshot({
-            propertyAddress: snapshotContext.propertyAddress,
-            requestedFunds: snapshotContext.requestedFunds,
-            submissionDate: snapshotContext.submissionDate,
-            reviewStatus: "Profile Complete — Review In Progress",
-            profileStrength: MAX_PROFILE_STRENGTH,
-            priorityReviewActive: showPriority,
-            profileComplete: true,
-          });
-        }
       }
     } catch {
       setSubmitted(true);
@@ -219,6 +207,12 @@ export function PostSubmitEnrichment({
   }
 
   if (submitted && snapshotData && !focused) {
+    const reviewData: FinancingReviewData = {
+      ...snapshotData,
+      profileStrength: profileComplete ? MAX_PROFILE_STRENGTH : snapshotData.profileStrength,
+      profileComplete: profileComplete,
+    };
+
     return (
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 6 }}
@@ -229,7 +223,8 @@ export function PostSubmitEnrichment({
           <ProfileCompleteCelebration
             profileStrength={MAX_PROFILE_STRENGTH}
             showPriority={showPriority}
-            snapshotData={snapshotData}
+            snapshotData={reviewData}
+            autoOpenReviewModal
           />
         ) : (
           <>

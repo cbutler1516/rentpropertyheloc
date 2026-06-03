@@ -8,6 +8,7 @@ import {
 } from "@/components/funnel/enrichment-compact-sidebar";
 import { PostSubmitProfileStrength } from "@/components/funnel/gamification/post-submit-profile-strength";
 import { ProfileSavedState } from "@/components/funnel/gamification/profile-saved-state";
+import type { FinancingReviewData } from "@/lib/leads/financing-review-document";
 import {
   BASE_PROFILE_STRENGTH,
   isProfileComplete,
@@ -90,7 +91,7 @@ export function FunnelConfirmation({
     ? "Profile Complete — Review In Progress"
     : "Review Started";
 
-  const snapshotContext = {
+  const snapshotContext: FinancingReviewData = {
     propertyAddress: address,
     requestedFunds,
     submissionDate: submissionDateLabel,
@@ -102,24 +103,26 @@ export function FunnelConfirmation({
 
   if (enrichmentSaved) {
     return (
-      <motion.div
-        initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left shadow-sm lg:rounded-3xl"
-      >
-        <div className="p-4 sm:p-6 lg:p-8">
-          <ProfileSavedState snapshotData={snapshotContext} />
-          <div className="mt-6 lg:grid lg:grid-cols-10 lg:gap-6">
-            <div className="lg:col-span-3 lg:col-start-8">
-              <PostSubmitProfileStrength
-                strength={complete ? MAX_PROFILE_STRENGTH : profileStrength}
-              />
+      <>
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left shadow-sm lg:rounded-3xl"
+        >
+          <div className="p-4 sm:p-6 lg:p-8">
+            <ProfileSavedState snapshotData={snapshotContext} autoOpenReviewModal={complete} />
+            <div className="mt-6 lg:grid lg:grid-cols-10 lg:gap-6">
+              <div className="lg:col-span-3 lg:col-start-8">
+                <PostSubmitProfileStrength
+                  strength={complete ? MAX_PROFILE_STRENGTH : profileStrength}
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <ComplianceFooter />
-      </motion.div>
+          <ComplianceFooter />
+        </motion.div>
+      </>
     );
   }
 
