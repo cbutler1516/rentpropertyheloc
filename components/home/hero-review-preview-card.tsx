@@ -1,13 +1,14 @@
 "use client";
 
-import { CtaLink } from "@/components/ui/cta-link";
 import { cn } from "@/lib/cn";
-import { HERO_CTA_LABEL, HERO_FUNNEL_HREF } from "@/lib/cta";
 import {
-  HERO_PREVIEW_FOOTER,
-  HERO_PREVIEW_STEPS,
-  HERO_PREVIEW_SUBTITLE,
-  HERO_PREVIEW_TITLE,
+  HERO_SAMPLE_PREVIEW_ITEMS,
+  HERO_SAMPLE_PREVIEW_LABEL,
+  HERO_VALUE_BADGE,
+  HERO_VALUE_BENEFITS,
+  HERO_VALUE_FOOTER_POINTS,
+  HERO_VALUE_HEADLINE,
+  HERO_VALUE_SUBHEADLINE,
 } from "@/lib/hero-preview";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -32,53 +33,50 @@ export function HeroReviewPreviewCard({ className }: HeroReviewPreviewCardProps)
         />
         <div className="relative overflow-hidden rounded-[1.25rem] border border-white/20 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.28)]">
           <div
-            className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-teal-50/90 to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-teal-50/95 to-transparent"
             aria-hidden
           />
 
           <div className="relative p-5 sm:p-6">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-teal-700">
-                  Review preview
-                </p>
-                <h2 className="mt-1.5 text-lg font-bold tracking-tight text-navy-950 sm:text-xl">
-                  {HERO_PREVIEW_TITLE}
-                </h2>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{HERO_PREVIEW_SUBTITLE}</p>
-              </div>
-              <span
-                className="hidden shrink-0 rounded-full border border-teal-200 bg-teal-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-teal-800 sm:inline-flex"
-                aria-hidden
-              >
-                Sample
-              </span>
-            </div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-teal-700">
+              {HERO_VALUE_BADGE}
+            </p>
+            <h2 className="mt-2 text-lg font-bold tracking-tight text-navy-950 sm:text-xl">
+              {HERO_VALUE_HEADLINE}
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">{HERO_VALUE_SUBHEADLINE}</p>
 
-            <ol className="mt-5 space-y-0" aria-label="Review outcome preview">
-              {HERO_PREVIEW_STEPS.map((step, index) => (
-                <PreviewStepRow
-                  key={step}
-                  label={step}
+            <ul className="mt-5 space-y-2.5" aria-label="Review benefits">
+              {HERO_VALUE_BENEFITS.map((benefit, index) => (
+                <BenefitRow
+                  key={benefit.title}
+                  benefit={benefit}
                   index={index}
-                  isLast={index === HERO_PREVIEW_STEPS.length - 1}
                   reduceMotion={reduceMotion}
                 />
               ))}
-            </ol>
+            </ul>
 
-            <p className="mt-4 border-t border-slate-100 pt-4 text-xs leading-relaxed text-slate-500">
-              {HERO_PREVIEW_FOOTER}
-            </p>
+            <div className="mt-5 border-t border-slate-100 pt-4">
+              <ul className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-x-5 sm:gap-y-2">
+                {HERO_VALUE_FOOTER_POINTS.map((point) => (
+                  <li
+                    key={point}
+                    className="flex items-center gap-2 text-xs font-medium text-slate-600"
+                  >
+                    <span
+                      aria-hidden
+                      className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-teal-100 text-[10px] text-teal-700"
+                    >
+                      ✓
+                    </span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-            <CtaLink
-              href={HERO_FUNNEL_HREF}
-              size="lg"
-              className="glow-accent-hero mt-5 w-full"
-              ctaLocation="hero-preview-card"
-            >
-              {HERO_CTA_LABEL}
-            </CtaLink>
+            <SamplePreviewThumbnail className="mt-5" reduceMotion={reduceMotion} />
           </div>
         </div>
       </div>
@@ -86,45 +84,77 @@ export function HeroReviewPreviewCard({ className }: HeroReviewPreviewCardProps)
   );
 }
 
-function PreviewStepRow({
-  label,
+function BenefitRow({
+  benefit,
   index,
-  isLast,
   reduceMotion,
 }: {
-  label: string;
+  benefit: (typeof HERO_VALUE_BENEFITS)[number];
   index: number;
-  isLast: boolean;
   reduceMotion: boolean | null;
 }) {
   return (
     <motion.li
-      initial={reduceMotion ? false : { opacity: 0, x: -8 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: reduceMotion ? 0 : 0.12 + index * 0.06, duration: 0.32 }}
-      className="relative flex gap-3 pb-3.5 last:pb-0"
+      initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: reduceMotion ? 0 : 0.1 + index * 0.06, duration: 0.32 }}
+      className="group rounded-xl border border-slate-100 bg-slate-50/70 p-3 transition hover:border-teal-200/80 hover:bg-teal-50/40 hover:shadow-sm sm:p-3.5"
     >
-      {!isLast ? (
+      <div className="flex gap-3">
         <span
-          className="absolute left-[11px] top-6 h-[calc(100%-12px)] w-px bg-teal-200"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-base shadow-sm ring-1 ring-slate-200/80 transition group-hover:ring-teal-200/80"
           aria-hidden
-        />
-      ) : null}
-      <span
-        className="relative z-[1] flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-teal-600 text-white shadow-sm shadow-teal-600/25"
-        aria-hidden
-      >
-        <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none">
-          <path
-            d="M2.5 6L5 8.5L9.5 3.5"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
-      <p className="pt-0.5 text-sm font-medium leading-tight text-slate-800">{label}</p>
+        >
+          {benefit.icon}
+        </span>
+        <div className="min-w-0">
+          <p className="text-sm font-semibold leading-tight text-slate-900">{benefit.title}</p>
+          <p className="mt-1 text-xs leading-relaxed text-slate-600 sm:text-[0.8125rem]">
+            {benefit.description}
+          </p>
+        </div>
+      </div>
     </motion.li>
+  );
+}
+
+function SamplePreviewThumbnail({
+  className,
+  reduceMotion,
+}: {
+  className?: string;
+  reduceMotion: boolean | null;
+}) {
+  return (
+    <motion.div
+      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: reduceMotion ? 0 : 0.38, duration: 0.35 }}
+      className={cn("rounded-xl border border-slate-200/90 bg-gradient-to-br from-slate-50 to-white p-3.5", className)}
+      aria-hidden
+    >
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+          {HERO_SAMPLE_PREVIEW_LABEL}
+        </p>
+        <span className="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[9px] font-medium text-slate-500">
+          Illustrative
+        </span>
+      </div>
+
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        {HERO_SAMPLE_PREVIEW_ITEMS.map((item) => (
+          <div
+            key={item}
+            className="rounded-lg border border-slate-200/80 bg-white px-2.5 py-2 shadow-sm"
+          >
+            <span className="mb-1.5 block h-1 w-8 rounded-full bg-teal-200/80" aria-hidden />
+            <p className="text-[10px] font-semibold leading-tight text-slate-700 sm:text-[11px]">
+              {item}
+            </p>
+          </div>
+        ))}
+      </div>
+    </motion.div>
   );
 }
