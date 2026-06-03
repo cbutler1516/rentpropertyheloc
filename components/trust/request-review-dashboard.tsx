@@ -1,20 +1,35 @@
 "use client";
 
-import { REVIEW_DASHBOARD, type ReviewDashboardStepStatus } from "@/lib/trust-content";
+import {
+  getReviewProcessHeader,
+  getReviewProcessSteps,
+  getReviewProcessTagline,
+  showLiveReviewBadge,
+  type ReviewProcessPhase,
+  type ReviewProcessStepStatus,
+} from "@/lib/trust/review-process";
 import { cn } from "@/lib/cn";
 import { motion, useReducedMotion } from "framer-motion";
 
 type RequestReviewDashboardProps = {
+  phase?: ReviewProcessPhase;
+  funnelStep?: number;
   variant?: "full" | "compact";
   className?: string;
 };
 
 export function RequestReviewDashboard({
+  phase = "intro",
+  funnelStep = 1,
   variant = "full",
   className,
 }: RequestReviewDashboardProps) {
   const compact = variant === "compact";
   const reduceMotion = useReducedMotion();
+  const header = getReviewProcessHeader(phase);
+  const tagline = getReviewProcessTagline(phase);
+  const steps = getReviewProcessSteps(phase, funnelStep);
+  const liveBadge = showLiveReviewBadge(phase);
 
   return (
     <div
@@ -44,43 +59,52 @@ export function RequestReviewDashboard({
       >
         <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
           <div className="flex items-center gap-2">
-            <span
-              className={cn(
-                "relative flex h-2 w-2 shrink-0 rounded-full bg-emerald-400",
-                !reduceMotion && "animate-pulse",
-              )}
-              aria-hidden
-            />
+            {liveBadge ? (
+              <span
+                className={cn(
+                  "relative flex h-2 w-2 shrink-0 rounded-full bg-emerald-400",
+                  !reduceMotion && "animate-pulse",
+                )}
+                aria-hidden
+              />
+            ) : (
+              <span
+                className="flex h-2 w-2 shrink-0 rounded-full bg-white/25"
+                aria-hidden
+              />
+            )}
             <p
               className={cn(
                 "font-bold uppercase tracking-[0.16em] text-white",
                 compact ? "text-[9px]" : "text-[10px] sm:text-[11px]",
               )}
             >
-              {REVIEW_DASHBOARD.statusLabel}
+              {header}
             </p>
           </div>
-          <span
-            className={cn(
-              "rounded-full border border-teal-400/30 bg-teal-500/10 px-2 py-0.5 font-medium text-teal-200",
-              compact ? "text-[8px]" : "text-[9px] sm:text-[10px]",
-            )}
-          >
-            Live review
-          </span>
+          {liveBadge ? (
+            <span
+              className={cn(
+                "rounded-full border border-teal-400/30 bg-teal-500/10 px-2 py-0.5 font-medium text-teal-200",
+                compact ? "text-[8px]" : "text-[9px] sm:text-[10px]",
+              )}
+            >
+              Live review
+            </span>
+          ) : null}
         </div>
 
         <ol
           className={cn("mt-3 space-y-0", compact ? "mt-2.5" : "mt-4")}
           aria-label="Review progress"
         >
-          {REVIEW_DASHBOARD.steps.map((step, index) => (
+          {steps.map((step, index) => (
             <DashboardStepRow
               key={step.id}
               label={step.label}
               status={step.status}
               index={index}
-              isLast={index === REVIEW_DASHBOARD.steps.length - 1}
+              isLast={index === steps.length - 1}
               compact={compact}
               reduceMotion={reduceMotion}
             />
@@ -93,7 +117,7 @@ export function RequestReviewDashboard({
             compact ? "text-[9px]" : "text-[10px] sm:text-xs",
           )}
         >
-          {REVIEW_DASHBOARD.tagline}
+          {tagline}
         </p>
       </motion.div>
     </div>
@@ -109,7 +133,7 @@ function DashboardStepRow({
   reduceMotion,
 }: {
   label: string;
-  status: ReviewDashboardStepStatus;
+  status: ReviewProcessStepStatus;
   index: number;
   isLast: boolean;
   compact: boolean;
@@ -117,6 +141,7 @@ function DashboardStepRow({
 }) {
   const complete = status === "complete";
   const inProgress = status === "in-progress";
+  const active = status === "active";
 
   return (
     <motion.li
@@ -136,7 +161,11 @@ function DashboardStepRow({
         />
       ) : null}
 
-      <StepIndicator complete={complete} inProgress={inProgress} compact={compact} reduceMotion={reduceMotion} />
+      <StepIndicator
+        status={status}
+        compact={compact}
+        reduceMotion={reduceMotion}
+      />
 
       <div className="min-w-0 flex-1 pt-0.5">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
@@ -144,28 +173,16 @@ function DashboardStepRow({
             className={cn(
               "font-semibold leading-tight",
               compact ? "text-[10px]" : "text-xs sm:text-sm",
-              complete || inProgress ? "text-white" : "text-slate-500",
+              complete || inProgress || active ? "text-white" : "text-slate-500",
             )}
           >
             {label}
           </p>
           {inProgress ? (
-            <span
-              className={cn(
-                "inline-flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-500/10 px-1.5 py-px font-medium text-amber-200",
-                compact ? "text-[8px]" : "text-[9px]",
-              )}
-            >
-              {!reduceMotion ? (
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-60" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-amber-400" />
-                </span>
-              ) : (
-                <span aria-hidden>⏳</span>
-              )}
-              In progress
-            </span>
+            <StatusBadge compact={compact} reduceMotion={reduceMotion} label="In progress" />
+          ) : null}
+          {active ? (
+            <StatusBadge compact={compact} reduceMotion={reduceMotion} label="Current step" tone="teal" />
           ) : null}
         </div>
       </div>
@@ -173,20 +190,61 @@ function DashboardStepRow({
   );
 }
 
+function StatusBadge({
+  compact,
+  reduceMotion,
+  label,
+  tone = "amber",
+}: {
+  compact: boolean;
+  reduceMotion: boolean | null;
+  label: string;
+  tone?: "amber" | "teal";
+}) {
+  const toneClasses =
+    tone === "teal"
+      ? "border-teal-400/30 bg-teal-500/10 text-teal-200"
+      : "border-amber-400/30 bg-amber-500/10 text-amber-200";
+  const dotClass = tone === "teal" ? "bg-teal-300" : "bg-amber-400";
+
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 rounded-full border px-1.5 py-px font-medium",
+        toneClasses,
+        compact ? "text-[8px]" : "text-[9px]",
+      )}
+    >
+      {!reduceMotion ? (
+        <span className="relative flex h-1.5 w-1.5">
+          <span
+            className={cn(
+              "absolute inline-flex h-full w-full animate-ping rounded-full opacity-60",
+              dotClass,
+            )}
+          />
+          <span className={cn("relative inline-flex h-1.5 w-1.5 rounded-full", dotClass)} />
+        </span>
+      ) : (
+        <span aria-hidden>⏳</span>
+      )}
+      {label}
+    </span>
+  );
+}
+
 function StepIndicator({
-  complete,
-  inProgress,
+  status,
   compact,
   reduceMotion,
 }: {
-  complete: boolean;
-  inProgress: boolean;
+  status: ReviewProcessStepStatus;
   compact: boolean;
   reduceMotion: boolean | null;
 }) {
   const size = compact ? "h-[18px] w-[18px]" : "h-5 w-5 sm:h-[22px] sm:w-[22px]";
 
-  if (complete) {
+  if (status === "complete") {
     return (
       <span
         className={cn(
@@ -208,11 +266,12 @@ function StepIndicator({
     );
   }
 
-  if (inProgress) {
+  if (status === "in-progress" || status === "active") {
     return (
       <span
         className={cn(
-          "relative z-[1] flex shrink-0 items-center justify-center rounded-full border-2 border-teal-400/80 bg-teal-500/20",
+          "relative z-[1] flex shrink-0 items-center justify-center rounded-full border-2 bg-teal-500/20",
+          status === "active" ? "border-teal-300/90" : "border-teal-400/80",
           size,
         )}
         aria-hidden

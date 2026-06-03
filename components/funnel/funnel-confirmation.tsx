@@ -33,6 +33,7 @@ type FunnelConfirmationProps = {
   propertyZip: string;
   equityAccessRange: EquityAccessRangeId | "";
   submittedAt: string;
+  onProfileComplete?: () => void;
 };
 
 function formatPropertyAddress(
@@ -68,6 +69,7 @@ export function FunnelConfirmation({
   propertyZip,
   equityAccessRange,
   submittedAt,
+  onProfileComplete,
 }: FunnelConfirmationProps) {
   const reduceMotion = useReducedMotion();
   const [profileStrength, setProfileStrength] = useState(BASE_PROFILE_STRENGTH);
@@ -152,7 +154,10 @@ export function FunnelConfirmation({
                   submissionDate: submissionDateLabel,
                 }}
                 onProfileStrengthChange={setProfileStrength}
-                onProfileComplete={() => setProfileComplete(true)}
+                onProfileComplete={() => {
+                  setProfileComplete(true);
+                  onProfileComplete?.();
+                }}
                 onEnrichmentSaved={() => setEnrichmentSaved(true)}
               />
             </div>

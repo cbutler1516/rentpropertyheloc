@@ -8,12 +8,15 @@ import { TeamTrustVisual } from "@/components/trust/team-trust-visual";
 import { NMLS_CONSUMER_ACCESS_URL } from "@/lib/contact";
 import { CALL_OUR_TEAM_LABEL } from "@/lib/contact";
 import { ADVISOR, COMPANY_TRUST } from "@/lib/trust-content";
+import type { ReviewProcessPhase } from "@/lib/trust/review-process";
 import { cn } from "@/lib/cn";
 import Link from "next/link";
 
 type CompanyTrustSectionProps = {
   variant?: "homepage" | "funnel" | "compact" | "full";
   className?: string;
+  reviewPhase?: ReviewProcessPhase;
+  funnelStep?: number;
 };
 
 /** @deprecated Use CompanyTrustSection */
@@ -22,6 +25,8 @@ export const AdvisorCredibilitySection = CompanyTrustSection;
 export function CompanyTrustSection({
   variant = "homepage",
   className,
+  reviewPhase = "intro",
+  funnelStep = 1,
 }: CompanyTrustSectionProps) {
   if (variant === "homepage") {
     return (
@@ -35,7 +40,7 @@ export function CompanyTrustSection({
           />
         </Reveal>
         <Reveal delay={0.06} className="mt-10 lg:mt-12">
-          <HomepageTrustCard />
+          <HomepageTrustCard reviewPhase={reviewPhase} funnelStep={funnelStep} />
         </Reveal>
       </Section>
     );
@@ -64,7 +69,13 @@ export function CompanyTrustSection({
               : "mx-auto w-full max-w-md lg:mx-0 lg:max-w-[44%]",
           )}
         >
-          <TeamTrustVisual compact={compact} frameClassName="w-full" sizes={compact ? "240px" : "384px"} />
+          <TeamTrustVisual
+            compact={compact}
+            phase={reviewPhase}
+            funnelStep={funnelStep}
+            frameClassName="w-full"
+            sizes={compact ? "240px" : "384px"}
+          />
         </div>
 
         <div className="min-w-0 flex-1 text-center sm:text-left">
@@ -81,7 +92,13 @@ export function CompanyTrustSection({
   return null;
 }
 
-function HomepageTrustCard() {
+function HomepageTrustCard({
+  reviewPhase,
+  funnelStep,
+}: {
+  reviewPhase: ReviewProcessPhase;
+  funnelStep: number;
+}) {
   return (
     <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_12px_48px_rgba(15,23,42,0.08)] ring-1 ring-slate-100/80">
       <div className="flex flex-col lg:flex-row lg:items-stretch">
@@ -92,6 +109,8 @@ function HomepageTrustCard() {
         <div className="relative w-full shrink-0 lg:w-[46%] lg:min-h-[340px]">
           <TeamTrustVisual
             priority
+            phase={reviewPhase}
+            funnelStep={funnelStep}
             sizes="(max-width: 1024px) 100vw, 520px"
             className="h-full min-h-[260px] w-full lg:min-h-full"
             frameClassName="h-full min-h-[260px] w-full rounded-none lg:min-h-full lg:rounded-none lg:rounded-r-2xl"

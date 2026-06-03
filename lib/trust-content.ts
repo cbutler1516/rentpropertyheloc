@@ -6,7 +6,7 @@ export const ADVISOR_HEADSHOT_ALT = "Chris Butler, mortgage loan officer";
 
 /** Branded review dashboard visual (see RequestReviewDashboard) */
 export const TEAM_TRUST_IMAGE_ALT =
-  "Review status dashboard showing property identified, review started, priority review activated, and financing analysis in progress";
+  "Review process steps showing property submission, review progress, and personalized follow-up";
 
 /** Landscape frame for trust visuals */
 export const TEAM_TRUST_IMAGE_FRAME_CLASS = "aspect-[5/3]";
@@ -27,19 +27,6 @@ export const ADVISOR_HEADSHOT_AVATAR_CLASS = "object-cover object-[center_18%]";
 export const ADVISOR_HEADSHOT_COMPACT_CLASS = ADVISOR_HEADSHOT_PORTRAIT_CLASS;
 
 export { BOOK_STRATEGY_CALL_LABEL as HOMEPAGE_ADVISOR_CTA_PRIMARY } from "@/lib/contact";
-
-export type ReviewDashboardStepStatus = "complete" | "in-progress" | "pending";
-
-export const REVIEW_DASHBOARD = {
-  statusLabel: "Request Received",
-  tagline: "Every request receives a personalized review from a financing specialist.",
-  steps: [
-    { id: "property", label: "Property Identified", status: "complete" as const },
-    { id: "review", label: "Review Started", status: "complete" as const },
-    { id: "priority", label: "Priority Review Activated", status: "complete" as const },
-    { id: "analysis", label: "Financing Analysis In Progress", status: "in-progress" as const },
-  ],
-} as const;
 
 export const COMPANY_TRUST = {
   headline: "Real People. Real Guidance.",

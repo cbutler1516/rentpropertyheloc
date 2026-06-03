@@ -6,10 +6,13 @@ import { LeadFunnel } from "@/components/funnel/lead-funnel";
 import { CompanyTrustSection } from "@/components/trust/company-trust-section";
 import { cn } from "@/lib/cn";
 import { scrollToPostSubmitTop } from "@/lib/funnel/scroll-to-post-submit-top";
+import type { ReviewProcessPhase } from "@/lib/trust/review-process";
 import { Suspense, useEffect, useState } from "react";
 
 export function CheckOptionsPageContent() {
   const [isPostSubmit, setIsPostSubmit] = useState(false);
+  const [reviewPhase, setReviewPhase] = useState<ReviewProcessPhase>("address");
+  const [funnelStep, setFunnelStep] = useState(1);
 
   useEffect(() => {
     if (!isPostSubmit) return;
@@ -22,7 +25,12 @@ export function CheckOptionsPageContent() {
     <>
       {!isPostSubmit ? <FunnelIntro /> : null}
       {!isPostSubmit ? (
-        <CompanyTrustSection variant="compact" className="mb-4 lg:hidden" />
+        <CompanyTrustSection
+          variant="compact"
+          className="mb-4 lg:hidden"
+          reviewPhase={reviewPhase}
+          funnelStep={funnelStep}
+        />
       ) : null}
       <div
         className={cn(
@@ -32,14 +40,23 @@ export function CheckOptionsPageContent() {
         )}
       >
         {!isPostSubmit ? (
-          <CompanyTrustSection variant="funnel" className="hidden lg:block" />
+          <CompanyTrustSection
+            variant="funnel"
+            className="hidden lg:block"
+            reviewPhase={reviewPhase}
+            funnelStep={funnelStep}
+          />
         ) : null}
         <Suspense
           fallback={
             <div className="card-surface h-[70dvh] animate-pulse rounded-2xl" aria-hidden />
           }
         >
-          <LeadFunnel onSubmittedChange={setIsPostSubmit} />
+          <LeadFunnel
+            onSubmittedChange={setIsPostSubmit}
+            onReviewPhaseChange={setReviewPhase}
+            onFunnelStepChange={setFunnelStep}
+          />
         </Suspense>
       </div>
       <FunnelComplianceNote className="mt-4 px-1" />

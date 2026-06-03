@@ -1,5 +1,5 @@
 import { RequestReviewDashboard } from "@/components/trust/request-review-dashboard";
-import { TEAM_TRUST_IMAGE_ALT } from "@/lib/trust-content";
+import { getReviewProcessAriaLabel, type ReviewProcessPhase } from "@/lib/trust/review-process";
 import { cn } from "@/lib/cn";
 
 type TeamTrustVisualProps = {
@@ -8,12 +8,16 @@ type TeamTrustVisualProps = {
   priority?: boolean;
   sizes?: string;
   compact?: boolean;
+  phase?: ReviewProcessPhase;
+  funnelStep?: number;
 };
 
 export function TeamTrustVisual({
   className,
   frameClassName,
   compact = false,
+  phase = "intro",
+  funnelStep = 1,
 }: TeamTrustVisualProps) {
   return (
     <div
@@ -24,9 +28,11 @@ export function TeamTrustVisual({
         className,
       )}
       role="img"
-      aria-label={TEAM_TRUST_IMAGE_ALT}
+      aria-label={getReviewProcessAriaLabel(phase)}
     >
       <RequestReviewDashboard
+        phase={phase}
+        funnelStep={funnelStep}
         variant={compact ? "compact" : "full"}
         className={cn(compact ? "min-h-[160px]" : "min-h-[240px] lg:min-h-full")}
       />
