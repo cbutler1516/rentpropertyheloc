@@ -58,27 +58,28 @@ export function CompanyTrustSection({
       <div
         className={cn(
           "flex flex-col gap-6",
-          compact ? "sm:flex-row sm:items-center sm:gap-5" : "lg:flex-row lg:items-stretch lg:gap-8",
+          compact ? "sm:flex-row sm:items-center sm:gap-6" : "lg:flex-row lg:items-center lg:gap-8",
         )}
       >
         <div
           className={cn(
             "shrink-0",
             compact
-              ? "mx-auto w-full max-w-[220px] sm:mx-0 sm:max-w-[240px]"
-              : "mx-auto w-full max-w-md lg:mx-0 lg:max-w-[44%]",
+              ? "mx-auto w-full max-w-[280px] sm:mx-0 sm:max-w-[300px]"
+              : "mx-auto w-full max-w-md lg:mx-0 lg:w-[48%] lg:max-w-none",
           )}
         >
           <TeamTrustVisual
             compact={compact}
+            prominent={!compact}
             phase={reviewPhase}
             funnelStep={funnelStep}
             frameClassName="w-full"
-            sizes={compact ? "240px" : "384px"}
+            sizes={compact ? "300px" : "480px"}
           />
         </div>
 
-        <div className="min-w-0 flex-1 text-center sm:text-left">
+        <div className="min-w-0 flex-1 text-center sm:text-left lg:w-[52%]">
           <TrustCardContent compact={compact} showLicensing={variant === "full"} ctaLocation={`company-trust-${variant}`} />
         </div>
       </div>
@@ -100,21 +101,21 @@ function HomepageTrustCard({
   funnelStep: number;
 }) {
   return (
-    <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_12px_48px_rgba(15,23,42,0.08)] ring-1 ring-slate-100/80">
-      <div className="flex flex-col lg:flex-row lg:items-stretch">
-        <div className="flex min-w-0 flex-1 flex-col justify-center px-6 py-8 sm:px-10 sm:py-10 lg:px-12 lg:py-14">
-          <TrustCardContent ctaLocation="company-trust-homepage" />
-        </div>
-
-        <div className="relative w-full shrink-0 lg:w-[46%] lg:min-h-[340px]">
+    <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_16px_56px_rgba(15,23,42,0.1)] ring-1 ring-slate-100/80">
+      <div className="flex flex-col lg:flex-row lg:items-center">
+        <div className="order-1 w-full shrink-0 lg:w-[48%] xl:w-[47%]">
           <TeamTrustVisual
-            priority
+            prominent
             phase={reviewPhase}
             funnelStep={funnelStep}
-            sizes="(max-width: 1024px) 100vw, 520px"
-            className="h-full min-h-[260px] w-full lg:min-h-full"
-            frameClassName="h-full min-h-[260px] w-full rounded-none lg:min-h-full lg:rounded-none lg:rounded-r-2xl"
+            sizes="(max-width: 1024px) 100vw, 540px"
+            className="h-full w-full"
+            frameClassName="h-full w-full rounded-none lg:rounded-none lg:rounded-l-2xl"
           />
+        </div>
+
+        <div className="order-2 flex min-w-0 flex-1 flex-col justify-center px-6 py-7 sm:px-8 sm:py-8 lg:w-[52%] lg:px-10 lg:py-10 xl:px-12">
+          <TrustCardContent ctaLocation="company-trust-homepage" />
         </div>
       </div>
     </div>
@@ -146,7 +147,7 @@ function TrustCardContent({
       <div
         className={cn(
           "space-y-3 text-slate-600",
-          compact ? "mt-3 text-xs leading-relaxed sm:text-sm" : "mt-5 max-w-xl text-base leading-relaxed sm:text-[1.0625rem]",
+          compact ? "mt-3 text-xs leading-relaxed sm:text-sm" : "mt-4 max-w-lg text-[0.9375rem] leading-relaxed sm:text-base",
         )}
       >
         {COMPANY_TRUST.body.map((paragraph) => (
@@ -154,7 +155,7 @@ function TrustCardContent({
         ))}
       </div>
 
-      <TrustPointsList compact={compact} className={compact ? "mt-4" : "mt-7"} />
+      <TrustPointsList compact={compact} className={compact ? "mt-4" : "mt-6"} />
 
       {showLicensing ? (
         <p className="mt-5 text-xs leading-relaxed text-slate-500">
@@ -170,7 +171,7 @@ function TrustCardContent({
         </p>
       ) : null}
 
-      <TrustCtaRow compact={compact} className={compact ? "mt-4" : "mt-8"} ctaLocation={ctaLocation} />
+      <TrustCtaRow compact={compact} className={compact ? "mt-4" : "mt-7"} ctaLocation={ctaLocation} />
     </>
   );
 }
@@ -226,16 +227,20 @@ function TrustCtaRow({
   return (
     <div
       className={cn(
-        "flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center",
+        "flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-stretch",
         className,
       )}
     >
-      <StrategyCallLink size={compact ? "sm" : "md"} ctaLocation={ctaLocation} />
+      <StrategyCallLink
+        size={compact ? "sm" : "md"}
+        ctaLocation={ctaLocation}
+        className="w-full justify-center sm:w-auto"
+      />
       <PhoneLink
         size={compact ? "sm" : "md"}
         showIcon={false}
         label={CALL_OUR_TEAM_LABEL}
-        className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-800 no-underline shadow-sm transition hover:bg-slate-50 hover:text-slate-900"
+        className="inline-flex min-h-[44px] w-full items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-800 no-underline shadow-sm transition hover:bg-slate-50 hover:text-slate-900 sm:w-auto"
       />
     </div>
   );

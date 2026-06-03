@@ -11,10 +11,12 @@ import {
 import { cn } from "@/lib/cn";
 import { motion, useReducedMotion } from "framer-motion";
 
+type DashboardVariant = "full" | "compact" | "prominent";
+
 type RequestReviewDashboardProps = {
   phase?: ReviewProcessPhase;
   funnelStep?: number;
-  variant?: "full" | "compact";
+  variant?: DashboardVariant;
   className?: string;
 };
 
@@ -25,6 +27,7 @@ export function RequestReviewDashboard({
   className,
 }: RequestReviewDashboardProps) {
   const compact = variant === "compact";
+  const prominent = variant === "prominent";
   const reduceMotion = useReducedMotion();
   const header = getReviewProcessHeader(phase);
   const tagline = getReviewProcessTagline(phase);
@@ -35,7 +38,7 @@ export function RequestReviewDashboard({
     <div
       className={cn(
         "relative flex h-full w-full flex-col justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-[#0a1628] to-teal-950",
-        compact ? "p-3 sm:p-4" : "p-5 sm:p-7 lg:p-8",
+        compact ? "p-3 sm:p-4" : prominent ? "p-6 sm:p-8 lg:p-9" : "p-5 sm:p-7 lg:p-8",
         className,
       )}
     >
@@ -54,29 +57,38 @@ export function RequestReviewDashboard({
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
           "relative rounded-xl border border-white/10 bg-white/[0.04] shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-sm",
-          compact ? "p-3" : "p-4 sm:p-5",
+          compact ? "p-3" : prominent ? "p-5 sm:p-6" : "p-4 sm:p-5",
         )}
       >
-        <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
-          <div className="flex items-center gap-2">
+        <div
+          className={cn(
+            "flex items-center justify-between gap-2 border-b border-white/15 pb-3",
+            prominent && "pb-4",
+          )}
+        >
+          <div className="flex items-center gap-2.5">
             {liveBadge ? (
               <span
                 className={cn(
-                  "relative flex h-2 w-2 shrink-0 rounded-full bg-emerald-400",
+                  "relative shrink-0 rounded-full bg-emerald-400",
+                  compact ? "h-2 w-2" : prominent ? "h-2.5 w-2.5" : "h-2 w-2",
                   !reduceMotion && "animate-pulse",
                 )}
                 aria-hidden
               />
             ) : (
               <span
-                className="flex h-2 w-2 shrink-0 rounded-full bg-white/25"
+                className={cn(
+                  "shrink-0 rounded-full bg-white/30",
+                  compact ? "h-2 w-2" : prominent ? "h-2.5 w-2.5" : "h-2 w-2",
+                )}
                 aria-hidden
               />
             )}
             <p
               className={cn(
                 "font-bold uppercase tracking-[0.16em] text-white",
-                compact ? "text-[9px]" : "text-[10px] sm:text-[11px]",
+                compact ? "text-[9px]" : prominent ? "text-xs sm:text-sm" : "text-[10px] sm:text-[11px]",
               )}
             >
               {header}
@@ -86,7 +98,7 @@ export function RequestReviewDashboard({
             <span
               className={cn(
                 "rounded-full border border-teal-400/30 bg-teal-500/10 px-2 py-0.5 font-medium text-teal-200",
-                compact ? "text-[8px]" : "text-[9px] sm:text-[10px]",
+                compact ? "text-[8px]" : prominent ? "text-[10px] sm:text-xs" : "text-[9px] sm:text-[10px]",
               )}
             >
               Live review
@@ -95,7 +107,10 @@ export function RequestReviewDashboard({
         </div>
 
         <ol
-          className={cn("mt-3 space-y-0", compact ? "mt-2.5" : "mt-4")}
+          className={cn(
+            "space-y-0",
+            compact ? "mt-2.5" : prominent ? "mt-5" : "mt-4",
+          )}
           aria-label="Review progress"
         >
           {steps.map((step, index) => (
@@ -105,7 +120,7 @@ export function RequestReviewDashboard({
               status={step.status}
               index={index}
               isLast={index === steps.length - 1}
-              compact={compact}
+              variant={variant}
               reduceMotion={reduceMotion}
             />
           ))}
@@ -113,8 +128,8 @@ export function RequestReviewDashboard({
 
         <p
           className={cn(
-            "mt-3 border-t border-white/10 pt-3 leading-snug text-slate-400",
-            compact ? "text-[9px]" : "text-[10px] sm:text-xs",
+            "border-t border-white/15 pt-3 leading-relaxed text-slate-300",
+            compact ? "mt-2.5 text-[9px]" : prominent ? "mt-5 text-xs sm:text-sm" : "mt-3 text-[10px] sm:text-xs text-slate-400",
           )}
         >
           {tagline}
@@ -129,16 +144,18 @@ function DashboardStepRow({
   status,
   index,
   isLast,
-  compact,
+  variant,
   reduceMotion,
 }: {
   label: string;
   status: ReviewProcessStepStatus;
   index: number;
   isLast: boolean;
-  compact: boolean;
+  variant: DashboardVariant;
   reduceMotion: boolean | null;
 }) {
+  const compact = variant === "compact";
+  const prominent = variant === "prominent";
   const complete = status === "complete";
   const inProgress = status === "in-progress";
   const active = status === "active";
@@ -148,14 +165,21 @@ function DashboardStepRow({
       initial={reduceMotion ? false : { opacity: 0, x: -6 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: reduceMotion ? 0 : 0.08 + index * 0.07, duration: 0.3 }}
-      className="relative flex gap-2.5 pb-3 last:pb-0 sm:gap-3"
+      className={cn(
+        "relative flex last:pb-0",
+        compact ? "gap-2.5 pb-3" : prominent ? "gap-3.5 pb-4 sm:gap-4 sm:pb-5" : "gap-2.5 pb-3 sm:gap-3",
+      )}
     >
       {!isLast ? (
         <span
           className={cn(
-            "absolute left-[9px] top-5 w-px sm:left-[10px] sm:top-6",
-            compact ? "h-[calc(100%-12px)]" : "h-[calc(100%-16px)]",
-            complete ? "bg-teal-500/50" : "bg-white/10",
+            "absolute w-px",
+            compact
+              ? "left-[9px] top-5 h-[calc(100%-12px)]"
+              : prominent
+                ? "left-[13px] top-8 h-[calc(100%-18px)] sm:left-[15px] sm:top-9"
+                : "left-[9px] top-5 h-[calc(100%-16px)] sm:left-[10px] sm:top-6",
+            complete ? "bg-teal-400/60" : "bg-white/15",
           )}
           aria-hidden
         />
@@ -163,26 +187,26 @@ function DashboardStepRow({
 
       <StepIndicator
         status={status}
-        compact={compact}
+        variant={variant}
         reduceMotion={reduceMotion}
       />
 
       <div className="min-w-0 flex-1 pt-0.5">
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <p
             className={cn(
-              "font-semibold leading-tight",
-              compact ? "text-[10px]" : "text-xs sm:text-sm",
-              complete || inProgress || active ? "text-white" : "text-slate-500",
+              "font-semibold leading-snug",
+              compact ? "text-[10px]" : prominent ? "text-sm sm:text-base" : "text-xs sm:text-sm",
+              complete || inProgress || active ? "text-white" : "text-slate-400",
             )}
           >
             {label}
           </p>
           {inProgress ? (
-            <StatusBadge compact={compact} reduceMotion={reduceMotion} label="In progress" />
+            <StatusBadge variant={variant} reduceMotion={reduceMotion} label="In progress" />
           ) : null}
           {active ? (
-            <StatusBadge compact={compact} reduceMotion={reduceMotion} label="Current step" tone="teal" />
+            <StatusBadge variant={variant} reduceMotion={reduceMotion} label="Current step" tone="teal" />
           ) : null}
         </div>
       </div>
@@ -191,16 +215,18 @@ function DashboardStepRow({
 }
 
 function StatusBadge({
-  compact,
+  variant,
   reduceMotion,
   label,
   tone = "amber",
 }: {
-  compact: boolean;
+  variant: DashboardVariant;
   reduceMotion: boolean | null;
   label: string;
   tone?: "amber" | "teal";
 }) {
+  const compact = variant === "compact";
+  const prominent = variant === "prominent";
   const toneClasses =
     tone === "teal"
       ? "border-teal-400/30 bg-teal-500/10 text-teal-200"
@@ -212,7 +238,7 @@ function StatusBadge({
       className={cn(
         "inline-flex items-center gap-1 rounded-full border px-1.5 py-px font-medium",
         toneClasses,
-        compact ? "text-[8px]" : "text-[9px]",
+        compact ? "text-[8px]" : prominent ? "text-[10px] sm:text-xs" : "text-[9px]",
       )}
     >
       {!reduceMotion ? (
@@ -235,14 +261,22 @@ function StatusBadge({
 
 function StepIndicator({
   status,
-  compact,
+  variant,
   reduceMotion,
 }: {
   status: ReviewProcessStepStatus;
-  compact: boolean;
+  variant: DashboardVariant;
   reduceMotion: boolean | null;
 }) {
-  const size = compact ? "h-[18px] w-[18px]" : "h-5 w-5 sm:h-[22px] sm:w-[22px]";
+  const compact = variant === "compact";
+  const prominent = variant === "prominent";
+  const size = compact
+    ? "h-[18px] w-[18px]"
+    : prominent
+      ? "h-7 w-7 sm:h-8 sm:w-8"
+      : "h-5 w-5 sm:h-[22px] sm:w-[22px]";
+  const iconSize = compact ? "h-2.5 w-2.5" : prominent ? "h-3.5 w-3.5 sm:h-4 sm:w-4" : "h-3 w-3";
+  const dotSize = compact ? "h-1.5 w-1.5" : prominent ? "h-2.5 w-2.5" : "h-2 w-2";
 
   if (status === "complete") {
     return (
@@ -253,7 +287,7 @@ function StepIndicator({
         )}
         aria-hidden
       >
-        <svg viewBox="0 0 12 12" className={compact ? "h-2.5 w-2.5" : "h-3 w-3"} fill="none">
+        <svg viewBox="0 0 12 12" className={iconSize} fill="none">
           <path
             d="M2.5 6L5 8.5L9.5 3.5"
             stroke="currentColor"
@@ -277,7 +311,7 @@ function StepIndicator({
         aria-hidden
       >
         {!reduceMotion ? (
-          <span className={cn("rounded-full bg-teal-300", compact ? "h-1.5 w-1.5" : "h-2 w-2")} />
+          <span className={cn("rounded-full bg-teal-300", dotSize)} />
         ) : (
           <span className={compact ? "text-[10px]" : "text-xs"}>⏳</span>
         )}

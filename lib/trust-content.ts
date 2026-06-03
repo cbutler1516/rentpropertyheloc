@@ -31,7 +31,7 @@ export { BOOK_STRATEGY_CALL_LABEL as HOMEPAGE_ADVISOR_CTA_PRIMARY } from "@/lib/
 export const COMPANY_TRUST = {
   headline: "Real People. Real Guidance.",
   body: [
-    "Unlike fully automated platforms, every request is reviewed by a financing specialist.",
+    "Every request is reviewed by a financing specialist — not just an automated system.",
     "If questions come up, our team is available to help you understand your options and next steps.",
   ],
   trustPoints: [

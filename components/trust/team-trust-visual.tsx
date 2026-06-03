@@ -8,6 +8,7 @@ type TeamTrustVisualProps = {
   priority?: boolean;
   sizes?: string;
   compact?: boolean;
+  prominent?: boolean;
   phase?: ReviewProcessPhase;
   funnelStep?: number;
 };
@@ -16,14 +17,17 @@ export function TeamTrustVisual({
   className,
   frameClassName,
   compact = false,
+  prominent = false,
   phase = "intro",
   funnelStep = 1,
 }: TeamTrustVisualProps) {
+  const dashboardVariant = compact ? "compact" : prominent ? "prominent" : "full";
+
   return (
     <div
       className={cn(
         "relative overflow-hidden shadow-md ring-1 ring-slate-900/10",
-        compact ? "rounded-xl" : "rounded-2xl lg:rounded-none lg:rounded-r-2xl",
+        compact ? "rounded-xl" : prominent ? "rounded-2xl lg:rounded-none lg:rounded-l-2xl" : "rounded-2xl lg:rounded-none lg:rounded-l-2xl",
         frameClassName,
         className,
       )}
@@ -33,8 +37,10 @@ export function TeamTrustVisual({
       <RequestReviewDashboard
         phase={phase}
         funnelStep={funnelStep}
-        variant={compact ? "compact" : "full"}
-        className={cn(compact ? "min-h-[160px]" : "min-h-[240px] lg:min-h-full")}
+        variant={dashboardVariant}
+        className={cn(
+          compact ? "min-h-[160px]" : prominent ? "min-h-[300px] sm:min-h-[340px] lg:min-h-full" : "min-h-[240px] lg:min-h-full",
+        )}
       />
     </div>
   );
