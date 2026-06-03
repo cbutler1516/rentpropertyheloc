@@ -6,23 +6,26 @@ import {
   CompactReviewSummary,
   EnrichmentAdvisorHelp,
 } from "@/components/funnel/enrichment-compact-sidebar";
+import { PersonalizedReviewCompletion } from "@/components/funnel/personalized-review-completion";
+import { useFinancingReviewActions } from "@/components/funnel/financing-review-experience";
 import { PostSubmitProfileStrength } from "@/components/funnel/gamification/post-submit-profile-strength";
 import { ProfileSavedState } from "@/components/funnel/gamification/profile-saved-state";
-import type { FinancingReviewData } from "@/lib/leads/financing-review-document";
 import {
   BASE_PROFILE_STRENGTH,
   isProfileComplete,
   MAX_PROFILE_STRENGTH,
 } from "@/lib/leads/investor-review-gamification";
+import type { FinancingReviewData } from "@/lib/leads/financing-review-document";
+import { getReviewStatusLabel } from "@/lib/leads/review-scenario";
 import {
   getEquityAccessLabel,
   isPriorityReviewFunds,
   type EquityAccessRangeId,
 } from "@/lib/leads/funnel-ranges";
-import type { PropertyTypeId, RoutingTier } from "@/lib/leads/types";
+import type { LeadQualityTier, PropertyTypeId, RoutingTier } from "@/lib/leads/types";
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 type FunnelConfirmationProps = {
   propertyType: PropertyTypeId | "";
@@ -76,6 +79,8 @@ export function FunnelConfirmation({
   const [profileStrength, setProfileStrength] = useState(BASE_PROFILE_STRENGTH);
   const [profileComplete, setProfileComplete] = useState(false);
   const [enrichmentSaved, setEnrichmentSaved] = useState(false);
+  const [qualityScore, setQualityScore] = useState<number | undefined>(undefined);
+  const [qualityTier, setQualityTier] = useState<LeadQualityTier | undefined>(undefined);
 
   const address = formatPropertyAddress(
     propertyStreet,
@@ -87,21 +92,40 @@ export function FunnelConfirmation({
   const showPriority = isPriorityReviewFunds(null, equityAccessRange);
   const submissionDateLabel = formatSubmissionDate(submittedAt);
   const complete = isProfileComplete(profileStrength) || profileComplete;
-  const reviewStatus = complete
-    ? "Profile Complete — Review In Progress"
-    : "Review Started";
+  const strength = complete ? MAX_PROFILE_STRENGTH : profileStrength;
 
-  const snapshotContext: FinancingReviewData = {
-    propertyAddress: address,
-    requestedFunds,
-    submissionDate: submissionDateLabel,
-    reviewStatus,
-    profileStrength: complete ? MAX_PROFILE_STRENGTH : profileStrength,
-    priorityReviewActive: showPriority,
-    profileComplete: complete,
-  };
+  const snapshotContext: FinancingReviewData = useMemo(
+    () => ({
+      propertyAddress: address,
+      requestedFunds,
+      submissionDate: submissionDateLabel,
+      reviewStatus: complete
+        ? getReviewStatusLabel({ qualityScore, qualityTier, profileStrength: strength })
+        : "Review Started",
+      profileStrength: strength,
+      priorityReviewActive: showPriority,
+      profileComplete: complete,
+      qualityScore,
+      qualityTier,
+    }),
+    [
+      address,
+      requestedFunds,
+      submissionDateLabel,
+      complete,
+      qualityScore,
+      qualityTier,
+      strength,
+      showPriority,
+    ],
+  );
 
-  if (enrichmentSaved) {
+  const { experience: completionOverlay } = useFinancingReviewActions(
+    snapshotContext,
+    enrichmentSaved && complete,
+  );
+
+  if (enrichmentSaved && complete) {
     return (
       <>
         <motion.div
@@ -110,19 +134,32 @@ export function FunnelConfirmation({
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left shadow-sm lg:rounded-3xl"
         >
-          <div className="p-4 sm:p-6 lg:p-8">
-            <ProfileSavedState snapshotData={snapshotContext} autoOpenReviewModal={complete} />
-            <div className="mt-6 lg:grid lg:grid-cols-10 lg:gap-6">
-              <div className="lg:col-span-3 lg:col-start-8">
-                <PostSubmitProfileStrength
-                  strength={complete ? MAX_PROFILE_STRENGTH : profileStrength}
-                />
-              </div>
-            </div>
-          </div>
+          <PersonalizedReviewCompletion data={snapshotContext} embedded open />
           <ComplianceFooter />
         </motion.div>
+        {completionOverlay}
       </>
+    );
+  }
+
+  if (enrichmentSaved) {
+    return (
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left shadow-sm lg:rounded-3xl"
+      >
+        <div className="p-4 sm:p-6 lg:p-8">
+          <ProfileSavedState snapshotData={snapshotContext} />
+          <div className="mt-6 lg:grid lg:grid-cols-10 lg:gap-6">
+            <div className="lg:col-span-3 lg:col-start-8">
+              <PostSubmitProfileStrength strength={strength} />
+            </div>
+          </div>
+        </div>
+        <ComplianceFooter />
+      </motion.div>
     );
   }
 
@@ -162,6 +199,10 @@ export function FunnelConfirmation({
                   onProfileComplete?.();
                 }}
                 onEnrichmentSaved={() => setEnrichmentSaved(true)}
+                onEnrichmentQualification={({ qualityScore: score, qualityTier: tier }) => {
+                  setQualityScore(score);
+                  setQualityTier(tier);
+                }}
               />
             </div>
 

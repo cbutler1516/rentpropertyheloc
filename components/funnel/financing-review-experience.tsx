@@ -1,61 +1,34 @@
 "use client";
 
-import { FinancingReviewModal } from "@/components/funnel/financing-review-modal";
-import { FinancingReviewViewer } from "@/components/funnel/financing-review-viewer";
+import { PersonalizedReviewCompletion } from "@/components/funnel/personalized-review-completion";
 import type { FinancingReviewData } from "@/lib/leads/financing-review-document";
 import { printFinancingReviewPdf } from "@/lib/leads/financing-review-document";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-type FinancingReviewExperienceProps = {
-  reviewData: FinancingReviewData;
-  autoOpenModal?: boolean;
-};
-
-export function FinancingReviewExperience({
-  reviewData,
-  autoOpenModal = false,
-}: FinancingReviewExperienceProps) {
-  const { experience } = useFinancingReviewActions(reviewData, autoOpenModal);
-  return experience;
-}
-
 export function useFinancingReviewActions(
   reviewData: FinancingReviewData,
-  autoOpenModal = false,
+  autoShowCompletion = false,
 ) {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [viewerOpen, setViewerOpen] = useState(false);
+  const [completionOpen, setCompletionOpen] = useState(false);
   const autoOpenedRef = useRef(false);
 
   const downloadPdf = useCallback(() => printFinancingReviewPdf(reviewData), [reviewData]);
-  const openModal = useCallback(() => setModalOpen(true), []);
-  const openViewer = useCallback(() => setViewerOpen(true), []);
+  const openCompletion = useCallback(() => setCompletionOpen(true), []);
+  const closeCompletion = useCallback(() => setCompletionOpen(false), []);
 
   useEffect(() => {
-    if (!autoOpenModal || autoOpenedRef.current) return;
+    if (!autoShowCompletion || autoOpenedRef.current) return;
     autoOpenedRef.current = true;
-    setModalOpen(true);
-  }, [autoOpenModal]);
+    setCompletionOpen(true);
+  }, [autoShowCompletion]);
 
   const experience = (
-    <>
-      <FinancingReviewModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onViewReview={() => {
-          setModalOpen(false);
-          setViewerOpen(true);
-        }}
-        onDownloadPdf={downloadPdf}
-      />
-      <FinancingReviewViewer
-        open={viewerOpen}
-        onClose={() => setViewerOpen(false)}
-        data={reviewData}
-        onDownloadPdf={downloadPdf}
-      />
-    </>
+    <PersonalizedReviewCompletion
+      data={reviewData}
+      open={completionOpen}
+      onClose={closeCompletion}
+    />
   );
 
-  return { experience, openModal, openViewer, downloadPdf };
+  return { experience, openCompletion, closeCompletion, downloadPdf, completionOpen };
 }

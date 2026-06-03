@@ -7,8 +7,13 @@ import {
   getProfileStrengthLabel,
   MAX_PROFILE_STRENGTH,
 } from "@/lib/leads/investor-review-gamification";
-import { FINANCING_REVIEW_DISCLAIMER } from "@/lib/leads/financing-review-content";
+import {
+  DOWNLOAD_REVIEW_SUMMARY_LABEL,
+  FINANCING_REVIEW_DISCLAIMER,
+  TALK_THROUGH_OPTIONS_LABEL,
+} from "@/lib/leads/financing-review-content";
 import type { FinancingReviewData } from "@/lib/leads/financing-review-document";
+import { StrategyCallLink } from "@/components/trust/strategy-call-link";
 import { cn } from "@/lib/cn";
 
 type InvestorEquitySnapshotCardProps = {
@@ -47,7 +52,7 @@ export function InvestorEquitySnapshotCard({
     profileComplete: isComplete,
   };
 
-  const { experience, openViewer, downloadPdf } = useFinancingReviewActions(reviewData);
+  const { experience, openCompletion, downloadPdf } = useFinancingReviewActions(reviewData);
 
   if (compact) {
     return (
@@ -58,10 +63,10 @@ export function InvestorEquitySnapshotCard({
         {isComplete ? (
           <button
             type="button"
-            onClick={openViewer}
+            onClick={openCompletion}
             className="mt-2 w-full rounded-lg bg-teal-700 px-3 py-2 text-xs font-semibold text-white transition hover:bg-teal-800"
           >
-            View financing review
+            View review summary
           </button>
         ) : null}
         {experience}
@@ -75,9 +80,9 @@ export function InvestorEquitySnapshotCard({
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-              Personalized financing review
+              Personalized review
             </p>
-            <p className="mt-1 text-sm font-semibold text-slate-900">Preliminary review summary</p>
+            <p className="mt-1 text-sm font-semibold text-slate-900">Review summary</p>
           </div>
           <div
             className={cn(
@@ -117,9 +122,12 @@ export function InvestorEquitySnapshotCard({
 
         {isComplete ? (
           <div className="mt-4 border-t border-slate-200/80 pt-4">
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <Button type="button" size="sm" className="rounded-xl" onClick={openViewer}>
-                View Financing Review
+            <div className="flex flex-col gap-2">
+              <StrategyCallLink size="sm" ctaLocation="equity-snapshot-card">
+                {TALK_THROUGH_OPTIONS_LABEL}
+              </StrategyCallLink>
+              <Button type="button" size="sm" className="rounded-xl" onClick={openCompletion}>
+                View My Review Summary
               </Button>
               <Button
                 type="button"
@@ -128,7 +136,7 @@ export function InvestorEquitySnapshotCard({
                 className="rounded-xl border border-slate-200"
                 onClick={downloadPdf}
               >
-                Download PDF
+                {DOWNLOAD_REVIEW_SUMMARY_LABEL}
               </Button>
             </div>
             <p className="mt-2 text-[10px] leading-relaxed text-slate-500">

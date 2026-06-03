@@ -18,7 +18,7 @@ import {
   submissionToLeadCreateRequest,
   updateLeadSubmissionAfterEnrichment,
 } from "@/lib/leads/save-lead-submission";
-import type { LeadCreateRequest, ScoredLeadCreateRequest } from "@/lib/leads/types";
+import type { LeadCreateRequest, LeadQualityTier, ScoredLeadCreateRequest } from "@/lib/leads/types";
 
 export type LeadEnrichmentInput = {
   propertyType?: string;
@@ -30,7 +30,13 @@ export type LeadEnrichmentInput = {
 };
 
 export type EnrichLeadResult =
-  | { success: true; routingTier: string; routingConfidence: string }
+  | {
+      success: true;
+      routingTier: string;
+      routingConfidence: string;
+      qualityScore: number;
+      qualityTier: LeadQualityTier;
+    }
   | { success: false; error: string; status: 400 | 404 | 500 };
 
 function mergeEnrichment(lead: LeadCreateRequest, input: LeadEnrichmentInput): LeadCreateRequest {
@@ -105,6 +111,8 @@ export async function enrichLeadSubmission(
       success: true,
       routingTier: scoredLead.routingTier,
       routingConfidence: scoredLead.routingConfidence,
+      qualityScore: scoredLead.qualityScore,
+      qualityTier: scoredLead.qualityTier,
     };
   } catch (error) {
     console.error("[leads/enrich] failed", error);

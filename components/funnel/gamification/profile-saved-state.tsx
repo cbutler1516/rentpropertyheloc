@@ -5,7 +5,11 @@ import { CALL_OUR_TEAM_LABEL } from "@/lib/contact";
 import { useFinancingReviewActions } from "@/components/funnel/financing-review-experience";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
 import { BOOK_STRATEGY_CALL_LABEL } from "@/lib/contact";
-import { FINANCING_REVIEW_DISCLAIMER } from "@/lib/leads/financing-review-content";
+import {
+  DOWNLOAD_REVIEW_SUMMARY_LABEL,
+  FINANCING_REVIEW_DISCLAIMER,
+  TALK_THROUGH_OPTIONS_LABEL,
+} from "@/lib/leads/financing-review-content";
 import type { FinancingReviewData } from "@/lib/leads/financing-review-document";
 import { cn } from "@/lib/cn";
 import { motion, useReducedMotion } from "framer-motion";
@@ -13,20 +17,12 @@ import { motion, useReducedMotion } from "framer-motion";
 type ProfileSavedStateProps = {
   snapshotData: FinancingReviewData;
   className?: string;
-  autoOpenReviewModal?: boolean;
 };
 
-export function ProfileSavedState({
-  snapshotData,
-  className,
-  autoOpenReviewModal = false,
-}: ProfileSavedStateProps) {
+export function ProfileSavedState({ snapshotData, className }: ProfileSavedStateProps) {
   const reduceMotion = useReducedMotion();
   const profileComplete = snapshotData.profileComplete ?? true;
-  const { experience, openViewer, downloadPdf } = useFinancingReviewActions(
-    snapshotData,
-    autoOpenReviewModal && profileComplete,
-  );
+  const { experience, openCompletion, downloadPdf } = useFinancingReviewActions(snapshotData);
 
   return (
     <>
@@ -67,22 +63,24 @@ export function ProfileSavedState({
           </>
         )}
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <StrategyCallLink ctaLocation="profile-complete" />
+          <StrategyCallLink ctaLocation="profile-complete">
+            {profileComplete ? TALK_THROUGH_OPTIONS_LABEL : BOOK_STRATEGY_CALL_LABEL}
+          </StrategyCallLink>
           {profileComplete ? (
             <>
               <button
                 type="button"
-                onClick={openViewer}
+                onClick={openCompletion}
                 className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-teal-700 px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800"
               >
-                View Financing Review
+                View My Review Summary
               </button>
               <button
                 type="button"
                 onClick={downloadPdf}
                 className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-slate-200 bg-white px-6 text-sm font-semibold text-slate-800 shadow-sm transition hover:bg-slate-50"
               >
-                Download PDF
+                {DOWNLOAD_REVIEW_SUMMARY_LABEL}
               </button>
             </>
           ) : null}
@@ -100,7 +98,7 @@ export function ProfileSavedState({
           </p>
         )}
       </motion.div>
-      {experience}
+      {profileComplete ? experience : null}
     </>
   );
 }

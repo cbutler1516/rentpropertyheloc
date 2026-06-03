@@ -35,5 +35,7 @@ export async function POST(request: Request) {
     success: true,
     routingTier: result.routingTier,
     routingConfidence: result.routingConfidence,
+    qualityScore: result.qualityScore,
+    qualityTier: result.qualityTier,
   });
 }

@@ -4,63 +4,58 @@ import { SITE_NAME } from "@/lib/site";
 export const FINANCING_REVIEW_DISCLAIMER =
   "This review is for informational purposes only and is not a loan approval, commitment to lend, rate quote, or credit decision. All financing options remain subject to lender review, underwriting, property eligibility, and applicable guidelines.";
 
-export const FINANCING_REVIEW_PATHS = [
+export const COMPLETION_STRATEGY_PATHS = [
   {
     id: "rental-heloc",
     icon: "🏦",
     name: "Rental Property HELOC",
-    description:
-      "A revolving line of credit secured by rental property equity that may allow flexible access while keeping an existing first mortgage in place.",
+    suitability:
+      "We'll review whether this option may be suitable for your scenario.",
   },
   {
     id: "second-mortgage",
     icon: "📋",
-    name: "2nd Mortgage",
-    description:
-      "A second-position loan structure that may provide a defined lump sum for investors who prefer not to replace their current first mortgage.",
+    name: "Second Mortgage",
+    suitability:
+      "We'll review whether this option may be suitable for your scenario.",
   },
   {
-    id: "dscr-cash-out",
+    id: "cash-out",
+    icon: "💰",
+    name: "Cash-Out Refinance",
+    suitability:
+      "We'll review whether this option may be suitable for your scenario.",
+  },
+  {
+    id: "portfolio",
     icon: "📈",
-    name: "DSCR Cash-Out Refinance",
-    description:
-      "A refinance path that may be reviewed for investors when rental income and property cash flow support the scenario under lender guidelines.",
-  },
-  {
-    id: "other-options",
-    icon: "🔍",
-    name: "Other Applicable Options",
-    description:
-      "Additional financing paths that may be worth discussing based on property type, portfolio goals, and program availability.",
+    name: "Portfolio Financing",
+    suitability:
+      "We'll review whether this option may be suitable for your scenario.",
   },
 ] as const;
 
-export const FINANCING_REVIEW_NEXT_STEPS = [
-  {
-    step: 1,
-    title: "Specialist review",
-    description:
-      "A licensed financing specialist reviews your preliminary profile and property context.",
-  },
-  {
-    step: 2,
-    title: "Path discussion",
-    description:
-      "We identify potential financing paths that may fit your scenario for further discussion.",
-  },
-  {
-    step: 3,
-    title: "Personalized follow-up",
-    description:
-      "Our team reaches out to walk through options, questions, and practical next steps.",
-  },
-  {
-    step: 4,
-    title: "Your decision",
-    description:
-      "You decide whether to move forward with a formal application — there is no obligation at this stage.",
-  },
+export const COMPLETION_TIMELINE = [
+  { id: "received", label: "Information Received", complete: true },
+  { id: "started", label: "Review Started", complete: true },
+  { id: "analysis", label: "Financing Analysis", complete: true },
+  { id: "followup", label: "Specialist Follow-Up", complete: false },
 ] as const;
+
+export const COMPLETION_REVIEW_NOTE = "Most reviews are evaluated within 1 business day.";
+
+export const TALK_THROUGH_OPTIONS_LABEL = "Talk Through My Options";
+export const DOWNLOAD_REVIEW_SUMMARY_LABEL = "Download My Review Summary";
+
+/** @deprecated Use COMPLETION_STRATEGY_PATHS */
+export const FINANCING_REVIEW_PATHS = COMPLETION_STRATEGY_PATHS;
+
+/** @deprecated Use COMPLETION_TIMELINE */
+export const FINANCING_REVIEW_NEXT_STEPS = COMPLETION_TIMELINE.map((item, index) => ({
+  step: index + 1,
+  title: item.label,
+  description: item.complete ? "Complete" : "Upcoming",
+}));
 
 export const FINANCING_REVIEW_CONTACT = {
   company: ADVISOR.company,

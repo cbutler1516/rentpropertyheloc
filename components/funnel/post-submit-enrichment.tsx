@@ -4,7 +4,8 @@ import { FastTrackHeroCard } from "@/components/funnel/gamification/fast-track-h
 import { EnrichmentUnlockCards } from "@/components/funnel/gamification/enrichment-unlock-cards";
 import { FinancingInsightsPanel } from "@/components/funnel/gamification/financing-insights-panel";
 import { FinancingPathsSection } from "@/components/funnel/gamification/financing-paths-section";
-import { ProfileCompleteCelebration } from "@/components/funnel/gamification/profile-complete-celebration";
+import { PersonalizedReviewCompletion } from "@/components/funnel/personalized-review-completion";
+import { useFinancingReviewActions } from "@/components/funnel/financing-review-experience";
 import { ProfileStrengthBoostToast } from "@/components/funnel/gamification/profile-strength-meter";
 import { PostSubmitProfileStrength } from "@/components/funnel/gamification/post-submit-profile-strength";
 import { FunnelOptionCard } from "@/components/funnel/funnel-option-card";
@@ -31,7 +32,8 @@ import {
   type PropertyCountId,
   type PropertyValueRangeId,
 } from "@/lib/leads/funnel-ranges";
-import type { PropertyTypeId } from "@/lib/leads/types";
+import { getReviewStatusLabel } from "@/lib/leads/review-scenario";
+import type { LeadQualityTier, PropertyTypeId } from "@/lib/leads/types";
 import { cn } from "@/lib/cn";
 import { trackEnrichmentCompleted } from "@/lib/analytics/conversion-events";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -63,6 +65,10 @@ type PostSubmitEnrichmentProps = {
   onProfileStrengthChange?: (strength: number) => void;
   onProfileComplete?: () => void;
   onEnrichmentSaved?: () => void;
+  onEnrichmentQualification?: (qualification: {
+    qualityScore: number;
+    qualityTier: LeadQualityTier;
+  }) => void;
 };
 
 const ENRICHMENT_STEP_COUNT = 3;
@@ -78,6 +84,7 @@ export function PostSubmitEnrichment({
   onProfileStrengthChange,
   onProfileComplete,
   onEnrichmentSaved,
+  onEnrichmentQualification,
 }: PostSubmitEnrichmentProps) {
   const reduceMotion = useReducedMotion();
   const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -99,22 +106,36 @@ export function PostSubmitEnrichment({
   const [pendingSelection, setPendingSelection] = useState<string | null>(null);
   const [boostMessage, setBoostMessage] = useState<string | null>(null);
   const [lastBoostField, setLastBoostField] = useState<ProfileStrengthField | null>(null);
+  const [qualityScore, setQualityScore] = useState<number | undefined>(undefined);
+  const [qualityTier, setQualityTier] = useState<LeadQualityTier | undefined>(undefined);
 
   const profileStrength = useMemo(() => calculateProfileStrength(data), [data]);
   const profileComplete = isProfileComplete(profileStrength);
 
   const snapshotData: FinancingReviewData | null = useMemo(() => {
     if (!snapshotContext) return null;
+    const strength = profileComplete ? MAX_PROFILE_STRENGTH : profileStrength;
+    const qualification = { qualityScore, qualityTier, profileStrength: strength };
     return {
       ...snapshotContext,
       reviewStatus: profileComplete
-        ? "Profile Complete — Review In Progress"
+        ? getReviewStatusLabel(qualification)
         : "Review Started",
-      profileStrength,
+      profileStrength: strength,
       priorityReviewActive: showPriority,
       profileComplete: profileComplete && submitted,
+      qualityScore,
+      qualityTier,
     };
-  }, [snapshotContext, profileStrength, profileComplete, showPriority, submitted]);
+  }, [
+    snapshotContext,
+    profileStrength,
+    profileComplete,
+    showPriority,
+    submitted,
+    qualityScore,
+    qualityTier,
+  ]);
 
   useEffect(() => {
     onProfileStrengthChange?.(profileStrength);
@@ -138,7 +159,7 @@ export function PostSubmitEnrichment({
     submitTriggeredRef.current = true;
     setSubmitting(true);
     try {
-      await fetch("/api/leads/enrich", {
+      const response = await fetch("/api/leads/enrich", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -151,6 +172,19 @@ export function PostSubmitEnrichment({
           fundingTimeline: data.fundingTimeline || undefined,
         }),
       });
+      const body = (await response.json()) as {
+        success?: boolean;
+        qualityScore?: number;
+        qualityTier?: LeadQualityTier;
+      };
+      if (typeof body.qualityScore === "number" && body.qualityTier) {
+        setQualityScore(body.qualityScore);
+        setQualityTier(body.qualityTier);
+        onEnrichmentQualification?.({
+          qualityScore: body.qualityScore,
+          qualityTier: body.qualityTier,
+        });
+      }
       setSubmitted(true);
       trackEnrichmentCompleted({ leadId });
       onEnrichmentSaved?.();
@@ -165,7 +199,7 @@ export function PostSubmitEnrichment({
     } finally {
       setSubmitting(false);
     }
-  }, [leadId, data, onProfileComplete, onEnrichmentSaved, snapshotContext, showPriority]);
+  }, [leadId, data, onProfileComplete, onEnrichmentSaved, onEnrichmentQualification, showPriority]);
 
   function patch(partial: Partial<EnrichmentData>, field?: ProfileStrengthField) {
     setData((prev) => ({ ...prev, ...partial }));
@@ -207,11 +241,13 @@ export function PostSubmitEnrichment({
   }
 
   if (submitted && snapshotData && !focused) {
-    const reviewData: FinancingReviewData = {
-      ...snapshotData,
-      profileStrength: profileComplete ? MAX_PROFILE_STRENGTH : snapshotData.profileStrength,
-      profileComplete: profileComplete,
-    };
+    const reviewData: FinancingReviewData = snapshotData;
+
+    if (profileComplete) {
+      return (
+        <CompletionWithOverlay data={reviewData} className={className} reduceMotion={reduceMotion} />
+      );
+    }
 
     return (
       <motion.div
@@ -219,21 +255,12 @@ export function PostSubmitEnrichment({
         animate={{ opacity: 1, y: 0 }}
         className={className}
       >
-        {profileComplete ? (
-          <ProfileCompleteCelebration
-            profileStrength={MAX_PROFILE_STRENGTH}
-            showPriority={showPriority}
-            snapshotData={reviewData}
-            autoOpenReviewModal
-          />
-        ) : (
-          <>
-            <FastTrackHeroCard profileStrength={profileStrength} showPriority={showPriority} />
-            <p className="mt-3 text-center text-sm font-medium text-slate-700">
-              Review started — your details were saved. Our team will continue your review.
-            </p>
-          </>
-        )}
+        <>
+          <FastTrackHeroCard profileStrength={profileStrength} showPriority={showPriority} />
+          <p className="mt-3 text-center text-sm font-medium text-slate-700">
+            Review started — your details were saved. Our team will continue your review.
+          </p>
+        </>
       </motion.div>
     );
   }
@@ -440,6 +467,31 @@ export function PostSubmitEnrichment({
         </div>
       </div>
     </motion.div>
+  );
+}
+
+function CompletionWithOverlay({
+  data,
+  className,
+  reduceMotion,
+}: {
+  data: FinancingReviewData;
+  className?: string;
+  reduceMotion: boolean | null;
+}) {
+  const { experience } = useFinancingReviewActions(data, true);
+
+  return (
+    <>
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        className={className}
+      >
+        <PersonalizedReviewCompletion data={data} embedded open />
+      </motion.div>
+      {experience}
+    </>
   );
 }
 
