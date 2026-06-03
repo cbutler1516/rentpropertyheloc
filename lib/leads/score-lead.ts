@@ -58,6 +58,7 @@ function assessCompleteness(lead: LeadCreateRequest): CompletenessResult {
 
   if (!lead.journey || !isJourneySlug(lead.journey)) missing.push("investor journey");
   if (!lead.desiredFunds || lead.desiredFunds <= 0) missing.push("desired funds");
+  if (!lead.creditScoreRange?.trim()) missing.push("credit score");
   if (!lead.propertyStreet?.trim()) missing.push("property address");
   if (!lead.tcpaConsent) missing.push("TCPA consent");
   if (!lead.firstName?.trim()) missing.push("first name");

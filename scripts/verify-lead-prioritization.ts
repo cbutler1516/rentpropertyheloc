@@ -9,12 +9,13 @@ import type { LeadCreateRequest } from "../lib/leads/types";
 
 const baseLead: LeadCreateRequest = {
   journey: "sfr",
-  funnelVersion: "v2",
+  funnelVersion: "v10-credit-qualify-2026",
   propertyType: "",
   propertyValueRange: "",
   mortgageBalanceRange: "",
   equityAccessRange: "500k-plus",
-  creditScoreRange: "",
+  creditScoreRange: "760-plus",
+  creditScoreEstimate: 780,
   propertyCount: "",
   fundingTimeline: "",
   propertyRented: "",
@@ -49,12 +50,11 @@ const baseLead: LeadCreateRequest = {
   useMortgageEstimate: false,
   fundingGoal: "",
   ownershipType: "",
-  funnelStepCompleted: 3,
+  funnelStepCompleted: 5,
   targetCltvPercent: 0,
   investorScore: null,
   confidenceRating: "",
   valuationLastUpdated: "",
-  creditScoreEstimate: null,
   firstName: "Test",
   lastName: "Lead",
   email: "test@example.com",
@@ -72,10 +72,13 @@ function runScenarios() {
     desiredFunds: 750_000,
   });
   assert.equal(scenarioA.leadType, "PARTIAL");
-  assert.equal(scenarioA.completionPercent, 40);
-  assert.equal(scenarioA.dataConfidence, "LOW");
-  assert.equal(scenarioA.leadScore, 100);
-  assert.equal(scenarioA.salesQualityTier, "High Potential Partial");
+  assert.equal(scenarioA.completionPercent, 70);
+  assert.equal(scenarioA.dataConfidence, "MEDIUM");
+  assert.equal(scenarioA.leadScore, 70);
+  assert.equal(scenarioA.scoringBreakdown.creditScorePoints, 35);
+  assert.equal(scenarioA.scoringBreakdown.desiredLoanAmountPoints, 35);
+  assert.equal(scenarioA.scoringBreakdown.profileCompletionPoints, 0);
+  assert.equal(scenarioA.salesQualityTier, "Medium Potential Partial");
   assert.equal(scenarioA.revenueTier, "Platinum");
   assert.equal(scenarioA.callPriority, "CALL NOW");
 
@@ -84,8 +87,13 @@ function runScenarios() {
     desiredFunds: 500_000,
     propertyValue: 1_200_000,
     mortgageBalance: 400_000,
-    creditScoreRange: "760-plus",
-    creditScoreEstimate: 780,
+    propertyValueRange: "750k-1m",
+    mortgageBalanceRange: "250k-500k",
+    propertyType: "single-family",
+    propertyCount: "2-4",
+    fundingTimeline: "asap",
+    fundingGoal: "buy-rental",
+    ownershipType: "llc-entity",
   });
   assert.equal(scenarioB.leadType, "COMPLETE");
   assert.equal(scenarioB.completionPercent, 100);
@@ -97,25 +105,31 @@ function runScenarios() {
 
   const scenarioC = computeLeadPrioritization({
     ...baseLead,
-    desiredFunds: 250_000,
-    propertyValue: 700_000,
-    mortgageBalance: 450_000,
     creditScoreRange: "680-719",
     creditScoreEstimate: 700,
+    desiredFunds: 300_000,
+    propertyValue: 700_000,
+    mortgageBalance: 450_000,
+    propertyValueRange: "500k-750k",
+    mortgageBalanceRange: "250k-500k",
   });
   assert.equal(scenarioC.leadType, "COMPLETE");
   assert.equal(scenarioC.dataConfidence, "HIGH");
+  assert.equal(scenarioC.leadScore, 55);
   assert.equal(scenarioC.salesQualityTier, "Mid-Tier");
   assert.equal(scenarioC.callPriority, "CALL TODAY");
 
   const scenarioD = computeLeadPrioritization({
     ...baseLead,
+    creditScoreRange: "640-679",
+    creditScoreEstimate: 650,
     desiredFunds: 75_000,
     propertyValue: 165_000,
     mortgageBalance: 75_000,
-    creditScoreRange: "640-679",
-    creditScoreEstimate: 650,
+    propertyValueRange: "under-300k",
+    mortgageBalanceRange: "under-100k",
   });
+  assert.equal(scenarioD.leadScore, 25);
   assert.equal(scenarioD.salesQualityTier, "Low Priority");
   assert.equal(scenarioD.callPriority, "AUTOMATION");
 }

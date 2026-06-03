@@ -34,7 +34,7 @@ export const TCPA_CONSENT_VARIANTS: Record<TcpaConsentVariantId, TcpaConsentVari
     label: "Short label + expandable detail",
     text: "I agree to be contacted about my financing options.",
     detail:
-      "By submitting this form, you agree that Rent Property LLC and its lending partners may contact you by phone call, text message, or email regarding your financing request and available financing options. Consent is not required as a condition of obtaining financing. Message and data rates may apply. Message frequency may vary.",
+      "By submitting this form, you agree that Rent Property HELOC, Broadview Lending, Barrett Financial Group, and their lending partners may contact you regarding financing options and services that may be available to you. Communications may include phone calls, emails, artificial intelligence (AI)-assisted calls, prerecorded messages, and SMS/text messages sent using automated technology. Consent is not a condition of obtaining financing. Message and data rates may apply. You may opt out at any time.",
   },
 };
 

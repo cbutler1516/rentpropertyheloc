@@ -37,9 +37,13 @@ export function getMilestoneMomentumMessage(step: number, totalSteps: number): s
 export function getStepUnlockMessage(completedStep: number): string | null {
   switch (completedStep) {
     case 1:
-      return "Property saved — how much would you like to access?";
+      return "Property saved — what's your estimated credit score?";
     case 2:
-      return "Amount saved — one step left.";
+      return "Credit saved — how much would you like to access?";
+    case 3:
+      return "Amount saved — share your contact details.";
+    case 4:
+      return "Contact saved — one step left.";
     default:
       return null;
   }

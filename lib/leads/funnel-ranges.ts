@@ -68,7 +68,13 @@ export const EQUITY_ACCESS_RANGES: RangeOption<EquityAccessRangeId>[] = [
 ];
 
 /** Options shown in the pre-submit funnel (5 choices). */
-export const FUNNEL_EQUITY_ACCESS_RANGES = EQUITY_ACCESS_RANGES.slice(0, 5);
+export const FUNNEL_EQUITY_ACCESS_RANGES: RangeOption<EquityAccessRangeId>[] = [
+  { id: "under-50k", label: "Under $50k", estimate: 37_500 },
+  { id: "50k-100k", label: "$50k–$100k", estimate: 75_000 },
+  { id: "100k-250k", label: "$100k–$250k", estimate: 175_000 },
+  { id: "250k-500k", label: "$250k–$500k", estimate: 375_000 },
+  { id: "500k-plus", label: "$500k+", estimate: 750_000 },
+];
 
 export const CREDIT_SCORE_RANGES: RangeOption<CreditScoreRangeId>[] = [
   { id: "760-plus", label: "760+", estimate: 780 },
@@ -76,7 +82,7 @@ export const CREDIT_SCORE_RANGES: RangeOption<CreditScoreRangeId>[] = [
   { id: "680-719", label: "680 – 719", estimate: 700 },
   { id: "640-679", label: "640 – 679", estimate: 660 },
   { id: "below-640", label: "Below 640", estimate: 620 },
-  { id: "not-sure", label: "Not sure", estimate: 0 },
+  { id: "not-sure", label: "Not Sure", estimate: 0 },
 ];
 
 export type PropertyCountId = "1" | "2-4" | "5-plus";

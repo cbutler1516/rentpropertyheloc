@@ -73,8 +73,8 @@ export function validateLeadCreateRequest(body: unknown): LeadValidationResult {
   }
 
   const creditScoreRange = parseStringField(raw.creditScoreRange);
-  if (creditScoreRange && !isValidCreditRange(creditScoreRange)) {
-    return { valid: false, error: "Invalid credit score range." };
+  if (!creditScoreRange || !isValidCreditRange(creditScoreRange)) {
+    return { valid: false, error: "Credit score range is required." };
   }
 
   if (

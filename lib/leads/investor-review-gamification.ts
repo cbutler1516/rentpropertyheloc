@@ -4,13 +4,13 @@ export const ENRICHMENT_FIELD_COUNT = 7;
 
 /** Fields that count toward post-submit profile completion */
 export const ENRICHMENT_PROFILE_FIELDS = [
-  "propertyType",
   "propertyValueRange",
   "mortgageBalanceRange",
-  "creditScoreRange",
+  "propertyType",
   "propertyCount",
-  "fundingTimeline",
   "fundingGoal",
+  "fundingTimeline",
+  "ownershipType",
 ] as const satisfies readonly ProfileStrengthField[];
 
 export const BASE_PROFILE_STRENGTH = 40;
@@ -30,11 +30,11 @@ export const PROFILE_STRENGTH_WEIGHTS: Record<ProfileStrengthField, number> = {
   propertyType: 9,
   propertyValueRange: 9,
   mortgageBalanceRange: 9,
-  creditScoreRange: 9,
+  creditScoreRange: 0,
   propertyCount: 8,
   fundingTimeline: 8,
-  fundingGoal: 8,
-  ownershipType: 0,
+  fundingGoal: 9,
+  ownershipType: 8,
 };
 
 export type MilestoneStatus = "complete" | "current" | "pending" | "locked";
@@ -76,15 +76,15 @@ export const ENRICHMENT_UNLOCK_CARDS: EnrichmentUnlockCard[] = [
     id: "programs",
     icon: "🔓",
     title: "Unlock Additional Programs",
-    line: "Credit profile added",
-    unlockFields: ["creditScoreRange"],
+    line: "Investor profile added",
+    unlockFields: ["propertyCount", "fundingTimeline", "fundingGoal"],
   },
   {
     id: "matches",
     icon: "🎯",
     title: "Unlock Better Financing Matches",
-    line: "Investor goals added",
-    unlockFields: ["propertyCount", "fundingTimeline", "fundingGoal"],
+    line: "Ownership structure added",
+    unlockFields: ["ownershipType"],
   },
 ];
 
@@ -150,8 +150,10 @@ export function isUnlockCardUnlocked(
 
 export const PRE_SUBMIT_MILESTONES = [
   { step: 1, label: "Property", icon: "🏠" },
-  { step: 2, label: "Access", icon: "💰" },
-  { step: 3, label: "Contact", icon: "📋" },
+  { step: 2, label: "Credit", icon: "📈" },
+  { step: 3, label: "Access", icon: "💰" },
+  { step: 4, label: "Contact", icon: "📋" },
+  { step: 5, label: "Consent", icon: "✓" },
 ] as const;
 
 export function getReviewMilestones(options: {
@@ -233,26 +235,10 @@ export function getScoreBoostHint(enrichmentAnswerCount: number): string {
 }
 
 export function isEnrichmentStepComplete(
-  step: number,
+  _step: number,
   data: Record<string, string | undefined>,
 ): boolean {
-  switch (step) {
-    case 1:
-      return Boolean(
-        data.propertyType?.trim() &&
-          data.propertyValueRange?.trim() &&
-          data.mortgageBalanceRange?.trim(),
-      );
-    case 2:
-      return Boolean(
-        data.creditScoreRange?.trim() &&
-          data.propertyCount?.trim() &&
-          data.fundingTimeline?.trim() &&
-          data.fundingGoal?.trim(),
-      );
-    default:
-      return false;
-  }
+  return ENRICHMENT_PROFILE_FIELDS.some((field) => Boolean(data[field]?.trim()));
 }
 
 export type FinancingInsight = {
@@ -276,10 +262,10 @@ export const FINANCING_INSIGHTS: FinancingInsight[] = [
   {
     id: "credit-fit",
     icon: "🎯",
-    title: "Credit Profile Fit",
-    lockedCopy: "Add your credit range to unlock program matching",
+    title: "Investor Goals Fit",
+    lockedCopy: "Add property type and intended use to unlock program matching",
     unlockedCopy: "Helps narrow which financing paths may fit your profile",
-    unlockFields: ["creditScoreRange"],
+    unlockFields: ["propertyType", "fundingGoal"],
   },
   {
     id: "portfolio-strategy",

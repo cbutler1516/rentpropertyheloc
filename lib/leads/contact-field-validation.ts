@@ -1,7 +1,7 @@
 import { isValidPhone } from "@/lib/leads/validation";
 import type { LeadFunnelData } from "@/lib/leads/types";
 
-export type ContactFieldKey = "firstName" | "lastName" | "email" | "phone" | "consent";
+export type ContactFieldKey = "firstName" | "lastName" | "email" | "phone";
 
 export type ContactFieldErrors = Partial<Record<ContactFieldKey, string>>;
 
@@ -34,16 +34,12 @@ export function getContactFieldErrors(data: LeadFunnelData): ContactFieldErrors 
     errors.phone = "Enter a valid phone number.";
   }
 
-  if (!data.tcpaConsent) {
-    errors.consent = "Please check the box to agree to be contacted about your inquiry.";
-  }
-
   return errors;
 }
 
 export function getContactSubmitBlockReason(data: LeadFunnelData): string | null {
   const errors = getContactFieldErrors(data);
-  const first = errors.firstName ?? errors.lastName ?? errors.email ?? errors.phone ?? errors.consent;
+  const first = errors.firstName ?? errors.lastName ?? errors.email ?? errors.phone;
   return first ?? null;
 }
 

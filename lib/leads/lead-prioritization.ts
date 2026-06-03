@@ -7,6 +7,10 @@ import {
   type MortgageBalanceRangeId,
   type PropertyValueRangeId,
 } from "@/lib/leads/funnel-ranges";
+import {
+  ENRICHMENT_PROFILE_FIELDS,
+} from "@/lib/leads/investor-review-gamification";
+import { enrichmentDataFromLead } from "@/lib/leads/enrichment-fields";
 import type { LeadCreateRequest } from "@/lib/leads/types";
 
 export type LeadType = "PARTIAL" | "COMPLETE";
@@ -26,6 +30,8 @@ export type ScoringBreakdown = {
   leadType: LeadType;
   completionPercent: number;
   dataConfidence: DataConfidence;
+  profileCompletionPoints: number;
+  /** @deprecated Mapped to profileCompletionPoints for legacy payloads */
   availableEquityPoints: number;
   desiredLoanAmountPoints: number;
   creditScorePoints: number;
@@ -154,8 +160,11 @@ export function resolveLeadType(lead: LeadCreateRequest): LeadType {
 }
 
 function resolveCompletionPercent(lead: LeadCreateRequest, leadType: LeadType): number {
+  const profilePercent = resolveProfileCompletionPercent(lead);
   if (leadType === "COMPLETE") return 100;
-  if (hasPartialPropertyEquityData(lead)) return 70;
+  if (profilePercent >= 100) return 100;
+  if (profilePercent > 0) return Math.max(70, 70 + Math.round(profilePercent * 0.3));
+  if (hasCreditTier(lead) && resolveDesiredLoanAmount(lead) > 0) return 70;
   return 40;
 }
 
@@ -179,6 +188,38 @@ export function resolveRevenueTier(desiredLoanAmount: number): RevenueTier {
   if (desiredLoanAmount >= 300_000) return "Gold";
   if (desiredLoanAmount >= 150_000) return "Silver";
   return "Bronze";
+}
+
+function resolveProfileCompletionPercent(lead: LeadCreateRequest): number {
+  const data = enrichmentDataFromLead(lead);
+  const completed = ENRICHMENT_PROFILE_FIELDS.filter((field) => data[field]?.trim()).length;
+  return Math.round((completed / ENRICHMENT_PROFILE_FIELDS.length) * 100);
+}
+
+function creditScorePoints35(creditTier: string, creditRange: string): number {
+  switch (creditTier) {
+    case "760+":
+      return 35;
+    case "720-759":
+      return 28;
+    case "680-719":
+      return 20;
+    case "640-679":
+      return 12;
+    case "Below 640":
+      return 5;
+    default:
+      if (creditRange === "not-sure") return 10;
+      return 0;
+  }
+}
+
+function fundsRequestedPoints35(desiredLoanAmount: number): number {
+  return Math.round((partialLoanAmountPoints(desiredLoanAmount) * 35) / 100);
+}
+
+function profileCompletionPoints30(lead: LeadCreateRequest): number {
+  return Math.round((resolveProfileCompletionPercent(lead) * 30) / 100);
 }
 
 function partialLoanAmountPoints(desiredLoanAmount: number): number {
@@ -275,15 +316,19 @@ function buildScoringNote(input: {
   dataConfidence: DataConfidence;
   salesQualityTier: SalesQualityTier;
   callPriority: CallPriority;
+  profileCompletionPercent: number;
 }): string {
   if (input.leadType === "PARTIAL") {
+    if (input.profileCompletionPercent >= 100) {
+      return "Qualified lead with complete investor profile enrichment pending property verification.";
+    }
     if (input.salesQualityTier === "High Potential Partial") {
-      return "High potential partial lead based primarily on requested loan amount. Property/equity/credit data not yet verified.";
+      return "High potential lead based on credit score and requested loan amount. Property details may still be pending.";
     }
     if (input.salesQualityTier === "Medium Potential Partial") {
-      return "Partial lead with moderate opportunity based on requested loan amount. Property/equity/credit data not yet verified.";
+      return "Moderate opportunity based on credit score and requested loan amount.";
     }
-    return "Partial lead with limited opportunity signal. Property/equity/credit data not yet verified.";
+    return "Lead scored from credit, funds requested, and profile completion.";
   }
 
   if (input.salesQualityTier === "Excellent" || input.callPriority === "CALL NOW") {
@@ -318,6 +363,7 @@ const DEFAULT_PRIORITIZATION: LeadPrioritization = {
     completionPercent: 40,
     dataConfidence: "LOW",
     availableEquityPoints: 0,
+    profileCompletionPoints: 0,
     desiredLoanAmountPoints: 0,
     creditScorePoints: 0,
     totalScore: 0,
@@ -374,20 +420,13 @@ export function computeLeadPrioritization(lead: LeadCreateRequest): LeadPrioriti
   const dataConfidence = resolveDataConfidence(lead, leadType, completionPercent);
   const revenueTier = resolveRevenueTier(desiredLoanAmount);
 
-  let availableEquityPoints = 0;
-  let desiredLoanAmountPoints = 0;
-  let creditScorePoints = 0;
-  let totalScore = 0;
+  const profileCompletionPercent = resolveProfileCompletionPercent(lead);
 
-  if (leadType === "PARTIAL") {
-    desiredLoanAmountPoints = partialLoanAmountPoints(desiredLoanAmount);
-    totalScore = desiredLoanAmountPoints;
-  } else {
-    availableEquityPoints = completeEquityPoints(estimatedEquity);
-    desiredLoanAmountPoints = completeLoanAmountPoints(desiredLoanAmount);
-    creditScorePoints = completeCreditPoints(creditTier);
-    totalScore = availableEquityPoints + desiredLoanAmountPoints + creditScorePoints;
-  }
+  const creditScorePoints = creditScorePoints35(creditTier, lead.creditScoreRange ?? "");
+  const desiredLoanAmountPoints = fundsRequestedPoints35(desiredLoanAmount);
+  const profileCompletionPoints = profileCompletionPoints30(lead);
+  const availableEquityPoints = profileCompletionPoints;
+  const totalScore = creditScorePoints + desiredLoanAmountPoints + profileCompletionPoints;
 
   const leadScore = clampScore(totalScore);
   const opportunityScore = leadScore;
@@ -408,6 +447,7 @@ export function computeLeadPrioritization(lead: LeadCreateRequest): LeadPrioriti
     completionPercent,
     dataConfidence,
     availableEquityPoints,
+    profileCompletionPoints,
     desiredLoanAmountPoints,
     creditScorePoints,
     totalScore: leadScore,
@@ -420,6 +460,7 @@ export function computeLeadPrioritization(lead: LeadCreateRequest): LeadPrioriti
       dataConfidence,
       salesQualityTier,
       callPriority,
+      profileCompletionPercent,
     }),
   };
 

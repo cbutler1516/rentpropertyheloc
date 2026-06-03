@@ -1,11 +1,9 @@
 "use client";
 
-import { FunnelConsentSection } from "@/components/funnel/funnel-consent-section";
 import { PhoneInput } from "@/components/funnel/phone-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FUNNEL_SUBMIT_LABEL } from "@/lib/leads/constants";
 import {
   getContactFieldErrors,
   getVisibleContactFieldError,
@@ -20,18 +18,10 @@ import { useMemo, useState } from "react";
 type FunnelContactStepProps = {
   data: LeadFunnelData;
   onChange: (partial: Partial<LeadFunnelData>) => void;
-  submitting?: boolean;
-  submitError?: string | null;
-  onSubmit: () => void;
+  onContinue: () => void;
 };
 
-export function FunnelContactStep({
-  data,
-  onChange,
-  submitting = false,
-  submitError,
-  onSubmit,
-}: FunnelContactStepProps) {
+export function FunnelContactStep({ data, onChange, onContinue }: FunnelContactStepProps) {
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [touched, setTouched] = useState<ContactTouchedFields>({});
 
@@ -45,11 +35,11 @@ export function FunnelContactStep({
     return getVisibleContactFieldError(field, fieldErrors, touched, submitAttempted);
   }
 
-  function handleSubmitClick() {
+  function handleContinueClick() {
     setSubmitAttempted(true);
     const errors = getContactFieldErrors(data);
     if (hasContactFieldErrors(errors)) return;
-    onSubmit();
+    onContinue();
   }
 
   return (
@@ -113,7 +103,7 @@ export function FunnelContactStep({
 
           <div className="space-y-2">
             <Label htmlFor="phone">
-              Phone <RequiredMark />
+              Mobile phone <RequiredMark />
             </Label>
             <PhoneInput
               id="phone"
@@ -128,31 +118,13 @@ export function FunnelContactStep({
           </div>
         </div>
 
-        <div className="space-y-2">
-          <FunnelConsentSection
-            tcpaConsent={data.tcpaConsent}
-            onTcpaChange={(checked) => onChange({ tcpaConsent: checked })}
-            onBlur={() => markTouched("consent")}
-            aria-invalid={Boolean(visibleError("consent"))}
-            aria-describedby={visibleError("consent") ? "consent-error" : undefined}
-          />
-          <FieldError id="consent-error" message={visibleError("consent")} />
-        </div>
-
-        {submitError ? (
-          <p className="text-sm leading-relaxed text-red-600" role="alert">
-            {submitError}
-          </p>
-        ) : null}
-
         <Button
           type="button"
           size="lg"
           className="thumb-btn hidden h-12 w-full text-base md:flex lg:max-w-md"
-          disabled={submitting}
-          onClick={handleSubmitClick}
+          onClick={handleContinueClick}
         >
-          {submitting ? "Submitting…" : FUNNEL_SUBMIT_LABEL}
+          Continue
         </Button>
       </div>
 
@@ -166,10 +138,9 @@ export function FunnelContactStep({
           type="button"
           size="lg"
           className="thumb-btn h-12 w-full text-base shadow-sm"
-          disabled={submitting}
-          onClick={handleSubmitClick}
+          onClick={handleContinueClick}
         >
-          {submitting ? "Submitting…" : FUNNEL_SUBMIT_LABEL}
+          Continue
         </Button>
       </div>
     </>

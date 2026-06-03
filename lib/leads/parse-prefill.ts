@@ -157,8 +157,17 @@ export function getInitialFunnelStep(data: LeadFunnelData): number {
   ) {
     return 1;
   }
-  if (!data.equityAccessRange) return 2;
-  if (!data.firstName?.trim() || !data.email?.trim() || !data.tcpaConsent) return 3;
+  if (!data.creditScoreRange) return 2;
+  if (!data.equityAccessRange) return 3;
+  if (
+    !data.firstName?.trim() ||
+    !data.lastName?.trim() ||
+    !data.email?.trim() ||
+    !data.phone?.trim()
+  ) {
+    return 4;
+  }
+  if (!data.tcpaConsent) return 5;
   return 1;
 }
 

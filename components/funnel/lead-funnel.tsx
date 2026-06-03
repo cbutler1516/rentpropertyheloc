@@ -2,7 +2,9 @@
 
 import { FunnelConfirmation } from "@/components/funnel/funnel-confirmation";
 import { FunnelAddressStep } from "@/components/funnel/funnel-address-step";
+import { FunnelConsentStep } from "@/components/funnel/funnel-consent-step";
 import { FunnelContactStep } from "@/components/funnel/funnel-contact-step";
+import { FunnelCreditScoreStep } from "@/components/funnel/funnel-credit-score-step";
 import { FunnelRequestedFundsStep } from "@/components/funnel/funnel-requested-funds-step";
 import { FunnelProgress } from "@/components/funnel/funnel-progress";
 import { FunnelStepHeader } from "@/components/funnel/funnel-step-header";
@@ -72,7 +74,6 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
   const [routingTier, setRoutingTier] = useState<RoutingTier | undefined>(undefined);
   const [submittedAt, setSubmittedAt] = useState<string>("");
   const [tcpaConsentAt, setTcpaConsentAt] = useState<string>("");
-  const [profileComplete, setProfileComplete] = useState(false);
 
   const journey = useMemo(
     () => getJourneySlugForPropertyType(data.propertyType as PropertyTypeId) ?? "sfr",
@@ -134,7 +135,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
   }, [submitted]);
 
   useEffect(() => {
-    if (step === 3) {
+    if (step === 4) {
       trackContactStepViewed({ journey, funnelVersion: FUNNEL_VERSION });
     }
   }, [step, journey]);
@@ -186,6 +187,10 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
   }
 
   async function handleSubmit() {
+    if (!data.creditScoreRange) {
+      setSubmitError("Select your estimated credit score.");
+      return;
+    }
     if (!data.equityAccessRange) {
       setSubmitError("Select how much you'd like to access.");
       return;
@@ -199,7 +204,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
 
     const submissionData: LeadFunnelData = {
       ...data,
-      funnelStepCompleted: 3,
+      funnelStepCompleted: 5,
     };
 
     const result = await submitLead({
@@ -254,7 +259,6 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
           propertyZip={data.propertyZip}
           equityAccessRange={data.equityAccessRange}
           submittedAt={submittedAt || new Date().toISOString()}
-          onProfileComplete={() => setProfileComplete(true)}
         />
       </div>
     );
@@ -265,6 +269,8 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
     equityAccessRange: data.equityAccessRange,
     creditScoreRange: data.creditScoreRange,
   });
+
+  const stickyFooterStep = step === 4 || step === 5;
 
   return (
     <div className="funnel-container mx-auto w-full">
@@ -295,7 +301,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
         <div
           className={cn(
             "px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6",
-            step === 3 && "max-md:pb-28",
+            stickyFooterStep && "max-md:pb-28",
           )}
         >
           <AnimatePresence mode="wait">
@@ -319,7 +325,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
                 ) : null}
 
                 {step === 2 ? (
-                  <FunnelRequestedFundsStep
+                  <FunnelCreditScoreStep
                     data={data}
                     onChange={patch}
                     onContinue={() => goNext(2)}
@@ -327,7 +333,19 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
                 ) : null}
 
                 {step === 3 ? (
-                  <FunnelContactStep
+                  <FunnelRequestedFundsStep
+                    data={data}
+                    onChange={patch}
+                    onContinue={() => goNext(3)}
+                  />
+                ) : null}
+
+                {step === 4 ? (
+                  <FunnelContactStep data={data} onChange={patch} onContinue={() => goNext(4)} />
+                ) : null}
+
+                {step === 5 ? (
+                  <FunnelConsentStep
                     data={data}
                     onChange={patch}
                     submitting={submitting}
@@ -349,9 +367,13 @@ function getStepTitle(step: number): string {
     case 1:
       return "Which rental property should we review?";
     case 2:
-      return "How much would you like to access?";
+      return "What's your estimated credit score?";
     case 3:
+      return "How much would you like to access?";
+    case 4:
       return "Start your personalized review";
+    case 5:
+      return "Almost done — confirm consent";
     default:
       return getFunnelStepTitle(step);
   }
@@ -362,9 +384,13 @@ function getStepSubtitle(step: number): string | undefined {
     case 1:
       return "Enter your rental property address. A licensed mortgage professional will review your scenario.";
     case 2:
-      return "Select the range that best matches your goal. This is not a loan offer.";
+      return "Select the range that best matches your credit profile. This is not a credit check.";
     case 3:
+      return "Select the range that best matches your goal. This is not a loan offer.";
+    case 4:
       return "Share your contact details so our team can follow up with financing options.";
+    case 5:
+      return "Review and confirm how we may contact you about your financing options.";
     default:
       return undefined;
   }
