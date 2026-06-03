@@ -25,7 +25,7 @@ export function CompanyTrustSection({
 }: CompanyTrustSectionProps) {
   if (variant === "homepage") {
     return (
-      <Section id="guidance" divider className={cn("bg-white py-12 sm:py-16", className)}>
+      <Section id="guidance" divider className={cn("bg-white py-14 sm:py-16 md:py-20", className)}>
         <Reveal>
           <SectionHeader
             tone="light"
@@ -34,7 +34,7 @@ export function CompanyTrustSection({
             description={COMPANY_TRUST.body[0]}
           />
         </Reveal>
-        <Reveal delay={0.06} className="mt-8 lg:mt-10">
+        <Reveal delay={0.06} className="mt-10 lg:mt-12">
           <HomepageTrustCard />
         </Reveal>
       </Section>
@@ -46,58 +46,27 @@ export function CompanyTrustSection({
   const content = (
     <div
       className={cn(
-        "overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-sm",
+        "overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_24px_rgba(15,23,42,0.05)]",
         compact ? "p-4 sm:p-5" : "p-6 sm:p-8",
       )}
     >
       <div
         className={cn(
-          "flex flex-col gap-5",
-          compact ? "sm:flex-row sm:items-start" : "lg:flex-row lg:items-center lg:gap-8",
+          "flex flex-col gap-6",
+          compact ? "sm:flex-row sm:items-center sm:gap-5" : "lg:flex-row lg:items-stretch lg:gap-8",
         )}
       >
-        <div className={cn("shrink-0", compact ? "mx-auto w-full max-w-[200px] sm:mx-0" : "mx-auto w-full max-w-md lg:mx-0 lg:max-w-sm")}>
-          <TeamTrustVisual
-            frameClassName={compact ? "w-full" : "w-full"}
-            sizes={compact ? "200px" : "384px"}
-          />
+        <div
+          className={cn(
+            "shrink-0",
+            compact ? "mx-auto w-full max-w-[140px] sm:mx-0" : "mx-auto w-full max-w-md lg:mx-0 lg:max-w-[44%]",
+          )}
+        >
+          <TeamTrustVisual compact={compact} frameClassName="w-full" sizes={compact ? "140px" : "384px"} />
         </div>
 
         <div className="min-w-0 flex-1 text-center sm:text-left">
-          <h2
-            className={cn(
-              "font-bold tracking-tight text-slate-900",
-              compact ? "text-lg sm:text-xl" : "text-xl sm:text-2xl",
-            )}
-          >
-            {COMPANY_TRUST.headline}
-          </h2>
-
-          <div className={cn("space-y-2 text-slate-600", compact ? "mt-3 text-xs sm:text-sm" : "mt-4 text-sm sm:text-base")}>
-            {COMPANY_TRUST.body.map((paragraph) => (
-              <p key={paragraph} className="leading-relaxed">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-
-          <TrustPointsList compact={compact} className={compact ? "mt-3" : "mt-5"} />
-
-          {variant === "full" ? (
-            <p className="mt-4 text-xs leading-relaxed text-slate-500">
-              Licensed in: {ADVISOR.licensedStates}.{" "}
-              <Link
-                href={NMLS_CONSUMER_ACCESS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-teal-700 underline-offset-2 hover:underline"
-              >
-                NMLS Consumer Access
-              </Link>
-            </p>
-          ) : null}
-
-          <TrustCtaRow compact={compact} ctaLocation={`company-trust-${variant}`} />
+          <TrustCardContent compact={compact} showLicensing={variant === "full"} ctaLocation={`company-trust-${variant}`} />
         </div>
       </div>
     </div>
@@ -112,33 +81,76 @@ export function CompanyTrustSection({
 
 function HomepageTrustCard() {
   return (
-    <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_8px_40px_rgba(15,23,42,0.06)] ring-1 ring-slate-100">
-      <div className="flex flex-col gap-8 p-6 sm:p-8 lg:flex-row lg:items-stretch lg:gap-0 lg:p-0">
-        <div className="min-w-0 flex-1 p-0 text-center lg:p-10 lg:text-left">
-          <h3 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            {COMPANY_TRUST.headline}
-          </h3>
-          <div className="mt-4 max-w-xl space-y-3 text-sm leading-relaxed text-slate-600 sm:text-base lg:max-w-lg">
-            {COMPANY_TRUST.body.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
-
-          <TrustPointsList className="mt-6 justify-center lg:justify-start" />
-
-          <TrustCtaRow className="mt-8 justify-center lg:justify-start" ctaLocation="company-trust-homepage" />
+    <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_12px_48px_rgba(15,23,42,0.08)] ring-1 ring-slate-100/80">
+      <div className="flex flex-col lg:flex-row lg:items-stretch">
+        <div className="flex min-w-0 flex-1 flex-col justify-center px-6 py-8 sm:px-10 sm:py-10 lg:px-12 lg:py-14">
+          <TrustCardContent ctaLocation="company-trust-homepage" />
         </div>
 
-        <div className="relative mx-auto w-full max-w-lg shrink-0 lg:mx-0 lg:max-w-[42%] lg:min-h-[280px]">
+        <div className="relative w-full shrink-0 lg:w-[46%] lg:min-h-[320px]">
           <TeamTrustVisual
             priority
-            sizes="(max-width: 1024px) 100vw, 448px"
-            className="h-full min-h-[220px] rounded-none lg:min-h-full lg:rounded-none"
-            frameClassName="h-full min-h-[220px] w-full rounded-none lg:min-h-full"
+            sizes="(max-width: 1024px) 100vw, 520px"
+            className="h-full min-h-[200px] w-full lg:min-h-full"
+            frameClassName="h-full min-h-[200px] w-full rounded-none lg:min-h-full lg:rounded-none lg:rounded-r-2xl"
           />
         </div>
       </div>
     </div>
+  );
+}
+
+function TrustCardContent({
+  compact = false,
+  showLicensing = false,
+  ctaLocation,
+}: {
+  compact?: boolean;
+  showLicensing?: boolean;
+  ctaLocation?: string;
+}) {
+  return (
+    <>
+      <h2
+        className={cn(
+          "font-bold tracking-tight text-slate-900",
+          compact
+            ? "text-lg sm:text-xl"
+            : "text-2xl sm:text-3xl lg:text-[2rem] lg:leading-tight",
+        )}
+      >
+        {COMPANY_TRUST.headline}
+      </h2>
+
+      <div
+        className={cn(
+          "space-y-3 text-slate-600",
+          compact ? "mt-3 text-xs leading-relaxed sm:text-sm" : "mt-5 max-w-xl text-base leading-relaxed sm:text-[1.0625rem]",
+        )}
+      >
+        {COMPANY_TRUST.body.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
+      </div>
+
+      <TrustPointsList compact={compact} className={compact ? "mt-4" : "mt-7"} />
+
+      {showLicensing ? (
+        <p className="mt-5 text-xs leading-relaxed text-slate-500">
+          Licensed in: {ADVISOR.licensedStates}.{" "}
+          <Link
+            href={NMLS_CONSUMER_ACCESS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-teal-700 underline-offset-2 hover:underline"
+          >
+            NMLS Consumer Access
+          </Link>
+        </p>
+      ) : null}
+
+      <TrustCtaRow compact={compact} className={compact ? "mt-4" : "mt-8"} ctaLocation={ctaLocation} />
+    </>
   );
 }
 
@@ -152,8 +164,8 @@ function TrustPointsList({
   return (
     <ul
       className={cn(
-        "flex flex-col gap-2",
-        !compact && "sm:flex-row sm:flex-wrap sm:gap-x-6",
+        "flex flex-col gap-2.5",
+        !compact && "sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-2",
         className,
       )}
     >
@@ -161,13 +173,16 @@ function TrustPointsList({
         <li
           key={point}
           className={cn(
-            "flex items-center gap-2 font-medium text-slate-700",
-            compact ? "justify-center text-xs sm:justify-start sm:text-sm" : "text-sm",
+            "flex items-center gap-2.5 font-medium text-slate-800",
+            compact ? "justify-center text-xs sm:justify-start sm:text-sm" : "text-sm sm:text-[0.9375rem]",
           )}
         >
           <span
             aria-hidden
-            className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-100 text-xs text-teal-700"
+            className={cn(
+              "flex shrink-0 items-center justify-center rounded-full bg-teal-100 text-teal-700",
+              compact ? "h-4 w-4 text-[10px]" : "h-5 w-5 text-xs",
+            )}
           >
             ✓
           </span>
@@ -191,7 +206,6 @@ function TrustCtaRow({
     <div
       className={cn(
         "flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center",
-        compact ? "mt-4" : "mt-5",
         className,
       )}
     >

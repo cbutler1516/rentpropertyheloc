@@ -4,12 +4,11 @@ import { COMPANY_NMLS_LABEL, NMLS_LABEL } from "@/lib/legal/nmls";
 export const ADVISOR_HEADSHOT_SRC = "/advisors/chris-butler.png";
 export const ADVISOR_HEADSHOT_ALT = "Chris Butler, mortgage loan officer";
 
-/** Team-oriented trust visual (homepage & guidance sections) */
-export const TEAM_TRUST_IMAGE_SRC = "/trust/team-guidance.svg";
+/** Branded abstract trust visual (inline component — see CompanyTrustVisual) */
 export const TEAM_TRUST_IMAGE_ALT =
-  "Financing specialists reviewing investor property scenarios in a modern office";
+  "Abstract illustration representing property financing review and specialist guidance";
 
-/** Landscape frame for team imagery */
+/** Landscape frame for trust visuals */
 export const TEAM_TRUST_IMAGE_FRAME_CLASS = "aspect-[5/3]";
 
 /** Head-and-shoulders portrait frame */
@@ -32,8 +31,8 @@ export { BOOK_STRATEGY_CALL_LABEL as HOMEPAGE_ADVISOR_CTA_PRIMARY } from "@/lib/
 export const COMPANY_TRUST = {
   headline: "Real People. Real Guidance.",
   body: [
-    "Unlike fully automated platforms, every request is reviewed by an experienced financing specialist.",
-    "Whether you're exploring options, comparing scenarios, or have questions along the way, our team is available to help.",
+    "Every request is reviewed by an experienced financing specialist — not just an automated system.",
+    "If you have questions, our team is available to help you understand your options and next steps.",
   ],
   trustPoints: [
     "Investor-Focused Financing",

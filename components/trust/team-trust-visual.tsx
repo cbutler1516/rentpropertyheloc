@@ -1,41 +1,31 @@
-import {
-  TEAM_TRUST_IMAGE_ALT,
-  TEAM_TRUST_IMAGE_FRAME_CLASS,
-  TEAM_TRUST_IMAGE_SRC,
-} from "@/lib/trust-content";
+import { CompanyTrustVisual } from "@/components/trust/company-trust-visual";
+import { TEAM_TRUST_IMAGE_ALT } from "@/lib/trust-content";
 import { cn } from "@/lib/cn";
-import Image from "next/image";
 
 type TeamTrustVisualProps = {
   className?: string;
   frameClassName?: string;
   priority?: boolean;
   sizes?: string;
+  compact?: boolean;
 };
 
 export function TeamTrustVisual({
   className,
   frameClassName,
-  priority = false,
-  sizes = "(max-width: 1024px) 100vw, 480px",
+  compact = false,
 }: TeamTrustVisualProps) {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl bg-slate-900 shadow-md ring-1 ring-slate-200/80",
-        TEAM_TRUST_IMAGE_FRAME_CLASS,
+        "relative overflow-hidden shadow-md ring-1 ring-slate-200/80",
         frameClassName,
         className,
       )}
+      role="img"
+      aria-label={TEAM_TRUST_IMAGE_ALT}
     >
-      <Image
-        src={TEAM_TRUST_IMAGE_SRC}
-        alt={TEAM_TRUST_IMAGE_ALT}
-        fill
-        priority={priority}
-        sizes={sizes}
-        className="object-cover object-center"
-      />
+      <CompanyTrustVisual variant={compact ? "compact" : "full"} className="h-full w-full" />
     </div>
   );
 }

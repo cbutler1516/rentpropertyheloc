@@ -20,7 +20,7 @@ export function AdvisorTrustStrip({ className }: AdvisorTrustStripProps) {
     >
       <p className="text-sm font-semibold text-slate-900">{COMPANY_TRUST.headline}</p>
       <p className="mt-1 text-xs leading-snug text-slate-600">
-        Our financing specialists are available if you have questions.
+        {COMPANY_TRUST.body[1]}
       </p>
       <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
         <StrategyCallLink
