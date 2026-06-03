@@ -4,7 +4,6 @@ import { Container } from "@/components/layout/container";
 import { BrandPillars } from "@/components/marketing/brand-pillars";
 import { CtaReassurance } from "@/components/marketing/cta-reassurance";
 import { Reveal } from "@/components/motion/reveal";
-import { HeroReviewPreviewCard } from "@/components/home/hero-review-preview-card";
 import { BackgroundVideo } from "@/components/video/background-video";
 import { CtaLink } from "@/components/ui/cta-link";
 import { HERO_CTA_LABEL, HERO_FUNNEL_HREF } from "@/lib/cta";
@@ -22,39 +21,35 @@ export function CinematicHero() {
       />
       <div className="absolute inset-0 cinematic-vignette opacity-80" aria-hidden />
 
-      <Container className="relative z-10 py-8 sm:py-14 md:py-20 lg:py-24">
-        <div className="flex flex-col gap-6 md:grid md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10">
-          <div>
-            <Reveal>
-              <BrandPillars className="mb-4" />
-            </Reveal>
-            <Reveal delay={0.05}>
-              <h1 className="text-[1.625rem] font-bold leading-[1.12] tracking-tight text-white sm:text-[2rem] md:max-w-xl md:text-[2.5rem] lg:max-w-2xl lg:text-[3rem] lg:leading-[1.08]">
-                {HERO_HEADLINE}
-              </h1>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p className="mt-4 max-w-lg text-[0.9375rem] leading-relaxed text-white/75 sm:mt-5 sm:text-base md:max-w-xl md:text-lg">
-                {HERO_SUPPORTING_COPY}
-              </p>
-            </Reveal>
-            <Reveal delay={0.14}>
-              <div className="mt-6 sm:mt-7">
-                <CtaLink
-                  href={HERO_FUNNEL_HREF}
-                  size="lg"
-                  className="glow-accent-hero w-full sm:w-auto sm:min-w-[220px]"
-                  onDark
-                  ctaLocation="hero-primary"
-                >
-                  {HERO_CTA_LABEL}
-                </CtaLink>
-              </div>
-              <CtaReassurance tone="dark" align="left" className="mt-3 max-w-lg" />
-            </Reveal>
-          </div>
-
-          <HeroReviewPreviewCard className="md:justify-self-end" />
+      <Container className="relative z-10 py-10 sm:py-16 md:py-20 lg:py-24">
+        <div className="max-w-2xl">
+          <Reveal>
+            <BrandPillars className="mb-4" />
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h1 className="text-[1.75rem] font-bold leading-[1.12] tracking-tight text-white sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3.25rem] lg:leading-[1.08]">
+              {HERO_HEADLINE}
+            </h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mt-4 max-w-xl text-[0.9375rem] leading-relaxed text-white/75 sm:mt-5 sm:text-base md:text-lg">
+              {HERO_SUPPORTING_COPY}
+            </p>
+          </Reveal>
+          <Reveal delay={0.14}>
+            <div className="mt-6 sm:mt-8">
+              <CtaLink
+                href={HERO_FUNNEL_HREF}
+                size="lg"
+                className="glow-accent-hero w-full sm:w-auto sm:min-w-[220px]"
+                onDark
+                ctaLocation="hero-primary"
+              >
+                {HERO_CTA_LABEL}
+              </CtaLink>
+            </div>
+            <CtaReassurance tone="dark" align="left" className="mt-3 max-w-lg" />
+          </Reveal>
         </div>
       </Container>
 

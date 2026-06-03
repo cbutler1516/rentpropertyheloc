@@ -9,6 +9,10 @@ import {
   CLIENT_TESTIMONIALS,
   type ClientTestimonial,
 } from "@/lib/trust-reviews";
+import {
+  HOME_INVESTOR_TESTIMONIALS_HEADLINE,
+  HOME_INVESTOR_TESTIMONIALS_SUBHEADLINE,
+} from "@/lib/home-investor-trust";
 import { cn } from "@/lib/cn";
 
 type BorrowerTrustSectionProps = {
@@ -82,7 +86,17 @@ function TestimonialsGrid({
   );
 }
 
-function SectionHeading({ compact, centered }: { compact?: boolean; centered?: boolean }) {
+function SectionHeading({
+  compact,
+  centered,
+  headline = BORROWER_TRUST_HEADLINE,
+  subheadline = BORROWER_TRUST_SUBHEADLINE,
+}: {
+  compact?: boolean;
+  centered?: boolean;
+  headline?: string;
+  subheadline?: string;
+}) {
   return (
     <div className={cn(centered && "text-center", compact ? "mb-4" : "mb-5 sm:mb-6")}>
       <h2
@@ -92,7 +106,7 @@ function SectionHeading({ compact, centered }: { compact?: boolean; centered?: b
           compact ? "text-base sm:text-lg" : "text-lg sm:text-xl md:text-2xl",
         )}
       >
-        {BORROWER_TRUST_HEADLINE}
+        {headline}
       </h2>
       <p
         className={cn(
@@ -101,7 +115,7 @@ function SectionHeading({ compact, centered }: { compact?: boolean; centered?: b
           centered && "mx-auto max-w-2xl",
         )}
       >
-        {BORROWER_TRUST_SUBHEADLINE}
+        {subheadline}
       </p>
     </div>
   );
@@ -123,7 +137,12 @@ export function BorrowerTrustSection({
         aria-labelledby="borrower-trust-heading"
       >
         <Container className="max-w-6xl">
-          <SectionHeading compact centered />
+          <SectionHeading
+            compact
+            centered
+            headline={HOME_INVESTOR_TESTIMONIALS_HEADLINE}
+            subheadline={HOME_INVESTOR_TESTIMONIALS_SUBHEADLINE}
+          />
           <TestimonialsGrid hero />
         </Container>
       </section>
