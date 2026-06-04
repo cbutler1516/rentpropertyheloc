@@ -1,11 +1,9 @@
-import { NMLS_LABEL } from "@/lib/legal/nmls";
-
 /** Single positioning line — show once per page section, not as repeated badges. */
 export const POSITIONING_LINE =
   "Technology-powered. Investor-focused. Human-guided.";
 
 export const BRAND_SUPPORTING_COPY =
-  "Get personalized guidance from a licensed mortgage professional who understands real estate investing—not just an automated approval engine.";
+  "Get personalized guidance from financing specialists and licensed lending partners—not just an automated approval engine.";
 
 export const HERO_HEADLINE = "Access Equity. Build Your Portfolio.";
 
@@ -13,7 +11,7 @@ export const HERO_SUPPORTING_COPY =
   "Enter your rental property address to start a fast review—about 60 seconds, no obligation.";
 
 export const SEO_GUIDANCE_TAGLINE =
-  "Compare investor equity options with guidance from a licensed mortgage professional.";
+  "Compare investor equity options with guidance from licensed financing specialists and lending partners.";
 
 export const WHY_INVESTORS_CHOOSE = {
   headline: "Built for Rental Property Investors",
@@ -21,7 +19,7 @@ export const WHY_INVESTORS_CHOOSE = {
     {
       icon: "⚡",
       title: "Real Human Guidance",
-      description: "Licensed professionals who understand investing.",
+      description: "Financing specialists backed by licensed lending partners.",
     },
     {
       icon: "🏠",
@@ -42,11 +40,11 @@ export const WHY_INVESTORS_CHOOSE = {
 } as const;
 
 export const PLATFORM_STATEMENT =
-  "More than an online form — real guidance from a licensed mortgage professional.";
+  "More than an online form — a team of financing specialists and licensed lending partners.";
 
 export const CREDIBILITY_ITEMS = [
-  NMLS_LABEL,
-  "Equal Housing Lender",
+  "Licensed lending partners",
+  "Equal Housing Opportunity",
   "Secure online process",
 ] as const;
 

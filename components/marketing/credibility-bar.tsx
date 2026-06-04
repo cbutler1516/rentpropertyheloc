@@ -27,7 +27,7 @@ export function CredibilityBar({ className, tone = "light" }: CredibilityBarProp
               : "border-slate-200 bg-white text-slate-600 shadow-sm",
           )}
         >
-          {item === "Equal Housing Lender" ? (
+          {item === "Equal Housing Opportunity" ? (
             <>
               <span
                 className={cn(

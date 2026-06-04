@@ -1,7 +1,6 @@
 "use client";
 
-import { PhoneLink } from "@/components/trust/phone-link";
-import { CALL_OUR_TEAM_LABEL } from "@/lib/contact";
+import { PlatformEmailLink } from "@/components/trust/platform-email-link";
 import { ReviewSummaryDownloadButton } from "@/components/funnel/completion-cta-row";
 import { useFinancingReviewActions } from "@/components/funnel/financing-review-experience";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
@@ -81,11 +80,7 @@ export function ProfileSavedState({ snapshotData, className }: ProfileSavedState
               />
             </>
           ) : null}
-          <PhoneLink
-            showIcon={false}
-            label={CALL_OUR_TEAM_LABEL}
-            className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-800 no-underline shadow-sm hover:bg-slate-50"
-          />
+          <PlatformEmailLink className="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-800 no-underline shadow-sm hover:bg-slate-50 hover:text-teal-900" />
         </div>
         {profileComplete ? (
           <p className="mt-3 text-[10px] leading-relaxed text-slate-400">{FINANCING_REVIEW_DISCLAIMER}</p>

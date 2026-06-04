@@ -23,7 +23,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
         <div className="text-center">
           <p className="text-lg font-semibold text-navy-950">Request received</p>
           <p className="mt-2 text-sm leading-relaxed text-slate-600">
-            A licensed loan officer will follow up with program options that may be available,
+            A financing specialist will follow up with program options that may be available,
             subject to approval.
           </p>
         </div>

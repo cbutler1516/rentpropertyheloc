@@ -2,15 +2,12 @@
 
 import { Section, SectionHeader } from "@/components/layout/section";
 import { Reveal } from "@/components/motion/reveal";
-import { PhoneLink } from "@/components/trust/phone-link";
+import { PlatformEmailLink } from "@/components/trust/platform-email-link";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
 import { TeamTrustVisual } from "@/components/trust/team-trust-visual";
-import { NMLS_CONSUMER_ACCESS_URL } from "@/lib/contact";
-import { CALL_OUR_TEAM_LABEL } from "@/lib/contact";
-import { ADVISOR, COMPANY_TRUST } from "@/lib/trust-content";
+import { COMPANY_TRUST } from "@/lib/trust-content";
 import type { ReviewProcessPhase } from "@/lib/trust/review-process";
 import { cn } from "@/lib/cn";
-import Link from "next/link";
 
 type CompanyTrustSectionProps = {
   variant?: "homepage" | "funnel" | "compact" | "full";
@@ -80,7 +77,7 @@ export function CompanyTrustSection({
         </div>
 
         <div className="min-w-0 flex-1 text-center sm:text-left lg:w-[52%]">
-          <TrustCardContent compact={compact} showLicensing={variant === "full"} ctaLocation={`company-trust-${variant}`} />
+          <TrustCardContent compact={compact} ctaLocation={`company-trust-${variant}`} />
         </div>
       </div>
     </div>
@@ -124,11 +121,9 @@ function HomepageTrustCard({
 
 function TrustCardContent({
   compact = false,
-  showLicensing = false,
   ctaLocation,
 }: {
   compact?: boolean;
-  showLicensing?: boolean;
   ctaLocation?: string;
 }) {
   return (
@@ -156,20 +151,6 @@ function TrustCardContent({
       </div>
 
       <TrustPointsList compact={compact} className={compact ? "mt-4" : "mt-6"} />
-
-      {showLicensing ? (
-        <p className="mt-5 text-xs leading-relaxed text-slate-500">
-          Licensed in: {ADVISOR.licensedStates}.{" "}
-          <Link
-            href={NMLS_CONSUMER_ACCESS_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-teal-700 underline-offset-2 hover:underline"
-          >
-            NMLS Consumer Access
-          </Link>
-        </p>
-      ) : null}
 
       <TrustCtaRow compact={compact} className={compact ? "mt-4" : "mt-7"} ctaLocation={ctaLocation} />
     </>
@@ -236,11 +217,9 @@ function TrustCtaRow({
         ctaLocation={ctaLocation}
         className="w-full justify-center sm:w-auto"
       />
-      <PhoneLink
+      <PlatformEmailLink
         size={compact ? "sm" : "md"}
-        showIcon={false}
-        label={CALL_OUR_TEAM_LABEL}
-        className="inline-flex min-h-[44px] w-full items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-800 no-underline shadow-sm transition hover:bg-slate-50 hover:text-slate-900 sm:w-auto"
+        className="inline-flex min-h-[44px] w-full items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-800 no-underline shadow-sm transition hover:bg-slate-50 hover:text-teal-900 sm:w-auto"
       />
     </div>
   );

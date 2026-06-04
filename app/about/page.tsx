@@ -1,14 +1,13 @@
 import { Container } from "@/components/layout/container";
 import { HomeInvestorTrustSection } from "@/components/home/home-investor-trust-section";
 import { BorrowerTrustSection } from "@/components/trust/borrower-trust-section";
+import { PlatformEmailLink } from "@/components/trust/platform-email-link";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
-import { PhoneLink } from "@/components/trust/phone-link";
 import { StateAvailabilitySection } from "@/components/trust/state-availability-section";
 import { CtaLink } from "@/components/ui/cta-link";
-import { ABOUT_COMPLIANCE_BLOCK } from "@/lib/legal/compliance";
 import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from "@/lib/cta";
-import { NMLS_CONSUMER_ACCESS_URL } from "@/lib/contact";
-import { ADVISOR } from "@/lib/trust-content";
+import { FOOTER_PLATFORM_DISCLOSURE } from "@/lib/legal/compliance";
+import { LICENSING_INFORMATION_PATH } from "@/lib/legal/routes";
 import { ABOUT_PLATFORM } from "@/lib/trust-content";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import type { Metadata } from "next";
@@ -16,12 +15,12 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "About",
-  description: `Who operates ${SITE_NAME}, our investor-focused mission, and how licensed mortgage professionals guide rental property equity reviews.`,
+  description: `Learn how ${SITE_NAME} connects rental property investors with financing specialists and licensed lending partners.`,
   alternates: { canonical: `${SITE_URL}/about` },
   openGraph: {
     title: `About | ${SITE_NAME}`,
     description:
-      "Investor-focused rental property equity platform with licensed human guidance.",
+      "Investor-focused rental property equity review platform with team-based guidance and licensed lending partners.",
     url: `${SITE_URL}/about`,
   },
 };
@@ -55,59 +54,31 @@ export default function AboutPage() {
         </div>
 
         <div className="mt-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <h2 className="text-lg font-bold text-slate-900 sm:text-xl">Contact & licensing</h2>
-          <dl className="mt-4 space-y-3 text-sm">
-            <div>
-              <dt className="font-semibold text-slate-900">Advisor</dt>
-              <dd className="mt-1 text-slate-600">
-                {ADVISOR.name} · {ADVISOR.title}
-              </dd>
-            </div>
-            <div>
-              <dt className="font-semibold text-slate-900">Phone</dt>
-              <dd className="mt-1">
-                <PhoneLink />
-              </dd>
-            </div>
-            <div>
-              <dt className="font-semibold text-slate-900">Email</dt>
-              <dd className="mt-1">
-                <a
-                  href={`mailto:${ADVISOR.email}`}
-                  className="font-medium text-teal-700 underline-offset-2 hover:underline"
-                >
-                  {ADVISOR.email}
-                </a>
-              </dd>
-            </div>
-            <div>
-              <dt className="font-semibold text-slate-900">Individual NMLS</dt>
-              <dd className="mt-1 text-slate-600">
-                {ADVISOR.nmls}.{" "}
-                <a
-                  href={NMLS_CONSUMER_ACCESS_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium text-teal-700 underline-offset-2 hover:underline"
-                >
-                  Verify at NMLS Consumer Access
-                </a>
-              </dd>
-            </div>
-            <div>
-              <dt className="font-semibold text-slate-900">Company</dt>
-              <dd className="mt-1 text-slate-600">
-                {ADVISOR.company} · {ADVISOR.companyNmls}
-              </dd>
-            </div>
-          </dl>
+          <h2 className="text-lg font-bold text-slate-900 sm:text-xl">Contact our team</h2>
+          <p className="mt-3 text-sm leading-relaxed text-slate-600">
+            Questions about your review or available financing paths? Our financing specialists and
+            licensed lending partners can help after you submit a property review.
+          </p>
+          <p className="mt-4 text-sm">
+            <PlatformEmailLink size="md" />
+          </p>
+          <p className="mt-4 text-sm text-slate-600">
+            For licensing, loan originator, and company disclosures, see{" "}
+            <Link
+              href={LICENSING_INFORMATION_PATH}
+              className="font-medium text-teal-700 underline-offset-2 hover:underline"
+            >
+              Licensing Information
+            </Link>
+            .
+          </p>
         </div>
 
         <div className="mt-10">
           <StateAvailabilitySection variant="inline" />
         </div>
 
-        <p className="mt-10 text-xs leading-relaxed text-slate-500">{ABOUT_COMPLIANCE_BLOCK}</p>
+        <p className="mt-10 text-xs leading-relaxed text-slate-500">{FOOTER_PLATFORM_DISCLOSURE}</p>
       </Container>
     </div>
   );

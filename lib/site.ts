@@ -1,4 +1,8 @@
-import { PRIVACY_POLICY_PATH, TERMS_OF_USE_PATH } from "@/lib/legal/routes";
+import {
+  LICENSING_INFORMATION_PATH,
+  PRIVACY_POLICY_PATH,
+  TERMS_OF_USE_PATH,
+} from "@/lib/legal/routes";
 import { BRAND } from "@/lib/brand";
 import { NAV_CTA_LABEL } from "@/lib/cta";
 
@@ -40,7 +44,7 @@ export const FOOTER_LINKS = {
   legal: [
     { href: PRIVACY_POLICY_PATH, label: "Privacy Policy" },
     { href: TERMS_OF_USE_PATH, label: "Terms of Use" },
-    { href: "/disclosures", label: "Licensing & Disclosures" },
+    { href: LICENSING_INFORMATION_PATH, label: "Licensing Information" },
     { href: "/brand", label: "Brand system" },
   ],
 } as const satisfies {
@@ -85,7 +89,8 @@ export const PUBLIC_ROUTE_CHECKLIST = [
   { path: "/privacy", label: "Privacy redirect", public: true },
   { path: "/terms", label: "Terms redirect", public: true },
   { path: "/about", label: "About", public: true },
-  { path: "/disclosures", label: "Disclosures", public: true },
+  { path: "/licensing-information", label: "Licensing Information", public: true },
+  { path: "/disclosures", label: "Disclosures redirect", public: true },
   { path: "/brand", label: "Brand system (noindex)", public: true },
   { path: "/admin/leads-health", label: "Lead pipeline health", public: false },
   { path: "/admin/conversions", label: "Conversion overview", public: false },

@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Check Rental HELOC Options",
   description:
-    "Start a personalized rental property financing review. A licensed mortgage professional will follow up with options that may be available—subject to approval.",
+    "Start a personalized rental property financing review. A financing specialist will follow up with options that may be available—subject to approval.",
 };
 
 export default function CheckOptionsPage() {

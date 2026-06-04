@@ -1,4 +1,5 @@
-import { ADVISOR } from "@/lib/trust-content";
+import { PLATFORM_EMAIL } from "@/lib/contact";
+import { LICENSING_INFORMATION_PATH } from "@/lib/legal/routes";
 import { SITE_NAME } from "@/lib/site";
 
 export const FINANCING_REVIEW_DISCLAIMER =
@@ -58,13 +59,8 @@ export const FINANCING_REVIEW_NEXT_STEPS = COMPLETION_TIMELINE.map((item, index)
 }));
 
 export const FINANCING_REVIEW_CONTACT = {
-  company: ADVISOR.company,
-  advisorName: ADVISOR.name,
-  advisorTitle: ADVISOR.title,
-  phone: ADVISOR.phone,
-  email: ADVISOR.email,
-  nmls: ADVISOR.nmls,
-  companyNmls: ADVISOR.companyNmls,
-  licensedStates: ADVISOR.licensedStates,
-  siteName: SITE_NAME,
+  teamLabel: "Financing Specialist Team",
+  platformName: SITE_NAME,
+  email: PLATFORM_EMAIL,
+  licensingPath: LICENSING_INFORMATION_PATH,
 } as const;

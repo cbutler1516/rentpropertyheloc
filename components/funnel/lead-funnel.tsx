@@ -273,7 +273,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
     <div className="funnel-container mx-auto w-full">
       {showPrimaryResidenceNote ? (
         <div className="mb-3 rounded-xl border border-sky-200/80 bg-sky-50/90 px-4 py-2.5 text-sm leading-relaxed text-sky-950 sm:mb-4">
-          You selected a primary-residence equity scenario. A licensed mortgage professional will
+          You selected a primary-residence equity scenario. A financing specialist will
           review whether a primary-residence HELOC or similar option may fit your goals.
         </div>
       ) : null}

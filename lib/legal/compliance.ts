@@ -1,5 +1,3 @@
-import { COMPANY_NMLS_LABEL, NMLS_LABEL } from "@/lib/legal/nmls";
-
 export const MARKETING_SITE_NAME = "Rent Property HELOC";
 
 export const MORTGAGE_COMPANY_NAME = "Barrett Financial Group, LLC";
@@ -21,14 +19,8 @@ export const LICENSED_STATES_FULL_LIST =
 
 export const NMLS_CONSUMER_ACCESS_HOME = "https://www.nmlsconsumeraccess.org/";
 
-export const FOOTER_FINE_PRINT = [
-  `${MARKETING_SITE_NAME} is a marketing website operated by Chris Butler, ${NMLS_LABEL}.`,
-  `Mortgage financing is provided through ${MORTGAGE_COMPANY_NAME}, ${COMPANY_NMLS_LABEL}.`,
-  `Licensed in ${LICENSED_STATES_FULL_LIST}.`,
-  "Not all applicants will qualify. Programs, rates, terms, and availability are subject to change without notice. Equal Housing Opportunity.",
-] as const;
-
-export const ABOUT_COMPLIANCE_BLOCK = `Mortgage financing is provided through ${MORTGAGE_COMPANY_NAME} (${COMPANY_NMLS_LABEL}). Chris Butler is licensed in ${LICENSED_STATES_FULL_LIST}.`;
+export const FOOTER_PLATFORM_DISCLOSURE =
+  "Rent Property HELOC is a lead generation and information platform. Financing options may be provided through licensed lending partners and are subject to qualification, underwriting, property eligibility, and applicable lending guidelines.";
 
 export const FUNNEL_COMPLIANCE_DISCLAIMER =
   "This is not a loan application, pre-approval, commitment to lend, or lending decision. Financing options are subject to lender review, qualification, underwriting, property eligibility, and applicable lending guidelines.";

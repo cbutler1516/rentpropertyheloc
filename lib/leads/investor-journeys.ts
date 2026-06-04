@@ -80,7 +80,7 @@ export const INVESTOR_JOURNEYS: Record<JourneySlug, InvestorJourneyConfig> = {
     confirmation: {
       headline: "Your single-family rental review is underway",
       nextSteps: [
-        "A licensed loan officer will reach out to confirm property details and your investment objective.",
+        "A financing specialist will reach out to confirm property details and your investment objective.",
         "Have your lease, insurance, and mortgage statement ready for a faster SFR collateral review.",
         "You'll receive illustrative HELOC structures that may be available—subject to approval and eligibility.",
       ],
@@ -133,7 +133,7 @@ export const INVESTOR_JOURNEYS: Record<JourneySlug, InvestorJourneyConfig> = {
     confirmation: {
       headline: "Your duplex / triplex / fourplex review is underway",
       nextSteps: [
-        "A loan officer will contact you to walk through unit mix, rent roll, and lien position on the property.",
+        "A financing specialist will contact you to walk through unit mix, rent roll, and lien position on the property.",
         "Prepare leases (or rent roll), entity documents if applicable, and current mortgage details for each unit.",
         "You'll receive options aligned to small multifamily collateral—subject to approval, not a commitment to lend.",
       ],
@@ -186,7 +186,7 @@ export const INVESTOR_JOURNEYS: Record<JourneySlug, InvestorJourneyConfig> = {
     confirmation: {
       headline: "Your short-term rental review is underway",
       nextSteps: [
-        "A licensed loan officer will follow up to discuss seasonality, STR income, and how the property is operated.",
+        "A financing specialist will follow up to discuss seasonality, STR income, and how the property is operated.",
         "Gather platform statements, average daily rate context, and insurance suited to short-term use if available.",
         "You'll receive illustrative line scenarios that may be available—subject to approval and STR eligibility.",
       ],
@@ -239,7 +239,7 @@ export const INVESTOR_JOURNEYS: Record<JourneySlug, InvestorJourneyConfig> = {
     confirmation: {
       headline: "Your multifamily portfolio review is underway",
       nextSteps: [
-        "A loan officer will connect to review property count, rent roll, and how this asset fits your portfolio strategy.",
+        "A financing specialist will connect to review property count, rent roll, and how this asset fits your portfolio strategy.",
         "Have entity documents, operating statements, and mortgage summaries ready for a smoother file build.",
         "You'll receive structures that may be available for your multifamily collateral—subject to approval and guidelines.",
       ],

@@ -1,6 +1,14 @@
-import { CONTACT_PHONE_DISPLAY } from "@/lib/contact";
-import { MORTGAGE_COMPANY_NAME, MORTGAGE_STANDARD_DISCLAIMER } from "@/lib/legal/compliance";
-import { NMLS_LABEL, NMLS_NUMBER, COMPANY_NMLS_LABEL } from "@/lib/legal/nmls";
+import { PLATFORM_EMAIL } from "@/lib/contact";
+import {
+  FOOTER_PLATFORM_DISCLOSURE,
+  MORTGAGE_STANDARD_DISCLAIMER,
+} from "@/lib/legal/compliance";
+import {
+  LICENSED_ORIGINATOR_NMLS_URL,
+  LICENSING_PARTNER_DISCLOSURES,
+} from "@/lib/legal/licensing-partners";
+import { NMLS_NUMBER } from "@/lib/legal/nmls";
+import { LICENSING_INFORMATION_PATH } from "@/lib/legal/routes";
 
 export type LegalSection = {
   id: string;
@@ -37,7 +45,7 @@ export const PRIVACY_POLICY_SECTIONS: LegalSection[] = [
     paragraphs: ["We use collected information to:"],
     bullets: [
       "Review your rental property scenario and respond to your request.",
-      "Connect you with licensed mortgage professionals, loan officers, or lending partners who may contact you about programs that may be available, subject to approval.",
+      "Connect you with financing specialists and licensed lending partners who may contact you about programs that may be available, subject to approval.",
       "Operate, maintain, and improve our website, funnel, and internal tools.",
       "Send service-related communications by phone, text message, or email where you have provided consent.",
       "Send optional marketing updates if you opt in (you may opt out at any time).",
@@ -58,7 +66,7 @@ export const PRIVACY_POLICY_SECTIONS: LegalSection[] = [
     title: "Sharing and CRM processing",
     paragraphs: [
       "We may share information with service providers and partners who help us operate the site and process leads, including customer relationship management (CRM) platforms such as HubSpot, email delivery providers, analytics vendors, and cloud hosting providers.",
-      "Lead information may be shared with licensed mortgage professionals, lenders, or broker partners so they can evaluate whether programs may be available for your scenario. Partners are expected to use information in accordance with applicable law and their own privacy policies.",
+      "Lead information may be shared with licensed lending partners, lenders, or broker partners so they can evaluate whether programs may be available for your scenario. Partners are expected to use information in accordance with applicable law and their own privacy policies.",
       "We do not sell your personal information for monetary consideration. We may share data as permitted by law, including in connection with a business transfer, to protect rights and safety, or to comply with legal process.",
     ],
   },
@@ -180,7 +188,7 @@ export const TERMS_OF_USE_SECTIONS: LegalSection[] = [
     id: "licensing",
     title: "Licensing disclosure",
     paragraphs: [
-      `RentPropertyHELOC.com is an educational and lead-generation platform that may connect you with licensed mortgage professionals and lending partners. ${NMLS_LABEL}. Nothing on this site is a loan application or commitment to lend.`,
+      `RentPropertyHELOC.com is a lead generation and information platform that may connect you with licensed lending partners. For loan originator, company, and state licensing details, see our Licensing Information page at ${LICENSING_INFORMATION_PATH}. Nothing on this site is a loan application or commitment to lend.`,
     ],
   },
   {
@@ -199,19 +207,24 @@ export const TERMS_OF_USE_SECTIONS: LegalSection[] = [
   },
 ];
 
-export const DISCLOSURES_SECTIONS: LegalSection[] = [
+export const LICENSING_INFORMATION_SECTIONS: LegalSection[] = [
+  {
+    id: "platform",
+    title: "Platform disclosure",
+    paragraphs: [FOOTER_PLATFORM_DISCLOSURE, LICENSING_PARTNER_DISCLOSURES.platformOperator],
+  },
   {
     id: "licensing",
     title: "Licensing",
     paragraphs: [
-      `Chris Butler — ${NMLS_LABEL}.`,
-      `${MORTGAGE_COMPANY_NAME} — ${COMPANY_NMLS_LABEL}.`,
+      LICENSING_PARTNER_DISCLOSURES.originator,
+      LICENSING_PARTNER_DISCLOSURES.company,
     ],
   },
   {
     id: "licensed-states",
     title: "Licensed states",
-    paragraphs: ["Chris Butler is licensed in the following states:"],
+    paragraphs: [LICENSING_PARTNER_DISCLOSURES.licensedStatesIntro],
     bullets: [
       "Arizona",
       "California",
@@ -233,16 +246,20 @@ export const DISCLOSURES_SECTIONS: LegalSection[] = [
     id: "lead-generation",
     title: "Lead generation",
     paragraphs: [
-      "When you submit information through this website, you are requesting that a licensed mortgage professional review your property scenario. Your information may be stored in customer relationship management systems and shared with licensed professionals or lending partners for that purpose.",
-      "Submitting a form does not create a lender-borrower relationship, loan application, or commitment to lend. A licensed professional may contact you by phone, text, or email where you have provided consent.",
+      "When you submit information through this website, you are requesting that a financing specialist and licensed lending partners review your property scenario. Your information may be stored in customer relationship management systems and shared with partners for that purpose.",
+      "Submitting a form does not create a lender-borrower relationship, loan application, or commitment to lend. A financing specialist or lending partner may contact you by phone, text, or email where you have provided consent.",
     ],
   },
   {
     id: "contact",
-    title: "Contact",
+    title: "Licensing inquiries",
     paragraphs: [
-      `Questions about disclosures or licensing may be directed through the contact options on this site, including ${CONTACT_PHONE_DISPLAY}.`,
-      `You may verify licensing status through the Nationwide Multistate Licensing System (NMLS) Consumer Access website at nmlsconsumeraccess.org by searching individual NMLS #${NMLS_NUMBER}.`,
+      `Questions about licensing or partner disclosures may be directed to ${PLATFORM_EMAIL}.`,
+      `You may also call ${LICENSING_PARTNER_DISCLOSURES.inquiryPhone} for licensing-related questions.`,
+      `Verify licensing status through the Nationwide Multistate Licensing System (NMLS) Consumer Access website at nmlsconsumeraccess.org by searching individual NMLS #${NMLS_NUMBER}, or visit ${LICENSED_ORIGINATOR_NMLS_URL}.`,
     ],
   },
 ];
+
+/** @deprecated Use LICENSING_INFORMATION_SECTIONS */
+export const DISCLOSURES_SECTIONS = LICENSING_INFORMATION_SECTIONS;

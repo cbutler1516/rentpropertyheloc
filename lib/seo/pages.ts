@@ -1,3 +1,4 @@
+import { SEO_GUIDANCE_TAGLINE } from "@/lib/brand-positioning";
 import type { SeoPageConfig } from "@/lib/seo/types";
 import { INVESTOR_PROCESS_STEPS } from "@/lib/marketing/content";
 
@@ -33,12 +34,11 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
     hero: {
       eyebrow: "Rental property equity",
       h1: "Rental property HELOC options for investors",
-      intro:
-        "A rental property HELOC is a revolving line secured by non-owner-occupied collateral. Investors use available equity for acquisitions, renovations, reserves, and portfolio flexibility—when programs may be available, subject to approval. Compare investor equity options with guidance from a licensed mortgage professional.",
+      intro: `A rental property HELOC is a revolving line secured by non-owner-occupied collateral. Investors use available equity for acquisitions, renovations, reserves, and portfolio flexibility—when programs may be available, subject to approval. ${SEO_GUIDANCE_TAGLINE}`,
       highlights: [
         "Revolving access—draw and repay as deals surface",
         "Rental collateral focus—not primary-residence consumer positioning",
-        "Licensed professional guidance—not just an automated engine",
+        "Financing specialist guidance—not just an automated engine",
       ],
     },
     whatItIs: {
@@ -137,7 +137,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
       eyebrow: "Investment property equity",
       h1: "HELOC on investment property for landlords",
       intro:
-        "When collateral is non-owner-occupied, documentation and line structure often differ from consumer HELOCs. See what revolving options may be available for your investment property—subject to approval. Compare investor equity options with guidance from a licensed mortgage professional.",
+        `When collateral is non-owner-occupied, documentation and line structure often differ from consumer HELOCs. See what revolving options may be available for your investment property—subject to approval. ${SEO_GUIDANCE_TAGLINE}`,
       highlights: [
         "Built for rental and investment property collateral",
         "May sit in second position behind an existing first mortgage",
@@ -333,7 +333,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
       eyebrow: "Portfolio growth",
       h1: "Use rental equity to buy another property",
       intro:
-        "Revolving HELOC capacity on a stabilized rental may help fund the next down payment, closing costs, or reserves—when programs may be available, subject to approval and property eligibility. Compare investor equity options with guidance from a licensed mortgage professional.",
+        `Revolving HELOC capacity on a stabilized rental may help fund the next down payment, closing costs, or reserves—when programs may be available, subject to approval and property eligibility. ${SEO_GUIDANCE_TAGLINE}`,
       highlights: [
         "Keep deploying capital without selling winners",
         "Revolving structure for serial acquisitions",
@@ -434,7 +434,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
       eyebrow: "Investor strategy",
       h1: "Cash-out refinance vs HELOC on rental property",
       intro:
-        "Both paths access rental property equity, but structure differs: a cash-out refinance replaces your first mortgage with a new balance, while a HELOC may sit in second position as revolving credit. See what may fit your portfolio—subject to approval. Compare investor equity options with guidance from a licensed mortgage professional.",
+        `Both paths access rental property equity, but structure differs: a cash-out refinance replaces your first mortgage with a new balance, while a HELOC may sit in second position as revolving credit. See what may fit your portfolio—subject to approval. ${SEO_GUIDANCE_TAGLINE}`,
       highlights: [
         "HELOC: revolving draws, may preserve first rate",
         "Cash-out: one-time proceeds, new first loan terms",
@@ -534,8 +534,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
     hero: {
       eyebrow: "Second lien position",
       h1: "Investor second mortgage and HELOC options",
-      intro:
-        "A second-position loan or HELOC sits behind your existing first mortgage, which may let you access rental property equity without refinancing a favorable first rate—when programs may be available, subject to approval. Compare investor equity options with guidance from a licensed mortgage professional.",
+      intro: `A second-position loan or HELOC sits behind your existing first mortgage, which may let you access rental property equity without refinancing a favorable first rate—when programs may be available, subject to approval. ${SEO_GUIDANCE_TAGLINE}`,
       highlights: [
         "May preserve your current first mortgage",
         "Second-position financing guidelines apply",

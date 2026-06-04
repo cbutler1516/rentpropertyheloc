@@ -127,9 +127,9 @@ export function buildFinancingReviewHtml(data: FinancingReviewData): string {
 
       <h2>Contact Information</h2>
       <div class="contact">
-        <p><strong>${escapeHtml(FINANCING_REVIEW_CONTACT.advisorName)}</strong> · ${escapeHtml(FINANCING_REVIEW_CONTACT.advisorTitle)}</p>
-        <p>${escapeHtml(FINANCING_REVIEW_CONTACT.phone)} · ${escapeHtml(FINANCING_REVIEW_CONTACT.email)}</p>
-        <p>${escapeHtml(FINANCING_REVIEW_CONTACT.nmls)} · ${escapeHtml(FINANCING_REVIEW_CONTACT.companyNmls)}</p>
+        <p><strong>${escapeHtml(FINANCING_REVIEW_CONTACT.teamLabel)}</strong> · ${escapeHtml(FINANCING_REVIEW_CONTACT.platformName)}</p>
+        <p>${escapeHtml(FINANCING_REVIEW_CONTACT.email)}</p>
+        <p>Licensing &amp; partner disclosures: ${escapeHtml(FINANCING_REVIEW_CONTACT.licensingPath)}</p>
       </div>
 
       <p class="disclaimer">${escapeHtml(FINANCING_REVIEW_DISCLAIMER)}</p>

@@ -139,7 +139,7 @@ export const FAQ_ITEMS = [
   {
     question: "Is this site offering financial advice?",
     answer:
-      "No. Content here is educational only. Consult a licensed loan officer and tax professional before making financing decisions.",
+      "No. Content here is educational only. Consult a financing specialist and tax professional before making financing decisions.",
   },
 ] as const;
 

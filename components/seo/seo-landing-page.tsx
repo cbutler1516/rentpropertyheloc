@@ -69,7 +69,7 @@ export function SeoLandingPage({ config }: { config: SeoPageConfig }) {
           </div>
           <CtaReassurance className="mt-3 max-w-lg" align="left" />
           <p className="mt-4 text-[11px] leading-relaxed text-slate-500">
-            Programs may be available, subject to approval. Licensed mortgage professional guidance
+            Programs may be available, subject to approval. Licensed lending partner guidance
             available—this page is educational, not financial advice or a commitment to lend.
           </p>
         </Container>

@@ -36,7 +36,7 @@ export function ReviewStartedBanner({ showPriority = false, className }: ReviewS
         ))}
       </ul>
       <p className="mt-5 text-sm leading-relaxed text-slate-600">
-        A licensed mortgage professional will review your scenario and discuss available financing
+        A financing specialist will review your scenario and discuss available financing
         options.
       </p>
     </div>

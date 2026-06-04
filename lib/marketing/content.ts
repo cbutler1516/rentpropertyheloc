@@ -1,5 +1,3 @@
-import { NMLS_LABEL } from "@/lib/legal/nmls";
-
 export type MarketingUseCaseIcon =
   | "acquire"
   | "renovate"
@@ -8,8 +6,8 @@ export type MarketingUseCaseIcon =
   | "recycle";
 
 export const HERO_TRUST_ITEMS = [
-  NMLS_LABEL,
-  "Equal Housing Lender",
+  "Licensed lending partners",
+  "Equal Housing Opportunity",
   "Secure online process",
 ] as const;
 
@@ -35,7 +33,7 @@ export const INVESTOR_PROCESS_STEPS = [
   {
     step: "Step 4",
     icon: "📞",
-    title: "Talk With A Licensed Mortgage Professional",
+    title: "Talk With A Financing Specialist",
     description: "Get personalized guidance on your next move.",
   },
 ] as const;
@@ -117,7 +115,7 @@ export const FUNDING_TIMELINE_STEPS = [
   {
     title: "Quick online review",
     detail:
-      "Share your rental property details online—a licensed professional guides the next steps.",
+      "Share your rental property details online—a financing specialist guides the next steps.",
   },
   {
     title: "Personalized option review",
@@ -127,7 +125,7 @@ export const FUNDING_TIMELINE_STEPS = [
   {
     title: "Strategy discussion",
     detail:
-      "Discuss structure, lien position, and timing with a licensed mortgage professional.",
+      "Discuss structure, lien position, and timing with a financing specialist and lending partners.",
   },
   {
     title: "Funding timeline",
