@@ -29,7 +29,7 @@ export const FOOTER_LINKS = {
     { href: "/cash-out-vs-heloc", label: "Cash-out vs HELOC" },
     { href: "/investor-second-mortgage", label: "Investor second mortgage" },
     { href: "/condo-investor-heloc", label: "Condo investor HELOC" },
-    { href: "/two-to-four-unit-heloc", label: "2–4 unit rental HELOC" },
+    { href: "/2-4-unit-rental-heloc", label: "2–4 unit rental HELOC" },
     { href: "/check-options", label: NAV_CTA_LABEL },
   ],
   resources: [
@@ -70,7 +70,8 @@ export const PUBLIC_ROUTE_CHECKLIST = [
   { path: "/cash-out-vs-heloc", label: "Topic — cash-out vs HELOC", public: true },
   { path: "/investor-second-mortgage", label: "Topic — investor second mortgage", public: true },
   { path: "/condo-investor-heloc", label: "Topic — condo investor HELOC", public: true },
-  { path: "/two-to-four-unit-heloc", label: "Topic — 2–4 unit HELOC", public: true },
+  { path: "/2-4-unit-rental-heloc", label: "Topic — 2–4 unit HELOC", public: true },
+  { path: "/two-to-four-unit-heloc", label: "Legacy 2–4 unit redirect", public: true },
   { path: "/scenarios", label: "Investor scenario library", public: true },
   { path: "/faq", label: "FAQ", public: true },
   { path: PRIVACY_POLICY_PATH, label: "Privacy Policy", public: true },

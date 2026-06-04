@@ -82,7 +82,7 @@ const SCENARIO_INPUTS: InvestorScenarioInput[] = [
       "Fund unit turnover, roof reserves, or acquisition earnest money across a small multi-family portfolio.",
     summary:
       "Two-unit collateral with rental income from both sides—often reviewed with combined loan-to-value and cash-flow documentation.",
-    relatedPath: "/two-to-four-unit-heloc",
+    relatedPath: "/2-4-unit-rental-heloc",
   },
   {
     id: "four-plex-example",
@@ -94,7 +94,7 @@ const SCENARIO_INPUTS: InvestorScenarioInput[] = [
       "Access equity for portfolio reserves, a value-add scope on one unit, or bridge capital for a larger multifamily deal.",
     summary:
       "Small multifamily investors may explore second-position lines when equity and rental performance support the file.",
-    relatedPath: "/two-to-four-unit-heloc",
+    relatedPath: "/2-4-unit-rental-heloc",
   },
 ];
 

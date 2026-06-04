@@ -1,10 +1,17 @@
 import type { SeoPageConfig } from "@/lib/seo/types";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { MARKETING_SITE_NAME } from "@/lib/legal/compliance";
+import { SITE_URL } from "@/lib/site";
 import type { Metadata } from "next";
+
+function formatPageTitle(config: SeoPageConfig): string {
+  const base = config.metadata.title;
+  if (base.includes(MARKETING_SITE_NAME)) return base;
+  return `${base} | ${MARKETING_SITE_NAME}`;
+}
 
 export function buildSeoMetadata(config: SeoPageConfig): Metadata {
   const canonical = `${SITE_URL}${config.path}`;
-  const title = config.metadata.title;
+  const title = formatPageTitle(config);
   const description = config.metadata.description;
   const ogTitle = config.metadata.ogTitle ?? title;
   const ogDescription = config.metadata.ogDescription ?? description;
@@ -17,7 +24,7 @@ export function buildSeoMetadata(config: SeoPageConfig): Metadata {
       title: ogTitle,
       description: ogDescription,
       url: canonical,
-      siteName: SITE_NAME,
+      siteName: MARKETING_SITE_NAME,
       type: "article",
     },
     twitter: {

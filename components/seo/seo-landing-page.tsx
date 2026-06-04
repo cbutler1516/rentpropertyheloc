@@ -1,7 +1,6 @@
 import { SeoCtaBand } from "@/components/seo/seo-cta-band";
 import { SeoJsonLd } from "@/components/seo/seo-json-ld";
 import { SeoPageAnalytics } from "@/components/seo/seo-page-analytics";
-import { SeoMarketingSections } from "@/components/marketing/seo-marketing-sections";
 import { CtaReassurance } from "@/components/marketing/cta-reassurance";
 import { Container } from "@/components/layout/container";
 import { ComplianceNote } from "@/components/layout/compliance-note";
@@ -67,7 +66,7 @@ export function SeoLandingPage({ config }: { config: SeoPageConfig }) {
               {PRIMARY_CTA_LABEL}
             </CtaLink>
           </div>
-          <CtaReassurance className="mt-3 max-w-lg" align="left" />
+          <CtaReassurance tone="light" className="mt-3 max-w-lg" align="left" />
           <p className="mt-4 text-[11px] leading-relaxed text-slate-500">
             Programs may be available, subject to approval. Licensed lending partner guidance
             available—this page is educational, not financial advice or a commitment to lend.
@@ -76,8 +75,6 @@ export function SeoLandingPage({ config }: { config: SeoPageConfig }) {
       </header>
 
       <SeoCtaBand compact className="md:hidden" ctaLocation="seo-hero-mobile" />
-
-      <SeoMarketingSections />
 
       {/* What it is */}
       <section className="section-light py-10 sm:py-14" aria-labelledby="what-it-is">

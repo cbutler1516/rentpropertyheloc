@@ -1,18 +1,6 @@
-import {
-  PlaceholderPage,
-  placeholderMetadata,
-} from "@/components/layout/placeholder-page";
+import { createSeoPage } from "@/lib/seo/create-seo-page";
 
-export const metadata = placeholderMetadata(
-  "Rental Property HELOC",
-  "Revolving equity lines secured by rental properties may be available for qualifying investors.",
-);
+const { Page, metadata } = createSeoPage("/rental-property-heloc");
 
-export default function RentalPropertyHelocPage() {
-  return (
-    <PlaceholderPage
-      title="Rental property HELOC"
-      description="Access revolving capacity on rental collateral for acquisitions, renovations, reserves, or balance-sheet flexibility—programs may be available, subject to approval."
-    />
-  );
-}
+export { metadata };
+export default Page;

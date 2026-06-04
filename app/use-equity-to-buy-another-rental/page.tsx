@@ -1,18 +1,6 @@
-import {
-  PlaceholderPage,
-  placeholderMetadata,
-} from "@/components/layout/placeholder-page";
+import { createSeoPage } from "@/lib/seo/create-seo-page";
 
-export const metadata = placeholderMetadata(
-  "Use Equity to Buy Another Rental",
-  "Deploy rental equity through a HELOC to fund your next acquisition—subject to approval.",
-);
+const { Page, metadata } = createSeoPage("/use-equity-to-buy-another-rental");
 
-export default function UseEquityToBuyAnotherRentalPage() {
-  return (
-    <PlaceholderPage
-      title="Use equity to buy another rental"
-      description="Revolving line capacity on existing rentals may help bridge down payment or closing needs for the next acquisition. All programs subject to approval."
-    />
-  );
-}
+export { metadata };
+export default Page;

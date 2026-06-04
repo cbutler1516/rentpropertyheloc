@@ -15,7 +15,7 @@ export const SEO_PAGE_PATHS = [
   "/cash-out-vs-heloc",
   "/investor-second-mortgage",
   "/condo-investor-heloc",
-  "/two-to-four-unit-heloc",
+  "/2-4-unit-rental-heloc",
 ] as const;
 
 export type SeoPagePath = (typeof SEO_PAGE_PATHS)[number];
@@ -24,7 +24,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
   "/rental-property-heloc": {
     path: "/rental-property-heloc",
     metadata: {
-      title: "Rental Property HELOC for Investors",
+      title: "Rental Property HELOC",
       description:
         "Learn how revolving rental property HELOC programs may be available for qualifying investors—subject to approval, property eligibility, and lender guidelines.",
       ogTitle: "Rental Property HELOC | Investor Equity Review",
@@ -116,7 +116,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
       "/heloc-on-investment-property",
       "/no-tax-return-heloc",
       "/use-equity-to-buy-another-rental",
-      "/two-to-four-unit-heloc",
+      "/2-4-unit-rental-heloc",
     ],
     service: {
       name: "Rental Property HELOC Review",
@@ -141,7 +141,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
       highlights: [
         "Built for rental and investment property collateral",
         "May sit in second position behind an existing first mortgage",
-        "Strategy-focused review with a licensed professional",
+        "Strategy-focused review with a financing specialist",
       ],
     },
     whatItIs: {
@@ -216,7 +216,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
     relatedPaths: [
       "/rental-property-heloc",
       "/condo-investor-heloc",
-      "/two-to-four-unit-heloc",
+      "/2-4-unit-rental-heloc",
       "/no-tax-return-heloc",
     ],
     service: {
@@ -229,7 +229,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
   "/no-tax-return-heloc": {
     path: "/no-tax-return-heloc",
     metadata: {
-      title: "No Tax Return HELOC for Rental Investors",
+      title: "No Tax Return HELOC",
       description:
         "Alternative documentation paths for rental HELOCs may be available on select programs—bank statements, assets, or other investor docs, subject to approval.",
       ogTitle: "No Tax Return Rental HELOC | Documentation Options",
@@ -324,7 +324,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
   "/use-equity-to-buy-another-rental": {
     path: "/use-equity-to-buy-another-rental",
     metadata: {
-      title: "Use Rental Equity to Buy Another Property",
+      title: "Use Equity to Buy Another Rental",
       description:
         "How investors use existing rental equity for down payments, reserves, and the next acquisition—programs may be available, subject to approval.",
       ogTitle: "Use Equity to Buy Another Rental | Investor Guide",
@@ -412,7 +412,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
     relatedPaths: [
       "/rental-property-heloc",
       "/cash-out-vs-heloc",
-      "/two-to-four-unit-heloc",
+      "/2-4-unit-rental-heloc",
       "/heloc-on-investment-property",
     ],
     service: {
@@ -425,7 +425,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
   "/cash-out-vs-heloc": {
     path: "/cash-out-vs-heloc",
     metadata: {
-      title: "Cash-Out Refinance vs HELOC on Rentals",
+      title: "Cash-Out vs HELOC",
       description:
         "Compare cash-out refinance and rental HELOC strategies for investors—revolving access, lien position, and when each may be available, subject to approval.",
       ogTitle: "Cash-Out vs HELOC for Rental Investors",
@@ -438,7 +438,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
       highlights: [
         "HELOC: revolving draws, may preserve first rate",
         "Cash-out: one-time proceeds, new first loan terms",
-        "Licensed professional helps compare paths for your goals",
+        "Financing specialist helps compare paths for your goals",
       ],
     },
     whatItIs: {
@@ -526,7 +526,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
   "/investor-second-mortgage": {
     path: "/investor-second-mortgage",
     metadata: {
-      title: "Investor Second Mortgage & HELOC on Rentals",
+      title: "Investor Second Mortgage",
       description:
         "Second-position financing and HELOC options on rental property may be available for qualifying investors—subject to approval and combined LTV guidelines.",
       ogTitle: "Investor Second Mortgage | Rental Equity",
@@ -538,7 +538,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
       highlights: [
         "May preserve your current first mortgage",
         "Second-position financing guidelines apply",
-        "Investor-specific recommendations from a licensed professional",
+        "Investor-specific guidance from financing specialists",
       ],
     },
     whatItIs: {
@@ -614,7 +614,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
       "/rental-property-heloc",
       "/cash-out-vs-heloc",
       "/heloc-on-investment-property",
-      "/two-to-four-unit-heloc",
+      "/2-4-unit-rental-heloc",
     ],
     service: {
       name: "Investor Second Position Financing Review",
@@ -626,7 +626,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
   "/condo-investor-heloc": {
     path: "/condo-investor-heloc",
     metadata: {
-      title: "Condo Investor HELOC Options",
+      title: "Condo Investor HELOC",
       description:
         "HELOC programs on non-owner-occupied condos may be available for qualifying investors—warrantability, HOA, and lender guidelines apply, subject to approval.",
       ogTitle: "Condo Investor HELOC | Rental Equity Guide",
@@ -708,7 +708,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
     relatedPaths: [
       "/heloc-on-investment-property",
       "/rental-property-heloc",
-      "/two-to-four-unit-heloc",
+      "/2-4-unit-rental-heloc",
       "/no-tax-return-heloc",
     ],
     service: {
@@ -718,10 +718,10 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
     },
   },
 
-  "/two-to-four-unit-heloc": {
-    path: "/two-to-four-unit-heloc",
+  "/2-4-unit-rental-heloc": {
+    path: "/2-4-unit-rental-heloc",
     metadata: {
-      title: "2–4 Unit Rental HELOC Options",
+      title: "2–4 Unit Rental HELOC",
       description:
         "HELOC programs on duplex, triplex, and fourplex rentals may be available for qualifying investors—subject to approval, property eligibility, and guidelines.",
       ogTitle: "2–4 Unit Rental HELOC | Small Multifamily Equity",
