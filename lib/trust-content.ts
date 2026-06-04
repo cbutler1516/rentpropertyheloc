@@ -28,6 +28,19 @@ export const ADVISOR_HEADSHOT_COMPACT_CLASS = ADVISOR_HEADSHOT_PORTRAIT_CLASS;
 
 export { BOOK_STRATEGY_CALL_LABEL as HOMEPAGE_ADVISOR_CTA_PRIMARY } from "@/lib/contact";
 
+export const COMPANY_TRUST = {
+  headline: "Real People. Real Guidance.",
+  body: [
+    "Every request is reviewed by a financing specialist — not just an automated system.",
+    "If questions come up, our team is available to help you understand your options and next steps.",
+  ],
+  trustPoints: [
+    "Personalized Review",
+    "Financing Strategy Support",
+    "Direct Access To Our Team",
+  ] as const,
+} as const;
+
 export const ADVISOR = {
   name: "Chris Butler",
   title: "Branch Manager / Sr. Loan Originator",
