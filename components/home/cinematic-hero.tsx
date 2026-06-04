@@ -3,7 +3,6 @@
 import { Container } from "@/components/layout/container";
 import { BrandPillars } from "@/components/marketing/brand-pillars";
 import { CtaReassurance } from "@/components/marketing/cta-reassurance";
-import { HeroTrustCard } from "@/components/home/hero-trust-card";
 import { Reveal } from "@/components/motion/reveal";
 import { BackgroundVideo } from "@/components/video/background-video";
 import { CtaLink } from "@/components/ui/cta-link";
@@ -16,7 +15,10 @@ const HERO_OVERLAY =
 
 export function CinematicHero() {
   return (
-    <section id="overview" className="site-anchor-section relative overflow-hidden">
+    <section
+      id="overview"
+      className="site-anchor-section relative flex min-h-[clamp(420px,58vh,640px)] items-center overflow-hidden"
+    >
       <BackgroundVideo
         src={SITE_VIDEOS.heroBackground}
         priority
@@ -28,7 +30,7 @@ export function CinematicHero() {
       />
       <div className="absolute inset-0 cinematic-vignette opacity-45" aria-hidden />
 
-      <Container className="relative z-10 py-8 sm:py-12 md:py-14 lg:py-16">
+      <Container className="relative z-10 w-full py-10 sm:py-14 md:py-16 lg:py-20">
         <div className="max-w-2xl">
           <Reveal>
             <BrandPillars className="mb-4 hero-text-shadow-sm" />
@@ -39,26 +41,23 @@ export function CinematicHero() {
             </h1>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="hero-text-shadow-sm mt-4 max-w-xl text-[0.9375rem] leading-relaxed text-white/85 sm:mt-5 sm:text-base md:text-lg">
+            <p className="hero-text-shadow-sm mt-4 max-w-xl text-[0.9375rem] leading-relaxed text-white/85 sm:mt-5 sm:text-base md:max-w-lg md:text-lg">
               {HERO_SUPPORTING_COPY}
             </p>
           </Reveal>
           <Reveal delay={0.14}>
-            <div className="mt-6 sm:mt-7">
+            <div className="mt-7 sm:mt-8">
               <CtaLink
                 href={HERO_FUNNEL_HREF}
                 size="lg"
-                className="glow-accent-hero w-full sm:w-auto sm:min-w-[220px]"
+                className="glow-accent-hero w-full sm:w-auto sm:min-w-[240px]"
                 onDark
                 ctaLocation="hero-primary"
               >
                 {HERO_CTA_LABEL}
               </CtaLink>
             </div>
-            <CtaReassurance tone="dark" align="left" className="hero-text-shadow-sm mt-3 max-w-lg" />
-          </Reveal>
-          <Reveal delay={0.18}>
-            <HeroTrustCard className="mt-5 sm:mt-6" />
+            <CtaReassurance tone="dark" align="left" className="hero-text-shadow-sm mt-3.5 max-w-lg" />
           </Reveal>
         </div>
       </Container>
