@@ -2,6 +2,7 @@ import { Container } from "@/components/layout/container";
 import { HomeInvestorTrustSection } from "@/components/home/home-investor-trust-section";
 import { BorrowerTrustSection } from "@/components/trust/borrower-trust-section";
 import { PlatformEmailLink } from "@/components/trust/platform-email-link";
+import { PlatformPhoneLink } from "@/components/trust/platform-phone-link";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
 import { StateAvailabilitySection } from "@/components/trust/state-availability-section";
 import { CtaLink } from "@/components/ui/cta-link";
@@ -57,9 +58,20 @@ export default function AboutPage() {
             Questions about your review or available financing paths? Our financing specialists and
             licensed lending partners can help after you submit a property review.
           </p>
-          <p className="mt-4 text-sm">
-            <PlatformEmailLink size="md" />
-          </p>
+          <dl className="mt-5 grid gap-4 sm:grid-cols-2">
+            <div>
+              <dt className="font-semibold text-slate-900">Phone</dt>
+              <dd className="mt-1">
+                <PlatformPhoneLink />
+              </dd>
+            </div>
+            <div>
+              <dt className="font-semibold text-slate-900">Email</dt>
+              <dd className="mt-1">
+                <PlatformEmailLink size="md" />
+              </dd>
+            </div>
+          </dl>
         </div>
 
         <div className="mt-10">

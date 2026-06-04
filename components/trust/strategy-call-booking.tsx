@@ -1,8 +1,9 @@
 "use client";
 
+import { PlatformPhoneLink } from "@/components/trust/platform-phone-link";
 import { PlatformEmailLink } from "@/components/trust/platform-email-link";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
-import { BOOK_STRATEGY_CALL_LABEL } from "@/lib/contact";
+import { BOOK_STRATEGY_CALL_LABEL, QUESTIONS_CALL_TEAM_LABEL } from "@/lib/contact";
 import { cn } from "@/lib/cn";
 
 type StrategyCallBookingProps = {
@@ -30,7 +31,8 @@ export function StrategyCallBooking({ className }: StrategyCallBookingProps) {
             mortgage, and other paths subject to approval.
           </p>
           <p className="mt-2 text-xs text-slate-500">
-            Or <PlatformEmailLink size="sm" className="inline font-semibold" /> with questions.
+            Or <PlatformPhoneLink size="sm" className="inline font-semibold" label={QUESTIONS_CALL_TEAM_LABEL} />{" "}
+            · <PlatformEmailLink size="sm" className="inline font-semibold" />
           </p>
         </div>
 

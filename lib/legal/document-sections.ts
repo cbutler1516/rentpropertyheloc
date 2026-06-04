@@ -1,4 +1,4 @@
-import { PLATFORM_EMAIL } from "@/lib/contact";
+import { PLATFORM_EMAIL, PLATFORM_PHONE_DISPLAY } from "@/lib/contact";
 import {
   FOOTER_PLATFORM_DISCLOSURE,
   LEGAL_SITE_DOMAIN,
@@ -96,7 +96,7 @@ export const PRIVACY_POLICY_SECTIONS: LegalSection[] = [
       "California and other state residents may have additional privacy rights — contact us to submit a request.",
     ],
     paragraphs: [
-      `Privacy-related requests may be sent to ${PLATFORM_EMAIL}.`,
+      `Privacy-related requests may be sent to ${PLATFORM_EMAIL} or by calling ${PLATFORM_PHONE_DISPLAY}.`,
     ],
   },
   {
@@ -111,7 +111,7 @@ export const PRIVACY_POLICY_SECTIONS: LegalSection[] = [
     title: "Changes and contact",
     paragraphs: [
       "We may update this Privacy Policy from time to time. The “Last updated” date at the top of this page reflects the latest revision.",
-      `Questions about this Privacy Policy may be directed to ${PLATFORM_EMAIL}.`,
+      `Questions about this Privacy Policy may be directed to ${PLATFORM_EMAIL} or ${PLATFORM_PHONE_DISPLAY}.`,
     ],
   },
 ];
@@ -201,7 +201,7 @@ export const TERMS_OF_USE_SECTIONS: LegalSection[] = [
     title: "Changes",
     paragraphs: [
       "We may modify these Terms of Use at any time. Continued use after changes constitutes acceptance of the revised terms.",
-      `Questions about these terms may be directed to ${PLATFORM_EMAIL}.`,
+      `Questions about these terms may be directed to ${PLATFORM_EMAIL} or ${PLATFORM_PHONE_DISPLAY}.`,
     ],
   },
 ];

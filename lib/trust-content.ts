@@ -1,4 +1,4 @@
-import { PLATFORM_EMAIL } from "@/lib/contact";
+import { PLATFORM_EMAIL, PLATFORM_PHONE_DISPLAY } from "@/lib/contact";
 
 /** Branded review dashboard visual (see RequestReviewDashboard) */
 export const TEAM_TRUST_IMAGE_ALT =
@@ -29,6 +29,7 @@ export const ABOUT_PLATFORM = {
   aboutHref: "/about",
   aboutLinkLabel: "Learn more about us",
   contactEmail: PLATFORM_EMAIL,
+  contactPhone: PLATFORM_PHONE_DISPLAY,
 } as const;
 
 export const PLATFORM_COMPARISON = {

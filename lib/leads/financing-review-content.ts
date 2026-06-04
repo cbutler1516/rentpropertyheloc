@@ -1,4 +1,4 @@
-import { PLATFORM_EMAIL } from "@/lib/contact";
+import { PLATFORM_EMAIL, PLATFORM_PHONE_DISPLAY } from "@/lib/contact";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export const FINANCING_REVIEW_DISCLAIMER =
@@ -44,7 +44,7 @@ export const COMPLETION_TIMELINE = [
 
 export const COMPLETION_REVIEW_NOTE = "Most reviews are evaluated within 1 business day.";
 
-export const TALK_THROUGH_OPTIONS_LABEL = "Talk Through My Options";
+export const TALK_THROUGH_OPTIONS_LABEL = "Talk Through Your Scenario";
 export const DOWNLOAD_REVIEW_SUMMARY_LABEL = "Download Review Summary";
 
 /** @deprecated Use COMPLETION_STRATEGY_PATHS */
@@ -61,5 +61,6 @@ export const FINANCING_REVIEW_CONTACT = {
   teamLabel: "Financing Specialist Team",
   platformName: SITE_NAME,
   email: PLATFORM_EMAIL,
+  phone: PLATFORM_PHONE_DISPLAY,
   siteUrl: SITE_URL,
 } as const;

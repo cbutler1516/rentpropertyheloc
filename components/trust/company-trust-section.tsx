@@ -2,9 +2,10 @@
 
 import { Section, SectionHeader } from "@/components/layout/section";
 import { Reveal } from "@/components/motion/reveal";
-import { PlatformEmailLink } from "@/components/trust/platform-email-link";
+import { PlatformPhoneLink } from "@/components/trust/platform-phone-link";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
 import { TeamTrustVisual } from "@/components/trust/team-trust-visual";
+import { CALL_OUR_TEAM_LABEL } from "@/lib/contact";
 import { COMPANY_TRUST } from "@/lib/trust-content";
 import type { ReviewProcessPhase } from "@/lib/trust/review-process";
 import { cn } from "@/lib/cn";
@@ -217,8 +218,10 @@ function TrustCtaRow({
         ctaLocation={ctaLocation}
         className="w-full justify-center sm:w-auto"
       />
-      <PlatformEmailLink
+      <PlatformPhoneLink
         size={compact ? "sm" : "md"}
+        showIcon={false}
+        label={CALL_OUR_TEAM_LABEL}
         className="inline-flex min-h-[44px] w-full items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-800 no-underline shadow-sm transition hover:bg-slate-50 hover:text-teal-900 sm:w-auto"
       />
     </div>

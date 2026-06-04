@@ -1,10 +1,12 @@
 "use client";
 
+import { PlatformPhoneLink } from "@/components/trust/platform-phone-link";
 import { StrategyCallLink } from "@/components/trust/strategy-call-link";
 import {
   DOWNLOAD_REVIEW_SUMMARY_LABEL,
   TALK_THROUGH_OPTIONS_LABEL,
 } from "@/lib/leads/financing-review-content";
+import { QUESTIONS_CALL_TEAM_LABEL } from "@/lib/contact";
 import type { FinancingReviewData } from "@/lib/leads/financing-review-document";
 import {
   canGenerateReviewSummaryPdf,
@@ -46,6 +48,15 @@ export function CompletionCtaRow({
       {showPdf ? (
         <ReviewSummaryDownloadButton data={data} className={cn("w-full sm:flex-1", heightClass)} />
       ) : null}
+      <PlatformPhoneLink
+        showIcon={false}
+        label={QUESTIONS_CALL_TEAM_LABEL}
+        className={cn(
+          "inline-flex w-full items-center justify-center rounded-xl border border-slate-200 bg-white px-6 text-sm font-semibold text-slate-800 no-underline shadow-sm transition hover:bg-slate-50 hover:text-teal-900",
+          heightClass,
+          showPdf ? "sm:flex-1" : "mx-auto sm:max-w-md",
+        )}
+      />
     </div>
   );
 }

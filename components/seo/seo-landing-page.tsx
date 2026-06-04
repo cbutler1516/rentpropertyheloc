@@ -2,6 +2,7 @@ import { SeoCtaBand } from "@/components/seo/seo-cta-band";
 import { SeoJsonLd } from "@/components/seo/seo-json-ld";
 import { SeoPageAnalytics } from "@/components/seo/seo-page-analytics";
 import { CtaReassurance } from "@/components/marketing/cta-reassurance";
+import { PlatformPhoneLink } from "@/components/trust/platform-phone-link";
 import { Container } from "@/components/layout/container";
 import { ComplianceNote } from "@/components/layout/compliance-note";
 import { FooterNavLink } from "@/components/layout/footer-nav-link";
@@ -11,6 +12,7 @@ import { COMPLIANCE_SHORT, PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL, NAV_CTA_LABEL } 
 import { SEO_PAGES, type SeoPagePath } from "@/lib/seo/pages";
 import type { SeoPageConfig } from "@/lib/seo/types";
 import { CHECK_OPTIONS_HREF } from "@/lib/site";
+import { QUESTIONS_CALL_TEAM_LABEL } from "@/lib/contact";
 import Link from "next/link";
 
 function resolveRelatedLinks(config: SeoPageConfig) {
@@ -67,6 +69,9 @@ export function SeoLandingPage({ config }: { config: SeoPageConfig }) {
             </CtaLink>
           </div>
           <CtaReassurance tone="light" className="mt-3 max-w-lg" align="left" />
+          <p className="mt-3 text-sm text-slate-600">
+            <PlatformPhoneLink size="sm" label={QUESTIONS_CALL_TEAM_LABEL} />
+          </p>
           <p className="mt-4 text-[11px] leading-relaxed text-slate-500">
             Programs may be available, subject to approval. Licensed lending partner guidance
             available—this page is educational, not financial advice or a commitment to lend.

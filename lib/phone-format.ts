@@ -7,7 +7,7 @@ export function isValidPhone(value: string): boolean {
   return digits.length >= 10 && digits.length <= 15;
 }
 
-/** US display format: (206) 558-3048 */
+/** US display format: (206) 487-1728 */
 export function formatPhoneDisplay(value: string): string {
   let digits = normalizePhoneDigits(value);
   if (digits.length === 11 && digits.startsWith("1")) {
