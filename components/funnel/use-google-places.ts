@@ -1,18 +1,21 @@
 "use client";
 
-import { getGooglePlacesApiKey } from "@/lib/leads/google-places-config";
+import {
+  getGooglePlacesApiKey,
+  getResolvedGooglePlacesEnvKey,
+  GOOGLE_PLACES_ENV_VAR_NAMES,
+  placesDebugError,
+  placesDebugLog,
+  placesDebugWarn,
+} from "@/lib/leads/google-places-config";
+import {
+  hasGooglePlaceAddressComponents,
+  parseGooglePlace,
+  type ParsedGooglePlace,
+} from "@/lib/leads/parse-google-place";
 import { useEffect, useRef, useState } from "react";
 
-export type PlacesAddressData = {
-  street: string;
-  city: string;
-  state: string;
-  zip: string;
-  googlePlaceId: string;
-  formattedAddress: string;
-  latitude: number | null;
-  longitude: number | null;
-};
+export type PlacesAddressData = ParsedGooglePlace;
 
 export type PlacesStatus = "idle" | "loading" | "ready" | "error";
 
@@ -51,52 +54,35 @@ function probePlacesApi() {
   }
 }
 
-function getComponent(
-  components: google.maps.GeocoderAddressComponent[],
-  type: string,
-  nameType: "long_name" | "short_name" = "long_name",
-): string {
-  return components.find((c) => c.types.includes(type))?.[nameType] ?? "";
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function getCityFromComponents(components: google.maps.GeocoderAddressComponent[]): string {
-  return (
-    getComponent(components, "locality") ||
-    getComponent(components, "postal_town") ||
-    getComponent(components, "sublocality") ||
-    getComponent(components, "sublocality_level_1") ||
-    getComponent(components, "administrative_area_level_2")
-  );
-}
+/** Wait for legacy Places Autocomplete after script load (handles async bootstrap). */
+async function ensurePlacesLibraryReady(maxAttempts = 25, delayMs = 100): Promise<boolean> {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const probe = probePlacesApi();
+    if (probe.autocompleteClassAvailable) {
+      placesDebugLog("Places library ready", { attempt });
+      return true;
+    }
 
-export function parsePlace(place: google.maps.places.PlaceResult): PlacesAddressData {
-  const components = place.address_components ?? [];
-  const streetNumber = getComponent(components, "street_number");
-  const route = getComponent(components, "route");
-  const lat = place.geometry?.location?.lat();
-  const lng = place.geometry?.location?.lng();
-  const formattedAddress = place.formatted_address?.trim() ?? "";
+    if (typeof google !== "undefined" && google.maps?.importLibrary) {
+      try {
+        await google.maps.importLibrary("places");
+        if (probePlacesApi().autocompleteClassAvailable) {
+          placesDebugLog("Places library ready via importLibrary", { attempt });
+          return true;
+        }
+      } catch (error) {
+        placesDebugWarn("importLibrary('places') attempt failed", { attempt, error });
+      }
+    }
 
-  let street = [streetNumber, route].filter(Boolean).join(" ");
-  if (!street && route) street = route;
-  if (!street && formattedAddress) {
-    street = formattedAddress.split(",")[0]?.trim() ?? "";
+    await sleep(delayMs);
   }
 
-  return {
-    street,
-    city: getCityFromComponents(components),
-    state: getComponent(components, "administrative_area_level_1", "short_name"),
-    zip: getComponent(components, "postal_code"),
-    googlePlaceId: place.place_id ?? "",
-    formattedAddress,
-    latitude: typeof lat === "number" && Number.isFinite(lat) ? lat : null,
-    longitude: typeof lng === "number" && Number.isFinite(lng) ? lng : null,
-  };
-}
-
-function hasAddressComponents(place: google.maps.places.PlaceResult): boolean {
-  return Boolean(place.address_components && place.address_components.length > 0);
+  return probePlacesApi().autocompleteClassAvailable;
 }
 
 function fetchPlaceDetails(placeId: string, onResult: (data: PlacesAddressData) => void) {
@@ -107,8 +93,11 @@ function fetchPlaceDetails(placeId: string, onResult: (data: PlacesAddressData) 
       fields: ["address_components", "place_id", "formatted_address", "geometry"],
     },
     (detail, status) => {
-      if (status !== google.maps.places.PlacesServiceStatus.OK || !detail) return;
-      onResult(parsePlace(detail));
+      if (status !== google.maps.places.PlacesServiceStatus.OK || !detail) {
+        placesDebugError("getDetails failed", { placeId, status });
+        return;
+      }
+      onResult(parseGooglePlace(detail));
     },
   );
 }
@@ -120,6 +109,10 @@ function detachAutocomplete(instance: google.maps.places.Autocomplete | null) {
   } catch {
     // ignore cleanup errors
   }
+}
+
+function buildMapsScriptUrl(apiKey: string): string {
+  return `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places&v=weekly`;
 }
 
 export function useGooglePlaces(
@@ -134,26 +127,33 @@ export function useGooglePlaces(
 
   useEffect(() => {
     const input = inputRef.current;
-    if (!input) return;
+    if (!input) {
+      placesDebugWarn("Street input ref not available on mount");
+      return;
+    }
 
     const apiKey = getGooglePlacesApiKey();
     if (!apiKey) {
+      placesDebugError("Missing API key — set one of:", GOOGLE_PLACES_ENV_VAR_NAMES);
       setStatus("error");
       return;
     }
+
+    placesDebugLog("API key present", { envKey: getResolvedGooglePlacesEnvKey() });
 
     const previousAuthFailure = window.gm_authFailure;
     window.gm_authFailure = () => {
       authFailedRef.current = true;
       detachAutocomplete(autocompleteRef.current);
       autocompleteRef.current = null;
+      placesDebugError("Google Maps auth failed (gm_authFailure) — check key, billing, and HTTP referrer restrictions");
       setStatus("error");
       previousAuthFailure?.();
     };
 
     function deliverPlace(place: google.maps.places.PlaceResult) {
-      if (hasAddressComponents(place)) {
-        onSelectRef.current(parsePlace(place));
+      if (hasGooglePlaceAddressComponents(place)) {
+        onSelectRef.current(parseGooglePlace(place));
         return;
       }
 
@@ -181,6 +181,7 @@ export function useGooglePlaces(
 
       const probe = probePlacesApi();
       if (!probe.autocompleteClassAvailable) {
+        placesDebugError("Places library unavailable at autocomplete init", probe);
         setStatus("error");
         return;
       }
@@ -201,20 +202,26 @@ export function useGooglePlaces(
 
         autocompleteRef.current = ac;
         setStatus("ready");
+        placesDebugLog("Autocomplete initialized", { inputId: target.id });
       } catch (error) {
-        console.error("[places] Autocomplete init failed", error);
+        placesDebugError("Autocomplete init failed", error);
         setStatus("error");
       }
     }
 
-    function handleScriptLoaded() {
+    async function handleScriptLoaded(source: "existing" | "injected") {
       if (authFailedRef.current) {
+        placesDebugError("Script load ignored — auth already failed");
         setStatus("error");
         return;
       }
 
-      const probe = probePlacesApi();
-      if (!probe.autocompleteClassAvailable) {
+      placesDebugLog("Script load event", { source });
+      setStatus("loading");
+
+      const ready = await ensurePlacesLibraryReady();
+      if (!ready) {
+        placesDebugError("Places library unavailable after script load", probePlacesApi());
         setStatus("error");
         return;
       }
@@ -226,6 +233,7 @@ export function useGooglePlaces(
 
     const probe = probePlacesApi();
     if (probe.autocompleteClassAvailable) {
+      placesDebugLog("Google Maps Places already loaded");
       initAutocomplete(input);
       return () => {
         window.gm_authFailure = previousAuthFailure;
@@ -235,22 +243,31 @@ export function useGooglePlaces(
     }
 
     setStatus("loading");
+    placesDebugLog("Loading Google Maps script", { libraries: "places", url: buildMapsScriptUrl("…") });
+
     const existingScript = document.querySelector<HTMLScriptElement>(
       'script[src*="maps.googleapis.com/maps/api/js"]',
     );
 
     if (existingScript) {
+      placesDebugLog("Reusing existing Google Maps script tag");
+
       if (probePlacesApi().autocompleteClassAvailable) {
-        handleScriptLoaded();
+        void handleScriptLoaded("existing");
       } else {
-        existingScript.addEventListener("load", handleScriptLoaded);
+        const onLoaded = () => {
+          void handleScriptLoaded("existing");
+        };
+        existingScript.addEventListener("load", onLoaded);
+        void handleScriptLoaded("existing");
         return () => {
-          existingScript.removeEventListener("load", handleScriptLoaded);
+          existingScript.removeEventListener("load", onLoaded);
           window.gm_authFailure = previousAuthFailure;
           detachAutocomplete(autocompleteRef.current);
           autocompleteRef.current = null;
         };
       }
+
       return () => {
         window.gm_authFailure = previousAuthFailure;
         detachAutocomplete(autocompleteRef.current);
@@ -259,11 +276,16 @@ export function useGooglePlaces(
     }
 
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&v=weekly&loading=async`;
+    script.src = buildMapsScriptUrl(apiKey);
     script.async = true;
     script.defer = true;
-    script.onload = handleScriptLoaded;
-    script.onerror = () => setStatus("error");
+    script.onload = () => {
+      void handleScriptLoaded("injected");
+    };
+    script.onerror = (event) => {
+      placesDebugError("Google Maps script failed to load — check key, billing, and referrer restrictions", event);
+      setStatus("error");
+    };
     document.head.appendChild(script);
 
     return () => {

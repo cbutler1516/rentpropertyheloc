@@ -7,7 +7,6 @@ import {
   isGooglePlacesAddressReady,
   isManualAddressReady,
 } from "@/lib/leads/address-step-validation";
-import { getGooglePlacesApiKey } from "@/lib/leads/google-places-config";
 import { cn } from "@/lib/cn";
 import type { LeadFunnelData } from "@/lib/leads/types";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -27,7 +26,7 @@ function withStreet(data: LeadFunnelData, street: string): LeadFunnelData {
 
 export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressStepProps) {
   const streetInputRef = useRef<HTMLInputElement | null>(null);
-  const [showManualFields, setShowManualFields] = useState(() => !getGooglePlacesApiKey());
+  const [showManualFields, setShowManualFields] = useState(false);
   const [continueAttempted, setContinueAttempted] = useState(false);
 
   const readStreetFromInput = useCallback((): string => {
@@ -79,9 +78,11 @@ export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressS
   const googleReady = useMemo(() => isGooglePlacesAddressReady(draftData), [draftData]);
   const manualReady = useMemo(() => isManualAddressReady(draftData), [draftData]);
 
+  const placesUnavailable = placesStatus === "error";
+
   const shouldShowManualFields =
     showManualFields ||
-    placesStatus === "error" ||
+    placesUnavailable ||
     (continueAttempted && !googleReady && Boolean(readStreetFromInput()));
 
   function syncStreetToState() {
@@ -143,9 +144,9 @@ export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressS
         {placesStatus === "loading" ? (
           <p className="text-[11px] text-slate-400">Loading address search…</p>
         ) : null}
-        {placesStatus === "error" ? (
+        {placesUnavailable ? (
           <p className="text-[11px] leading-relaxed text-slate-500">
-            Address autocomplete unavailable — enter city, state, and ZIP manually.
+            Can&apos;t find your address? Enter city, state, and ZIP manually.
           </p>
         ) : null}
       </div>
