@@ -278,7 +278,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
         </div>
       ) : null}
 
-      <div className="funnel-app-shell overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_8px_32px_rgba(15,23,42,0.06)] lg:rounded-3xl lg:shadow-[0_16px_48px_rgba(15,23,42,0.08)]">
+      <div className="funnel-app-shell overflow-x-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_8px_32px_rgba(15,23,42,0.06)] lg:rounded-3xl lg:shadow-[0_16px_48px_rgba(15,23,42,0.08)]">
         <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-slate-100 bg-white/95 px-3 py-2.5 backdrop-blur-sm sm:gap-3 sm:px-5 sm:py-3 lg:px-8">
           {step > 1 ? (
             <button

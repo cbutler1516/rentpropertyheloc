@@ -38,6 +38,7 @@ function fromLeadData(data: LeadFunnelData): Partial<GoogleAddressValue> {
     formattedAddress: data.propertyFormattedAddress,
     latitude: data.propertyLatitude,
     longitude: data.propertyLongitude,
+    isPlaceSelected: Boolean(data.googlePlaceId || data.propertyFormattedAddress),
   };
 }
 
