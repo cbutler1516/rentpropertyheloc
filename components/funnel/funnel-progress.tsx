@@ -42,7 +42,7 @@ export function FunnelProgress({
 
       <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100">
         <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-teal-500 via-teal-500 to-emerald-500"
+          className="h-full rounded-full bg-brand-progress"
           initial={false}
           animate={{ width: `${progressPercent}%` }}
           transition={{ duration: reduceMotion ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}

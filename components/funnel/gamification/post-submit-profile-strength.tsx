@@ -35,7 +35,7 @@ export function PostSubmitProfileStrength({
           <motion.div
             className={cn(
               "h-full rounded-full",
-              complete ? "bg-gradient-to-r from-teal-500 to-emerald-500" : "bg-teal-600",
+              complete ? "bg-brand-progress" : "bg-brand-gradient",
             )}
             initial={false}
             animate={{ width: `${Math.min(strength, MAX_PROFILE_STRENGTH)}%` }}

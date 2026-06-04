@@ -11,15 +11,15 @@ type CtaSize = "sm" | "md" | "lg";
 
 const variantClasses: Record<CtaVariant, string> = {
   primary:
-    "bg-accent text-white shadow-[0_1px_2px_rgba(15,23,42,0.06),0_4px_14px_rgba(13,148,136,0.22)] hover:bg-teal-600 active:bg-teal-700",
+    "bg-brand-gradient bg-brand-gradient-hover text-brand-navy shadow-[0_1px_2px_rgba(15,23,42,0.06),0_4px_14px_rgba(23,212,212,0.28)] hover:brightness-105 active:brightness-95",
   secondary:
-    "border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50",
+    "border border-slate-200 bg-white text-slate-700 hover:border-brand-secondary/40 hover:bg-slate-50",
   ghost: "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
 };
 
 const variantClassesDark: Partial<Record<CtaVariant, string>> = {
   primary:
-    "bg-[#22d3ee] text-navy-950 shadow-[0_4px_20px_rgba(34,211,238,0.25)] hover:bg-[#4ade80] hover:text-navy-950",
+    "bg-brand-gradient bg-brand-gradient-hover text-brand-navy shadow-[0_4px_20px_rgba(23,212,212,0.3)] hover:brightness-110",
   ghost: "text-white/70 hover:bg-white/10 hover:text-white",
   secondary:
     "border border-white/15 bg-white/5 text-white/80 hover:border-white/25 hover:bg-white/10",
@@ -74,7 +74,7 @@ export function CtaLink({
           onDark && variantClassesDark[variant]
             ? variantClassesDark[variant]
             : variantClasses[variant],
-          !onDark && variant === "primary" && "text-white",
+          !onDark && variant === "primary" && "text-brand-navy",
           sizeClasses[size],
           className,
         )}

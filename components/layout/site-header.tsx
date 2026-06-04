@@ -14,13 +14,13 @@ export function SiteHeader() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-navy-950/85 backdrop-blur-2xl">
+    <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-brand-dark/90 backdrop-blur-2xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:h-[4.25rem] sm:px-6 lg:px-8">
         <Link
           href="/"
           className="rounded-lg py-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          <Logo variant="navbar" />
+          <Logo variant="navbar" priority />
         </Link>
 
         <nav className="hidden items-center gap-7 xl:flex">

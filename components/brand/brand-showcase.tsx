@@ -1,14 +1,14 @@
 import { Logo } from "@/components/brand/logo";
 import { LogoMark } from "@/components/brand/logo-mark";
 import { Container } from "@/components/layout/container";
-import { BRAND } from "@/lib/brand";
+import { BRAND, BRAND_COLORS } from "@/lib/brand";
 
 const mockups = [
   {
-    title: "Dark hero",
-    description: "Navbar lockup on cinematic navy with teal glow accents.",
+    title: "Header lockup",
+    description: "Horizontal logo for navigation on dark backgrounds.",
     dark: true,
-    content: <Logo variant="horizontal" />,
+    content: <Logo variant="navbar" />,
   },
   {
     title: "Fintech dashboard",
@@ -18,36 +18,40 @@ const mockups = [
       <div className="flex items-center gap-4">
         <LogoMark size={36} />
         <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70">
-          Est. equity · $124,600
+          Est. equity · Review in progress
         </div>
       </div>
     ),
   },
   {
-    title: "Light investor portal",
-    description: "Light wordmark for documents and investor-facing PDFs.",
+    title: "Light footer",
+    description: "Compact horizontal lockup for footer and documents.",
     dark: false,
     content: (
-      <div className="text-navy-950">
-        <Logo variant="stacked" />
+      <div className="text-brand-navy">
+        <Logo variant="footer" />
       </div>
     ),
   },
   {
     title: "Stacked social",
-    description: "Profile-ready stacked identity for LinkedIn and video thumbnails.",
+    description: "Profile-ready stacked identity for social and thumbnails.",
     dark: true,
-    content: <Logo variant="stacked" />,
+    content: (
+      <div className="rounded-xl bg-white p-4">
+        <Logo variant="stacked" />
+      </div>
+    ),
   },
   {
     title: "App icon",
-    description: "Minimal RH mark with integrated equity bars.",
+    description: "House and chart mark for favicon and app surfaces.",
     dark: true,
     content: <Logo variant="icon" />,
   },
   {
     title: "Monochrome",
-    description: "Single-color applications for compliance and print.",
+    description: "SVG icon for single-color applications.",
     dark: true,
     content: <LogoMark size={56} variant="monochrome" />,
   },
@@ -57,55 +61,56 @@ export function BrandShowcase() {
   return (
     <div className="py-20 sm:py-28">
       <Container>
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-bright">
-          Identity system
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-secondary">
+          Brand system
         </p>
-        <h1 className="mt-4 text-3xl font-bold text-white sm:text-4xl">{BRAND.name} brand kit</h1>
-        <p className="mt-4 max-w-2xl text-white/70">{BRAND.descriptor}</p>
+        <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          {BRAND.name}
+        </h1>
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
+          Primary palette: {BRAND_COLORS.primary}, {BRAND_COLORS.secondary}, navy{" "}
+          {BRAND_COLORS.navy}.
+        </p>
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {mockups.map((item) => (
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {mockups.map((mockup) => (
             <div
-              key={item.title}
+              key={mockup.title}
               className={
-                item.dark
-                  ? "glass-panel glow-accent rounded-2xl p-6"
-                  : "rounded-2xl border border-slate-200 bg-white p-6 shadow-xl"
+                mockup.dark
+                  ? "rounded-2xl border border-white/10 bg-brand-dark p-6"
+                  : "rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
               }
             >
-              <div
+              <h2
                 className={
-                  item.dark
-                    ? "flex min-h-[120px] items-center justify-center rounded-xl border border-white/10 bg-navy-950/60 p-6"
-                    : "flex min-h-[120px] items-center justify-center rounded-xl bg-slate-50 p-6"
+                  mockup.dark ? "text-sm font-semibold text-white" : "text-sm font-semibold text-slate-900"
                 }
               >
-                {item.content}
-              </div>
-              <h2 className={`mt-5 text-lg font-semibold ${item.dark ? "text-white" : "text-navy-950"}`}>
-                {item.title}
+                {mockup.title}
               </h2>
-              <p className={`mt-2 text-sm ${item.dark ? "text-white/60" : "text-slate-600"}`}>
-                {item.description}
+              <p
+                className={
+                  mockup.dark ? "mt-1 text-xs text-white/60" : "mt-1 text-xs text-slate-500"
+                }
+              >
+                {mockup.description}
               </p>
+              <div className="mt-5 flex min-h-[5rem] items-center">{mockup.content}</div>
             </div>
           ))}
         </div>
 
-        <div className="mt-16 grid gap-8 lg:grid-cols-2">
-          <div className="glass-panel rounded-2xl p-8">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-accent-bright">
-              Horizontal logo
-            </h3>
-            <div className="mt-6 flex justify-center py-8">
+        <div className="mt-12 grid gap-8 lg:grid-cols-2">
+          <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Primary</p>
+            <div className="mt-4">
               <Logo variant="horizontal" />
             </div>
           </div>
-          <div className="rounded-2xl border border-slate-200 bg-white p-8">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
-              Light background
-            </h3>
-            <div className="mt-6 flex justify-center py-8">
+          <div className="rounded-2xl border border-slate-200 bg-brand-dark p-8">
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Stacked</p>
+            <div className="mt-4 rounded-xl bg-white p-4 inline-block">
               <Logo variant="stacked" />
             </div>
           </div>

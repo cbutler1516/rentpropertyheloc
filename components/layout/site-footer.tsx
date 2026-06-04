@@ -17,7 +17,7 @@ export function SiteFooter() {
       <Container>
         <div className="grid gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-[1.25fr_1fr_1fr] lg:gap-8">
           <div className="sm:col-span-2 lg:col-span-1">
-            <Logo variant="light" />
+            <Logo variant="footer" />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-600 sm:mt-5">
               {PLATFORM_STATEMENT}
             </p>

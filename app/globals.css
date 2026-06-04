@@ -1,24 +1,41 @@
 @import "tailwindcss";
 
 @theme {
-  --color-navy-950: #040810;
-  --color-navy-900: #0a1220;
-  --color-navy-800: #111d33;
-  --color-charcoal: #1a2332;
-  --color-slate-brand: #2a3a52;
+  --color-brand-primary: #17d4d4;
+  --color-brand-secondary: #00b8d9;
+  --color-brand-navy: #082b5b;
+  --color-brand-dark: #111827;
+
+  --color-navy-950: #111827;
+  --color-navy-900: #082b5b;
+  --color-navy-800: #0a3566;
+  --color-charcoal: #1f2937;
+  --color-slate-brand: #334155;
   --color-surface-50: #f7f9fc;
   --color-surface-100: #eef2f7;
   --color-surface-200: #e2e8f0;
-  --color-mist: #ecf6f9;
-  --color-mist-blue: #e4f0f7;
-  --color-ink: #0f172a;
+  --color-mist: #ecf8fa;
+  --color-mist-blue: #e4f4f8;
+  --color-ink: #111827;
   --color-ink-muted: #475569;
   --color-ink-subtle: #64748b;
-  --color-accent: #0d9488;
-  --color-accent-bright: #14b8a6;
-  --color-accent-soft: #5eead4;
-  --color-accent-glow: #2dd4bf;
+  --color-accent: #17d4d4;
+  --color-accent-bright: #00b8d9;
+  --color-accent-soft: #7ee8e8;
+  --color-accent-glow: #17d4d4;
   --color-silver: #94a3b8;
+
+  --color-teal-50: #ecfcfd;
+  --color-teal-100: #d4f7f7;
+  --color-teal-200: #a8efef;
+  --color-teal-300: #5ee4e4;
+  --color-teal-400: #17d4d4;
+  --color-teal-500: #17d4d4;
+  --color-teal-600: #00b8d9;
+  --color-teal-700: #087fa0;
+  --color-teal-800: #082b5b;
+  --color-teal-900: #082b5b;
+
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -40,7 +57,7 @@ body {
 }
 
 ::selection {
-  background: rgba(13, 148, 136, 0.2);
+  background: rgba(23, 212, 212, 0.22);
   color: var(--color-ink);
 }
 
@@ -104,36 +121,48 @@ body {
 .glow-accent {
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.06),
-    0 6px 20px rgba(13, 148, 136, 0.18);
+    0 6px 20px rgba(23, 212, 212, 0.22);
 }
 
 .glow-accent-hero {
   box-shadow:
-    0 0 32px rgba(34, 211, 238, 0.12),
-    0 4px 16px rgba(15, 23, 42, 0.2);
+    0 0 32px rgba(23, 212, 212, 0.18),
+    0 4px 16px rgba(17, 24, 39, 0.2);
 }
 
 .hero-text-shadow {
   text-shadow:
-    0 2px 24px rgba(4, 8, 16, 0.55),
-    0 1px 3px rgba(4, 8, 16, 0.4);
+    0 2px 24px rgba(17, 24, 39, 0.55),
+    0 1px 3px rgba(17, 24, 39, 0.4);
 }
 
 .hero-text-shadow-sm {
-  text-shadow: 0 1px 14px rgba(4, 8, 16, 0.5);
+  text-shadow: 0 1px 14px rgba(17, 24, 39, 0.5);
 }
 
 .text-gradient-brand {
-  background: linear-gradient(135deg, #22d3ee 0%, #4ade80 100%);
+  background: linear-gradient(135deg, #17d4d4 0%, #00b8d9 55%, #082b5b 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
+.bg-brand-gradient {
+  background: linear-gradient(135deg, #17d4d4 0%, #00b8d9 100%);
+}
+
+.bg-brand-gradient-hover:hover {
+  background: linear-gradient(135deg, #2eeeee 0%, #17d4d4 100%);
+}
+
+.bg-brand-progress {
+  background: linear-gradient(90deg, #17d4d4 0%, #00b8d9 100%);
+}
+
 .cinematic-vignette {
   background: radial-gradient(
     ellipse 80% 60% at 50% 0%,
-    rgba(34, 211, 238, 0.08),
+    rgba(23, 212, 212, 0.1),
     transparent 70%
   );
 }
@@ -160,7 +189,7 @@ body {
 }
 
 .journey-theme-sfr {
-  background: linear-gradient(180deg, #f8fafc 0%, #f0fdf4 40%, var(--color-surface-50) 100%);
+  background: linear-gradient(180deg, #f8fafc 0%, #ecfcfd 40%, var(--color-surface-50) 100%);
 }
 
 .journey-theme-str {
@@ -239,11 +268,18 @@ body {
   }
 }
 
+.funnel-form-field:focus,
+.funnel-form-field:focus-visible {
+  border-color: var(--color-brand-secondary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 184, 217, 0.2);
+}
+
 /* Google Places autocomplete — above sticky bars and funnel chrome */
 .pac-container {
   z-index: 100000 !important;
   border-radius: 0.75rem;
-  border: 1px solid var(--color-slate-200, #e2e8f0);
+  border: 1px solid var(--color-surface-200, #e2e8f0);
   box-shadow: 0 4px 24px rgb(0 0 0 / 0.1);
   font-family: inherit;
   margin-top: 4px;

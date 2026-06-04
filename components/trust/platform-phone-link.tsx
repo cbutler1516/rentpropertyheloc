@@ -31,7 +31,7 @@ export function PlatformPhoneLink({
     <a
       href={`tel:${PLATFORM_PHONE_TEL}`}
       className={cn(
-        "inline-flex items-center gap-1.5 font-semibold text-teal-700 underline-offset-2 transition hover:text-teal-800 hover:underline focus-visible:rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600",
+        "inline-flex items-center gap-1.5 font-semibold text-brand-navy underline-offset-2 transition hover:text-brand-secondary hover:underline focus-visible:rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-secondary",
         sizeClasses[size],
         className,
       )}

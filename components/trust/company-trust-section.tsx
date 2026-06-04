@@ -218,12 +218,12 @@ function CallTeamButton({ compact = false }: { compact?: boolean }) {
     <a
       href={`tel:${PLATFORM_PHONE_TEL}`}
       className={cn(
-        "inline-flex min-h-[44px] flex-col items-center justify-center rounded-xl bg-teal-700 px-5 text-center text-white shadow-sm transition hover:bg-teal-800",
+        "inline-flex min-h-[44px] flex-col items-center justify-center rounded-xl bg-brand-gradient px-5 text-center text-brand-navy shadow-sm transition hover:brightness-105",
         compact ? "py-2 text-sm sm:flex-1" : "py-2.5 sm:flex-1",
       )}
     >
       <span className="text-sm font-semibold leading-tight">{CALL_OUR_TEAM_LABEL}</span>
-      <span className={cn("font-medium text-teal-100", compact ? "text-xs" : "text-sm")}>
+      <span className={cn("font-medium text-brand-navy/80", compact ? "text-xs" : "text-sm")}>
         {PLATFORM_PHONE_DISPLAY}
       </span>
     </a>
