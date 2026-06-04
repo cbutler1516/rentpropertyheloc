@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
+import { HashScrollHandler } from "@/components/layout/hash-scroll-handler";
 import { MobileStickyCta } from "@/components/layout/mobile-sticky-cta";
 import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -45,6 +46,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-surface-50 text-ink">
         <OrganizationJsonLd />
         <AnalyticsProvider>
+          <HashScrollHandler />
           <SiteHeader />
           <main className="main-with-sticky-cta flex-1">{children}</main>
           <SiteFooter />

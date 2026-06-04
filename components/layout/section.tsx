@@ -25,6 +25,7 @@ export function Section({
       id={id}
       className={cn(
         "relative py-16 sm:py-20 md:py-24 lg:py-28",
+        id && "site-anchor-section",
         tone === "dark" && "bg-navy-950 text-white",
         tone === "light" && !muted && "section-light text-ink",
         tone === "light" && muted && "bg-surface-100/80 text-ink",

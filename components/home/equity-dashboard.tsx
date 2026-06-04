@@ -8,7 +8,7 @@ import { SITE_VIDEOS } from "@/lib/videos";
 
 export function EquityDashboardSection() {
   return (
-    <section id="dashboard" className="relative overflow-hidden py-20 sm:py-28 lg:py-32">
+    <section id="dashboard" className="site-anchor-section relative overflow-hidden py-20 sm:py-28 lg:py-32">
       <LazyBackgroundVideo src={SITE_VIDEOS.rentalEquity} />
       <Container className="relative">
         <Reveal className="mx-auto mb-14 max-w-2xl text-center sm:mb-16">

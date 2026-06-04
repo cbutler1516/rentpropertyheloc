@@ -15,7 +15,7 @@ const HERO_OVERLAY =
 
 export function CinematicHero() {
   return (
-    <section id="overview" className="relative overflow-hidden">
+    <section id="overview" className="site-anchor-section relative overflow-hidden">
       <BackgroundVideo
         src={SITE_VIDEOS.heroBackground}
         priority

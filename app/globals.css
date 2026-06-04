@@ -26,6 +26,10 @@ html {
   scroll-behavior: smooth;
 }
 
+.site-anchor-section {
+  scroll-margin-top: 4.75rem;
+}
+
 body {
   background: var(--color-surface-50);
   color: var(--color-ink);

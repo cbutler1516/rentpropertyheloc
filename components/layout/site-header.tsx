@@ -1,6 +1,7 @@
 "use client";
 
 import { Logo } from "@/components/brand/logo";
+import { SiteNavLink } from "@/components/layout/site-nav-link";
 import { CtaLink } from "@/components/ui/cta-link";
 import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from "@/lib/cta";
 import { NAV_LINKS } from "@/lib/site";
@@ -24,13 +25,13 @@ export function SiteHeader() {
 
         <nav className="hidden items-center gap-7 xl:flex">
           {NAV_LINKS.map((link) => (
-            <Link
+            <SiteNavLink
               key={link.href}
               href={link.href}
               className="text-sm text-white/65 transition hover:text-white"
             >
               {link.label}
-            </Link>
+            </SiteNavLink>
           ))}
         </nav>
 
@@ -60,14 +61,14 @@ export function SiteHeader() {
           >
             <nav className="flex flex-col gap-1 px-4 py-5">
               {NAV_LINKS.map((link) => (
-                <Link
+                <SiteNavLink
                   key={link.href}
                   href={link.href}
                   className="rounded-xl px-4 py-3.5 text-base text-white/90 hover:bg-white/5"
                   onClick={() => setOpen(false)}
                 >
                   {link.label}
-                </Link>
+                </SiteNavLink>
               ))}
               <CtaLink href={PRIMARY_CTA_HREF} size="lg" className="mt-3 w-full" onClick={() => setOpen(false)}>
                 {PRIMARY_CTA_LABEL}
