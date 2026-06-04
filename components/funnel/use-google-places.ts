@@ -1,5 +1,6 @@
 "use client";
 
+import { getGooglePlacesApiKey } from "@/lib/leads/google-places-config";
 import { useEffect, useRef, useState } from "react";
 
 export type PlacesAddressData = {
@@ -89,10 +90,7 @@ function hasAddressComponents(place: google.maps.places.PlaceResult): boolean {
   return Boolean(place.address_components && place.address_components.length > 0);
 }
 
-function fetchPlaceDetails(
-  placeId: string,
-  onResult: (data: PlacesAddressData) => void,
-) {
+function fetchPlaceDetails(placeId: string, onResult: (data: PlacesAddressData) => void) {
   const service = new google.maps.places.PlacesService(document.createElement("div"));
   service.getDetails(
     {
@@ -107,7 +105,7 @@ function fetchPlaceDetails(
 }
 
 export function useGooglePlaces(
-  inputRef: React.RefObject<HTMLInputElement | null>,
+  inputElement: HTMLInputElement | null,
   onSelect: (address: PlacesAddressData) => void,
 ) {
   const [status, setStatus] = useState<PlacesStatus>("idle");
@@ -116,10 +114,18 @@ export function useGooglePlaces(
   onSelectRef.current = onSelect;
 
   useEffect(() => {
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-    if (!apiKey || !inputRef.current) return;
+    if (!inputElement) return;
 
-    const input = inputRef.current;
+    const apiKey = getGooglePlacesApiKey();
+    if (!apiKey) {
+      console.warn(
+        "[places] No API key — set NEXT_PUBLIC_GOOGLE_PLACES_API_KEY or NEXT_PUBLIC_GOOGLE_MAPS_API_KEY",
+      );
+      setStatus("error");
+      return;
+    }
+
+    const input = inputElement;
 
     function deliverPlace(place: google.maps.places.PlaceResult) {
       if (hasAddressComponents(place)) {
@@ -129,6 +135,20 @@ export function useGooglePlaces(
 
       if (place.place_id) {
         fetchPlaceDetails(place.place_id, onSelectRef.current);
+        return;
+      }
+
+      if (place.formatted_address?.trim()) {
+        onSelectRef.current({
+          street: place.formatted_address.split(",")[0]?.trim() ?? place.formatted_address,
+          city: "",
+          state: "",
+          zip: "",
+          googlePlaceId: "",
+          formattedAddress: place.formatted_address.trim(),
+          latitude: null,
+          longitude: null,
+        });
       }
     }
 
@@ -156,15 +176,27 @@ export function useGooglePlaces(
 
         autocompleteRef.current = ac;
         setStatus("ready");
-      } catch {
+      } catch (error) {
+        console.error("[places] Autocomplete init failed", error);
         setStatus("error");
       }
+    }
+
+    function handleScriptLoaded() {
+      const probe = probePlacesApi();
+      if (!probe.autocompleteClassAvailable) {
+        setStatus("error");
+        return;
+      }
+      initAutocomplete(input);
     }
 
     const probe = probePlacesApi();
     if (probe.autocompleteClassAvailable) {
       initAutocomplete(input);
-      return;
+      return () => {
+        autocompleteRef.current = null;
+      };
     }
 
     setStatus("loading");
@@ -173,28 +205,32 @@ export function useGooglePlaces(
     );
 
     if (existingScript) {
-      const onLoaded = () => {
-        if (inputRef.current) initAutocomplete(inputRef.current);
-      };
       if (probePlacesApi().autocompleteClassAvailable) {
-        onLoaded();
+        handleScriptLoaded();
       } else {
-        existingScript.addEventListener("load", onLoaded);
-        return () => existingScript.removeEventListener("load", onLoaded);
+        existingScript.addEventListener("load", handleScriptLoaded);
+        return () => {
+          existingScript.removeEventListener("load", handleScriptLoaded);
+          autocompleteRef.current = null;
+        };
       }
-      return;
+      return () => {
+        autocompleteRef.current = null;
+      };
     }
 
     const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&v=weekly`;
     script.async = true;
-    script.onload = () => {
-      if (inputRef.current) initAutocomplete(inputRef.current);
-    };
+    script.defer = true;
+    script.onload = handleScriptLoaded;
     script.onerror = () => setStatus("error");
     document.head.appendChild(script);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    return () => {
+      autocompleteRef.current = null;
+    };
+  }, [inputElement]);
 
   return { status };
 }

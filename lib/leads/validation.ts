@@ -1,3 +1,4 @@
+import { isGooglePlacesAddressReady, isManualAddressReady } from "@/lib/leads/address-step-validation";
 import { isValidPropertyType, FUNNEL_VERSION } from "@/lib/leads/funnel-config";
 import { LEAD_NUMERIC_LIMITS, LEAD_SOURCE } from "@/lib/leads/constants";
 import { isJourneySlug } from "@/lib/leads/investor-journeys";
@@ -55,9 +56,36 @@ export function validateLeadCreateRequest(body: unknown): LeadValidationResult {
   const propertyZip = typeof raw.propertyZip === "string" ? raw.propertyZip.trim() : "";
 
   if (!propertyStreet) return { valid: false, error: "Property address is required." };
-  if (!propertyCity) return { valid: false, error: "City is required." };
-  if (!propertyState) return { valid: false, error: "State is required." };
-  if (!propertyZip) return { valid: false, error: "ZIP code is required." };
+
+  const googlePlaceIdForCheck =
+    typeof raw.googlePlaceId === "string" ? raw.googlePlaceId.trim() : "";
+  const propertyFormattedAddressForCheck =
+    typeof raw.propertyFormattedAddress === "string" ? raw.propertyFormattedAddress.trim() : "";
+
+  const googleAddressReady = isGooglePlacesAddressReady({
+    propertyStreet,
+    googlePlaceId: googlePlaceIdForCheck,
+    propertyFormattedAddress: propertyFormattedAddressForCheck,
+  });
+  const manualAddressReady = isManualAddressReady({
+    propertyStreet,
+    propertyCity,
+    propertyState,
+    propertyZip,
+  });
+
+  if (!googleAddressReady && !manualAddressReady) {
+    return {
+      valid: false,
+      error: "Complete the property address or select a suggested address.",
+    };
+  }
+
+  if (!googleAddressReady) {
+    if (!propertyCity) return { valid: false, error: "City is required." };
+    if (!propertyState) return { valid: false, error: "State is required." };
+    if (!propertyZip) return { valid: false, error: "ZIP code is required." };
+  }
 
   const equityAccessRangeRaw = parseStringField(raw.equityAccessRange);
   const desiredFunds = parseRequiredNumber(raw.desiredFunds, "desired funds");

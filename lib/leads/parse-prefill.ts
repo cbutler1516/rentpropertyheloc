@@ -1,4 +1,5 @@
-import { isValidPropertyType } from "@/lib/leads/funnel-config";
+import { isGooglePlacesAddressReady, isManualAddressReady } from "@/lib/leads/address-step-validation";
+import { DEFAULT_FUNNEL_DATA, isValidPropertyType } from "@/lib/leads/funnel-config";
 import type {
   CreditScoreRangeId,
   EquityAccessRangeId,
@@ -21,7 +22,6 @@ import {
 } from "@/lib/leads/funnel-ranges";
 import { isEquityStrategy } from "@/lib/equity-calculator";
 import type { CheckOptionsPrefill, EquityStrategy, LeadFunnelData } from "@/lib/leads/types";
-import { DEFAULT_FUNNEL_DATA } from "@/lib/leads/funnel-config";
 
 function parsePositiveNumber(value: string | null): number | null {
   if (!value) return null;
@@ -149,12 +149,7 @@ export function mergePrefillIntoFunnelData(prefill: CheckOptionsPrefill): LeadFu
 }
 
 export function getInitialFunnelStep(data: LeadFunnelData): number {
-  if (
-    !data.propertyStreet?.trim() ||
-    !data.propertyCity?.trim() ||
-    !data.propertyState?.trim() ||
-    !data.propertyZip?.trim()
-  ) {
+  if (!isGooglePlacesAddressReady(data) && !isManualAddressReady(data)) {
     return 1;
   }
   if (!data.creditScoreRange) return 2;

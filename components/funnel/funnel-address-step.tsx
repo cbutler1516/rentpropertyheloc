@@ -2,6 +2,11 @@
 
 import { useGooglePlaces, type PlacesAddressData } from "@/components/funnel/use-google-places";
 import { Button } from "@/components/ui/button";
+import {
+  canContinueAddressStep,
+  isGooglePlacesAddressReady,
+  isManualAddressReady,
+} from "@/lib/leads/address-step-validation";
 import { cn } from "@/lib/cn";
 import type { LeadFunnelData } from "@/lib/leads/types";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -15,26 +20,23 @@ type FunnelAddressStepProps = {
 const fieldClassName =
   "funnel-form-field h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-base text-navy-950 placeholder:text-slate-400 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30 sm:text-sm lg:text-base";
 
-function isAddressComplete(data: LeadFunnelData): boolean {
-  return Boolean(
-    data.propertyStreet?.trim() &&
-      data.propertyCity?.trim() &&
-      data.propertyState?.trim().length === 2 &&
-      data.propertyZip?.trim(),
-  );
-}
-
 export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressStepProps) {
   const streetInputRef = useRef<HTMLInputElement | null>(null);
+  const [streetInputEl, setStreetInputEl] = useState<HTMLInputElement | null>(null);
   const [showManualFields, setShowManualFields] = useState(false);
   const [continueAttempted, setContinueAttempted] = useState(false);
 
-  const addressComplete = useMemo(() => isAddressComplete(data), [data]);
+  const bindStreetInput = useCallback((node: HTMLInputElement | null) => {
+    streetInputRef.current = node;
+    setStreetInputEl(node);
+  }, []);
 
-  const canContinue = addressComplete && (Boolean(data.googlePlaceId) || showManualFields);
+  const readyToContinue = useMemo(() => canContinueAddressStep(data), [data]);
+  const googleReady = useMemo(() => isGooglePlacesAddressReady(data), [data]);
+  const manualReady = useMemo(() => isManualAddressReady(data), [data]);
 
   const shouldShowManualFields =
-    showManualFields || (continueAttempted && !(data.googlePlaceId && addressComplete));
+    showManualFields || (continueAttempted && !googleReady && Boolean(data.propertyStreet?.trim()));
 
   const handlePlaceSelect = useCallback(
     (parsed: PlacesAddressData) => {
@@ -48,16 +50,15 @@ export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressS
         propertyLatitude: parsed.latitude,
         propertyLongitude: parsed.longitude,
       });
-      if (streetInputRef.current) {
-        streetInputRef.current.value = parsed.street;
-      }
-      setShowManualFields(false);
       setContinueAttempted(false);
+      if (!parsed.city || !parsed.state || !parsed.zip) {
+        setShowManualFields(true);
+      }
     },
     [onChange],
   );
 
-  const { status: placesStatus } = useGooglePlaces(streetInputRef, handlePlaceSelect);
+  const { status: placesStatus } = useGooglePlaces(streetInputEl, handlePlaceSelect);
 
   useEffect(() => {
     if (placesStatus === "error") {
@@ -65,13 +66,36 @@ export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressS
     }
   }, [placesStatus]);
 
+  function handleStreetChange(value: string) {
+    onChange({
+      propertyStreet: value,
+      googlePlaceId: "",
+      propertyFormattedAddress: "",
+    });
+  }
+
+  function handleStreetBlur() {
+    if (
+      data.propertyStreet?.trim() &&
+      !googleReady &&
+      !manualReady &&
+      placesStatus !== "loading"
+    ) {
+      setShowManualFields(true);
+    }
+  }
+
   function handleContinueClick() {
     setContinueAttempted(true);
-    if (!addressComplete) {
-      setShowManualFields(true);
+
+    if (readyToContinue) {
+      onContinue();
       return;
     }
-    onContinue();
+
+    if (data.propertyStreet?.trim()) {
+      setShowManualFields(true);
+    }
   }
 
   return (
@@ -81,22 +105,22 @@ export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressS
           Property address
         </label>
         <input
-          ref={streetInputRef}
+          ref={bindStreetInput}
           id="funnel-address-street"
-          defaultValue={data.propertyStreet ?? ""}
-          onChange={(e) =>
-            onChange({
-              propertyStreet: e.target.value,
-              googlePlaceId: "",
-              propertyFormattedAddress: "",
-            })
-          }
+          value={data.propertyStreet}
+          onChange={(e) => handleStreetChange(e.target.value)}
+          onBlur={handleStreetBlur}
           placeholder="Start typing an address…"
           autoComplete="street-address"
           className={cn(fieldClassName, "lg:h-[3.25rem]")}
         />
         {placesStatus === "loading" ? (
           <p className="text-[11px] text-slate-400">Loading address search…</p>
+        ) : null}
+        {placesStatus === "error" ? (
+          <p className="text-[11px] leading-relaxed text-slate-500">
+            Address autocomplete unavailable — enter city, state, and ZIP manually.
+          </p>
         ) : null}
       </div>
 
@@ -175,7 +199,7 @@ export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressS
         </div>
       )}
 
-      {continueAttempted && !addressComplete ? (
+      {continueAttempted && !readyToContinue ? (
         <p className="text-sm text-red-600" role="alert">
           Select an address from the suggestions or complete city, state, and ZIP.
         </p>
@@ -185,7 +209,7 @@ export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressS
         type="button"
         size="lg"
         className="thumb-btn h-12 w-full text-base sm:max-w-md lg:max-w-sm"
-        disabled={!canContinue}
+        disabled={!data.propertyStreet?.trim()}
         onClick={handleContinueClick}
       >
         Continue
