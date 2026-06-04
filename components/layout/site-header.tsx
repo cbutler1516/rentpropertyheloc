@@ -3,15 +3,28 @@
 import { Logo } from "@/components/brand/logo";
 import { SiteNavLink } from "@/components/layout/site-nav-link";
 import { CtaLink } from "@/components/ui/cta-link";
-import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from "@/lib/cta";
+import { FUNNEL_SECTION_ID, HEADER_FUNNEL_HREF, PRIMARY_CTA_LABEL } from "@/lib/cta";
+import { scrollToSection } from "@/lib/scroll-to-section";
 import { NAV_LINKS } from "@/lib/site";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useState, type MouseEvent } from "react";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const reduceMotion = useReducedMotion();
+  const pathname = usePathname();
+
+  function handleFindRateClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (pathname === "/check-options") {
+      event.preventDefault();
+      if (scrollToSection(`#${FUNNEL_SECTION_ID}`)) {
+        window.history.pushState(null, "", HEADER_FUNNEL_HREF);
+      }
+    }
+    setOpen(false);
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-brand-dark/90 backdrop-blur-2xl">
@@ -35,7 +48,12 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <CtaLink href={PRIMARY_CTA_HREF} size="sm" className="hidden shrink-0 md:inline-flex">
+        <CtaLink
+          href={HEADER_FUNNEL_HREF}
+          size="sm"
+          className="hidden shrink-0 md:inline-flex"
+          onClick={handleFindRateClick}
+        >
           {PRIMARY_CTA_LABEL}
         </CtaLink>
 
@@ -70,7 +88,12 @@ export function SiteHeader() {
                   {link.label}
                 </SiteNavLink>
               ))}
-              <CtaLink href={PRIMARY_CTA_HREF} size="lg" className="mt-3 w-full" onClick={() => setOpen(false)}>
+              <CtaLink
+                href={HEADER_FUNNEL_HREF}
+                size="lg"
+                className="mt-3 w-full"
+                onClick={handleFindRateClick}
+              >
                 {PRIMARY_CTA_LABEL}
               </CtaLink>
             </nav>
