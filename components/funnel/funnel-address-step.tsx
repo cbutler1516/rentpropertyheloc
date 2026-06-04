@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  PropertyAddressInput,
-  type PropertyAddressInputHandle,
-  type PropertyAddressValue,
-} from "@/components/funnel/property-address-input";
+  GoogleAddressAutocomplete,
+  type GoogleAddressAutocompleteHandle,
+  type GoogleAddressValue,
+} from "@/components/funnel/google-address-autocomplete";
 import { Button } from "@/components/ui/button";
 import type { LeadFunnelData } from "@/lib/leads/types";
 import { useRef } from "react";
@@ -15,7 +15,7 @@ type FunnelAddressStepProps = {
   onContinue: () => void;
 };
 
-function toLeadPartial(address: PropertyAddressValue): Partial<LeadFunnelData> {
+function toLeadPartial(address: GoogleAddressValue): Partial<LeadFunnelData> {
   return {
     propertyStreet: address.addressText,
     propertyCity: address.city,
@@ -28,7 +28,7 @@ function toLeadPartial(address: PropertyAddressValue): Partial<LeadFunnelData> {
   };
 }
 
-function fromLeadData(data: LeadFunnelData): Partial<PropertyAddressValue> {
+function fromLeadData(data: LeadFunnelData): Partial<GoogleAddressValue> {
   return {
     addressText: data.propertyStreet,
     city: data.propertyCity,
@@ -38,14 +38,13 @@ function fromLeadData(data: LeadFunnelData): Partial<PropertyAddressValue> {
     formattedAddress: data.propertyFormattedAddress,
     latitude: data.propertyLatitude,
     longitude: data.propertyLongitude,
-    isPlaceSelected: Boolean(data.googlePlaceId || data.propertyFormattedAddress),
   };
 }
 
 export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressStepProps) {
-  const addressRef = useRef<PropertyAddressInputHandle>(null);
+  const addressRef = useRef<GoogleAddressAutocompleteHandle>(null);
 
-  function handleAddressChange(address: PropertyAddressValue) {
+  function handleAddressSelected(address: GoogleAddressValue) {
     onChange(toLeadPartial(address));
   }
 
@@ -59,10 +58,10 @@ export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressS
 
   return (
     <div className="space-y-4">
-      <PropertyAddressInput
+      <GoogleAddressAutocomplete
         ref={addressRef}
         initialAddress={fromLeadData(data)}
-        onAddressChange={handleAddressChange}
+        onAddressSelected={handleAddressSelected}
       />
 
       <Button
