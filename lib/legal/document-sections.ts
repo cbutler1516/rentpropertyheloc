@@ -1,14 +1,4 @@
-import { PLATFORM_EMAIL } from "@/lib/contact";
-import {
-  FOOTER_PLATFORM_DISCLOSURE,
-  MORTGAGE_STANDARD_DISCLAIMER,
-} from "@/lib/legal/compliance";
-import {
-  LICENSED_ORIGINATOR_NMLS_URL,
-  LICENSING_PARTNER_DISCLOSURES,
-} from "@/lib/legal/licensing-partners";
-import { NMLS_NUMBER } from "@/lib/legal/nmls";
-import { LICENSING_INFORMATION_PATH } from "@/lib/legal/routes";
+import { FOOTER_PLATFORM_DISCLOSURE } from "@/lib/legal/compliance";
 
 export type LegalSection = {
   id: string;
@@ -188,7 +178,7 @@ export const TERMS_OF_USE_SECTIONS: LegalSection[] = [
     id: "licensing",
     title: "Licensing disclosure",
     paragraphs: [
-      `RentPropertyHELOC.com is a lead generation and information platform that may connect you with licensed lending partners. For loan originator, company, and state licensing details, see our Licensing Information page at ${LICENSING_INFORMATION_PATH}. Nothing on this site is a loan application or commitment to lend.`,
+      `${FOOTER_PLATFORM_DISCLOSURE} Nothing on this site is a loan application or commitment to lend.`,
     ],
   },
   {
@@ -206,60 +196,3 @@ export const TERMS_OF_USE_SECTIONS: LegalSection[] = [
     ],
   },
 ];
-
-export const LICENSING_INFORMATION_SECTIONS: LegalSection[] = [
-  {
-    id: "platform",
-    title: "Platform disclosure",
-    paragraphs: [FOOTER_PLATFORM_DISCLOSURE, LICENSING_PARTNER_DISCLOSURES.platformOperator],
-  },
-  {
-    id: "licensing",
-    title: "Licensing",
-    paragraphs: [
-      LICENSING_PARTNER_DISCLOSURES.originator,
-      LICENSING_PARTNER_DISCLOSURES.company,
-    ],
-  },
-  {
-    id: "licensed-states",
-    title: "Licensed states",
-    paragraphs: [LICENSING_PARTNER_DISCLOSURES.licensedStatesIntro],
-    bullets: [
-      "Arizona",
-      "California",
-      "Colorado",
-      "Florida",
-      "Illinois",
-      "Michigan",
-      "Oregon",
-      "Texas",
-      "Washington",
-    ],
-  },
-  {
-    id: "mortgage-disclaimer",
-    title: "Mortgage disclaimer",
-    paragraphs: [MORTGAGE_STANDARD_DISCLAIMER],
-  },
-  {
-    id: "lead-generation",
-    title: "Lead generation",
-    paragraphs: [
-      "When you submit information through this website, you are requesting that a financing specialist and licensed lending partners review your property scenario. Your information may be stored in customer relationship management systems and shared with partners for that purpose.",
-      "Submitting a form does not create a lender-borrower relationship, loan application, or commitment to lend. A financing specialist or lending partner may contact you by phone, text, or email where you have provided consent.",
-    ],
-  },
-  {
-    id: "contact",
-    title: "Licensing inquiries",
-    paragraphs: [
-      `Questions about licensing or partner disclosures may be directed to ${PLATFORM_EMAIL}.`,
-      `You may also call ${LICENSING_PARTNER_DISCLOSURES.inquiryPhone} for licensing-related questions.`,
-      `Verify licensing status through the Nationwide Multistate Licensing System (NMLS) Consumer Access website at nmlsconsumeraccess.org by searching individual NMLS #${NMLS_NUMBER}, or visit ${LICENSED_ORIGINATOR_NMLS_URL}.`,
-    ],
-  },
-];
-
-/** @deprecated Use LICENSING_INFORMATION_SECTIONS */
-export const DISCLOSURES_SECTIONS = LICENSING_INFORMATION_SECTIONS;

@@ -7,11 +7,9 @@ import { StateAvailabilitySection } from "@/components/trust/state-availability-
 import { CtaLink } from "@/components/ui/cta-link";
 import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from "@/lib/cta";
 import { FOOTER_PLATFORM_DISCLOSURE } from "@/lib/legal/compliance";
-import { LICENSING_INFORMATION_PATH } from "@/lib/legal/routes";
 import { ABOUT_PLATFORM } from "@/lib/trust-content";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import type { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "About",
@@ -61,16 +59,6 @@ export default function AboutPage() {
           </p>
           <p className="mt-4 text-sm">
             <PlatformEmailLink size="md" />
-          </p>
-          <p className="mt-4 text-sm text-slate-600">
-            For licensing, loan originator, and company disclosures, see{" "}
-            <Link
-              href={LICENSING_INFORMATION_PATH}
-              className="font-medium text-teal-700 underline-offset-2 hover:underline"
-            >
-              Licensing Information
-            </Link>
-            .
           </p>
         </div>
 

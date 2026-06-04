@@ -129,7 +129,7 @@ export function buildFinancingReviewHtml(data: FinancingReviewData): string {
       <div class="contact">
         <p><strong>${escapeHtml(FINANCING_REVIEW_CONTACT.teamLabel)}</strong> · ${escapeHtml(FINANCING_REVIEW_CONTACT.platformName)}</p>
         <p>${escapeHtml(FINANCING_REVIEW_CONTACT.email)}</p>
-        <p>Licensing &amp; partner disclosures: ${escapeHtml(FINANCING_REVIEW_CONTACT.licensingPath)}</p>
+        <p>${escapeHtml(FINANCING_REVIEW_CONTACT.siteUrl)}</p>
       </div>
 
       <p class="disclaimer">${escapeHtml(FINANCING_REVIEW_DISCLAIMER)}</p>

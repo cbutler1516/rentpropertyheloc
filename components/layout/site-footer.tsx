@@ -5,11 +5,7 @@ import { CtaLink } from "@/components/ui/cta-link";
 import { PLATFORM_STATEMENT } from "@/lib/brand-positioning";
 import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL, PRIMARY_CTA_SHORT } from "@/lib/cta";
 import { FOOTER_PLATFORM_DISCLOSURE } from "@/lib/legal/compliance";
-import {
-  LICENSING_INFORMATION_PATH,
-  PRIVACY_POLICY_PATH,
-  TERMS_OF_USE_PATH,
-} from "@/lib/legal/routes";
+import { PRIVACY_POLICY_PATH, TERMS_OF_USE_PATH } from "@/lib/legal/routes";
 import { FOOTER_LINKS, SITE_NAME, SITE_URL } from "@/lib/site";
 
 export function SiteFooter() {
@@ -80,12 +76,6 @@ export function SiteFooter() {
             </FooterNavLink>
             <FooterNavLink href={TERMS_OF_USE_PATH} className="text-slate-500 hover:text-slate-700">
               Terms of Use
-            </FooterNavLink>
-            <FooterNavLink
-              href={LICENSING_INFORMATION_PATH}
-              className="text-slate-500 hover:text-slate-700"
-            >
-              Licensing Information
             </FooterNavLink>
           </div>
 

@@ -1,6 +1,5 @@
 import { PLATFORM_EMAIL } from "@/lib/contact";
-import { LICENSING_INFORMATION_PATH } from "@/lib/legal/routes";
-import { SITE_NAME } from "@/lib/site";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export const FINANCING_REVIEW_DISCLAIMER =
   "This review is for informational purposes only and is not a loan approval, commitment to lend, rate quote, or credit decision. All financing options remain subject to lender review, underwriting, property eligibility, and applicable guidelines.";
@@ -62,5 +61,5 @@ export const FINANCING_REVIEW_CONTACT = {
   teamLabel: "Financing Specialist Team",
   platformName: SITE_NAME,
   email: PLATFORM_EMAIL,
-  licensingPath: LICENSING_INFORMATION_PATH,
+  siteUrl: SITE_URL,
 } as const;
