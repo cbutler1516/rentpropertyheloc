@@ -1,4 +1,5 @@
 import { computeLeadPrioritizationSafe } from "@/lib/leads/lead-prioritization";
+import { propertyValueTierPoints, type PropertyValueRangeId } from "@/lib/leads/funnel-ranges";
 import type { CallPriority } from "@/lib/leads/lead-prioritization";
 import { isJourneySlug } from "@/lib/leads/investor-journeys";
 import { routeLead } from "@/lib/leads/routing";
@@ -210,6 +211,14 @@ export function scoreLead(lead: LeadCreateRequest): LeadQualification {
   if (lead.fundingTimeline === "asap" || lead.fundingTimeline === "within-30-days") {
     points += 4;
     keyReasons.push("Active funding timeline");
+  }
+
+  const valueTierPoints = propertyValueTierPoints(
+    (lead.propertyValueRange ?? "") as PropertyValueRangeId | "",
+  );
+  if (valueTierPoints > 0) {
+    points += valueTierPoints;
+    keyReasons.push("Higher estimated property value tier");
   }
 
   const qualityScore = clampScore(points);

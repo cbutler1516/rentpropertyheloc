@@ -3,6 +3,7 @@ import {
   getCreditScoreEstimate,
   getMortgageBalanceEstimate,
   getPropertyValueEstimate,
+  propertyValueTierPoints,
   type CreditScoreRangeId,
   type MortgageBalanceRangeId,
   type PropertyValueRangeId,
@@ -426,7 +427,11 @@ export function computeLeadPrioritization(lead: LeadCreateRequest): LeadPrioriti
   const desiredLoanAmountPoints = fundsRequestedPoints35(desiredLoanAmount);
   const profileCompletionPoints = profileCompletionPoints30(lead);
   const availableEquityPoints = profileCompletionPoints;
-  const totalScore = creditScorePoints + desiredLoanAmountPoints + profileCompletionPoints;
+  const propertyValuePoints = propertyValueTierPoints(
+    (lead.propertyValueRange ?? "") as PropertyValueRangeId | "",
+  );
+  const totalScore =
+    creditScorePoints + desiredLoanAmountPoints + profileCompletionPoints + propertyValuePoints;
 
   const leadScore = clampScore(totalScore);
   const opportunityScore = leadScore;

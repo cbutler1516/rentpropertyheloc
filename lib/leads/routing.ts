@@ -1,3 +1,8 @@
+import {
+  propertyValueTierPoints,
+  resolvePropertyValueTier,
+  type PropertyValueRangeId,
+} from "@/lib/leads/funnel-ranges";
 import type { LeadCreateRequest, LeadRouting, RoutingTier } from "@/lib/leads/types";
 
 
@@ -96,6 +101,21 @@ export function routeLead(lead: LeadCreateRequest): LeadRouting {
 
     reasons.push("Property address on file");
 
+  }
+
+  const propertyValueTierBonus = propertyValueTierPoints(
+    (lead.propertyValueRange ?? "") as PropertyValueRangeId | "",
+  );
+  if (propertyValueTierBonus > 0) {
+    score += propertyValueTierBonus;
+    const tier = resolvePropertyValueTier((lead.propertyValueRange ?? "") as PropertyValueRangeId | "");
+    if (tier === "highest") {
+      reasons.push("Premium property value tier ($3M+)");
+    } else if (tier === "high") {
+      reasons.push("High property value tier ($2M–$3M)");
+    } else if (tier === "medium-high") {
+      reasons.push("Medium-high property value tier ($1M–$2M)");
+    }
   }
 
 

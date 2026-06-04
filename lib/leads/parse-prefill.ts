@@ -18,7 +18,7 @@ import {
   inferMortgageBalanceRange,
   inferPropertyValueRange,
   isMortgageBalanceRangeId,
-  PROPERTY_VALUE_RANGES,
+  isPropertyValueRangeId,
 } from "@/lib/leads/funnel-ranges";
 import { isEquityStrategy } from "@/lib/equity-calculator";
 import type { CheckOptionsPrefill, EquityStrategy, LeadFunnelData } from "@/lib/leads/types";
@@ -64,7 +64,7 @@ export function parseCheckOptionsPrefill(
 
 
   const propertyValueRangeRaw = get("propertyValueRange");
-  if (isValidRangeId(propertyValueRangeRaw, PROPERTY_VALUE_RANGES)) {
+  if (propertyValueRangeRaw && isPropertyValueRangeId(propertyValueRangeRaw)) {
     prefill.propertyValueRange = propertyValueRangeRaw;
     prefill.propertyValue = getPropertyValueEstimate(propertyValueRangeRaw);
   }

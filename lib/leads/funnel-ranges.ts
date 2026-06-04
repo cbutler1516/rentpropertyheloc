@@ -3,7 +3,15 @@ export type PropertyValueRangeId =
   | "300k-500k"
   | "500k-750k"
   | "750k-1m"
+  | "1m-1.5m"
+  | "1.5m-2m"
+  | "2m-3m"
+  | "3m-plus"
+  | "not-sure"
+  /** @deprecated Legacy funnel values — accepted for API backward compatibility */
   | "1m-plus";
+
+export type PropertyValueTier = "standard" | "medium-high" | "high" | "highest";
 
 export type MortgageBalanceRangeId =
   | "no-mortgage"
@@ -51,8 +59,16 @@ export const PROPERTY_VALUE_RANGES: RangeOption<PropertyValueRangeId>[] = [
   { id: "300k-500k", label: "$300k – $500k", estimate: 400_000 },
   { id: "500k-750k", label: "$500k – $750k", estimate: 625_000 },
   { id: "750k-1m", label: "$750k – $1M", estimate: 875_000 },
-  { id: "1m-plus", label: "$1M+", estimate: 1_500_000 },
+  { id: "1m-1.5m", label: "$1M – $1.5M", estimate: 1_250_000 },
+  { id: "1.5m-2m", label: "$1.5M – $2M", estimate: 1_750_000 },
+  { id: "2m-3m", label: "$2M – $3M", estimate: 2_500_000 },
+  { id: "3m-plus", label: "$3M+", estimate: 3_500_000 },
+  { id: "not-sure", label: "Not Sure", estimate: 0 },
 ];
+
+const LEGACY_PROPERTY_VALUE_ESTIMATES: Partial<Record<PropertyValueRangeId, number>> = {
+  "1m-plus": 1_500_000,
+};
 
 export const MORTGAGE_BALANCE_RANGES: RangeOption<MortgageBalanceRangeId>[] = [
   { id: "no-mortgage", label: "No mortgage", estimate: 0 },
@@ -115,7 +131,43 @@ export const FUNDING_TIMELINE_OPTIONS: { id: FundingTimelineId; label: string }[
 ];
 
 export function getPropertyValueEstimate(rangeId: PropertyValueRangeId | ""): number | null {
-  return PROPERTY_VALUE_RANGES.find((r) => r.id === rangeId)?.estimate ?? null;
+  if (!rangeId || rangeId === "not-sure") return null;
+  const match = PROPERTY_VALUE_RANGES.find((r) => r.id === rangeId);
+  if (match) return match.estimate;
+  return LEGACY_PROPERTY_VALUE_ESTIMATES[rangeId] ?? null;
+}
+
+export function isPropertyValueRangeId(value: string): value is PropertyValueRangeId {
+  if (PROPERTY_VALUE_RANGES.some((r) => r.id === value)) return true;
+  return value === "1m-plus";
+}
+
+export function resolvePropertyValueTier(rangeId: PropertyValueRangeId | ""): PropertyValueTier {
+  switch (rangeId) {
+    case "3m-plus":
+      return "highest";
+    case "2m-3m":
+      return "high";
+    case "1m-1.5m":
+    case "1.5m-2m":
+    case "1m-plus":
+      return "medium-high";
+    default:
+      return "standard";
+  }
+}
+
+export function propertyValueTierPoints(rangeId: PropertyValueRangeId | ""): number {
+  switch (resolvePropertyValueTier(rangeId)) {
+    case "highest":
+      return 8;
+    case "high":
+      return 6;
+    case "medium-high":
+      return 4;
+    default:
+      return 0;
+  }
 }
 
 export function getMortgageBalanceEstimate(rangeId: MortgageBalanceRangeId | ""): number | null {
@@ -173,7 +225,10 @@ export function inferPropertyValueRange(value: number): PropertyValueRangeId {
   if (value < 500_000) return "300k-500k";
   if (value < 750_000) return "500k-750k";
   if (value < 1_000_000) return "750k-1m";
-  return "1m-plus";
+  if (value < 1_500_000) return "1m-1.5m";
+  if (value < 2_000_000) return "1.5m-2m";
+  if (value < 3_000_000) return "2m-3m";
+  return "3m-plus";
 }
 
 export function inferMortgageBalanceRange(value: number): MortgageBalanceRangeId {
