@@ -6,7 +6,7 @@ import { MobileStickyCta } from "@/components/layout/mobile-sticky-cta";
 import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { BRAND } from "@/lib/brand";
+import { BRAND, BRAND_ASSETS, LOGO_PRIMARY_ASPECT } from "@/lib/brand";
 import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -38,6 +38,20 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: SITE_NAME,
     type: "website",
+    images: [
+      {
+        url: BRAND_ASSETS.primary,
+        width: LOGO_PRIMARY_ASPECT.width,
+        height: LOGO_PRIMARY_ASPECT.height,
+        alt: BRAND.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: BRAND.headline,
+    description: SITE_TAGLINE,
+    images: [BRAND_ASSETS.primary],
   },
 };
 

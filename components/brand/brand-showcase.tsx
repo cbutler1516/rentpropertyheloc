@@ -5,8 +5,8 @@ import { BRAND, BRAND_COLORS } from "@/lib/brand";
 
 const mockups = [
   {
-    title: "Header lockup",
-    description: "Horizontal logo for navigation on dark backgrounds.",
+    title: "Primary lockup",
+    description: "RPH Logo 2 horizontal — icon left, RENT PROPERTY HELOC wordmark right.",
     dark: true,
     content: <Logo variant="navbar" />,
   },
@@ -34,8 +34,8 @@ const mockups = [
     ),
   },
   {
-    title: "Stacked social",
-    description: "Profile-ready stacked identity for social and thumbnails.",
+    title: "Alternate sizing",
+    description: "Primary lockup at marketing and document sizes.",
     dark: true,
     content: (
       <div className="rounded-xl bg-white p-4">
@@ -109,9 +109,9 @@ export function BrandShowcase() {
             </div>
           </div>
           <div className="rounded-2xl border border-slate-200 bg-brand-dark p-8">
-            <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Stacked</p>
-            <div className="mt-4 rounded-xl bg-white p-4 inline-block">
-              <Logo variant="stacked" />
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Primary</p>
+            <div className="mt-4 rounded-xl bg-white/95 p-3 inline-block">
+              <Logo variant="horizontal" />
             </div>
           </div>
         </div>

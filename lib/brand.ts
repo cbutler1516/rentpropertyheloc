@@ -11,10 +11,17 @@ export const BRAND = {
 } as const;
 
 export const BRAND_ASSETS = {
-  horizontal: "/brand/logo-horizontal.png",
-  stacked: "/brand/logo-stacked.png",
+  /** Primary horizontal lockup — RPH Logo 2 */
+  primary: "/brand/logo-primary.png",
+  horizontal: "/brand/logo-primary.png",
+  stacked: "/brand/logo-primary.png",
   icon: "/brand/logo-icon.png",
   iconSvg: "/brand/logo-icon.svg",
+} as const;
+
+export const LOGO_PRIMARY_ASPECT = {
+  width: 814,
+  height: 324,
 } as const;
 
 export const BRAND_COLORS = {
