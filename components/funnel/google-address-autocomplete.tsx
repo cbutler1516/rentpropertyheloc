@@ -1,3 +1,4 @@
+/** Not used in live funnel — kept for future Google Places rework. */
 "use client";
 
 import {
