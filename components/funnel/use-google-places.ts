@@ -121,11 +121,15 @@ export function useGooglePlaces(
 ) {
   const [status, setStatus] = useState<PlacesStatus>("idle");
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const initStartedRef = useRef(false);
   const onSelectRef = useRef(onSelect);
   const authFailedRef = useRef(false);
   onSelectRef.current = onSelect;
 
   useEffect(() => {
+    if (initStartedRef.current) return;
+    initStartedRef.current = true;
+
     const input = inputRef.current;
     if (!input) {
       placesDebugWarn("Street input ref not available on mount");
@@ -216,8 +220,13 @@ export function useGooglePlaces(
         return;
       }
 
+      if (autocompleteRef.current) {
+        placesDebugLog("Autocomplete already bound — skipping script load handler", { source });
+        return;
+      }
+
       placesDebugLog("Script load event", { source });
-      setStatus("loading");
+      setStatus((current) => (current === "ready" ? current : "loading"));
 
       const ready = await ensurePlacesLibraryReady();
       if (!ready) {
@@ -226,7 +235,7 @@ export function useGooglePlaces(
         return;
       }
 
-      if (inputRef.current) {
+      if (inputRef.current && !autocompleteRef.current) {
         initAutocomplete(inputRef.current);
       }
     }
@@ -239,6 +248,7 @@ export function useGooglePlaces(
         window.gm_authFailure = previousAuthFailure;
         detachAutocomplete(autocompleteRef.current);
         autocompleteRef.current = null;
+        initStartedRef.current = false;
       };
     }
 
@@ -265,6 +275,7 @@ export function useGooglePlaces(
           window.gm_authFailure = previousAuthFailure;
           detachAutocomplete(autocompleteRef.current);
           autocompleteRef.current = null;
+          initStartedRef.current = false;
         };
       }
 
@@ -272,6 +283,7 @@ export function useGooglePlaces(
         window.gm_authFailure = previousAuthFailure;
         detachAutocomplete(autocompleteRef.current);
         autocompleteRef.current = null;
+        initStartedRef.current = false;
       };
     }
 
@@ -292,6 +304,7 @@ export function useGooglePlaces(
       window.gm_authFailure = previousAuthFailure;
       detachAutocomplete(autocompleteRef.current);
       autocompleteRef.current = null;
+      initStartedRef.current = false;
     };
     // Init once when the address input mounts.
     // eslint-disable-next-line react-hooks/exhaustive-deps
