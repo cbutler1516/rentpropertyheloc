@@ -1,4 +1,4 @@
-/** Not used in live funnel — kept for future Google Places rework. */
+/** Not used in live funnel — shared loader: lib/leads/load-google-maps-script.ts */
 "use client";
 
 import {
