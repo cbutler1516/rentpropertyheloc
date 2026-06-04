@@ -14,7 +14,7 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-slate-200 bg-white pb-[max(3rem,env(safe-area-inset-bottom))] pt-12 md:pb-12">
       <Container>
-        <div className="grid gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-[1.25fr_1fr_1fr_1fr] lg:gap-8">
+        <div className="grid gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-[1.25fr_1fr_1fr] lg:gap-8">
           <div className="sm:col-span-2 lg:col-span-1">
             <Logo variant="light" />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-600 sm:mt-5">
@@ -55,16 +55,6 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Legal</p>
-            <ul className="mt-4 space-y-1">
-              {FOOTER_LINKS.legal.map((link) => (
-                <li key={link.href}>
-                  <FooterNavLink href={link.href}>{link.label}</FooterNavLink>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
         <div className="mt-10 border-t border-slate-200 pt-6 sm:mt-12">

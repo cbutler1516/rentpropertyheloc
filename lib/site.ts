@@ -37,15 +37,9 @@ export const FOOTER_LINKS = {
     { href: "/scenarios", label: "Investor scenario library" },
     { href: "/faq", label: "FAQ" },
   ],
-  legal: [
-    { href: PRIVACY_POLICY_PATH, label: "Privacy Policy" },
-    { href: TERMS_OF_USE_PATH, label: "Terms of Use" },
-    { href: "/brand", label: "Brand system" },
-  ],
 } as const satisfies {
   topics: readonly SiteLink[];
   resources: readonly SiteLink[];
-  legal: readonly SiteLink[];
 };
 
 export const TOPIC_PAGE_LINKS: readonly SiteLink[] = FOOTER_LINKS.topics.filter(

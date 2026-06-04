@@ -1,26 +1,9 @@
 export const MARKETING_SITE_NAME = "Rent Property HELOC";
 
-export const MORTGAGE_COMPANY_NAME = "Barrett Financial Group, LLC";
-
-export const LICENSED_STATES_FULL_NAMES = [
-  "Arizona",
-  "California",
-  "Colorado",
-  "Florida",
-  "Illinois",
-  "Michigan",
-  "Oregon",
-  "Texas",
-  "Washington",
-] as const;
-
-export const LICENSED_STATES_FULL_LIST =
-  "Arizona, California, Colorado, Florida, Illinois, Michigan, Oregon, Texas, and Washington";
-
-export const NMLS_CONSUMER_ACCESS_HOME = "https://www.nmlsconsumeraccess.org/";
+export const LEGAL_SITE_DOMAIN = "rentpropertyheloc.com";
 
 export const FOOTER_PLATFORM_DISCLOSURE =
-  "Rent Property HELOC is a lead generation and information platform. Financing options may be provided through licensed lending partners and are subject to qualification, underwriting, property eligibility, and applicable lending guidelines.";
+  "Rent Property HELOC is an informational and lead-generation platform. Financing options are subject to qualification, underwriting, property eligibility, and applicable lending guidelines. This is not a loan approval, commitment to lend, or credit decision.";
 
 export const FUNNEL_COMPLIANCE_DISCLAIMER =
   "This is not a loan application, pre-approval, commitment to lend, or lending decision. Financing options are subject to lender review, qualification, underwriting, property eligibility, and applicable lending guidelines.";

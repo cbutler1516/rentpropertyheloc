@@ -1,18 +1,6 @@
-import {
-  PlaceholderPage,
-  placeholderMetadata,
-} from "@/components/layout/placeholder-page";
-
-export const metadata = placeholderMetadata(
-  "Terms of Use",
-  "Terms governing use of RentPropertyHELOC.com.",
-);
+import { TERMS_OF_USE_PATH } from "@/lib/legal/routes";
+import { redirect } from "next/navigation";
 
 export default function TermsPage() {
-  return (
-    <PlaceholderPage
-      title="Terms of Use"
-      description="Terms of use for this website will be published here, including limitations of liability and acceptable use."
-    />
-  );
+  redirect(TERMS_OF_USE_PATH);
 }
