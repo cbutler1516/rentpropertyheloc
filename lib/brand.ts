@@ -11,24 +11,29 @@ export const BRAND = {
 } as const;
 
 export const BRAND_ASSETS = {
-  /** Dark background lockup — white wordmark, cyan gradient accents */
-  dark: "/brand/logo-dark.png",
+  /** Navbar / dark navy header — white wordmark, cyan gradient accents */
+  header: "/images/branding/rph-logo-header.png",
   /** Light background lockup — navy wordmark, cyan gradient accents */
-  light: "/brand/logo-light.png",
+  light: "/images/branding/rph-logo-light.png",
   icon: "/brand/logo-icon.png",
   iconSvg: "/brand/logo-icon.svg",
+  /** @deprecated Use BRAND_ASSETS.header */
+  dark: "/images/branding/rph-logo-header.png",
   /** @deprecated Use BRAND_ASSETS.light */
-  primary: "/brand/logo-light.png",
+  primary: "/images/branding/rph-logo-light.png",
   /** @deprecated Use BRAND_ASSETS.light */
-  horizontal: "/brand/logo-light.png",
+  horizontal: "/images/branding/rph-logo-light.png",
   /** @deprecated Use BRAND_ASSETS.light */
-  stacked: "/brand/logo-light.png",
+  stacked: "/images/branding/rph-logo-light.png",
 } as const;
 
-export const LOGO_DARK_ASPECT = {
-  width: 810,
-  height: 323,
+export const LOGO_HEADER_ASPECT = {
+  width: 814,
+  height: 324,
 } as const;
+
+/** @deprecated Use LOGO_HEADER_ASPECT */
+export const LOGO_DARK_ASPECT = LOGO_HEADER_ASPECT;
 
 export const LOGO_LIGHT_ASPECT = {
   width: 814,

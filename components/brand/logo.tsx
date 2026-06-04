@@ -2,8 +2,8 @@ import { cn } from "@/lib/cn";
 import {
   BRAND,
   BRAND_ASSETS,
-  LOGO_DARK_ASPECT,
   LOGO_FOOTER_FRAME,
+  LOGO_HEADER_ASPECT,
   LOGO_LIGHT_ASPECT,
   LOGO_LIGHT_SECTION_FRAME,
   LOGO_NAVBAR_FRAME,
@@ -17,8 +17,6 @@ type LogoProps = {
   priority?: boolean;
 };
 
-type LogoTone = "dark" | "light";
-
 type LogoFrame = {
   src: string;
   width: number;
@@ -26,15 +24,14 @@ type LogoFrame = {
   frameClassName: string;
 };
 
-function getLogoTone(variant: LogoVariant): LogoTone {
-  if (variant === "navbar" || variant === "dark") return "dark";
-  return "light";
+function usesHeaderLogo(variant: LogoVariant): boolean {
+  return variant === "navbar" || variant === "dark";
 }
 
 function getLogoFrame(variant: LogoVariant): LogoFrame {
-  const tone = getLogoTone(variant);
-  const aspect = tone === "dark" ? LOGO_DARK_ASPECT : LOGO_LIGHT_ASPECT;
-  const src = tone === "dark" ? BRAND_ASSETS.dark : BRAND_ASSETS.light;
+  const header = usesHeaderLogo(variant);
+  const aspect = header ? LOGO_HEADER_ASPECT : LOGO_LIGHT_ASPECT;
+  const src = header ? BRAND_ASSETS.header : BRAND_ASSETS.light;
 
   if (variant === "icon") {
     return {
