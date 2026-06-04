@@ -38,6 +38,45 @@ export const INVESTOR_PROCESS_STEPS = [
   },
 ] as const;
 
+export const INVESTOR_EQUITY_STRATEGIES = {
+  sectionLabel: "Investor strategies",
+  headline: "Common Ways Investors Use Equity",
+  subheadline:
+    "Rental property equity may provide flexibility for acquisitions, improvements, liquidity, and other investment goals. Financing options are subject to qualification and lender review.",
+  disclaimer:
+    "Examples are provided for informational purposes only. Financing options, loan amounts, and eligibility vary by borrower, property, and lender guidelines.",
+  cards: [
+    {
+      id: "acquire",
+      icon: "🏠",
+      title: "Acquire Another Rental",
+      description:
+        "Use available equity to help fund down payments, closing costs, or acquisition opportunities for additional investment properties.",
+    },
+    {
+      id: "renovate",
+      icon: "🔨",
+      title: "Renovate Existing Properties",
+      description:
+        "Access capital for updates, repairs, or value-add improvements that may enhance rental appeal and long-term property value.",
+    },
+    {
+      id: "reserves",
+      icon: "💰",
+      title: "Build Cash Reserves",
+      description:
+        "Create liquidity that may help support future opportunities, vacancies, maintenance expenses, or unexpected costs.",
+    },
+    {
+      id: "consolidate",
+      icon: "📊",
+      title: "Consolidate Investment Debt",
+      description:
+        "Explore ways to simplify existing investment-related debt obligations and improve financial flexibility.",
+    },
+  ],
+} as const;
+
 export const INVESTOR_EQUITY_USE_CASES: {
   id: MarketingUseCaseIcon;
   title: string;
