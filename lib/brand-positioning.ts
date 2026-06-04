@@ -5,10 +5,10 @@ export const POSITIONING_LINE =
 export const BRAND_SUPPORTING_COPY =
   "Get personalized guidance from financing specialists and licensed lending partners—not just an automated approval engine.";
 
-export const HERO_HEADLINE = "Access Equity. Build Your Portfolio.";
+export const HERO_HEADLINE = "Keep The Rental. Unlock The Equity.";
 
 export const HERO_SUPPORTING_COPY =
-  "Enter your rental property address to start a fast review—about 60 seconds, no obligation.";
+  "Access capital from your investment property and explore financing options in about 60 seconds.";
 
 export const SEO_GUIDANCE_TAGLINE =
   "Compare investor equity options with guidance from licensed financing specialists and lending partners.";
