@@ -3,13 +3,73 @@
 import { Logo } from "@/components/brand/logo";
 import { SiteNavLink } from "@/components/layout/site-nav-link";
 import { CtaLink } from "@/components/ui/cta-link";
+import {
+  PLATFORM_PHONE_DISPLAY,
+  PLATFORM_PHONE_TEL,
+} from "@/lib/contact";
 import { FUNNEL_SECTION_ID, HEADER_FUNNEL_HREF, PRIMARY_CTA_LABEL } from "@/lib/cta";
 import { scrollToSection } from "@/lib/scroll-to-section";
 import { NAV_LINKS } from "@/lib/site";
+import { cn } from "@/lib/cn";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type MouseEvent } from "react";
+
+function HeaderPhoneIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M6.5 3.5h2.2l1.1 2.6a1 1 0 0 1-.24 1.05l-1.45 1.45a11.5 11.5 0 0 0 5.34 5.34l1.45-1.45a1 1 0 0 1 1.05-.24l2.6 1.1v2.2a1 1 0 0 1-.92 1A14.5 14.5 0 0 1 3.5 5.42a1 1 0 0 1 1-1.02h2Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function HeaderDesktopPhone({ className }: { className?: string }) {
+  return (
+    <a
+      href={`tel:${PLATFORM_PHONE_TEL}`}
+      className={cn(
+        "hidden shrink-0 flex-col justify-center text-right leading-tight transition hover:opacity-100 md:flex",
+        className,
+      )}
+    >
+      <span className="text-[11px] font-medium text-white/50">
+        Questions? Call or Text
+      </span>
+      <span className="mt-0.5 text-sm font-medium text-white/85 transition hover:text-white">
+        {PLATFORM_PHONE_DISPLAY}
+      </span>
+    </a>
+  );
+}
+
+function HeaderMobilePhoneLink({ onClick }: { onClick?: () => void }) {
+  return (
+    <a
+      href={`tel:${PLATFORM_PHONE_TEL}`}
+      onClick={onClick}
+      className="flex items-center gap-3 rounded-xl px-4 py-3.5 text-white/90 transition hover:bg-white/5"
+    >
+      <HeaderPhoneIcon className="h-5 w-5 shrink-0 text-white/70" />
+      <span className="flex flex-col">
+        <span className="text-xs text-white/55">Questions? Call or Text</span>
+        <span className="text-base font-medium text-white">{PLATFORM_PHONE_DISPLAY}</span>
+      </span>
+    </a>
+  );
+}
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -48,24 +108,28 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <CtaLink
-          href={HEADER_FUNNEL_HREF}
-          size="sm"
-          className="hidden shrink-0 md:inline-flex"
-          onClick={handleFindRateClick}
-        >
-          {PRIMARY_CTA_LABEL}
-        </CtaLink>
+        <div className="ml-auto flex items-center gap-3 sm:gap-4 lg:gap-5">
+          <HeaderDesktopPhone />
 
-        <button
-          type="button"
-          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/12 text-white md:hidden"
-          aria-expanded={open}
-          aria-label="Toggle menu"
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span className="text-xl leading-none">{open ? "×" : "☰"}</span>
-        </button>
+          <CtaLink
+            href={HEADER_FUNNEL_HREF}
+            size="sm"
+            className="hidden shrink-0 md:inline-flex"
+            onClick={handleFindRateClick}
+          >
+            {PRIMARY_CTA_LABEL}
+          </CtaLink>
+
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/12 text-white md:hidden"
+            aria-expanded={open}
+            aria-label="Toggle menu"
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span className="text-xl leading-none">{open ? "×" : "☰"}</span>
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -88,6 +152,7 @@ export function SiteHeader() {
                   {link.label}
                 </SiteNavLink>
               ))}
+              <HeaderMobilePhoneLink onClick={() => setOpen(false)} />
               <CtaLink
                 href={HEADER_FUNNEL_HREF}
                 size="lg"
