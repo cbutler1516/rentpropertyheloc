@@ -266,6 +266,25 @@ body {
   .thumb-btn {
     min-height: 48px;
   }
+
+  .funnel-container,
+  .funnel-app-shell {
+    max-width: 100%;
+  }
+
+  .funnel-progress-bar {
+    min-height: 0.5rem;
+  }
+
+  .pac-item {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .site-anchor-section {
+    scroll-margin-top: 4.25rem;
+  }
 }
 
 .funnel-form-field:focus,

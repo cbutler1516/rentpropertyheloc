@@ -31,7 +31,7 @@ export function FunnelConsentSection({
 
   return (
     <div className={cn("space-y-2", className)}>
-      <label className="flex cursor-pointer items-start gap-3 rounded-lg py-0.5">
+      <label className="flex min-h-11 cursor-pointer items-start gap-3 rounded-lg py-1 sm:min-h-0 sm:py-0.5">
         <input
           type="checkbox"
           checked={tcpaConsent}

@@ -131,7 +131,7 @@ export function BorrowerTrustSection({
     return (
       <section
         className={cn(
-          "border-b border-slate-200/80 bg-gradient-to-b from-slate-50 to-white py-10 sm:py-12 md:py-14",
+          "border-b border-slate-200/80 bg-gradient-to-b from-slate-50 to-white py-8 sm:py-12 md:py-14",
           className,
         )}
         aria-labelledby="borrower-trust-heading"

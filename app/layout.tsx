@@ -67,7 +67,7 @@ export default function RootLayout({
         <AnalyticsProvider>
           <HashScrollHandler />
           <SiteHeader />
-          <main className="main-with-sticky-cta flex-1">{children}</main>
+          <main className="main-with-sticky-cta flex-1 max-md:overflow-x-clip">{children}</main>
           <SiteFooter />
           <MobileStickyCta />
         </AnalyticsProvider>

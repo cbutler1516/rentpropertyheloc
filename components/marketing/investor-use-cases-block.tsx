@@ -41,7 +41,7 @@ export function InvestorUseCasesBlock({
 
       <StaggerReveal
         className={cn(
-          "grid gap-4",
+          "grid gap-3 sm:gap-4",
           compact ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3 lg:gap-5",
         )}
       >
@@ -79,7 +79,10 @@ export function InvestorUseCasesBlock({
 
       {showFooterLink ? (
         <p className="mt-4 text-center text-sm">
-          <Link href="/scenarios" className="font-medium text-teal-700 hover:underline">
+          <Link
+            href="/scenarios"
+            className="inline-flex min-h-11 items-center justify-center font-medium text-teal-700 hover:underline sm:min-h-0"
+          >
             View illustrative scenario examples →
           </Link>
         </p>

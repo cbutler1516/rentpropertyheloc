@@ -60,7 +60,7 @@ function HeaderMobilePhoneLink({ onClick }: { onClick?: () => void }) {
     <a
       href={`tel:${PLATFORM_PHONE_TEL}`}
       onClick={onClick}
-      className="flex items-center gap-3 rounded-xl px-4 py-3.5 text-white/90 transition hover:bg-white/5"
+      className="flex min-h-12 items-center gap-3 rounded-xl px-4 py-3 text-white/90 transition hover:bg-white/5"
     >
       <HeaderPhoneIcon className="h-5 w-5 shrink-0 text-white/70" />
       <span className="flex flex-col">
@@ -88,7 +88,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-brand-dark/90 backdrop-blur-2xl">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:h-[4.25rem] sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 px-3 sm:gap-4 sm:px-6 md:h-[4.25rem] lg:px-8">
         <Link
           href="/"
           className="rounded-lg py-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
@@ -108,13 +108,13 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-3 sm:gap-4 lg:gap-5">
+        <div className="ml-auto flex items-center gap-2 sm:gap-3 md:gap-4 lg:gap-5">
           <HeaderDesktopPhone />
 
           <CtaLink
             href={HEADER_FUNNEL_HREF}
             size="sm"
-            className="hidden shrink-0 md:inline-flex"
+            className="inline-flex shrink-0 max-md:!h-10 max-md:!min-h-[44px] max-md:!px-3 max-md:!text-xs"
             onClick={handleFindRateClick}
           >
             {PRIMARY_CTA_LABEL}

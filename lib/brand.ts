@@ -61,7 +61,7 @@ export type LogoVariant =
   | "light";
 
 export const LOGO_NAVBAR_FRAME =
-  "relative h-10 w-[150px] max-w-[180px] sm:h-11 sm:w-[240px] sm:max-w-[260px]";
+  "relative h-9 w-[130px] max-w-[145px] md:h-11 md:w-[240px] md:max-w-[260px]";
 
 export const LOGO_FOOTER_FRAME =
   "relative h-9 w-[150px] max-w-[180px] sm:h-10 sm:w-[220px] sm:max-w-[240px]";

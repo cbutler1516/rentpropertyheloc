@@ -25,7 +25,7 @@ export function FunnelStepHeader({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
       >
-        <h2 className="funnel-step-title text-balance text-xl font-bold leading-[1.2] tracking-tight text-slate-900 sm:text-2xl lg:text-[1.65rem] lg:leading-[1.25]">
+        <h2 className="funnel-step-title text-balance text-lg font-bold leading-[1.22] tracking-tight text-slate-900 sm:text-xl md:text-2xl lg:text-[1.65rem] lg:leading-[1.25]">
           {title}
         </h2>
         {subtitle ? (

@@ -284,13 +284,13 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
             <button
               type="button"
               onClick={goBack}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-600 transition hover:bg-slate-100 sm:h-10 sm:w-10"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-600 transition hover:bg-slate-100 sm:h-10 sm:w-10"
               aria-label="Go back"
             >
               ←
             </button>
           ) : (
-            <div className="w-9 shrink-0 sm:w-10" aria-hidden />
+            <div className="w-10 shrink-0" aria-hidden />
           )}
           <FunnelProgress currentStep={step} totalSteps={FUNNEL_QUESTION_COUNT} compact />
         </div>

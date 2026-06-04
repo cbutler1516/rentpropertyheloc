@@ -22,10 +22,10 @@ export function FaqSection() {
       <StaggerReveal className="mx-auto max-w-3xl divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-sm lg:max-w-5xl">
         {FAQ_ITEMS.map((item) => (
           <StaggerItem key={item.question}>
-            <details className="group px-5 py-5 sm:px-7">
-              <summary className="cursor-pointer list-none text-base font-semibold text-slate-900 marker:content-none [&::-webkit-details-marker]:hidden">
-                <span className="flex items-start justify-between gap-4">
-                  <span className="pr-2">{item.question}</span>
+            <details className="group px-4 py-4 sm:px-7 sm:py-5">
+              <summary className="flex min-h-12 cursor-pointer list-none items-center text-base font-semibold text-slate-900 marker:content-none [&::-webkit-details-marker]:hidden">
+                <span className="flex items-start justify-between gap-3 sm:gap-4">
+                  <span className="min-w-0 break-words pr-1 sm:pr-2">{item.question}</span>
                   <span
                     aria-hidden
                     className="mt-0.5 shrink-0 text-teal-600 transition group-open:rotate-45"
@@ -39,13 +39,13 @@ export function FaqSection() {
           </StaggerItem>
         ))}
       </StaggerReveal>
-      <Reveal delay={0.08} className="mt-10">
+      <Reveal delay={0.08} className="mt-8 sm:mt-10">
         <StateAvailabilitySection />
       </Reveal>
       <Reveal delay={0.1} className="mt-8">
         <CredibilityBar />
       </Reveal>
-      <Reveal delay={0.12} className="mt-10 flex justify-center">
+      <Reveal delay={0.12} className="mt-8 flex justify-center sm:mt-10">
         <CtaLink href={PRIMARY_CTA_HREF} size="lg" className="w-full sm:w-auto" ctaLocation="faq-section">
           {PRIMARY_CTA_LABEL}
         </CtaLink>

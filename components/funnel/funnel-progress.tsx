@@ -27,20 +27,25 @@ export function FunnelProgress({
 
   return (
     <div className={cn("min-w-0 flex-1", className)}>
-      <div className="flex items-center justify-between gap-3">
-        <p className="truncate text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500 sm:text-xs">
-          Step {clampedStep} of {totalSteps}
-          <span className="hidden font-medium normal-case tracking-normal text-slate-400 sm:inline">
-            {" "}
-            · {currentMilestone.label}
-          </span>
-        </p>
+      <div className="flex items-center justify-between gap-2 sm:gap-3">
+        <div className="min-w-0 flex-1">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500 sm:text-xs">
+            Step {clampedStep} of {totalSteps}
+            <span className="hidden font-medium normal-case tracking-normal text-slate-400 sm:inline">
+              {" "}
+              · {currentMilestone.label}
+            </span>
+          </p>
+          <p className="truncate text-[11px] font-medium text-slate-400 sm:hidden">
+            {currentMilestone.label}
+          </p>
+        </div>
         <span className="shrink-0 text-[11px] font-semibold tabular-nums text-teal-700 sm:text-xs">
           {progressPercent}%
         </span>
       </div>
 
-      <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100">
+      <div className="funnel-progress-bar mt-1.5 h-2 overflow-hidden rounded-full bg-slate-100 sm:h-1.5">
         <motion.div
           className="h-full rounded-full bg-brand-progress"
           initial={false}

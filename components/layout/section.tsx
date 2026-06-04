@@ -24,7 +24,7 @@ export function Section({
     <section
       id={id}
       className={cn(
-        "relative py-16 sm:py-20 md:py-24 lg:py-28",
+        "relative py-12 sm:py-20 md:py-24 lg:py-28",
         id && "site-anchor-section",
         tone === "dark" && "bg-navy-950 text-white",
         tone === "light" && !muted && "section-light text-ink",
@@ -62,7 +62,7 @@ export function SectionHeader({
   return (
     <div
       className={cn(
-        "mb-12 max-w-2xl sm:mb-14 md:mb-16 lg:max-w-3xl",
+        "mb-8 max-w-2xl sm:mb-14 md:mb-16 lg:max-w-3xl",
         align === "center" ? "mx-auto text-center" : "text-left",
       )}
     >
@@ -78,7 +78,7 @@ export function SectionHeader({
       ) : null}
       <h2
         className={cn(
-          "text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl md:leading-tight",
+          "text-xl font-bold leading-snug tracking-tight sm:text-3xl md:text-4xl md:leading-tight",
           isLight ? "text-slate-900" : "text-white",
         )}
       >
