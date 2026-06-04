@@ -17,7 +17,7 @@ import {
   inferEquityAccessRange,
   inferMortgageBalanceRange,
   inferPropertyValueRange,
-  MORTGAGE_BALANCE_RANGES,
+  isMortgageBalanceRangeId,
   PROPERTY_VALUE_RANGES,
 } from "@/lib/leads/funnel-ranges";
 import { isEquityStrategy } from "@/lib/equity-calculator";
@@ -70,7 +70,7 @@ export function parseCheckOptionsPrefill(
   }
 
   const mortgageRangeRaw = get("mortgageBalanceRange");
-  if (isValidRangeId(mortgageRangeRaw, MORTGAGE_BALANCE_RANGES)) {
+  if (mortgageRangeRaw && isMortgageBalanceRangeId(mortgageRangeRaw)) {
     prefill.mortgageBalanceRange = mortgageRangeRaw;
     prefill.mortgageBalance = getMortgageBalanceEstimate(mortgageRangeRaw);
   }

@@ -10,6 +10,12 @@ export type MortgageBalanceRangeId =
   | "under-100k"
   | "100k-250k"
   | "250k-500k"
+  | "500k-750k"
+  | "750k-1m"
+  | "1m-1.5m"
+  | "1.5m-plus"
+  | "not-sure"
+  /** @deprecated Legacy funnel values — accepted for API backward compatibility */
   | "500k-plus";
 
 export type EquityAccessRangeId =
@@ -53,8 +59,16 @@ export const MORTGAGE_BALANCE_RANGES: RangeOption<MortgageBalanceRangeId>[] = [
   { id: "under-100k", label: "Under $100k", estimate: 75_000 },
   { id: "100k-250k", label: "$100k – $250k", estimate: 175_000 },
   { id: "250k-500k", label: "$250k – $500k", estimate: 375_000 },
-  { id: "500k-plus", label: "$500k+", estimate: 750_000 },
+  { id: "500k-750k", label: "$500k – $750k", estimate: 625_000 },
+  { id: "750k-1m", label: "$750k – $1M", estimate: 875_000 },
+  { id: "1m-1.5m", label: "$1M – $1.5M", estimate: 1_250_000 },
+  { id: "1.5m-plus", label: "$1.5M+", estimate: 2_000_000 },
+  { id: "not-sure", label: "Not sure", estimate: 0 },
 ];
+
+const LEGACY_MORTGAGE_BALANCE_ESTIMATES: Partial<Record<MortgageBalanceRangeId, number>> = {
+  "500k-plus": 750_000,
+};
 
 export const EQUITY_ACCESS_RANGES: RangeOption<EquityAccessRangeId>[] = [
   { id: "under-50k", label: "Under $50,000", estimate: 37_500 },
@@ -105,8 +119,15 @@ export function getPropertyValueEstimate(rangeId: PropertyValueRangeId | ""): nu
 }
 
 export function getMortgageBalanceEstimate(rangeId: MortgageBalanceRangeId | ""): number | null {
-  if (!rangeId) return null;
-  return MORTGAGE_BALANCE_RANGES.find((r) => r.id === rangeId)?.estimate ?? null;
+  if (!rangeId || rangeId === "not-sure") return null;
+  const match = MORTGAGE_BALANCE_RANGES.find((r) => r.id === rangeId);
+  if (match) return match.estimate;
+  return LEGACY_MORTGAGE_BALANCE_ESTIMATES[rangeId] ?? null;
+}
+
+export function isMortgageBalanceRangeId(value: string): value is MortgageBalanceRangeId {
+  if (MORTGAGE_BALANCE_RANGES.some((r) => r.id === value)) return true;
+  return value === "500k-plus";
 }
 
 export function getEquityAccessEstimate(rangeId: EquityAccessRangeId | ""): number | null {
@@ -160,7 +181,10 @@ export function inferMortgageBalanceRange(value: number): MortgageBalanceRangeId
   if (value < 100_000) return "under-100k";
   if (value < 250_000) return "100k-250k";
   if (value < 500_000) return "250k-500k";
-  return "500k-plus";
+  if (value < 750_000) return "500k-750k";
+  if (value < 1_000_000) return "750k-1m";
+  if (value < 1_500_000) return "1m-1.5m";
+  return "1.5m-plus";
 }
 
 export function inferEquityAccessRange(value: number): EquityAccessRangeId {
