@@ -9,17 +9,43 @@ export const TEAM_TRUST_IMAGE_FRAME_CLASS = "aspect-[5/3]";
 
 export { BOOK_STRATEGY_CALL_LABEL as HOMEPAGE_TEAM_CTA_PRIMARY } from "@/lib/contact";
 
-export const COMPANY_TRUST = {
-  headline: "Real People. Real Guidance.",
-  body: [
-    "Every request is reviewed by a financing specialist — not just an automated system.",
-    "If questions come up, our team is available to help you understand your options and next steps.",
+export const INVESTOR_SUPPORT_SECTION = {
+  sectionLabel: "What happens after you submit",
+  headline: "What Happens After You Submit?",
+  subheadline:
+    "Every request is reviewed by a financing specialist to help evaluate potential financing opportunities for your rental property.",
+  timeline: [
+    {
+      title: "Property Review",
+      description: "Review the submitted property information.",
+    },
+    {
+      title: "Equity & Capital Assessment",
+      description: "Evaluate available equity and financing scenarios.",
+    },
+    {
+      title: "Financing Strategy Review",
+      description: "Review potential options based on your goals.",
+    },
+    {
+      title: "Team Follow-Up",
+      description: "Discuss next steps and answer questions.",
+    },
   ],
-  trustPoints: [
-    "Personalized Review",
-    "Financing Strategy Support",
-    "Direct Access To Our Team",
+  benefitsHeadline: "Why Investors Use Rent Property HELOC",
+  benefits: [
+    "Reviewed by a financing specialist",
+    "No full loan application required to start",
+    "Explore financing options and strategies",
+    "Direct access to our team if questions arise",
   ] as const,
+} as const;
+
+/** @deprecated Use INVESTOR_SUPPORT_SECTION */
+export const COMPANY_TRUST = {
+  headline: INVESTOR_SUPPORT_SECTION.headline,
+  body: [INVESTOR_SUPPORT_SECTION.subheadline],
+  trustPoints: INVESTOR_SUPPORT_SECTION.benefits,
 } as const;
 
 export const ABOUT_PLATFORM = {

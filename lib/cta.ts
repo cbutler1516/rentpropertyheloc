@@ -5,6 +5,8 @@ export const NAV_CTA_LABEL = "Find My Rate";
 export const SECONDARY_CTA_LABEL = "See How It Works";
 export const HERO_CTA_LABEL = "Find My Rate";
 
+export const START_YOUR_REVIEW_LABEL = "Start Your Review";
+
 export const PRIMARY_CTA_HREF = "/check-options";
 export const HERO_FUNNEL_HREF = "/check-options?step=1";
 export const SECONDARY_CTA_HREF = "/#how-it-works";

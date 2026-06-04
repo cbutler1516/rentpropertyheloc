@@ -1,20 +1,20 @@
 "use client";
 
-import { Section, SectionHeader } from "@/components/layout/section";
+import { Section } from "@/components/layout/section";
 import { Reveal } from "@/components/motion/reveal";
-import { PlatformPhoneLink } from "@/components/trust/platform-phone-link";
-import { StrategyCallLink } from "@/components/trust/strategy-call-link";
-import { TeamTrustVisual } from "@/components/trust/team-trust-visual";
-import { CALL_OUR_TEAM_LABEL } from "@/lib/contact";
-import { COMPANY_TRUST } from "@/lib/trust-content";
-import type { ReviewProcessPhase } from "@/lib/trust/review-process";
+import { CtaLink } from "@/components/ui/cta-link";
+import {
+  CALL_OUR_TEAM_LABEL,
+  PLATFORM_PHONE_DISPLAY,
+  PLATFORM_PHONE_TEL,
+} from "@/lib/contact";
+import { HERO_FUNNEL_HREF, START_YOUR_REVIEW_LABEL } from "@/lib/cta";
+import { INVESTOR_SUPPORT_SECTION } from "@/lib/trust-content";
 import { cn } from "@/lib/cn";
 
 type CompanyTrustSectionProps = {
   variant?: "homepage" | "funnel" | "compact" | "full";
   className?: string;
-  reviewPhase?: ReviewProcessPhase;
-  funnelStep?: number;
 };
 
 /** @deprecated Use CompanyTrustSection */
@@ -23,104 +23,48 @@ export const AdvisorCredibilitySection = CompanyTrustSection;
 export function CompanyTrustSection({
   variant = "homepage",
   className,
-  reviewPhase = "intro",
-  funnelStep = 1,
 }: CompanyTrustSectionProps) {
+  const compact = variant === "compact" || variant === "funnel";
+
+  const card = (
+    <PostSubmitProcessCard compact={compact} ctaLocation={`company-trust-${variant}`} />
+  );
+
   if (variant === "homepage") {
     return (
-      <Section id="guidance" divider className={cn("bg-white py-12 sm:py-14 md:py-16 lg:py-20", className)}>
+      <Section
+        id="guidance"
+        divider
+        className={cn("bg-white py-8 sm:py-10 md:py-12", className)}
+      >
         <Reveal>
-          <SectionHeader
-            tone="light"
-            eyebrow="Expert support"
-            title={COMPANY_TRUST.headline}
-            description={COMPANY_TRUST.body[0]}
-          />
+          <div className="max-w-3xl">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-teal-700 sm:text-xs">
+              {INVESTOR_SUPPORT_SECTION.sectionLabel}
+            </p>
+            <h2 className="mt-2.5 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl md:text-[1.75rem] md:leading-tight">
+              {INVESTOR_SUPPORT_SECTION.headline}
+            </h2>
+            <p className="mt-2.5 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-[0.9375rem]">
+              {INVESTOR_SUPPORT_SECTION.subheadline}
+            </p>
+          </div>
         </Reveal>
-        <Reveal delay={0.06} className="mt-10 lg:mt-12">
-          <HomepageTrustCard reviewPhase={reviewPhase} funnelStep={funnelStep} />
+        <Reveal delay={0.05} className="mt-6 sm:mt-7">
+          {card}
         </Reveal>
       </Section>
     );
   }
 
-  const compact = variant === "compact" || variant === "funnel";
-
-  const content = (
-    <div
-      className={cn(
-        "overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_4px_24px_rgba(15,23,42,0.05)]",
-        compact ? "p-4 sm:p-5" : "p-6 sm:p-8",
-      )}
-    >
-      <div
-        className={cn(
-          "flex flex-col gap-6",
-          compact ? "sm:flex-row sm:items-center sm:gap-6" : "lg:flex-row lg:items-center lg:gap-8",
-        )}
-      >
-        <div
-          className={cn(
-            "shrink-0",
-            compact
-              ? "mx-auto w-full max-w-[280px] sm:mx-0 sm:max-w-[300px]"
-              : "mx-auto w-full max-w-md lg:mx-0 lg:w-[48%] lg:max-w-none",
-          )}
-        >
-          <TeamTrustVisual
-            compact={compact}
-            prominent={!compact}
-            phase={reviewPhase}
-            funnelStep={funnelStep}
-            frameClassName="w-full"
-            sizes={compact ? "300px" : "480px"}
-          />
-        </div>
-
-        <div className="min-w-0 flex-1 text-center sm:text-left lg:w-[52%]">
-          <TrustCardContent compact={compact} ctaLocation={`company-trust-${variant}`} />
-        </div>
-      </div>
-    </div>
-  );
-
   if (variant === "funnel" || variant === "compact" || variant === "full") {
-    return <div className={className}>{content}</div>;
+    return <div className={className}>{card}</div>;
   }
 
   return null;
 }
 
-function HomepageTrustCard({
-  reviewPhase,
-  funnelStep,
-}: {
-  reviewPhase: ReviewProcessPhase;
-  funnelStep: number;
-}) {
-  return (
-    <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_16px_56px_rgba(15,23,42,0.1)] ring-1 ring-slate-100/80">
-      <div className="flex flex-col lg:flex-row lg:items-center">
-        <div className="order-1 w-full shrink-0 lg:w-[48%] xl:w-[47%]">
-          <TeamTrustVisual
-            prominent
-            phase={reviewPhase}
-            funnelStep={funnelStep}
-            sizes="(max-width: 1024px) 100vw, 540px"
-            className="h-full w-full"
-            frameClassName="h-full w-full rounded-none lg:rounded-none lg:rounded-l-2xl"
-          />
-        </div>
-
-        <div className="order-2 flex min-w-0 flex-1 flex-col justify-center px-6 py-7 sm:px-8 sm:py-8 lg:w-[52%] lg:px-10 lg:py-10 xl:px-12">
-          <TrustCardContent ctaLocation="company-trust-homepage" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TrustCardContent({
+function PostSubmitProcessCard({
   compact = false,
   ctaLocation,
 }: {
@@ -128,76 +72,118 @@ function TrustCardContent({
   ctaLocation?: string;
 }) {
   return (
-    <>
-      <h2
-        className={cn(
-          "font-bold tracking-tight text-slate-900",
-          compact
-            ? "text-lg sm:text-xl"
-            : "text-2xl sm:text-3xl lg:text-[2rem] lg:leading-tight",
-        )}
-      >
-        {COMPANY_TRUST.headline}
-      </h2>
-
-      <div
-        className={cn(
-          "space-y-3 text-slate-600",
-          compact ? "mt-3 text-xs leading-relaxed sm:text-sm" : "mt-4 max-w-lg text-[0.9375rem] leading-relaxed sm:text-base",
-        )}
-      >
-        {COMPANY_TRUST.body.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
-      </div>
-
-      <TrustPointsList compact={compact} className={compact ? "mt-4" : "mt-6"} />
-
-      <TrustCtaRow compact={compact} className={compact ? "mt-4" : "mt-7"} ctaLocation={ctaLocation} />
-    </>
-  );
-}
-
-function TrustPointsList({
-  compact = false,
-  className,
-}: {
-  compact?: boolean;
-  className?: string;
-}) {
-  return (
-    <ul
+    <div
       className={cn(
-        "flex flex-col gap-2.5",
-        !compact && "sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-2",
-        className,
+        "rounded-2xl border border-slate-200/90 bg-white shadow-[0_2px_16px_rgba(15,23,42,0.04)]",
+        compact ? "p-4 sm:p-5" : "p-5 sm:p-6 lg:p-7",
       )}
     >
-      {COMPANY_TRUST.trustPoints.map((point) => (
-        <li
-          key={point}
-          className={cn(
-            "flex items-center gap-2.5 font-medium text-slate-800",
-            compact ? "justify-center text-xs sm:justify-start sm:text-sm" : "text-sm sm:text-[0.9375rem]",
-          )}
-        >
-          <span
-            aria-hidden
-            className={cn(
-              "flex shrink-0 items-center justify-center rounded-full bg-teal-100 text-teal-700",
-              compact ? "h-4 w-4 text-[10px]" : "h-5 w-5 text-xs",
-            )}
-          >
-            ✓
-          </span>
-          {point}
-        </li>
-      ))}
-    </ul>
+      <div
+        className={cn(
+          "grid gap-6",
+          compact ? "sm:grid-cols-2 sm:gap-5" : "lg:grid-cols-2 lg:gap-8 lg:gap-x-10",
+        )}
+      >
+        <ProcessTimeline compact={compact} />
+        <BenefitsPanel compact={compact} ctaLocation={ctaLocation} />
+      </div>
+    </div>
   );
 }
 
-function TrustCtaRow({
+function ProcessTimeline({ compact = false }: { compact?: boolean }) {
+  const steps = INVESTOR_SUPPORT_SECTION.timeline;
+
+  return (
+    <ol className={cn(compact ? "space-y-3" : "space-y-3.5")}>
+        {steps.map((step, index) => (
+          <li key={step.title} className="flex gap-3">
+            <div className="flex flex-col items-center pt-0.5">
+              <span
+                aria-hidden
+                className={cn(
+                  "flex shrink-0 items-center justify-center rounded-full bg-teal-100 font-bold text-teal-800",
+                  compact ? "h-6 w-6 text-[10px]" : "h-7 w-7 text-xs",
+                )}
+              >
+                {index + 1}
+              </span>
+              {index < steps.length - 1 ? (
+                <span
+                  aria-hidden
+                  className="mt-1 w-px flex-1 min-h-[1rem] bg-slate-200"
+                />
+              ) : null}
+            </div>
+            <div className="min-w-0 pb-0.5">
+              <p
+                className={cn(
+                  "font-semibold text-slate-900",
+                  compact ? "text-sm" : "text-sm sm:text-[0.9375rem]",
+                )}
+              >
+                {step.title}
+              </p>
+              <p
+                className={cn(
+                  "mt-0.5 leading-relaxed text-slate-600",
+                  compact ? "text-xs" : "text-sm",
+                )}
+              >
+                {step.description}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ol>
+  );
+}
+
+function BenefitsPanel({
+  compact = false,
+  ctaLocation,
+}: {
+  compact?: boolean;
+  ctaLocation?: string;
+}) {
+  return (
+    <div className="flex flex-col">
+      <h3
+        className={cn(
+          "font-semibold tracking-tight text-slate-900",
+          compact ? "text-sm" : "text-base sm:text-lg",
+        )}
+      >
+        {INVESTOR_SUPPORT_SECTION.benefitsHeadline}
+      </h3>
+      <ul className={cn("mt-3 space-y-2 sm:mt-4", compact && "space-y-1.5")}>
+        {INVESTOR_SUPPORT_SECTION.benefits.map((benefit) => (
+          <li
+            key={benefit}
+            className={cn(
+              "flex items-start gap-2 text-slate-700",
+              compact ? "text-xs" : "text-sm",
+            )}
+          >
+            <span
+              aria-hidden
+              className={cn(
+                "mt-0.5 flex shrink-0 items-center justify-center rounded-full bg-teal-100 text-teal-700",
+                compact ? "h-4 w-4 text-[9px]" : "h-5 w-5 text-[10px]",
+              )}
+            >
+              ✓
+            </span>
+            <span className="leading-snug">{benefit}</span>
+          </li>
+        ))}
+      </ul>
+      <SupportCtaRow compact={compact} className="mt-5 sm:mt-6" ctaLocation={ctaLocation} />
+    </div>
+  );
+}
+
+function SupportCtaRow({
   compact = false,
   className,
   ctaLocation,
@@ -209,21 +195,37 @@ function TrustCtaRow({
   return (
     <div
       className={cn(
-        "flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-stretch",
+        "flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-stretch",
         className,
       )}
     >
-      <StrategyCallLink
+      <CallTeamButton compact={compact} />
+      <CtaLink
+        href={HERO_FUNNEL_HREF}
+        variant="secondary"
         size={compact ? "sm" : "md"}
-        ctaLocation={ctaLocation}
         className="w-full justify-center sm:w-auto"
-      />
-      <PlatformPhoneLink
-        size={compact ? "sm" : "md"}
-        showIcon={false}
-        label={CALL_OUR_TEAM_LABEL}
-        className="inline-flex min-h-[44px] w-full items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-800 no-underline shadow-sm transition hover:bg-slate-50 hover:text-teal-900 sm:w-auto"
-      />
+        ctaLocation={ctaLocation ? `${ctaLocation}-start-review` : "company-trust-start-review"}
+      >
+        {START_YOUR_REVIEW_LABEL}
+      </CtaLink>
     </div>
+  );
+}
+
+function CallTeamButton({ compact = false }: { compact?: boolean }) {
+  return (
+    <a
+      href={`tel:${PLATFORM_PHONE_TEL}`}
+      className={cn(
+        "inline-flex min-h-[44px] flex-col items-center justify-center rounded-xl bg-teal-700 px-5 text-center text-white shadow-sm transition hover:bg-teal-800",
+        compact ? "py-2 text-sm sm:flex-1" : "py-2.5 sm:flex-1",
+      )}
+    >
+      <span className="text-sm font-semibold leading-tight">{CALL_OUR_TEAM_LABEL}</span>
+      <span className={cn("font-medium text-teal-100", compact ? "text-xs" : "text-sm")}>
+        {PLATFORM_PHONE_DISPLAY}
+      </span>
+    </a>
   );
 }
