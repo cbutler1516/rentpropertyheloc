@@ -111,7 +111,7 @@ export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressS
             name="property-address"
             defaultValue={data.propertyStreet}
             onInput={handleStreetInput}
-            placeholder="201 NE 65th St"
+            placeholder="Start typing a rental property address..."
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
