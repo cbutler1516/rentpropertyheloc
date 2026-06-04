@@ -13,6 +13,7 @@ type BackgroundVideoProps = {
   videoClassName?: string;
   /** Skip background video on small screens to save bandwidth */
   mobileStatic?: boolean;
+  preload?: "auto" | "metadata" | "none";
 };
 
 export function BackgroundVideo({
@@ -23,7 +24,9 @@ export function BackgroundVideo({
   priority = false,
   videoClassName,
   mobileStatic = true,
+  preload,
 }: BackgroundVideoProps) {
+  const videoPreload = preload ?? (priority ? "auto" : "none");
   const videoRef = useRef<HTMLVideoElement>(null);
   const [active, setActive] = useState(false);
   const [loadVideo, setLoadVideo] = useState(!mobileStatic);
@@ -73,14 +76,14 @@ export function BackgroundVideo({
         <video
           ref={videoRef}
           className={cn(
-            "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
+            "absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-700",
             active ? cn("opacity-70 md:opacity-85", videoClassName) : "opacity-0",
           )}
           autoPlay
           muted
           loop
           playsInline
-          preload={priority ? "metadata" : "none"}
+          preload={videoPreload}
           aria-hidden
         >
           <source src={src} type="video/mp4" />

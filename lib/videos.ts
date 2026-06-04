@@ -3,13 +3,13 @@
  * Files live in /public/videos/
  */
 
-/** Homepage hero talking-head explainer */
+/** Homepage talking-head explainer (below-the-fold overview section) */
 export const EXPLAINER_VIDEO = "/videos/brunette-heloc-vid-1.mp4" as const;
 
 export const SITE_VIDEOS = {
-  /** Cinematic aerial — hero background (muted loop) */
-  heroBackground: "/videos/drone-neighborhood-loop.mp4",
-  /** Primary talking-head explainer — hero column */
+  /** Cinematic luxury aerial — hero background (muted loop) */
+  heroBackground: "/videos/Luxury_real_estate_drone_footage_202606031728.mp4",
+  /** Primary talking-head explainer — overview section */
   explainer: EXPLAINER_VIDEO,
   howItWorks: "/videos/investor-fintech-commercial.mp4",
   rentalEquity: "/videos/investor-rental-review.mp4",

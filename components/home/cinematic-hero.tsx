@@ -19,7 +19,8 @@ export function CinematicHero() {
       <BackgroundVideo
         src={SITE_VIDEOS.heroBackground}
         priority
-        mobileStatic
+        preload="auto"
+        mobileStatic={false}
         replaceDefaultOverlay
         overlayClassName={HERO_OVERLAY}
         videoClassName="opacity-80 md:opacity-90"
