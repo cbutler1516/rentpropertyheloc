@@ -76,7 +76,7 @@ export function MobileStickyCta() {
             "pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2.5 px-4",
           )}
         >
-          <CtaLink href={HERO_FUNNEL_HREF} size="lg" className="w-full min-h-[48px] shadow-sm">
+          <CtaLink href={HERO_FUNNEL_HREF} size="lg" className="glow-accent w-full min-h-[48px]">
             {PRIMARY_CTA_SHORT}
           </CtaLink>
         </motion.div>

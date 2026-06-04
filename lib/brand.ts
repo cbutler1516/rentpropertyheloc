@@ -28,8 +28,8 @@ export const BRAND_ASSETS = {
 } as const;
 
 export const LOGO_HEADER_ASPECT = {
-  width: 814,
-  height: 324,
+  width: 858,
+  height: 349,
 } as const;
 
 /** @deprecated Use LOGO_HEADER_ASPECT */
@@ -61,7 +61,7 @@ export type LogoVariant =
   | "light";
 
 export const LOGO_NAVBAR_FRAME =
-  "relative h-11 w-[170px] max-w-[180px] sm:h-12 sm:w-[270px] sm:max-w-[280px]";
+  "relative h-10 w-[150px] max-w-[180px] sm:h-11 sm:w-[240px] sm:max-w-[260px]";
 
 export const LOGO_FOOTER_FRAME =
   "relative h-9 w-[150px] max-w-[180px] sm:h-10 sm:w-[220px] sm:max-w-[240px]";

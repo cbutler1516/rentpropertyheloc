@@ -22,7 +22,7 @@ const mockups = [
   },
   {
     title: "Navbar sizing",
-    description: "170–180px mobile · 270–280px desktop.",
+    description: "150–180px mobile · 220–260px desktop.",
     dark: true,
     content: <Logo variant="navbar" />,
   },

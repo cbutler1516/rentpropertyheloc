@@ -13,7 +13,6 @@ export type SiteLink = { href: string; label: string };
 export const NAV_LINKS: readonly SiteLink[] = [
   { href: "/#overview", label: "Overview" },
   { href: "/#dashboard", label: "Estimator" },
-  { href: "/#scenarios", label: "Scenarios" },
   { href: "/#faq", label: "FAQ" },
 ] as const;
 

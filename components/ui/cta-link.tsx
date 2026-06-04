@@ -9,17 +9,18 @@ import type { ComponentProps, MouseEvent } from "react";
 type CtaVariant = "primary" | "secondary" | "ghost";
 type CtaSize = "sm" | "md" | "lg";
 
+const primaryCtaClasses =
+  "bg-brand-gradient text-white shadow-[0_2px_8px_rgba(23,212,212,0.45),0_4px_18px_rgba(0,184,217,0.35)] transition-[filter,background-color] duration-200 hover:brightness-110 active:brightness-95";
+
 const variantClasses: Record<CtaVariant, string> = {
-  primary:
-    "bg-brand-gradient bg-brand-gradient-hover text-brand-navy shadow-[0_1px_2px_rgba(15,23,42,0.06),0_4px_14px_rgba(23,212,212,0.28)] hover:brightness-105 active:brightness-95",
+  primary: primaryCtaClasses,
   secondary:
     "border border-slate-200 bg-white text-slate-700 hover:border-brand-secondary/40 hover:bg-slate-50",
   ghost: "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
 };
 
 const variantClassesDark: Partial<Record<CtaVariant, string>> = {
-  primary:
-    "bg-brand-gradient bg-brand-gradient-hover text-brand-navy shadow-[0_4px_20px_rgba(23,212,212,0.3)] hover:brightness-110",
+  primary: primaryCtaClasses,
   ghost: "text-white/70 hover:bg-white/10 hover:text-white",
   secondary:
     "border border-white/15 bg-white/5 text-white/80 hover:border-white/25 hover:bg-white/10",
@@ -74,7 +75,6 @@ export function CtaLink({
           onDark && variantClassesDark[variant]
             ? variantClassesDark[variant]
             : variantClasses[variant],
-          !onDark && variant === "primary" && "text-brand-navy",
           sizeClasses[size],
           className,
         )}
