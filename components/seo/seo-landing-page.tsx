@@ -1,4 +1,5 @@
 import { SeoCtaBand } from "@/components/seo/seo-cta-band";
+import { Logo } from "@/components/brand/logo";
 import { SeoJsonLd } from "@/components/seo/seo-json-ld";
 import { SeoPageAnalytics } from "@/components/seo/seo-page-analytics";
 import { CtaReassurance } from "@/components/marketing/cta-reassurance";
@@ -14,6 +15,14 @@ import type { SeoPageConfig } from "@/lib/seo/types";
 import { CHECK_OPTIONS_HREF } from "@/lib/site";
 import { QUESTIONS_CALL_TEAM_LABEL } from "@/lib/contact";
 import Link from "next/link";
+
+function SeoPageLogo() {
+  return (
+    <Link href="/" className="mb-6 inline-flex rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-secondary">
+      <Logo variant="light" />
+    </Link>
+  );
+}
 
 function resolveRelatedLinks(config: SeoPageConfig) {
   return config.relatedPaths
@@ -36,6 +45,7 @@ export function SeoLandingPage({ config }: { config: SeoPageConfig }) {
       {/* Hero */}
       <header className="section-light border-b border-slate-200/80 py-10 sm:py-14 md:py-16">
         <Container className="max-w-3xl">
+          <SeoPageLogo />
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-teal-700 sm:text-xs">
             {config.hero.eyebrow}
           </p>

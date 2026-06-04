@@ -1,4 +1,5 @@
 import { Container } from "@/components/layout/container";
+import { Logo } from "@/components/brand/logo";
 import { MARKETING_SITE_NAME } from "@/lib/legal/compliance";
 import type { LegalSection } from "@/lib/legal/document-sections";
 import { LEGAL_LAST_UPDATED } from "@/lib/legal/document-sections";
@@ -12,7 +13,8 @@ export function ComplianceDocumentPage({ title, sections }: ComplianceDocumentPa
   return (
     <div className="section-light py-10 sm:py-14">
       <Container className="max-w-3xl">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-teal-700 sm:text-xs">
+        <Logo variant="light" className="mb-6" />
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-teal-700 sm:text-xs sr-only">
           {MARKETING_SITE_NAME}
         </p>
         <h1 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{title}</h1>

@@ -5,8 +5,24 @@ import { BRAND, BRAND_COLORS } from "@/lib/brand";
 
 const mockups = [
   {
-    title: "Primary lockup",
-    description: "RPH Logo 2 horizontal — icon left, RENT PROPERTY HELOC wordmark right.",
+    title: "Header logo (dark bg)",
+    description: "White wordmark and cyan gradient accents for navbar and dark surfaces.",
+    dark: true,
+    content: <Logo variant="dark" />,
+  },
+  {
+    title: "Light background logo",
+    description: "Navy wordmark with cyan gradient HELOC for footer, SEO, and docs.",
+    dark: false,
+    content: (
+      <div className="text-brand-navy">
+        <Logo variant="light" />
+      </div>
+    ),
+  },
+  {
+    title: "Navbar sizing",
+    description: "170–180px mobile · 270–280px desktop.",
     dark: true,
     content: <Logo variant="navbar" />,
   },
@@ -24,36 +40,16 @@ const mockups = [
     ),
   },
   {
-    title: "Light footer",
-    description: "Compact horizontal lockup for footer and documents.",
+    title: "Footer lockup",
+    description: "Compact light logo for white footer band.",
     dark: false,
-    content: (
-      <div className="text-brand-navy">
-        <Logo variant="footer" />
-      </div>
-    ),
-  },
-  {
-    title: "Alternate sizing",
-    description: "Primary lockup at marketing and document sizes.",
-    dark: true,
-    content: (
-      <div className="rounded-xl bg-white p-4">
-        <Logo variant="stacked" />
-      </div>
-    ),
+    content: <Logo variant="footer" />,
   },
   {
     title: "App icon",
     description: "House and chart mark for favicon and app surfaces.",
     dark: true,
     content: <Logo variant="icon" />,
-  },
-  {
-    title: "Monochrome",
-    description: "SVG icon for single-color applications.",
-    dark: true,
-    content: <LogoMark size={56} variant="monochrome" />,
   },
 ] as const;
 
@@ -68,8 +64,8 @@ export function BrandShowcase() {
           {BRAND.name}
         </h1>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
-          Primary palette: {BRAND_COLORS.primary}, {BRAND_COLORS.secondary}, navy{" "}
-          {BRAND_COLORS.navy}.
+          Dark and light horizontal lockups · Primary {BRAND_COLORS.primary} · Secondary{" "}
+          {BRAND_COLORS.secondary} · Navy {BRAND_COLORS.navy}.
         </p>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -102,16 +98,16 @@ export function BrandShowcase() {
         </div>
 
         <div className="mt-12 grid gap-8 lg:grid-cols-2">
-          <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Primary</p>
+          <div className="rounded-2xl border border-slate-200 bg-brand-dark p-8">
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Dark</p>
             <div className="mt-4">
-              <Logo variant="horizontal" />
+              <Logo variant="navbar" />
             </div>
           </div>
-          <div className="rounded-2xl border border-slate-200 bg-brand-dark p-8">
-            <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Primary</p>
-            <div className="mt-4 rounded-xl bg-white/95 p-3 inline-block">
-              <Logo variant="horizontal" />
+          <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Light</p>
+            <div className="mt-4">
+              <Logo variant="light" />
             </div>
           </div>
         </div>

@@ -6,7 +6,7 @@ import { MobileStickyCta } from "@/components/layout/mobile-sticky-cta";
 import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { BRAND, BRAND_ASSETS, LOGO_PRIMARY_ASPECT } from "@/lib/brand";
+import { BRAND, BRAND_ASSETS, LOGO_LIGHT_ASPECT } from "@/lib/brand";
 import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -40,9 +40,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: BRAND_ASSETS.primary,
-        width: LOGO_PRIMARY_ASPECT.width,
-        height: LOGO_PRIMARY_ASPECT.height,
+        url: BRAND_ASSETS.light,
+        width: LOGO_LIGHT_ASPECT.width,
+        height: LOGO_LIGHT_ASPECT.height,
         alt: BRAND.name,
       },
     ],
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: BRAND.headline,
     description: SITE_TAGLINE,
-    images: [BRAND_ASSETS.primary],
+    images: [BRAND_ASSETS.light],
   },
 };
 

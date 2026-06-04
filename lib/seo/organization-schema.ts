@@ -10,7 +10,7 @@ export function buildOrganizationSchema() {
     url: SITE_URL,
     email: PLATFORM_EMAIL,
     telephone: PLATFORM_PHONE_TEL,
-    logo: `${SITE_URL}${BRAND_ASSETS.primary}`,
+    logo: `${SITE_URL}${BRAND_ASSETS.light}`,
     description:
       "Lead generation and information platform connecting rental property investors with financing specialists and licensed lending partners.",
   };

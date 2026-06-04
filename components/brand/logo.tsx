@@ -2,7 +2,11 @@ import { cn } from "@/lib/cn";
 import {
   BRAND,
   BRAND_ASSETS,
-  LOGO_PRIMARY_ASPECT,
+  LOGO_DARK_ASPECT,
+  LOGO_FOOTER_FRAME,
+  LOGO_LIGHT_ASPECT,
+  LOGO_LIGHT_SECTION_FRAME,
+  LOGO_NAVBAR_FRAME,
   type LogoVariant,
 } from "@/lib/brand";
 import Image from "next/image";
@@ -13,7 +17,7 @@ type LogoProps = {
   priority?: boolean;
 };
 
-const PRIMARY_SRC = BRAND_ASSETS.primary;
+type LogoTone = "dark" | "light";
 
 type LogoFrame = {
   src: string;
@@ -22,7 +26,16 @@ type LogoFrame = {
   frameClassName: string;
 };
 
+function getLogoTone(variant: LogoVariant): LogoTone {
+  if (variant === "navbar" || variant === "dark") return "dark";
+  return "light";
+}
+
 function getLogoFrame(variant: LogoVariant): LogoFrame {
+  const tone = getLogoTone(variant);
+  const aspect = tone === "dark" ? LOGO_DARK_ASPECT : LOGO_LIGHT_ASPECT;
+  const src = tone === "dark" ? BRAND_ASSETS.dark : BRAND_ASSETS.light;
+
   if (variant === "icon") {
     return {
       src: BRAND_ASSETS.icon,
@@ -41,29 +54,29 @@ function getLogoFrame(variant: LogoVariant): LogoFrame {
     };
   }
 
-  if (variant === "navbar") {
+  if (variant === "navbar" || variant === "dark") {
     return {
-      src: PRIMARY_SRC,
-      width: LOGO_PRIMARY_ASPECT.width,
-      height: LOGO_PRIMARY_ASPECT.height,
-      frameClassName: "relative h-10 w-[160px] max-w-[180px] sm:h-12 sm:w-[260px] sm:max-w-[280px]",
+      src,
+      width: aspect.width,
+      height: aspect.height,
+      frameClassName: LOGO_NAVBAR_FRAME,
     };
   }
 
-  if (variant === "footer" || variant === "light") {
+  if (variant === "footer") {
     return {
-      src: PRIMARY_SRC,
-      width: LOGO_PRIMARY_ASPECT.width,
-      height: LOGO_PRIMARY_ASPECT.height,
-      frameClassName: "relative h-9 w-[140px] max-w-[180px] sm:h-10 sm:w-[220px] sm:max-w-[240px]",
+      src,
+      width: aspect.width,
+      height: aspect.height,
+      frameClassName: LOGO_FOOTER_FRAME,
     };
   }
 
   return {
-    src: PRIMARY_SRC,
-    width: LOGO_PRIMARY_ASPECT.width,
-    height: LOGO_PRIMARY_ASPECT.height,
-    frameClassName: "relative h-11 w-[200px] max-w-[240px] sm:h-12 sm:w-[260px] sm:max-w-[280px]",
+    src,
+    width: aspect.width,
+    height: aspect.height,
+    frameClassName: LOGO_LIGHT_SECTION_FRAME,
   };
 }
 
