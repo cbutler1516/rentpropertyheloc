@@ -163,11 +163,11 @@ export function getInitialFunnelStep(data: LeadFunnelData): number {
     !data.firstName?.trim() ||
     !data.lastName?.trim() ||
     !data.email?.trim() ||
-    !data.phone?.trim()
+    !data.phone?.trim() ||
+    !data.tcpaConsent
   ) {
     return 4;
   }
-  if (!data.tcpaConsent) return 5;
   return 1;
 }
 

@@ -10,7 +10,7 @@ export function getStepEncouragement(
     creditScoreRange?: CreditScoreRangeId | "";
   },
 ): string | null {
-  if (stepId === "requested-funds") {
+  if (stepId === "capital") {
     if (
       context.equityAccessRange === "100k-250k" ||
       context.equityAccessRange === "250k-500k" ||
@@ -39,11 +39,9 @@ export function getStepUnlockMessage(completedStep: number): string | null {
     case 1:
       return "Property saved — what's your estimated credit score?";
     case 2:
-      return "Credit saved — how much would you like to access?";
+      return "Credit saved — how much capital would you like to access?";
     case 3:
       return "Amount saved — share your contact details.";
-    case 4:
-      return "Contact saved — one step left.";
     default:
       return null;
   }

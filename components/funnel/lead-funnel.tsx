@@ -2,7 +2,6 @@
 
 import { FunnelConfirmation } from "@/components/funnel/funnel-confirmation";
 import { FunnelAddressStep } from "@/components/funnel/funnel-address-step";
-import { FunnelConsentStep } from "@/components/funnel/funnel-consent-step";
 import { FunnelContactStep } from "@/components/funnel/funnel-contact-step";
 import { FunnelCreditScoreStep } from "@/components/funnel/funnel-credit-score-step";
 import { FunnelRequestedFundsStep } from "@/components/funnel/funnel-requested-funds-step";
@@ -192,7 +191,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
       return;
     }
     if (!data.equityAccessRange) {
-      setSubmitError("Select how much you'd like to access.");
+      setSubmitError("Select how much capital you'd like to access.");
       return;
     }
 
@@ -204,7 +203,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
 
     const submissionData: LeadFunnelData = {
       ...data,
-      funnelStepCompleted: 5,
+      funnelStepCompleted: 4,
     };
 
     const result = await submitLead({
@@ -270,8 +269,6 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
     creditScoreRange: data.creditScoreRange,
   });
 
-  const stickyFooterStep = step === 4 || step === 5;
-
   return (
     <div className="funnel-container mx-auto w-full">
       {showPrimaryResidenceNote ? (
@@ -298,12 +295,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
           <FunnelProgress currentStep={step} totalSteps={FUNNEL_QUESTION_COUNT} compact />
         </div>
 
-        <div
-          className={cn(
-            "px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6",
-            stickyFooterStep && "max-md:pb-28",
-          )}
-        >
+        <div className={cn("px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6", step === 4 && "max-md:pb-28")}>
           <AnimatePresence mode="wait">
             <motion.div
               key={step}
@@ -313,11 +305,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
               transition={{ duration: reduceMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="max-md:funnel-mobile-flat space-y-4 sm:space-y-5"
             >
-              <FunnelStepHeader
-                title={getStepTitle(step)}
-                subtitle={getStepSubtitle(step)}
-                encouragement={encouragement}
-              />
+              <FunnelStepHeader title={getStepTitle(step)} encouragement={encouragement} />
 
               <div className="funnel-step-body">
                 {step === 1 ? (
@@ -341,11 +329,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
                 ) : null}
 
                 {step === 4 ? (
-                  <FunnelContactStep data={data} onChange={patch} onContinue={() => goNext(4)} />
-                ) : null}
-
-                {step === 5 ? (
-                  <FunnelConsentStep
+                  <FunnelContactStep
                     data={data}
                     onChange={patch}
                     submitting={submitting}
@@ -369,29 +353,10 @@ function getStepTitle(step: number): string {
     case 2:
       return "What's your estimated credit score?";
     case 3:
-      return "How much would you like to access?";
+      return "How much capital would you like to access?";
     case 4:
-      return "Start your personalized review";
-    case 5:
-      return "Almost done — confirm consent";
+      return "Share your contact details";
     default:
       return getFunnelStepTitle(step);
-  }
-}
-
-function getStepSubtitle(step: number): string | undefined {
-  switch (step) {
-    case 1:
-      return "Enter your rental property address. A licensed mortgage professional will review your scenario.";
-    case 2:
-      return "Select the range that best matches your credit profile. This is not a credit check.";
-    case 3:
-      return "Select the range that best matches your goal. This is not a loan offer.";
-    case 4:
-      return "Share your contact details so our team can follow up with financing options.";
-    case 5:
-      return "Review and confirm how we may contact you about your financing options.";
-    default:
-      return undefined;
   }
 }

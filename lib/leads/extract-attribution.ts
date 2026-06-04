@@ -43,6 +43,7 @@ export function buildLeadCreatePayload(
     propertyState?: string;
     propertyZip?: string;
     googlePlaceId?: string;
+    propertyFormattedAddress?: string;
     propertyValue: number | null;
     mortgageBalance: number | null;
     desiredCashAmount: number | null;
@@ -104,6 +105,7 @@ export function buildLeadCreatePayload(
     propertyState: input.propertyState ?? "",
     propertyZip: input.propertyZip ?? "",
     googlePlaceId: input.googlePlaceId ?? "",
+    propertyFormattedAddress: input.propertyFormattedAddress ?? "",
     propertyValue: input.propertyValue,
     mortgageBalance: input.mortgageBalance,
     desiredFunds: input.desiredCashAmount,

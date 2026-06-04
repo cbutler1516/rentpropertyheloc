@@ -201,6 +201,8 @@ export function validateLeadCreateRequest(body: unknown): LeadValidationResult {
       : FUNNEL_VERSION;
 
   const googlePlaceId = typeof raw.googlePlaceId === "string" ? raw.googlePlaceId.trim() : "";
+  const propertyFormattedAddress =
+    typeof raw.propertyFormattedAddress === "string" ? raw.propertyFormattedAddress.trim() : "";
 
   return {
     valid: true,
@@ -220,6 +222,7 @@ export function validateLeadCreateRequest(body: unknown): LeadValidationResult {
       propertyState: propertyState.toUpperCase(),
       propertyZip,
       googlePlaceId,
+      propertyFormattedAddress,
       propertyValue,
       mortgageBalance,
       desiredFunds: desiredFunds.value,

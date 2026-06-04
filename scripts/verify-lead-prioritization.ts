@@ -9,7 +9,7 @@ import type { LeadCreateRequest } from "../lib/leads/types";
 
 const baseLead: LeadCreateRequest = {
   journey: "sfr",
-  funnelVersion: "v10-credit-qualify-2026",
+  funnelVersion: "v11-simplified-2026",
   propertyType: "",
   propertyValueRange: "",
   mortgageBalanceRange: "",
@@ -24,6 +24,7 @@ const baseLead: LeadCreateRequest = {
   propertyState: "WA",
   propertyZip: "98101",
   googlePlaceId: "",
+  propertyFormattedAddress: "",
   propertyValue: null,
   mortgageBalance: null,
   desiredFunds: 0,
@@ -50,7 +51,7 @@ const baseLead: LeadCreateRequest = {
   useMortgageEstimate: false,
   fundingGoal: "",
   ownershipType: "",
-  funnelStepCompleted: 5,
+  funnelStepCompleted: 4,
   targetCltvPercent: 0,
   investorScore: null,
   confidenceRating: "",

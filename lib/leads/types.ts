@@ -52,6 +52,7 @@ export type LeadFunnelData = {
   propertyState: string;
   propertyZip: string;
   googlePlaceId: string;
+  propertyFormattedAddress: string;
   propertyValue: number | null;
   mortgageBalance: number | null;
   desiredCashAmount: number | null;
@@ -143,6 +144,7 @@ export type LeadCreateRequest = {
   propertyState: string;
   propertyZip: string;
   googlePlaceId: string;
+  propertyFormattedAddress: string;
   propertyValue: number | null;
   mortgageBalance: number | null;
   desiredFunds: number;

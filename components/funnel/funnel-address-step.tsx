@@ -1,10 +1,10 @@
 "use client";
 
-import { useGooglePlaces } from "@/components/funnel/use-google-places";
+import { useGooglePlaces, type PlacesAddressData } from "@/components/funnel/use-google-places";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import type { LeadFunnelData } from "@/lib/leads/types";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type FunnelAddressStepProps = {
   data: LeadFunnelData;
@@ -15,45 +15,64 @@ type FunnelAddressStepProps = {
 const fieldClassName =
   "funnel-form-field h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-base text-navy-950 placeholder:text-slate-400 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30 sm:text-sm lg:text-base";
 
+function isAddressComplete(data: LeadFunnelData): boolean {
+  return Boolean(
+    data.propertyStreet?.trim() &&
+      data.propertyCity?.trim() &&
+      data.propertyState?.trim().length === 2 &&
+      data.propertyZip?.trim(),
+  );
+}
+
 export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressStepProps) {
   const streetInputRef = useRef<HTMLInputElement | null>(null);
+  const [showManualFields, setShowManualFields] = useState(false);
+  const [continueAttempted, setContinueAttempted] = useState(false);
 
-  const addressComplete = useMemo(
-    () =>
-      Boolean(data.propertyStreet?.trim()) &&
-      Boolean(data.propertyCity?.trim()) &&
-      Boolean(data.propertyState?.trim()) &&
-      Boolean(data.propertyZip?.trim()),
-    [data],
-  );
+  const addressComplete = useMemo(() => isAddressComplete(data), [data]);
+
+  const canContinue = addressComplete && (Boolean(data.googlePlaceId) || showManualFields);
+
+  const shouldShowManualFields =
+    showManualFields || (continueAttempted && !(data.googlePlaceId && addressComplete));
 
   const handlePlaceSelect = useCallback(
-    (parsed: {
-      street: string;
-      city: string;
-      state: string;
-      zip: string;
-      googlePlaceId: string;
-      latitude: number | null;
-      longitude: number | null;
-    }) => {
+    (parsed: PlacesAddressData) => {
       onChange({
         propertyStreet: parsed.street,
         propertyCity: parsed.city,
         propertyState: parsed.state.toUpperCase(),
         propertyZip: parsed.zip,
         googlePlaceId: parsed.googlePlaceId,
+        propertyFormattedAddress: parsed.formattedAddress,
         propertyLatitude: parsed.latitude,
         propertyLongitude: parsed.longitude,
       });
       if (streetInputRef.current) {
         streetInputRef.current.value = parsed.street;
       }
+      setShowManualFields(false);
+      setContinueAttempted(false);
     },
     [onChange],
   );
 
   const { status: placesStatus } = useGooglePlaces(streetInputRef, handlePlaceSelect);
+
+  useEffect(() => {
+    if (placesStatus === "error") {
+      setShowManualFields(true);
+    }
+  }, [placesStatus]);
+
+  function handleContinueClick() {
+    setContinueAttempted(true);
+    if (!addressComplete) {
+      setShowManualFields(true);
+      return;
+    }
+    onContinue();
+  }
 
   return (
     <div className="space-y-3 sm:space-y-4">
@@ -69,6 +88,7 @@ export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressS
             onChange({
               propertyStreet: e.target.value,
               googlePlaceId: "",
+              propertyFormattedAddress: "",
             })
           }
           placeholder="Start typing an address…"
@@ -78,85 +98,95 @@ export function FunnelAddressStep({ data, onChange, onContinue }: FunnelAddressS
         {placesStatus === "loading" ? (
           <p className="text-[11px] text-slate-400">Loading address search…</p>
         ) : null}
-        {placesStatus === "error" ? (
-          <p className="text-[11px] text-slate-400">
-            Autocomplete unavailable — enter your address manually below.
-          </p>
-        ) : null}
-        {placesStatus === "ready" ? (
-          <p className="text-[11px] text-slate-400">
-            Select a suggestion to auto-fill city, state, and ZIP, or enter them manually.
-          </p>
-        ) : null}
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-3.5">
-        <div className="col-span-2 space-y-1.5 sm:col-span-1">
-          <label htmlFor="funnel-address-city" className="text-sm font-medium text-slate-700">
-            City
-          </label>
-          <input
-            id="funnel-address-city"
-            value={data.propertyCity}
-            onChange={(e) => onChange({ propertyCity: e.target.value, googlePlaceId: "" })}
-            autoComplete="address-level2"
-            className={fieldClassName}
-          />
+      {!shouldShowManualFields ? (
+        <button
+          type="button"
+          onClick={() => setShowManualFields(true)}
+          className="text-sm font-medium text-teal-700 underline-offset-2 hover:underline"
+        >
+          Enter city, state, ZIP manually
+        </button>
+      ) : (
+        <div className="space-y-3 rounded-xl border border-slate-200/90 bg-slate-50/60 p-3.5 sm:p-4">
+          <p className="text-xs font-medium text-slate-600">City, state, and ZIP</p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <div className="col-span-2 space-y-1.5 sm:col-span-1">
+              <label htmlFor="funnel-address-city" className="text-sm font-medium text-slate-700">
+                City
+              </label>
+              <input
+                id="funnel-address-city"
+                value={data.propertyCity}
+                onChange={(e) =>
+                  onChange({
+                    propertyCity: e.target.value,
+                    googlePlaceId: "",
+                    propertyFormattedAddress: "",
+                  })
+                }
+                autoComplete="address-level2"
+                className={fieldClassName}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label htmlFor="funnel-address-state" className="text-sm font-medium text-slate-700">
+                State
+              </label>
+              <input
+                id="funnel-address-state"
+                value={data.propertyState}
+                onChange={(e) =>
+                  onChange({
+                    propertyState: e.target.value.toUpperCase().slice(0, 2),
+                    googlePlaceId: "",
+                    propertyFormattedAddress: "",
+                  })
+                }
+                autoComplete="address-level1"
+                maxLength={2}
+                placeholder="WA"
+                className={cn(fieldClassName, "uppercase")}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label htmlFor="funnel-address-zip" className="text-sm font-medium text-slate-700">
+                ZIP
+              </label>
+              <input
+                id="funnel-address-zip"
+                value={data.propertyZip}
+                onChange={(e) =>
+                  onChange({
+                    propertyZip: e.target.value.replace(/[^\d-]/g, "").slice(0, 10),
+                    googlePlaceId: "",
+                    propertyFormattedAddress: "",
+                  })
+                }
+                autoComplete="postal-code"
+                inputMode="numeric"
+                maxLength={10}
+                placeholder="98101"
+                className={fieldClassName}
+              />
+            </div>
+          </div>
         </div>
-        <div className="space-y-1.5">
-          <label htmlFor="funnel-address-state" className="text-sm font-medium text-slate-700">
-            State
-          </label>
-          <input
-            id="funnel-address-state"
-            value={data.propertyState}
-            onChange={(e) =>
-              onChange({
-                propertyState: e.target.value.toUpperCase().slice(0, 2),
-                googlePlaceId: "",
-              })
-            }
-            autoComplete="address-level1"
-            maxLength={2}
-            placeholder="WA"
-            className={cn(fieldClassName, "uppercase")}
-          />
-        </div>
-        <div className="space-y-1.5">
-          <label htmlFor="funnel-address-zip" className="text-sm font-medium text-slate-700">
-            ZIP
-          </label>
-          <input
-            id="funnel-address-zip"
-            value={data.propertyZip}
-            onChange={(e) =>
-              onChange({
-                propertyZip: e.target.value.replace(/[^\d-]/g, "").slice(0, 10),
-                googlePlaceId: "",
-              })
-            }
-            autoComplete="postal-code"
-            inputMode="numeric"
-            maxLength={10}
-            placeholder="98101"
-            className={fieldClassName}
-          />
-        </div>
-      </div>
+      )}
 
-      <p className="text-[11px] leading-relaxed text-slate-500 sm:text-xs">
-        Helps us review the right rental property. Not a loan application or commitment to lend.
-      </p>
+      {continueAttempted && !addressComplete ? (
+        <p className="text-sm text-red-600" role="alert">
+          Select an address from the suggestions or complete city, state, and ZIP.
+        </p>
+      ) : null}
 
       <Button
         type="button"
         size="lg"
-        className={cn(
-          "thumb-btn h-12 w-full text-base sm:max-w-md lg:max-w-sm",
-          addressComplete && "lg:shadow-sm",
-        )}
-        disabled={!addressComplete}
-        onClick={onContinue}
+        className="thumb-btn h-12 w-full text-base sm:max-w-md lg:max-w-sm"
+        disabled={!canContinue}
+        onClick={handleContinueClick}
       >
         Continue
       </Button>

@@ -151,9 +151,8 @@ export function isUnlockCardUnlocked(
 export const PRE_SUBMIT_MILESTONES = [
   { step: 1, label: "Property", icon: "🏠" },
   { step: 2, label: "Credit", icon: "📈" },
-  { step: 3, label: "Access", icon: "💰" },
+  { step: 3, label: "Capital", icon: "💰" },
   { step: 4, label: "Contact", icon: "📋" },
-  { step: 5, label: "Consent", icon: "✓" },
 ] as const;
 
 export function getReviewMilestones(options: {

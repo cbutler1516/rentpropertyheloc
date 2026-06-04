@@ -54,10 +54,6 @@ export function FunnelRequestedFundsStep({
           />
         ))}
       </div>
-      <p className="text-[11px] leading-relaxed text-slate-500 sm:text-xs">
-        Not a loan offer or approval amount. A licensed mortgage professional will review your
-        scenario.
-      </p>
     </div>
   );
 }

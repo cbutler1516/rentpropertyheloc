@@ -8,6 +8,7 @@ export type PlacesAddressData = {
   state: string;
   zip: string;
   googlePlaceId: string;
+  formattedAddress: string;
   latitude: number | null;
   longitude: number | null;
 };
@@ -58,17 +59,18 @@ function getCityFromComponents(components: google.maps.GeocoderAddressComponent[
   );
 }
 
-function parsePlace(place: google.maps.places.PlaceResult): PlacesAddressData {
+export function parsePlace(place: google.maps.places.PlaceResult): PlacesAddressData {
   const components = place.address_components ?? [];
   const streetNumber = getComponent(components, "street_number");
   const route = getComponent(components, "route");
   const lat = place.geometry?.location?.lat();
   const lng = place.geometry?.location?.lng();
+  const formattedAddress = place.formatted_address?.trim() ?? "";
 
   let street = [streetNumber, route].filter(Boolean).join(" ");
   if (!street && route) street = route;
-  if (!street && place.formatted_address) {
-    street = place.formatted_address.split(",")[0]?.trim() ?? "";
+  if (!street && formattedAddress) {
+    street = formattedAddress.split(",")[0]?.trim() ?? "";
   }
 
   return {
@@ -77,9 +79,31 @@ function parsePlace(place: google.maps.places.PlaceResult): PlacesAddressData {
     state: getComponent(components, "administrative_area_level_1", "short_name"),
     zip: getComponent(components, "postal_code"),
     googlePlaceId: place.place_id ?? "",
+    formattedAddress,
     latitude: typeof lat === "number" && Number.isFinite(lat) ? lat : null,
     longitude: typeof lng === "number" && Number.isFinite(lng) ? lng : null,
   };
+}
+
+function hasAddressComponents(place: google.maps.places.PlaceResult): boolean {
+  return Boolean(place.address_components && place.address_components.length > 0);
+}
+
+function fetchPlaceDetails(
+  placeId: string,
+  onResult: (data: PlacesAddressData) => void,
+) {
+  const service = new google.maps.places.PlacesService(document.createElement("div"));
+  service.getDetails(
+    {
+      placeId,
+      fields: ["address_components", "place_id", "formatted_address", "geometry"],
+    },
+    (detail, status) => {
+      if (status !== google.maps.places.PlacesServiceStatus.OK || !detail) return;
+      onResult(parsePlace(detail));
+    },
+  );
 }
 
 export function useGooglePlaces(
@@ -96,6 +120,17 @@ export function useGooglePlaces(
     if (!apiKey || !inputRef.current) return;
 
     const input = inputRef.current;
+
+    function deliverPlace(place: google.maps.places.PlaceResult) {
+      if (hasAddressComponents(place)) {
+        onSelectRef.current(parsePlace(place));
+        return;
+      }
+
+      if (place.place_id) {
+        fetchPlaceDetails(place.place_id, onSelectRef.current);
+      }
+    }
 
     function initAutocomplete(target: HTMLInputElement) {
       if (autocompleteRef.current) return;
@@ -115,8 +150,8 @@ export function useGooglePlaces(
 
         ac.addListener("place_changed", () => {
           const place = ac.getPlace();
-          if (!place.address_components) return;
-          onSelectRef.current(parsePlace(place));
+          if (!place.place_id && !place.formatted_address) return;
+          deliverPlace(place);
         });
 
         autocompleteRef.current = ac;
@@ -163,4 +198,3 @@ export function useGooglePlaces(
 
   return { status };
 }
-
