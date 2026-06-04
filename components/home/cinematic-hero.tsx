@@ -21,6 +21,8 @@ export function CinematicHero() {
     >
       <BackgroundVideo
         src={SITE_VIDEOS.heroBackground}
+        poster={SITE_VIDEOS.heroBackgroundPoster}
+        startTime={0.75}
         priority
         preload="auto"
         mobileStatic={false}

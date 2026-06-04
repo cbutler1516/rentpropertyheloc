@@ -9,6 +9,8 @@ export const EXPLAINER_VIDEO = "/videos/brunette-heloc-vid-1.mp4" as const;
 export const SITE_VIDEOS = {
   /** Cinematic luxury aerial — hero background (muted loop) */
   heroBackground: "/videos/Luxury_real_estate_drone_footage_202606031728.mp4",
+  /** First usable frame of hero background — avoids black flash on load */
+  heroBackgroundPoster: "/images/hero/hero-background-poster.jpg",
   /** Primary talking-head explainer — overview section */
   explainer: EXPLAINER_VIDEO,
   howItWorks: "/videos/investor-fintech-commercial.mp4",
