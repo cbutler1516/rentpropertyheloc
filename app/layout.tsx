@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
+import { GoogleAdsScripts } from "@/components/analytics/google-ads-scripts";
 import { HashScrollHandler } from "@/components/layout/hash-scroll-handler";
 import { MobileStickyCta } from "@/components/layout/mobile-sticky-cta";
 import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
@@ -63,6 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full scroll-smooth antialiased`}>
       <body className="min-h-full flex flex-col bg-surface-50 text-ink">
+        <GoogleAdsScripts />
         <OrganizationJsonLd />
         <AnalyticsProvider>
           <HashScrollHandler />
