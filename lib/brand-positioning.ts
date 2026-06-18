@@ -1,17 +1,17 @@
 /** Single positioning line — show once per page section, not as repeated badges. */
 export const POSITIONING_LINE =
-  "Technology-powered. Investor-focused. Human-guided.";
+  "Technology-powered. Home equity focused. Human-guided.";
 
 export const BRAND_SUPPORTING_COPY =
   "Get personalized guidance from financing specialists and licensed lending partners—not just an automated approval engine.";
 
-export const HERO_HEADLINE = "Unlock Your Property Equity. Put It To Work.";
+export const HERO_HEADLINE = "Keep Your Rate. Access Your Equity.";
 
 export const HERO_SUPPORTING_COPY =
   "Explore HELOC and home equity financing options for primary residences, second homes, and investment properties in about 60 seconds.";
 
 export const SEO_GUIDANCE_TAGLINE =
-  "Compare investor equity options with guidance from licensed financing specialists and lending partners.";
+  "Compare home equity options for primary residences, second homes, and investment properties with guidance from licensed financing specialists and lending partners.";
 
 export const WHY_INVESTORS_CHOOSE = {
   headline: "Built for property owners exploring equity",

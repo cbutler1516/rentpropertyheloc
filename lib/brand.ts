@@ -3,7 +3,7 @@ export const BRAND = {
   shortName: "RPH",
   monogram: "RPH",
   tagline: "The modern operating system for residential rental property equity.",
-  headline: "Unlock Your Property Equity. Put It To Work.",
+  headline: "Keep Your Rate. Access Your Equity.",
   subheadline:
     "Explore HELOC and home equity financing options for primary residences, second homes, and investment properties in about 60 seconds.",
   descriptor:

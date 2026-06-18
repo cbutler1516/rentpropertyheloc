@@ -3,24 +3,15 @@ import { SEO_PAGE_PATHS } from "@/lib/seo/pages";
 import { SITE_URL } from "@/lib/site";
 import type { MetadataRoute } from "next";
 
+/** Funnel-first static routes included in sitemap */
 const STATIC_PATHS = [
   "/",
-  "/buyers",
-  "/agents",
-  "/investors",
-  "/commercial",
-  "/deal-analyzer",
-  "/learn",
-  "/partners",
-  "/about",
-  "/contact",
-  "/strategy-call",
-  "/mortgage-resources",
   "/check-options",
   "/scenarios",
   "/faq",
   "/privacy-policy",
   "/terms-of-use",
+  "/licensing-information",
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -31,6 +22,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${SITE_URL}${path}`,
     lastModified,
     changeFrequency: path === "/" ? "weekly" : "monthly",
-    priority: path === "/" ? 1 : path.startsWith("/check-options") ? 0.9 : 0.7,
+    priority: path === "/" ? 1 : path.startsWith("/check-options") ? 0.9 : path.endsWith("-heloc") ? 0.75 : 0.7,
   }));
 }

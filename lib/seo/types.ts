@@ -53,5 +53,8 @@ export type SeoPageConfig = {
   service: {
     name: string;
     description: string;
+    /** State or region for geo-targeted pages */
+    areaServed?: string;
+    serviceType?: string;
   };
 };

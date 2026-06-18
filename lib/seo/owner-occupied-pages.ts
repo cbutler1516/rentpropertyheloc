@@ -107,7 +107,13 @@ export const OWNER_OCCUPIED_SEO_PAGES: Record<OwnerOccupiedSeoPath, SeoPageConfi
           "Starting a review does not by itself mean a hard credit pull. A licensed specialist can explain when credit is accessed during a full application.",
       },
     ],
-    relatedPaths: ["/heloc-for-primary-residence", "/home-equity-options", "/rental-property-heloc"],
+    relatedPaths: [
+      "/heloc-for-primary-residence",
+      "/home-equity-options",
+      "/home-equity-line-of-credit",
+      "/rental-property-heloc",
+      "/washington-heloc",
+    ],
     service: {
       name: "Owner-Occupied HELOC Review",
       description: "Educational review of revolving home equity options for primary residences.",
@@ -190,7 +196,13 @@ export const OWNER_OCCUPIED_SEO_PAGES: Record<OwnerOccupiedSeoPath, SeoPageConfi
         answer: `This is an educational review to explore options that may be available. ${COMPLIANCE}`,
       },
     ],
-    relatedPaths: ["/owner-occupied-heloc", "/heloc-for-primary-residence", "/rental-property-heloc"],
+    relatedPaths: [
+      "/owner-occupied-heloc",
+      "/heloc-for-primary-residence",
+      "/second-home-heloc",
+      "/rental-property-heloc",
+      "/investment-property-heloc",
+    ],
     service: {
       name: "Home Equity Options Review",
       description: "Compare HELOC and home equity paths by property use and occupancy.",
@@ -273,7 +285,7 @@ export const OWNER_OCCUPIED_SEO_PAGES: Record<OwnerOccupiedSeoPath, SeoPageConfi
         answer: `No. ${COMPLIANCE}`,
       },
     ],
-    relatedPaths: ["/owner-occupied-heloc", "/home-equity-options", "/cash-out-vs-heloc"],
+    relatedPaths: ["/owner-occupied-heloc", "/home-equity-options", "/cash-out-refi-vs-heloc", "/debt-consolidation-heloc"],
     service: {
       name: "Primary Residence HELOC Review",
       description: "Educational review of HELOC options secured by a primary residence.",

@@ -1,7 +1,11 @@
 import { SEO_GUIDANCE_TAGLINE } from "@/lib/brand-positioning";
 import type { SeoPageConfig } from "@/lib/seo/types";
 import { INVESTOR_PROCESS_STEPS } from "@/lib/marketing/content";
+import { INVESTOR_EXPANSION_SEO_PAGES, INVESTOR_EXPANSION_SEO_PATHS } from "@/lib/seo/investor-expansion-pages";
 import { OWNER_OCCUPIED_SEO_PAGES } from "@/lib/seo/owner-occupied-pages";
+import { OWNER_USE_CASE_SEO_PAGES, OWNER_USE_CASE_SEO_PATHS } from "@/lib/seo/owner-use-case-pages";
+import { SECOND_HOME_SEO_PAGES, SECOND_HOME_SEO_PATHS } from "@/lib/seo/second-home-pages";
+import { STATE_SEO_PAGES, STATE_SEO_PATHS } from "@/lib/seo/state-pages";
 
 const DEFAULT_PROCESS_STEPS = INVESTOR_PROCESS_STEPS.map(({ title, description }) => ({
   title,
@@ -20,6 +24,10 @@ export const SEO_PAGE_PATHS = [
   "/owner-occupied-heloc",
   "/home-equity-options",
   "/heloc-for-primary-residence",
+  ...OWNER_USE_CASE_SEO_PATHS,
+  ...INVESTOR_EXPANSION_SEO_PATHS,
+  ...SECOND_HOME_SEO_PATHS,
+  ...STATE_SEO_PATHS,
 ] as const;
 
 export type SeoPagePath = (typeof SEO_PAGE_PATHS)[number];
@@ -823,6 +831,10 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
     },
   },
   ...OWNER_OCCUPIED_SEO_PAGES,
+  ...OWNER_USE_CASE_SEO_PAGES,
+  ...INVESTOR_EXPANSION_SEO_PAGES,
+  ...SECOND_HOME_SEO_PAGES,
+  ...STATE_SEO_PAGES,
 };
 
 export function getSeoPageConfig(path: string): SeoPageConfig | undefined {

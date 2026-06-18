@@ -207,7 +207,7 @@ export function SeoLandingPage({ config }: { config: SeoPageConfig }) {
             Frequently asked questions
           </h2>
           <p className="mt-2 text-sm text-slate-600">
-            Compliance-safe answers for investors exploring rental equity options.
+            Clear answers about HELOC and home equity options—primary residences, rentals, and second homes.
           </p>
           <div className="mt-6 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-sm">
             {config.faqs.map((faq) => (
@@ -234,7 +234,7 @@ export function SeoLandingPage({ config }: { config: SeoPageConfig }) {
       <section className="section-light border-t border-slate-100 py-10 sm:py-14">
         <Container className="max-w-3xl">
           {relatedLinks.length > 0 ? (
-            <nav aria-label="Related investor guides" className="mb-10">
+            <nav aria-label="Related guides" className="mb-10">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
                 Related guides
               </p>

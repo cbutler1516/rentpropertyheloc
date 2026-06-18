@@ -18,15 +18,18 @@ export const NAV_LINKS: readonly SiteLink[] = [
 
 export const FOOTER_LINKS = {
   topics: [
-    { href: "/rental-property-heloc", label: "Rental property HELOC" },
     { href: "/owner-occupied-heloc", label: "Owner-occupied HELOC" },
+    { href: "/rental-property-heloc", label: "Rental property HELOC" },
+    { href: "/second-home-heloc", label: "Second home HELOC" },
     { href: "/home-equity-options", label: "Home equity options" },
     { href: "/check-options", label: PRIMARY_CTA_LABEL },
   ],
   resources: [
     { href: "/#faq", label: "FAQ" },
-    { href: "/heloc-for-primary-residence", label: "Primary residence HELOC" },
-    { href: "/scenarios", label: "Scenario examples" },
+    { href: "/washington-heloc", label: "Washington HELOC" },
+    { href: "/california-heloc", label: "California HELOC" },
+    { href: "/texas-heloc", label: "Texas HELOC" },
+    { href: "/home-equity-line-of-credit", label: "HELOC guide" },
     { href: "/licensing-information", label: "Licensing" },
   ],
 } as const satisfies {
