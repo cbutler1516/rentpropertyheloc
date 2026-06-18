@@ -2,13 +2,11 @@
 
 import { Section } from "@/components/layout/section";
 import { Reveal } from "@/components/motion/reveal";
-import { CtaLink } from "@/components/ui/cta-link";
 import {
   CALL_OUR_TEAM_LABEL,
   PLATFORM_PHONE_DISPLAY,
   PLATFORM_PHONE_TEL,
 } from "@/lib/contact";
-import { HERO_FUNNEL_HREF, START_YOUR_REVIEW_LABEL } from "@/lib/cta";
 import { INVESTOR_SUPPORT_SECTION } from "@/lib/trust-content";
 import { cn } from "@/lib/cn";
 
@@ -27,7 +25,7 @@ export function CompanyTrustSection({
   const compact = variant === "compact" || variant === "funnel";
 
   const card = (
-    <PostSubmitProcessCard compact={compact} ctaLocation={`company-trust-${variant}`} />
+    <PostSubmitProcessCard compact={compact} />
   );
 
   if (variant === "homepage") {
@@ -64,13 +62,7 @@ export function CompanyTrustSection({
   return null;
 }
 
-function PostSubmitProcessCard({
-  compact = false,
-  ctaLocation,
-}: {
-  compact?: boolean;
-  ctaLocation?: string;
-}) {
+function PostSubmitProcessCard({ compact = false }: { compact?: boolean }) {
   return (
     <div
       className={cn(
@@ -85,7 +77,7 @@ function PostSubmitProcessCard({
         )}
       >
         <ProcessTimeline compact={compact} />
-        <BenefitsPanel compact={compact} ctaLocation={ctaLocation} />
+        <BenefitsPanel compact={compact} />
       </div>
     </div>
   );
@@ -139,13 +131,7 @@ function ProcessTimeline({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function BenefitsPanel({
-  compact = false,
-  ctaLocation,
-}: {
-  compact?: boolean;
-  ctaLocation?: string;
-}) {
+function BenefitsPanel({ compact = false }: { compact?: boolean }) {
   return (
     <div className="flex flex-col">
       <h3
@@ -178,7 +164,7 @@ function BenefitsPanel({
           </li>
         ))}
       </ul>
-      <SupportCtaRow compact={compact} className="mt-5 sm:mt-6" ctaLocation={ctaLocation} />
+      <SupportCtaRow compact={compact} className="mt-5 sm:mt-6" />
     </div>
   );
 }
@@ -186,40 +172,25 @@ function BenefitsPanel({
 function SupportCtaRow({
   compact = false,
   className,
-  ctaLocation,
 }: {
   compact?: boolean;
   className?: string;
-  ctaLocation?: string;
 }) {
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-stretch",
-        className,
-      )}
-    >
-      <CallTeamButton compact={compact} />
-      <CtaLink
-        href={HERO_FUNNEL_HREF}
-        variant="secondary"
-        size={compact ? "sm" : "md"}
-        className="w-full justify-center sm:w-auto"
-        ctaLocation={ctaLocation ? `${ctaLocation}-start-review` : "company-trust-start-review"}
-      >
-        {START_YOUR_REVIEW_LABEL}
-      </CtaLink>
+    <div className={className}>
+      <CallTeamButton compact={compact} className="w-full" />
     </div>
   );
 }
 
-function CallTeamButton({ compact = false }: { compact?: boolean }) {
+function CallTeamButton({ compact = false, className }: { compact?: boolean; className?: string }) {
   return (
     <a
       href={`tel:${PLATFORM_PHONE_TEL}`}
       className={cn(
         "inline-flex min-h-[44px] flex-col items-center justify-center rounded-xl bg-brand-gradient px-5 text-center text-brand-navy shadow-sm transition hover:brightness-105",
-        compact ? "py-2 text-sm sm:flex-1" : "py-2.5 sm:flex-1",
+        compact ? "py-2 text-sm" : "py-2.5",
+        className,
       )}
     >
       <span className="text-sm font-semibold leading-tight">{CALL_OUR_TEAM_LABEL}</span>
