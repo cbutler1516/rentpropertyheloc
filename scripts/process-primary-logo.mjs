@@ -4,11 +4,7 @@ import sharp from "sharp";
 
 const root = path.resolve(import.meta.dirname, "..");
 const source =
-  process.argv[2] ??
-  path.join(
-    root,
-    "../.cursor/projects/c-Users-cbutl-the-loan-playbook/assets/c__Users_cbutl_AppData_Roaming_Cursor_User_workspaceStorage_empty-window_images_RPH_Logo_2-c18cf217-dd2f-42ff-b746-2a9a7f2dd1dd.png",
-  );
+  process.argv[2] ?? path.join(brandDir, "logo-primary.source.png");
 
 const brandDir = path.join(root, "public/brand");
 await mkdir(brandDir, { recursive: true });

@@ -1,47 +1,62 @@
+/**
+ * The Loan Playbook — brand asset paths and dimensions.
+ * Placeholders live in /public/images/branding/ (tlp-* naming).
+ */
+
 export const BRAND = {
-  name: "Rent Property HELOC",
-  shortName: "RPH",
-  monogram: "RPH",
-  tagline: "The modern operating system for residential rental property equity.",
-  headline: "Access rental property equity faster — without tax returns.",
+  name: "The Loan Playbook",
+  shortName: "TLP",
+  monogram: "LP",
+  tagline:
+    "A modern mortgage company built around strategy, education, and client-specific financing playbooks.",
+  headline: "A Modern Mortgage Company Built Around Strategy.",
   subheadline:
-    "Explore HELOC options on rental collateral through a streamlined digital review—programs may be available, subject to approval.",
+    "The Loan Playbook helps buyers, homeowners, investors, agents, and business owners compare financing options, understand the numbers, and move with a smarter plan.",
   descriptor:
-    "A modern platform for residential real estate investors seeking strategic leverage, liquidity, and portfolio growth.",
+    "Mortgage advisory, Deal Analyzer technology, and playbook reports for purchase, equity, investor, and commercial paths.",
 } as const;
 
 export const BRAND_ASSETS = {
-  /** Navbar / dark navy header — white wordmark, cyan gradient accents */
-  header: "/images/branding/rph-logo-header.png",
-  /** Light background lockup — navy wordmark, cyan gradient accents */
-  light: "/images/branding/rph-logo-light.png",
-  icon: "/brand/logo-icon.png",
+  /** Light background wordmark */
+  light: "/images/branding/tlp-logo-light.png",
+  /** Dark / navy header wordmark */
+  dark: "/images/branding/tlp-logo-dark.png",
+  /** App icon mark */
+  icon: "/images/branding/tlp-icon.png",
+  /** Vector icon for monochrome surfaces */
   iconSvg: "/brand/logo-icon.svg",
-  /** @deprecated Use BRAND_ASSETS.header */
-  dark: "/images/branding/rph-logo-header.png",
+  /** Default Open Graph share image (1200×630) */
+  og: "/images/branding/tlp-og-image.png",
+  /** @deprecated Use BRAND_ASSETS.dark */
+  header: "/images/branding/tlp-logo-dark.png",
   /** @deprecated Use BRAND_ASSETS.light */
-  primary: "/images/branding/rph-logo-light.png",
+  primary: "/images/branding/tlp-logo-light.png",
   /** @deprecated Use BRAND_ASSETS.light */
-  horizontal: "/images/branding/rph-logo-light.png",
+  horizontal: "/images/branding/tlp-logo-light.png",
   /** @deprecated Use BRAND_ASSETS.light */
-  stacked: "/images/branding/rph-logo-light.png",
+  stacked: "/images/branding/tlp-logo-light.png",
 } as const;
-
-export const LOGO_HEADER_ASPECT = {
-  width: 858,
-  height: 349,
-} as const;
-
-/** @deprecated Use LOGO_HEADER_ASPECT */
-export const LOGO_DARK_ASPECT = LOGO_HEADER_ASPECT;
 
 export const LOGO_LIGHT_ASPECT = {
   width: 814,
   height: 324,
 } as const;
 
+export const LOGO_DARK_ASPECT = {
+  width: 858,
+  height: 349,
+} as const;
+
+/** @deprecated Use LOGO_DARK_ASPECT */
+export const LOGO_HEADER_ASPECT = LOGO_DARK_ASPECT;
+
 /** @deprecated Use LOGO_LIGHT_ASPECT */
 export const LOGO_PRIMARY_ASPECT = LOGO_LIGHT_ASPECT;
+
+export const OG_IMAGE_ASPECT = {
+  width: 1200,
+  height: 630,
+} as const;
 
 export const BRAND_COLORS = {
   primary: "#17D4D4",

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Brand System",
-  description: "RentPropertyHELOC identity system — logos, marks, and application mockups.",
+  description: "The Loan Playbook identity system — logos, marks, and application mockups.",
   robots: { index: false, follow: false },
 };
 

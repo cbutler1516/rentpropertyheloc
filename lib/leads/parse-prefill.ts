@@ -21,6 +21,10 @@ import {
   isPropertyValueRangeId,
 } from "@/lib/leads/funnel-ranges";
 import { isEquityStrategy } from "@/lib/equity-calculator";
+import {
+  isPropertyOccupancyId,
+  mapEquityStrategyToOccupancy,
+} from "@/lib/leads/property-occupancy";
 import type { CheckOptionsPrefill, EquityStrategy, LeadFunnelData } from "@/lib/leads/types";
 
 function parsePositiveNumber(value: string | null): number | null {
@@ -62,6 +66,13 @@ export function parseCheckOptionsPrefill(
     prefill.equityStrategy = equityStrategyRaw;
   }
 
+  const propertyOccupancyRaw = get("propertyOccupancy");
+  if (propertyOccupancyRaw && isPropertyOccupancyId(propertyOccupancyRaw)) {
+    prefill.propertyOccupancy = propertyOccupancyRaw;
+  } else if (prefill.equityStrategy) {
+    const mapped = mapEquityStrategyToOccupancy(prefill.equityStrategy);
+    if (mapped) prefill.propertyOccupancy = mapped;
+  }
 
   const propertyValueRangeRaw = get("propertyValueRange");
   if (propertyValueRangeRaw && isPropertyValueRangeId(propertyValueRangeRaw)) {
@@ -129,6 +140,7 @@ export function mergePrefillIntoFunnelData(prefill: CheckOptionsPrefill): LeadFu
 
   return {
     ...DEFAULT_FUNNEL_DATA,
+    propertyOccupancy: prefill.propertyOccupancy ?? mapEquityStrategyToOccupancy(prefill.equityStrategy) ?? "",
     propertyType: prefill.propertyType ?? "",
     propertyValueRange: prefill.propertyValueRange ?? "",
     mortgageBalanceRange: prefill.mortgageBalanceRange ?? "",
@@ -152,8 +164,9 @@ export function getInitialFunnelStep(data: LeadFunnelData): number {
   if (!isGooglePlacesAddressReady(data) && !isManualAddressReady(data)) {
     return 1;
   }
-  if (!data.creditScoreRange) return 2;
-  if (!data.equityAccessRange) return 3;
+  if (!data.propertyOccupancy) return 2;
+  if (!data.creditScoreRange) return 3;
+  if (!data.equityAccessRange) return 4;
   if (
     !data.firstName?.trim() ||
     !data.lastName?.trim() ||
@@ -161,7 +174,7 @@ export function getInitialFunnelStep(data: LeadFunnelData): number {
     !data.phone?.trim() ||
     !data.tcpaConsent
   ) {
-    return 4;
+    return 5;
   }
   return 1;
 }

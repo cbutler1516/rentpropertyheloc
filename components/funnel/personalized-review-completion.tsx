@@ -101,7 +101,7 @@ export function PersonalizedReviewCompletion({
           <div className="relative mx-auto flex max-w-lg flex-col items-center">
             <div className="relative h-9 w-[160px] max-w-[180px] sm:h-10 sm:w-[200px] sm:max-w-[220px]">
               <Image
-                src={BRAND_ASSETS.header}
+                src={BRAND_ASSETS.dark}
                 alt={BRAND.name}
                 fill
                 sizes="220px"

@@ -24,6 +24,7 @@ export type ConversionEventName =
   | "partial_lead_started"
   | "partial_lead_updated"
   | "partial_lead_abandoned"
+  | "property_occupancy_selected"
   /** @deprecated Use funnel_started — kept for type compatibility only */
   | "lead_form_started"
   /** @deprecated Use funnel_step_completed */
@@ -40,6 +41,8 @@ export type ConversionEventPayload = {
   page_path?: string;
   propertyType?: string;
   property_type?: string;
+  propertyOccupancy?: string;
+  property_occupancy?: string;
   equityStrategy?: string;
   equity_strategy?: string;
   routingTier?: string;

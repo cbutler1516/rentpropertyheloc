@@ -47,6 +47,8 @@ export const HUBSPOT_CUSTOM_CONTACT_PROPERTIES = [
   "property_state",
   "property_zip",
   "google_place_id",
+  "property_occupancy",
+  "lead_category",
   "investment_property_count",
   "funding_timeline",
   "routing_tier",
@@ -151,6 +153,8 @@ export function mapLeadToHubSpotProperties(lead: StoredLead): Record<string, str
   };
 
   if (lead.propertyType) properties.rental_property_type = lead.propertyType;
+  if (lead.propertyOccupancy) properties.property_occupancy = lead.propertyOccupancy;
+  if (lead.leadCategory) properties.lead_category = lead.leadCategory;
   if (lead.propertyValue != null && lead.propertyValue > 0) {
     properties.estimated_property_value = String(lead.propertyValue);
   }
@@ -262,7 +266,7 @@ function buildLeadNoteBody(lead: StoredLead): string {
   ].filter(Boolean);
 
   return [
-    "RentPropertyHELOC — check-options funnel submission",
+    "The Loan Playbook — check-options funnel submission",
     "",
     `Property type: ${lead.propertyType ? getPropertyTypeLabel(lead.propertyType) : "pending enrichment"}`,
     `Property value range: ${lead.propertyValueRange || "n/a"}`,
@@ -752,7 +756,7 @@ export async function updateHubSpotContactAddress(input: AddressUpdateInput): Pr
       properties: {
         hs_timestamp: String(Date.now()),
         hs_note_body: [
-          "RentPropertyHELOC — Property address collected (post-submit)",
+          "The Loan Playbook — Property address collected (post-submit)",
           "",
           `Address: ${input.propertyAddress}`,
           `City: ${input.city}`,

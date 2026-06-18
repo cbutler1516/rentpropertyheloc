@@ -1,7 +1,7 @@
-export const HOME_INVESTOR_TRUST_HEADLINE = "Why Investors Use Rent Property HELOC";
+export const HOME_INVESTOR_TRUST_HEADLINE = "Why clients use The Loan Playbook";
 
 export const HOME_INVESTOR_TRUST_SUBHEADLINE =
-  "Built for rental property owners who want real guidance, flexible financing options, and a straightforward review process.";
+  "A modern mortgage company — strategy, Deal Analyzer technology, and human guidance for purchase, equity, and investor goals.";
 
 export const HOME_INVESTOR_TRUST_CARDS = [
   {

@@ -1,6 +1,6 @@
 import type { ConversionEventName } from "@/lib/analytics/event-types";
 
-const STORAGE_KEY = "rph_analytics_session_v1";
+const STORAGE_KEY = "tlp_analytics_session_v1";
 
 export type AnalyticsSessionSnapshot = {
   startedAt: string;

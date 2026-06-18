@@ -6,20 +6,10 @@ const root = path.resolve(import.meta.dirname, "..");
 const brandDir = path.join(root, "public/images/branding");
 await mkdir(brandDir, { recursive: true });
 
-const assetsRoot = path.join(
-  root,
-  "../.cursor/projects/c-Users-cbutl-the-loan-playbook/assets",
-);
-
+/** Pass source PNG paths as CLI args, or place files in public/images/branding/*.source.png */
 const sources = {
-  header: path.join(
-    assetsRoot,
-    "c__Users_cbutl_AppData_Roaming_Cursor_User_workspaceStorage_empty-window_images_RPH_Logo_White-d518b485-49e5-4ad4-88e7-ea2597b9233d.png",
-  ),
-  light: path.join(
-    assetsRoot,
-    "c__Users_cbutl_AppData_Roaming_Cursor_User_workspaceStorage_empty-window_images_RPH_Logo_2-c18cf217-dd2f-42ff-b746-2a9a7f2dd1dd.png",
-  ),
+  header: process.argv[2] ?? path.join(brandDir, "tlp-logo-dark.source.png"),
+  light: process.argv[3] ?? path.join(brandDir, "tlp-logo-light.source.png"),
 };
 
 async function keyOutBackground(inputPath, outputPath, mode) {
@@ -57,12 +47,12 @@ async function keyOutBackground(inputPath, outputPath, mode) {
 
 const headerMeta = await keyOutBackground(
   sources.header,
-  path.join(brandDir, "rph-logo-header.png"),
+  path.join(brandDir, "tlp-logo-dark.png"),
   "header",
 );
 const lightMeta = await keyOutBackground(
   sources.light,
-  path.join(brandDir, "rph-logo-light.png"),
+  path.join(brandDir, "tlp-logo-light.png"),
   "light",
 );
 
@@ -78,5 +68,5 @@ await writeFile(
   ),
 );
 
-console.log(`rph-logo-header.png ${headerMeta.width}x${headerMeta.height}`);
-console.log(`rph-logo-light.png ${lightMeta.width}x${lightMeta.height}`);
+console.log(`tlp-logo-dark.png ${headerMeta.width}x${headerMeta.height}`);
+console.log(`tlp-logo-light.png ${lightMeta.width}x${lightMeta.height}`);

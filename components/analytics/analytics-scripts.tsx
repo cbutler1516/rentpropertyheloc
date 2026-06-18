@@ -22,7 +22,7 @@ export function AnalyticsScripts({ config }: AnalyticsScriptsProps) {
             src={`https://www.googletagmanager.com/gtag/js?id=${primaryGtagId}`}
             strategy="lazyOnload"
           />
-          <Script id="rentpropertyheloc-gtag-init" strategy="lazyOnload">
+          <Script id="theloanplaybook-gtag-init" strategy="lazyOnload">
             {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
@@ -36,7 +36,7 @@ export function AnalyticsScripts({ config }: AnalyticsScriptsProps) {
       ) : null}
 
       {config.metaPixelId ? (
-        <Script id="rentpropertyheloc-meta-pixel" strategy="lazyOnload">
+        <Script id="theloanplaybook-meta-pixel" strategy="lazyOnload">
           {`
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -52,7 +52,7 @@ export function AnalyticsScripts({ config }: AnalyticsScriptsProps) {
       ) : null}
 
       {config.clarityProjectId ? (
-        <Script id="rentpropertyheloc-clarity" strategy="lazyOnload">
+        <Script id="theloanplaybook-clarity" strategy="lazyOnload">
           {`
             (function(c,l,a,r,i,t,y){
               c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};

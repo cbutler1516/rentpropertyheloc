@@ -9,7 +9,9 @@ import type { LeadCreateRequest } from "../lib/leads/types";
 
 const baseLead: LeadCreateRequest = {
   journey: "sfr",
-  funnelVersion: "v11-simplified-2026",
+  funnelVersion: "v12-occupancy-2026",
+  propertyOccupancy: "rental_property",
+  leadCategory: "investor_heloc",
   propertyType: "",
   propertyValueRange: "",
   mortgageBalanceRange: "",

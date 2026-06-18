@@ -3,7 +3,7 @@ import {
   BRAND,
   BRAND_ASSETS,
   LOGO_FOOTER_FRAME,
-  LOGO_HEADER_ASPECT,
+  LOGO_DARK_ASPECT,
   LOGO_LIGHT_ASPECT,
   LOGO_LIGHT_SECTION_FRAME,
   LOGO_NAVBAR_FRAME,
@@ -30,8 +30,8 @@ function usesHeaderLogo(variant: LogoVariant): boolean {
 
 function getLogoFrame(variant: LogoVariant): LogoFrame {
   const header = usesHeaderLogo(variant);
-  const aspect = header ? LOGO_HEADER_ASPECT : LOGO_LIGHT_ASPECT;
-  const src = header ? BRAND_ASSETS.header : BRAND_ASSETS.light;
+  const aspect = header ? LOGO_DARK_ASPECT : LOGO_LIGHT_ASPECT;
+  const src = header ? BRAND_ASSETS.dark : BRAND_ASSETS.light;
 
   if (variant === "icon") {
     return {

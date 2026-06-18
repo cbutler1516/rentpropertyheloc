@@ -4,7 +4,7 @@ import sharp from "sharp";
 import pngToIco from "png-to-ico";
 
 const root = path.resolve(import.meta.dirname, "..");
-const input = path.join(root, "public/brand/logo-icon.png");
+const input = path.join(root, "public/images/branding/tlp-icon.png");
 const publicDir = path.join(root, "public");
 
 const sizes = [

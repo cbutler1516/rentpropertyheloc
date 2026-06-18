@@ -19,6 +19,6 @@ export function computePartialCompletionPercent(
 export function getPartialStepLabel(step: number | undefined): string {
   if (!step || step < 1) return "Not started";
   if (step >= FUNNEL_QUESTION_COUNT) return "Contact step";
-  const labels = ["Property address", "Requested funds", "Contact info"];
+  const labels = ["Property address", "Property use", "Credit score", "Requested funds", "Contact info"];
   return labels[Math.min(step - 1, labels.length - 1)] ?? `Step ${step}`;
 }

@@ -6,7 +6,7 @@ const DEFAULT_RECIPIENTS = [
   "chrisb@pillarprivatelending.com",
 ];
 
-const DEFAULT_FROM = "RentPropertyHELOC Leads <onboarding@resend.dev>";
+const DEFAULT_FROM = "The Loan Playbook Leads <onboarding@resend.dev>";
 
 export function getNotificationRecipients(): string[] {
   const env = process.env.INTERNAL_LEAD_NOTIFICATION_RECIPIENTS?.trim();
@@ -65,7 +65,7 @@ function buildLeadNotificationBody(lead: StoredLead): string {
 
   sections.push(
     "",
-    "--- HELOC Scenario ---",
+    "--- Financing scenario ---",
     `Property type: ${lead.propertyType || "Pending enrichment"}`,
     lead.propertyValue != null && lead.propertyValue > 0
       ? `Estimated value: ${formatUsd(lead.propertyValue)}`
@@ -137,10 +137,10 @@ function buildLeadNotificationBody(lead: StoredLead): string {
 
 function buildSubject(lead: StoredLead): string {
   if (lead.routingTier === "fast_track") {
-    return `[FAST TRACK · HIGH PRIORITY] Rental HELOC lead — ${lead.firstName} ${lead.lastName}`;
+    return `[FAST TRACK · HIGH PRIORITY] Loan Playbook lead — ${lead.firstName} ${lead.lastName}`;
   }
   const tierLabel = lead.routingTier.toUpperCase();
-  return `[${tierLabel}] New ${lead.qualityTier} rental HELOC lead — ${lead.journey} — ${lead.firstName} ${lead.lastName}`;
+  return `[${tierLabel}] New ${lead.qualityTier} financing lead — ${lead.journey} — ${lead.firstName} ${lead.lastName}`;
 }
 
 export type NotificationResult = {

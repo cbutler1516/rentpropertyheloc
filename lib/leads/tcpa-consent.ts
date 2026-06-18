@@ -25,7 +25,7 @@ export const TCPA_CONSENT_VARIANTS: Record<TcpaConsentVariantId, TcpaConsentVari
   "plain-brand": {
     id: "plain-brand",
     label: "Plain language + brand",
-    text: "I agree RentPropertyHELOC.com and its partners may call, text, and email me about my HELOC inquiry. Consent isn't required to get service. Msg/data rates may apply.",
+    text: "I agree The Loan Playbook and its partners may call, text, and email me about my financing inquiry. Consent isn't required to get service. Msg/data rates may apply.",
     detail:
       "You agree we and our lending or marketing partners may contact you at the number and email provided using automated or manual technology regarding financing options. Reply STOP to opt out of texts where applicable.",
   },
@@ -34,7 +34,7 @@ export const TCPA_CONSENT_VARIANTS: Record<TcpaConsentVariantId, TcpaConsentVari
     label: "Short label + expandable detail",
     text: "I agree to be contacted about my financing options.",
     detail:
-      "By submitting this form, you agree that Rent Property HELOC and its licensed lending partners may contact you regarding financing options and services that may be available to you. Communications may include phone calls, emails, artificial intelligence (AI)-assisted calls, prerecorded messages, and SMS/text messages sent using automated technology. Consent is not a condition of obtaining financing. Message and data rates may apply. You may opt out at any time.",
+      "By submitting this form, you agree that The Loan Playbook and its licensed lending partners may contact you regarding financing options and services that may be available to you. Communications may include phone calls, emails, artificial intelligence (AI)-assisted calls, prerecorded messages, and SMS/text messages sent using automated technology. Consent is not a condition of obtaining financing. Message and data rates may apply. You may opt out at any time. Not a commitment to lend.",
   },
 };
 

@@ -1,4 +1,4 @@
-/** Google Ads conversion ID — sitewide base tag (Rent Property HELOC). */
+/** Google Ads conversion ID — sitewide base tag (The Loan Playbook). */
 export const GOOGLE_ADS_ID = "AW-17913746238";
 
 /**

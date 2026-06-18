@@ -7,7 +7,9 @@ import { MobileStickyCta } from "@/components/layout/mobile-sticky-cta";
 import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { BRAND, BRAND_ASSETS, LOGO_LIGHT_ASPECT } from "@/lib/brand";
+import { BRAND } from "@/lib/brand";
+import { getDefaultOpenGraphImages, getDefaultTwitterImages } from "@/lib/og";
+import { SEO_KEYWORDS } from "@/lib/playbook-content";
 import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -20,14 +22,16 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} | Rental Property Equity Platform`,
+    default: `${SITE_NAME} | Modern Mortgage Company & Strategy Platform`,
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_TAGLINE,
+  keywords: [...SEO_KEYWORDS],
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/images/branding/tlp-icon.png", sizes: "192x192", type: "image/png" },
       { url: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
       { url: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
     ],
@@ -39,20 +43,13 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: SITE_NAME,
     type: "website",
-    images: [
-      {
-        url: BRAND_ASSETS.light,
-        width: LOGO_LIGHT_ASPECT.width,
-        height: LOGO_LIGHT_ASPECT.height,
-        alt: BRAND.name,
-      },
-    ],
+    images: getDefaultOpenGraphImages(),
   },
   twitter: {
     card: "summary_large_image",
     title: BRAND.headline,
     description: SITE_TAGLINE,
-    images: [BRAND_ASSETS.light],
+    images: getDefaultTwitterImages(),
   },
 };
 

@@ -21,13 +21,15 @@ import {
   isPriorityReviewFunds,
   type EquityAccessRangeId,
 } from "@/lib/leads/funnel-ranges";
-import type { LeadQualityTier, PropertyTypeId, RoutingTier } from "@/lib/leads/types";
+import type { LeadQualityTier, PropertyOccupancyId, PropertyTypeId, RoutingTier } from "@/lib/leads/types";
+import { getPostSubmitReviewHeadline } from "@/lib/leads/property-occupancy";
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
 type FunnelConfirmationProps = {
   propertyType: PropertyTypeId | "";
+  propertyOccupancy: PropertyOccupancyId | "";
   leadId?: string;
   routingTier?: RoutingTier;
   propertyStreet: string;
@@ -64,6 +66,7 @@ function formatSubmissionDate(iso: string): string {
 
 export function FunnelConfirmation({
   propertyType: _propertyType,
+  propertyOccupancy,
   leadId,
   routingTier: _routingTier,
   propertyStreet,
@@ -124,6 +127,8 @@ export function FunnelConfirmation({
     enrichmentSaved && complete,
   );
 
+  const postSubmitHeadline = getPostSubmitReviewHeadline(propertyOccupancy);
+
   if (enrichmentSaved && complete) {
     return (
       <>
@@ -171,11 +176,12 @@ export function FunnelConfirmation({
     >
       <div className="px-4 py-5 sm:px-6 lg:px-8 lg:py-6">
         <header className="max-w-3xl">
-          <h2 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-            Complete Your Investor Profile
+          <p className="text-sm font-semibold text-teal-700">{postSubmitHeadline}</p>
+          <h2 className="mt-2 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+            Complete your property profile
           </h2>
           <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
-            Help us identify the best financing options for your property.
+            Help us identify financing options that may fit your goals—subject to approval.
           </p>
         </header>
 

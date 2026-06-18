@@ -95,6 +95,8 @@ export function buildFunnelAnswers(lead: ScoredLeadCreateRequest): Record<string
   return {
     journey: lead.journey,
     funnelVersion: lead.funnelVersion,
+    propertyOccupancy: lead.propertyOccupancy,
+    leadCategory: lead.leadCategory,
     propertyType: lead.propertyType,
     propertyValueRange: lead.propertyValueRange,
     mortgageBalanceRange: lead.mortgageBalanceRange,
@@ -511,6 +513,8 @@ export function submissionToLeadCreateRequest(submission: LeadSubmissionRecord):
   return {
     journey: String(fa.journey ?? "sfr"),
     funnelVersion: String(fa.funnelVersion ?? "v5-minimal-capture-2026"),
+    propertyOccupancy: (String(fa.propertyOccupancy ?? "") || "") as LeadCreateRequest["propertyOccupancy"],
+    leadCategory: (String(fa.leadCategory ?? "") || "") as LeadCreateRequest["leadCategory"],
     propertyType: (submission.propertyType || String(fa.propertyType ?? "")) as LeadCreateRequest["propertyType"],
     propertyValueRange: String(fa.propertyValueRange ?? ""),
     mortgageBalanceRange: String(fa.mortgageBalanceRange ?? ""),

@@ -1,5 +1,6 @@
 import type { SeoPageConfig } from "@/lib/seo/types";
 import { MARKETING_SITE_NAME } from "@/lib/legal/compliance";
+import { getDefaultOpenGraphImages, getDefaultTwitterImages } from "@/lib/og";
 import { SITE_URL } from "@/lib/site";
 import type { Metadata } from "next";
 
@@ -26,11 +27,13 @@ export function buildSeoMetadata(config: SeoPageConfig): Metadata {
       url: canonical,
       siteName: MARKETING_SITE_NAME,
       type: "article",
+      images: getDefaultOpenGraphImages(),
     },
     twitter: {
       card: "summary_large_image",
       title: ogTitle,
       description: ogDescription,
+      images: getDefaultTwitterImages(),
     },
   };
 }

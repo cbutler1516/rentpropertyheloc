@@ -2,6 +2,7 @@ import { dispatchAnalyticsEvent, dispatchPageView } from "@/lib/analytics/dispat
 import { trackEvent, trackEventOnce, trackRoutingTierLead } from "@/lib/analytics/analytics";
 import type { ConversionEventPayload } from "@/lib/analytics/event-types";
 import { normalizeEventPayload } from "@/lib/analytics/payload";
+import { getOrCreatePartialSessionId } from "@/lib/leads/partial-lead-session";
 import type { RoutingTier } from "@/lib/leads/types";
 
 export type { ConversionEventName, ConversionEventPayload } from "@/lib/analytics/event-types";
@@ -138,6 +139,14 @@ export function trackPartialLeadUpdated(payload?: ConversionEventPayload) {
 
 export function trackPartialLeadAbandoned(payload?: ConversionEventPayload) {
   dispatchAnalyticsEvent("partial_lead_abandoned", normalizeEventPayload(payload));
+}
+
+export function trackPropertyOccupancySelected(payload?: ConversionEventPayload) {
+  const sessionId = typeof window !== "undefined" ? getOrCreatePartialSessionId() : undefined;
+  dispatchAnalyticsEvent(
+    "property_occupancy_selected",
+    normalizeEventPayload({ sessionId, ...payload }),
+  );
 }
 
 export function trackAnalyticsTest(payload?: ConversionEventPayload) {

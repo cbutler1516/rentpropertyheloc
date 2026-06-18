@@ -4,6 +4,7 @@ import { FunnelConfirmation } from "@/components/funnel/funnel-confirmation";
 import { FunnelAddressStep } from "@/components/funnel/funnel-address-step";
 import { FunnelContactStep } from "@/components/funnel/funnel-contact-step";
 import { FunnelCreditScoreStep } from "@/components/funnel/funnel-credit-score-step";
+import { FunnelPropertyOccupancyStep } from "@/components/funnel/funnel-property-occupancy-step";
 import { FunnelRequestedFundsStep } from "@/components/funnel/funnel-requested-funds-step";
 import { FunnelProgress } from "@/components/funnel/funnel-progress";
 import { FunnelStepHeader } from "@/components/funnel/funnel-step-header";
@@ -25,7 +26,6 @@ import { extractQueryParams, extractUtmParams } from "@/lib/leads/extract-attrib
 import { getJourneySlugForPropertyType } from "@/lib/leads/investor-journeys";
 import {
   applyRangeSelection,
-  getEquityStrategyFromParams,
   getInitialFunnelStep,
   mergePrefillIntoFunnelData,
   parseCheckOptionsPrefill,
@@ -36,6 +36,7 @@ import { usePartialLeadSave } from "@/lib/leads/use-partial-lead-save";
 import { cn } from "@/lib/cn";
 import { normalizePhoneForStorage } from "@/lib/phone-format";
 import type { LeadFunnelData, PropertyTypeId, RoutingTier } from "@/lib/leads/types";
+import { mapOccupancyToEquityStrategy } from "@/lib/leads/property-occupancy";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -80,8 +81,8 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
   );
 
   const equityStrategy = useMemo(
-    () => getEquityStrategyFromParams(searchParams),
-    [searchParams],
+    () => mapOccupancyToEquityStrategy(data.propertyOccupancy),
+    [data.propertyOccupancy],
   );
 
   const isConfirmationView = submitted || step === FUNNEL_STEP_COUNT;
@@ -90,23 +91,29 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
     onSubmittedChange?.(isConfirmationView);
   }, [isConfirmationView, onSubmittedChange]);
 
-  const showPrimaryResidenceNote = equityStrategy === "primary_residence";
-
   const syncHistory = useCallback(
     (nextStep: number, replace = false) => {
       if (typeof window === "undefined") return;
       const url = new URL(window.location.href);
       url.searchParams.set("step", String(nextStep));
       if (data.propertyType) url.searchParams.set("propertyType", data.propertyType);
-      if (equityStrategy === "primary_residence") {
+      if (data.propertyOccupancy) {
+        url.searchParams.set("propertyOccupancy", data.propertyOccupancy);
+      } else {
+        url.searchParams.delete("propertyOccupancy");
+      }
+      const strategy = mapOccupancyToEquityStrategy(data.propertyOccupancy);
+      if (strategy === "primary_residence") {
         url.searchParams.set("equityStrategy", "primary_residence");
+      } else if (strategy === "rental_property") {
+        url.searchParams.set("equityStrategy", "rental_property");
       } else {
         url.searchParams.delete("equityStrategy");
       }
       const method = replace ? "replaceState" : "pushState";
       window.history[method]({ funnelStep: nextStep }, "", url);
     },
-    [data.propertyType, equityStrategy],
+    [data.propertyOccupancy, data.propertyType],
   );
 
   useEffect(() => {
@@ -134,7 +141,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
   }, [submitted]);
 
   useEffect(() => {
-    if (step === 4) {
+    if (step === 5) {
       trackContactStepViewed({ journey, funnelVersion: FUNNEL_VERSION });
     }
   }, [step, journey]);
@@ -150,7 +157,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
     data,
     step,
     journey,
-    equityStrategy,
+    equityStrategy: equityStrategy ?? "rental_property",
     submitted,
     sourceUrl: typeof window !== "undefined" ? window.location.href : undefined,
     queryParams:
@@ -169,6 +176,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
       journey,
       funnelVersion: FUNNEL_VERSION,
       propertyType: data.propertyType || undefined,
+      propertyOccupancy: data.propertyOccupancy || undefined,
     });
     const nextStep = Math.min(fromStep + 1, FUNNEL_STEP_COUNT);
     patch({ funnelStepCompleted: fromStep });
@@ -186,6 +194,10 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
   }
 
   async function handleSubmit() {
+    if (!data.propertyOccupancy) {
+      setSubmitError("Select how you use this property.");
+      return;
+    }
     if (!data.creditScoreRange) {
       setSubmitError("Select your estimated credit score.");
       return;
@@ -203,7 +215,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
 
     const submissionData: LeadFunnelData = {
       ...data,
-      funnelStepCompleted: 4,
+      funnelStepCompleted: 5,
     };
 
     const result = await submitLead({
@@ -227,6 +239,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
         tcpaConsent: true,
         marketingOptIn: data.marketingOptIn,
         propertyType: data.propertyType || undefined,
+        propertyOccupancy: data.propertyOccupancy || undefined,
         equityStrategy,
         estimatedFundsRange: data.equityAccessRange || undefined,
       });
@@ -250,6 +263,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
       >
         <FunnelConfirmation
           propertyType={data.propertyType}
+          propertyOccupancy={data.propertyOccupancy}
           leadId={leadId}
           routingTier={routingTier}
           propertyStreet={data.propertyStreet}
@@ -271,13 +285,6 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
 
   return (
     <div className="funnel-container mx-auto w-full">
-      {showPrimaryResidenceNote ? (
-        <div className="mb-3 rounded-xl border border-sky-200/80 bg-sky-50/90 px-4 py-2.5 text-sm leading-relaxed text-sky-950 sm:mb-4">
-          You selected a primary-residence equity scenario. A financing specialist will
-          review whether a primary-residence HELOC or similar option may fit your goals.
-        </div>
-      ) : null}
-
       <div className="funnel-app-shell overflow-x-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_8px_32px_rgba(15,23,42,0.06)] lg:rounded-3xl lg:shadow-[0_16px_48px_rgba(15,23,42,0.08)]">
         <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-slate-100 bg-white/95 px-3 py-2.5 backdrop-blur-sm sm:gap-3 sm:px-5 sm:py-3 lg:px-8">
           {step > 1 ? (
@@ -295,7 +302,7 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
           <FunnelProgress currentStep={step} totalSteps={FUNNEL_QUESTION_COUNT} compact />
         </div>
 
-        <div className={cn("px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6", step === 4 && "max-md:pb-28")}>
+        <div className={cn("px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6", step === 5 && "max-md:pb-28")}>
           <AnimatePresence mode="wait">
             <motion.div
               key={step}
@@ -313,15 +320,16 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
                 ) : null}
 
                 {step === 2 ? (
-                  <FunnelCreditScoreStep
+                  <FunnelPropertyOccupancyStep
                     data={data}
                     onChange={patch}
                     onContinue={() => goNext(2)}
+                    funnelStep={2}
                   />
                 ) : null}
 
                 {step === 3 ? (
-                  <FunnelRequestedFundsStep
+                  <FunnelCreditScoreStep
                     data={data}
                     onChange={patch}
                     onContinue={() => goNext(3)}
@@ -329,6 +337,14 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
                 ) : null}
 
                 {step === 4 ? (
+                  <FunnelRequestedFundsStep
+                    data={data}
+                    onChange={patch}
+                    onContinue={() => goNext(4)}
+                  />
+                ) : null}
+
+                {step === 5 ? (
                   <FunnelContactStep
                     data={data}
                     onChange={patch}
@@ -349,12 +365,14 @@ export function LeadFunnel({ onSubmittedChange }: LeadFunnelProps) {
 function getStepTitle(step: number): string {
   switch (step) {
     case 1:
-      return "Which rental property should we review?";
+      return "Which property should we review?";
     case 2:
-      return "What's your estimated credit score?";
+      return "Which property would you like us to review?";
     case 3:
-      return "How much capital would you like to access?";
+      return "What's your estimated credit score?";
     case 4:
+      return "How much capital would you like to access?";
+    case 5:
       return "Share your contact details";
     default:
       return getFunnelStepTitle(step);

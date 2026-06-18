@@ -9,6 +9,8 @@ export function buildTestLeadPayload(): LeadCreateRequest {
   return {
     journey: "sfr",
     funnelVersion: FUNNEL_VERSION,
+    propertyOccupancy: "rental_property",
+    leadCategory: "investor_heloc",
     propertyType: "single-family",
     propertyValueRange: "",
     mortgageBalanceRange: "",
@@ -49,7 +51,7 @@ export function buildTestLeadPayload(): LeadCreateRequest {
     useMortgageEstimate: true,
     fundingGoal: "buy-rental",
     ownershipType: "",
-    funnelStepCompleted: 4,
+    funnelStepCompleted: 5,
     targetCltvPercent: 75,
     investorScore: 72,
     confidenceRating: "Medium",
@@ -62,7 +64,7 @@ export function buildTestLeadPayload(): LeadCreateRequest {
     tcpaConsent: true,
     tcpaConsentAt: createdAt,
     marketingOptIn: false,
-    sourceUrl: "https://rentpropertyheloc.com/admin/leads-health",
+    sourceUrl: "https://theloanplaybook.com/admin/leads-health",
     queryParams: { healthcheck: "true", source: TEST_LEAD_SOURCE },
     utm: {
       utm_source: "admin",

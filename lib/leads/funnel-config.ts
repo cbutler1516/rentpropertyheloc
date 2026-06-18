@@ -1,6 +1,6 @@
 import type { LeadFunnelData, PropertyTypeId } from "@/lib/leads/types";
 
-export const FUNNEL_VERSION = "v11-simplified-2026" as const;
+export const FUNNEL_VERSION = "v12-occupancy-2026" as const;
 
 export const AUTO_ADVANCE_DELAY_MS = 250;
 
@@ -26,18 +26,20 @@ export const PROPERTY_TYPES: { id: PropertyTypeId; label: string; short: string 
 ];
 
 /** Pre-submit question steps (excludes confirmation). */
-export const FUNNEL_QUESTION_COUNT = 4;
-export const FUNNEL_STEP_COUNT = 5;
+export const FUNNEL_QUESTION_COUNT = 5;
+export const FUNNEL_STEP_COUNT = 6;
 
 export const FUNNEL_STEPS = [
   { id: "property-address", title: "Property", step: 1 },
-  { id: "credit-score", title: "Credit", step: 2 },
-  { id: "capital", title: "Capital", step: 3 },
-  { id: "contact-info", title: "Contact", step: 4 },
-  { id: "confirmation", title: "Confirmation", step: 5 },
+  { id: "property-use", title: "Use", step: 2 },
+  { id: "credit-score", title: "Credit", step: 3 },
+  { id: "capital", title: "Capital", step: 4 },
+  { id: "contact-info", title: "Contact", step: 5 },
+  { id: "confirmation", title: "Confirmation", step: 6 },
 ] as const;
 
 export const DEFAULT_FUNNEL_DATA: LeadFunnelData = {
+  propertyOccupancy: "",
   propertyType: "",
   propertyValueRange: "",
   mortgageBalanceRange: "",

@@ -4,9 +4,9 @@ import { Container } from "@/components/layout/container";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Check Rental HELOC Options",
+  title: "Build My Loan Playbook | Financing Review",
   description:
-    "Start a personalized rental property financing review. A financing specialist will follow up with options that may be available—subject to approval.",
+    "Start a personalized mortgage strategy review with The Loan Playbook. Compare options that may be available — subject to credit, income, asset, property, and program approval.",
 };
 
 export default function CheckOptionsPage() {

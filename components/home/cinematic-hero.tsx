@@ -6,8 +6,13 @@ import { CtaReassurance } from "@/components/marketing/cta-reassurance";
 import { Reveal } from "@/components/motion/reveal";
 import { BackgroundVideo } from "@/components/video/background-video";
 import { CtaLink } from "@/components/ui/cta-link";
-import { HERO_CTA_LABEL, HERO_FUNNEL_HREF } from "@/lib/cta";
-import { HERO_HEADLINE, HERO_SUPPORTING_COPY } from "@/lib/brand-positioning";
+import {
+  HERO_CTA_LABEL,
+  HERO_FUNNEL_HREF,
+  SECONDARY_CTA_HREF,
+  SECONDARY_CTA_LABEL,
+} from "@/lib/cta";
+import { PLAYBOOK_HERO } from "@/lib/playbook-content";
 import { SITE_VIDEOS } from "@/lib/videos";
 
 const HERO_OVERLAY =
@@ -39,16 +44,16 @@ export function CinematicHero() {
           </Reveal>
           <Reveal delay={0.05}>
             <h1 className="hero-text-shadow text-balance text-[1.625rem] font-bold leading-[1.14] tracking-tight text-white sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3.25rem] lg:leading-[1.08]">
-              {HERO_HEADLINE}
+              {PLAYBOOK_HERO.headline}
             </h1>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="hero-text-shadow-sm mt-3 max-w-xl text-pretty text-[0.9375rem] leading-relaxed text-white/90 sm:mt-5 sm:text-base md:max-w-lg md:text-lg">
-              {HERO_SUPPORTING_COPY}
+            <p className="hero-text-shadow-sm mt-3 max-w-xl text-pretty text-[0.9375rem] leading-relaxed text-white/90 sm:mt-5 sm:text-base md:max-w-2xl md:text-lg">
+              {PLAYBOOK_HERO.subheadline}
             </p>
           </Reveal>
           <Reveal delay={0.14}>
-            <div className="mt-6 sm:mt-8">
+            <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap">
               <CtaLink
                 href={HERO_FUNNEL_HREF}
                 size="lg"
@@ -57,6 +62,16 @@ export function CinematicHero() {
                 ctaLocation="hero-primary"
               >
                 {HERO_CTA_LABEL}
+              </CtaLink>
+              <CtaLink
+                href={SECONDARY_CTA_HREF}
+                variant="secondary"
+                size="lg"
+                className="w-full border-white/20 bg-white/10 text-white hover:bg-white/15 sm:w-auto"
+                onDark
+                ctaLocation="hero-deal-analyzer"
+              >
+                {SECONDARY_CTA_LABEL}
               </CtaLink>
             </div>
             <CtaReassurance tone="dark" align="left" className="hero-text-shadow-sm mt-3.5 max-w-lg" />

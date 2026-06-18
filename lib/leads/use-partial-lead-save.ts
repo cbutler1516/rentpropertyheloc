@@ -52,7 +52,10 @@ function buildPartialPayload(input: PartialSaveInput, options?: { abandoned?: bo
     currentStep: step,
     journey,
     sourceUrl,
-    queryParams,
+    queryParams: {
+      ...queryParams,
+      ...(data.propertyOccupancy ? { propertyOccupancy: data.propertyOccupancy } : {}),
+    },
     utm,
     completionPercent,
     abandonedAtStep: abandoned ? step : undefined,

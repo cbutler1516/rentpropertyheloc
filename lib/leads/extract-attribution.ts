@@ -1,5 +1,7 @@
 import { FUNNEL_VERSION } from "@/lib/leads/funnel-config";
 import { UTM_PARAM_KEYS } from "@/lib/leads/constants";
+import { resolveLeadCategory } from "@/lib/leads/property-occupancy";
+import type { LeadCreateRequest } from "@/lib/leads/types";
 
 export function extractUtmParams(searchParams: URLSearchParams): Record<string, string> {
   const utm: Record<string, string> = {};
@@ -30,6 +32,7 @@ export function buildLeadCreatePayload(
   input: {
     journey: string;
     funnelVersion?: string;
+    propertyOccupancy?: string;
     propertyType: string;
     propertyValueRange?: string;
     mortgageBalanceRange?: string;
@@ -92,6 +95,10 @@ export function buildLeadCreatePayload(
   return {
     journey: input.journey,
     funnelVersion: input.funnelVersion ?? FUNNEL_VERSION,
+    propertyOccupancy: (input.propertyOccupancy ?? "") as LeadCreateRequest["propertyOccupancy"],
+    leadCategory: resolveLeadCategory(
+      (input.propertyOccupancy ?? "") as LeadCreateRequest["propertyOccupancy"],
+    ),
     propertyType: input.propertyType,
     propertyValueRange: input.propertyValueRange ?? "",
     mortgageBalanceRange: input.mortgageBalanceRange ?? "",

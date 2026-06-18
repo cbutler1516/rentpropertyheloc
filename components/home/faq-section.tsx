@@ -15,8 +15,8 @@ export function FaqSection() {
         <SectionHeader
           tone="light"
           eyebrow="FAQ"
-          title="Questions investors ask first"
-          description="Rental HELOC eligibility, equity access, and timing—straight answers, no sales script."
+          title="Questions property owners ask first"
+          description="HELOC eligibility, equity access, and timing for primary homes, second homes, and rentals—straight answers, no sales script."
         />
       </Reveal>
       <StaggerReveal className="mx-auto max-w-3xl divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-sm lg:max-w-5xl">

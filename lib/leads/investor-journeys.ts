@@ -89,7 +89,7 @@ export const INVESTOR_JOURNEYS: Record<JourneySlug, InvestorJourneyConfig> = {
       ctaLabel: "Review next steps",
       ctaHref: "/#how-it-works",
     },
-    metaTitle: "Single-Family Rental HELOC Options",
+    metaTitle: "Single-Family Rental HELOC | The Loan Playbook",
     metaDescription:
       "Check HELOC options for a single-family rental property. Programs may be available, subject to approval.",
   },
@@ -142,7 +142,7 @@ export const INVESTOR_JOURNEYS: Record<JourneySlug, InvestorJourneyConfig> = {
       ctaLabel: "See the review process",
       ctaHref: "/#how-it-works",
     },
-    metaTitle: "Duplex & Small Multifamily HELOC Options",
+    metaTitle: "Duplex & Small Multifamily HELOC | The Loan Playbook",
     metaDescription:
       "Check HELOC options for duplex, triplex, or fourplex rentals. Subject to approval and property eligibility.",
   },
@@ -195,7 +195,7 @@ export const INVESTOR_JOURNEYS: Record<JourneySlug, InvestorJourneyConfig> = {
       ctaLabel: "Review what happens next",
       ctaHref: "/#how-it-works",
     },
-    metaTitle: "Short-Term Rental HELOC Options",
+    metaTitle: "Short-Term Rental HELOC | The Loan Playbook",
     metaDescription:
       "Check HELOC options for Airbnb and vacation rental properties. Programs may be available, subject to approval.",
   },
@@ -248,7 +248,7 @@ export const INVESTOR_JOURNEYS: Record<JourneySlug, InvestorJourneyConfig> = {
       ctaLabel: "Schedule your options review",
       ctaHref: "/#how-it-works",
     },
-    metaTitle: "Multifamily Rental HELOC Options",
+    metaTitle: "Multifamily Portfolio HELOC | The Loan Playbook",
     metaDescription:
       "Check HELOC options for multifamily rental portfolios. Programs may be available, subject to approval.",
   },

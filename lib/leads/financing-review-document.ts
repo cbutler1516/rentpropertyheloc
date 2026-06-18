@@ -7,6 +7,7 @@ import {
 } from "@/lib/leads/financing-review-content";
 import { getReviewScenario } from "@/lib/leads/review-scenario";
 import type { LeadQualityTier } from "@/lib/leads/types";
+import { BRAND_ASSETS } from "@/lib/brand";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export type FinancingReviewData = {
@@ -71,6 +72,7 @@ export function buildFinancingReviewHtml(data: FinancingReviewData): string {
     body { font-family: "Segoe UI", system-ui, sans-serif; color: #0f172a; margin: 0; background: #f8fafc; }
     .page { max-width: 720px; margin: 0 auto; background: #fff; }
     .hero { background: linear-gradient(135deg, #0a1628, #134e4a); color: #fff; padding: 2rem; }
+    .hero-logo { max-width: 200px; height: auto; margin-bottom: 0.75rem; }
     .brand { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #5eead4; }
     .hero h1 { margin: 0.5rem 0 0; font-size: 1.5rem; }
     .hero p { margin: 0.5rem 0 0; color: #cbd5e1; font-size: 0.875rem; }
@@ -103,6 +105,7 @@ export function buildFinancingReviewHtml(data: FinancingReviewData): string {
 <body>
   <div class="page">
     <header class="hero">
+      <img class="hero-logo" src="${escapeHtml(`${SITE_URL}${BRAND_ASSETS.dark}`)}" alt="${escapeHtml(SITE_NAME)}" />
       <p class="brand">${escapeHtml(SITE_NAME)}</p>
       <h1>Review Summary</h1>
       <p>Preliminary review based on the information you provided.</p>

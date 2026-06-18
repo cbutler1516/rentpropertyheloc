@@ -5,6 +5,7 @@ import { isJourneySlug } from "@/lib/leads/investor-journeys";
 import { CREDIT_SCORE_RANGES, EQUITY_ACCESS_RANGES, inferEquityAccessRange } from "@/lib/leads/funnel-ranges";
 import { normalizeFundingGoalId } from "@/lib/leads/funding-goals";
 import { isValidOwnershipType } from "@/lib/leads/ownership-type";
+import { isPropertyOccupancyId, resolveLeadCategory } from "@/lib/leads/property-occupancy";
 import type { LeadCreateRequest } from "@/lib/leads/types";
 import {
   isValidPhone,
@@ -80,6 +81,16 @@ export function validateLeadCreateRequest(body: unknown): LeadValidationResult {
       error: "Complete the property address or select a suggested address.",
     };
   }
+
+  const propertyOccupancyRaw =
+    typeof raw.propertyOccupancy === "string" ? raw.propertyOccupancy.trim() : "";
+  const propertyOccupancy = isPropertyOccupancyId(propertyOccupancyRaw)
+    ? propertyOccupancyRaw
+    : "";
+  if (!propertyOccupancy) {
+    return { valid: false, error: "Property use is required." };
+  }
+  const leadCategory = resolveLeadCategory(propertyOccupancy);
 
   if (!googleAddressReady) {
     if (!propertyCity) return { valid: false, error: "City is required." };
@@ -237,6 +248,8 @@ export function validateLeadCreateRequest(body: unknown): LeadValidationResult {
     data: {
       journey,
       funnelVersion,
+      propertyOccupancy,
+      leadCategory,
       propertyType,
       propertyValueRange: parseStringField(raw.propertyValueRange),
       mortgageBalanceRange: parseStringField(raw.mortgageBalanceRange),

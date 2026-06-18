@@ -25,6 +25,10 @@ export function normalizeEventPayload(
     normalized.property_type = String(params.propertyType);
   }
 
+  if (params.propertyOccupancy !== undefined) {
+    normalized.property_occupancy = String(params.propertyOccupancy);
+  }
+
   if (params.equityStrategy !== undefined) {
     normalized.equity_strategy = String(params.equityStrategy);
   }

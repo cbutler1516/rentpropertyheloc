@@ -1,6 +1,7 @@
 import { SEO_GUIDANCE_TAGLINE } from "@/lib/brand-positioning";
 import type { SeoPageConfig } from "@/lib/seo/types";
 import { INVESTOR_PROCESS_STEPS } from "@/lib/marketing/content";
+import { OWNER_OCCUPIED_SEO_PAGES } from "@/lib/seo/owner-occupied-pages";
 
 const DEFAULT_PROCESS_STEPS = INVESTOR_PROCESS_STEPS.map(({ title, description }) => ({
   title,
@@ -16,6 +17,9 @@ export const SEO_PAGE_PATHS = [
   "/investor-second-mortgage",
   "/condo-investor-heloc",
   "/2-4-unit-rental-heloc",
+  "/owner-occupied-heloc",
+  "/home-equity-options",
+  "/heloc-for-primary-residence",
 ] as const;
 
 export type SeoPagePath = (typeof SEO_PAGE_PATHS)[number];
@@ -818,6 +822,7 @@ export const SEO_PAGES: Record<SeoPagePath, SeoPageConfig> = {
         "Educational review of revolving equity options for duplex, triplex, and fourplex investment properties.",
     },
   },
+  ...OWNER_OCCUPIED_SEO_PAGES,
 };
 
 export function getSeoPageConfig(path: string): SeoPageConfig | undefined {

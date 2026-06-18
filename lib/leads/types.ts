@@ -8,6 +8,9 @@ import type {
   PropertyValueRangeId,
 } from "@/lib/leads/funnel-ranges";
 import type { FundingGoalId } from "@/lib/leads/funding-goals";
+import type { PropertyOccupancyId, LeadCategory } from "@/lib/leads/property-occupancy";
+
+export type { PropertyOccupancyId, LeadCategory } from "@/lib/leads/property-occupancy";
 import type { EnrichmentStatus } from "@/lib/leads/enrichment-status";
 import type { LeadPrioritization } from "@/lib/leads/lead-prioritization";
 import type { OwnershipTypeId } from "@/lib/leads/ownership-type";
@@ -39,6 +42,7 @@ export type PropertyTypeId =
   | "str-airbnb";
 
 export type LeadFunnelData = {
+  propertyOccupancy: PropertyOccupancyId | "";
   propertyType: PropertyTypeId | "";
   propertyValueRange: PropertyValueRangeId | "";
   mortgageBalanceRange: MortgageBalanceRangeId | "";
@@ -131,6 +135,8 @@ export type RoutingConfidence = "initial" | "enriched";
 export type LeadCreateRequest = {
   journey: string;
   funnelVersion: string;
+  propertyOccupancy: PropertyOccupancyId | "";
+  leadCategory: LeadCategory | "";
   propertyType: PropertyTypeId | "";
   propertyValueRange: string;
   mortgageBalanceRange: string;
@@ -232,4 +238,5 @@ export type CheckOptionsPrefill = Partial<
   >
 > & {
   equityStrategy?: EquityStrategy;
+  propertyOccupancy?: PropertyOccupancyId;
 };

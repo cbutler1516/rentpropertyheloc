@@ -1,5 +1,5 @@
-const STORAGE_KEY = "rph_partial_session_id";
-const LOCAL_PROGRESS_KEY = "rph_partial_funnel_progress";
+const STORAGE_KEY = "tlp_partial_session_id";
+const LOCAL_PROGRESS_KEY = "tlp_partial_funnel_progress";
 
 export function getOrCreatePartialSessionId(): string {
   if (typeof window === "undefined") return "";

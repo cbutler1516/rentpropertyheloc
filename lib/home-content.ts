@@ -1,6 +1,6 @@
 export const HERO_STATS = [
   { label: "Typical draw period", value: "10 years" },
-  { label: "Collateral focus", value: "Non-owner-occupied" },
+  { label: "Collateral focus", value: "Residential property" },
   { label: "Funding timeline", value: "As little as 7 days" },
 ] as const;
 
@@ -16,9 +16,9 @@ export const METRICS = [
     note: "Simple intake, clear next steps",
   },
   {
-    value: "Rental-only",
-    label: "Investment property focus",
-    note: "Built for non-owner-occupied collateral",
+    value: "Property owners",
+    label: "Homeowners & investors",
+    note: "Primary, second home, and rental paths",
   },
   {
     value: "7 days",

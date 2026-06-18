@@ -32,7 +32,7 @@ export const INVESTOR_SUPPORT_SECTION = {
       description: "Discuss next steps and answer questions.",
     },
   ],
-  benefitsHeadline: "Why Investors Use Rent Property HELOC",
+  benefitsHeadline: "Why clients use The Loan Playbook",
   benefits: [
     "Reviewed by a financing specialist",
     "No full loan application required to start",
@@ -49,22 +49,22 @@ export const COMPANY_TRUST = {
 } as const;
 
 export const ABOUT_PLATFORM = {
-  headline: "About This Platform",
+  headline: "About The Loan Playbook",
   summary:
-    "Rent Property HELOC is a lead generation and information platform built for rental property investors. We combine a fast online review with financing specialists and licensed lending partners who may help you explore HELOC, second mortgage, and other equity paths—subject to qualification, underwriting, property eligibility, and applicable guidelines.",
+    "The Loan Playbook is a modern mortgage company built around strategy — Deal Analyzer technology, playbook reports, and education-first guidance for buyers, investors, agents, and commercial clients. Licensed partner network; subject to credit, income, asset, property, and program approval.",
   aboutHref: "/about",
-  aboutLinkLabel: "Learn more about us",
+  aboutLinkLabel: "About Chris Butler",
   contactEmail: PLATFORM_EMAIL,
   contactPhone: PLATFORM_PHONE_DISPLAY,
 } as const;
 
 export const PLATFORM_COMPARISON = {
-  headline: "Why Investors Use This Platform",
+  headline: "Why clients use The Loan Playbook",
   description:
-    "Online platforms automate one product. We combine technology with licensed lending partner expertise.",
+    "Rate-quote sites push one product. We combine technology with strategy-first playbook reports.",
   columns: {
-    online: "Online Platforms",
-    us: "Rent Property HELOC",
+    online: "Typical rate sites",
+    us: "The Loan Playbook",
   },
   rows: [
     {
