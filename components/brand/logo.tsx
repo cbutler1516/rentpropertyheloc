@@ -3,7 +3,7 @@ import {
   BRAND,
   BRAND_ASSETS,
   LOGO_FOOTER_FRAME,
-  LOGO_DARK_ASPECT,
+  LOGO_HEADER_ASPECT,
   LOGO_LIGHT_ASPECT,
   LOGO_LIGHT_SECTION_FRAME,
   LOGO_NAVBAR_FRAME,
@@ -24,15 +24,7 @@ type LogoFrame = {
   frameClassName: string;
 };
 
-function usesHeaderLogo(variant: LogoVariant): boolean {
-  return variant === "navbar" || variant === "dark";
-}
-
 function getLogoFrame(variant: LogoVariant): LogoFrame {
-  const header = usesHeaderLogo(variant);
-  const aspect = header ? LOGO_DARK_ASPECT : LOGO_LIGHT_ASPECT;
-  const src = header ? BRAND_ASSETS.dark : BRAND_ASSETS.light;
-
   if (variant === "icon") {
     return {
       src: BRAND_ASSETS.icon,
@@ -51,28 +43,39 @@ function getLogoFrame(variant: LogoVariant): LogoFrame {
     };
   }
 
-  if (variant === "navbar" || variant === "dark") {
+  if (variant === "navbar") {
     return {
-      src,
-      width: aspect.width,
-      height: aspect.height,
+      src: BRAND_ASSETS.header,
+      width: LOGO_HEADER_ASPECT.width,
+      height: LOGO_HEADER_ASPECT.height,
       frameClassName: LOGO_NAVBAR_FRAME,
     };
   }
 
+  if (variant === "dark") {
+    return {
+      src: BRAND_ASSETS.dark,
+      width: LOGO_HEADER_ASPECT.width,
+      height: LOGO_HEADER_ASPECT.height,
+      frameClassName: LOGO_NAVBAR_FRAME,
+    };
+  }
+
+  const lightFrame = {
+    src: BRAND_ASSETS.light,
+    width: LOGO_LIGHT_ASPECT.width,
+    height: LOGO_LIGHT_ASPECT.height,
+  };
+
   if (variant === "footer") {
     return {
-      src,
-      width: aspect.width,
-      height: aspect.height,
+      ...lightFrame,
       frameClassName: LOGO_FOOTER_FRAME,
     };
   }
 
   return {
-    src,
-    width: aspect.width,
-    height: aspect.height,
+    ...lightFrame,
     frameClassName: LOGO_LIGHT_SECTION_FRAME,
   };
 }

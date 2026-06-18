@@ -11,13 +11,15 @@ export const BRAND = {
 } as const;
 
 export const BRAND_ASSETS = {
-  /** Navbar / dark navy header */
-  header: "/brand/logo-dark.png",
+  /** Dark navy site header — white wordmark + teal accents */
+  header: "/brand/logo-header.png",
   /** Light background lockup */
   light: "/brand/logo-light.png",
   icon: "/brand/logo-icon.png",
   iconSvg: "/brand/logo-icon.svg",
-  /** @deprecated Use BRAND_ASSETS.header */
+  /** Source SVG for header lockup (reference / regeneration) */
+  headerSvg: "/brand/logo-header.svg",
+  /** @deprecated Use BRAND_ASSETS.header for navbar; legacy asset */
   dark: "/brand/logo-dark.png",
   /** @deprecated Use BRAND_ASSETS.light */
   primary: "/brand/logo-light.png",
