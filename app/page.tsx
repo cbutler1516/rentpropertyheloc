@@ -1,27 +1,33 @@
 import { CinematicHero } from "@/components/home/cinematic-hero";
-import { BuiltForPartnersSection } from "@/components/home/built-for-partners-section";
-import { DealAnalyzerFeaturedSection } from "@/components/home/deal-analyzer-featured-section";
+import { CtaBand } from "@/components/home/cta-band";
 import { FaqSection } from "@/components/home/faq-section";
-import { LearnFromChrisSection } from "@/components/home/learn-from-chris-section";
-import { MortgageSolutionsSection } from "@/components/home/mortgage-solutions-section";
-import { PlaybookApproachSection } from "@/components/home/playbook-approach-section";
-import { WhatWeDoSection } from "@/components/home/what-we-do-section";
+import { HomeExplainerVideoSection } from "@/components/home/home-explainer-video-section";
+import { InvestorUseCasesSection } from "@/components/home/investor-use-cases-section";
 import { BorrowerTrustSection } from "@/components/trust/borrower-trust-section";
-import { PLAYBOOK_HERO, SEO_KEYWORDS } from "@/lib/playbook-content";
-import { getDefaultOpenGraphImages } from "@/lib/og";
+import { CompanyTrustSection } from "@/components/trust/company-trust-section";
+import { HERO_HEADLINE, HERO_SUPPORTING_COPY } from "@/lib/brand-positioning";
+import { BRAND, BRAND_ASSETS, LOGO_LIGHT_ASPECT } from "@/lib/brand";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: `${SITE_NAME} | Modern Mortgage Company & Strategy Platform`,
-  description: PLAYBOOK_HERO.subheadline,
-  keywords: [...SEO_KEYWORDS],
+  title: `${SITE_NAME} | Rental & Owner-Occupied HELOC Review`,
+  description: HERO_SUPPORTING_COPY,
   alternates: { canonical: SITE_URL },
   openGraph: {
-    title: PLAYBOOK_HERO.headline,
-    description: PLAYBOOK_HERO.subheadline,
+    title: HERO_HEADLINE,
+    description: HERO_SUPPORTING_COPY,
     url: SITE_URL,
-    images: getDefaultOpenGraphImages(),
+    siteName: SITE_NAME,
+    type: "website",
+    images: [
+      {
+        url: BRAND_ASSETS.light,
+        width: LOGO_LIGHT_ASPECT.width,
+        height: LOGO_LIGHT_ASPECT.height,
+        alt: BRAND.name,
+      },
+    ],
   },
 };
 
@@ -29,13 +35,11 @@ export default function HomePage() {
   return (
     <>
       <CinematicHero />
-      <WhatWeDoSection />
-      <MortgageSolutionsSection />
-      <PlaybookApproachSection />
-      <DealAnalyzerFeaturedSection />
-      <BuiltForPartnersSection />
-      <LearnFromChrisSection />
       <BorrowerTrustSection variant="hero" />
+      <CompanyTrustSection />
+      <HomeExplainerVideoSection />
+      <InvestorUseCasesSection />
+      <CtaBand />
       <FaqSection />
     </>
   );

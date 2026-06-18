@@ -12,7 +12,7 @@ export function buildOrganizationSchema() {
     telephone: PLATFORM_PHONE_TEL,
     logo: `${SITE_URL}${BRAND_ASSETS.light}`,
     description:
-      "Modern mortgage company and financing strategy platform — Deal Analyzer, playbook reports, and strategy-first guidance for buyers, investors, agents, and commercial clients.",
+      "HELOC and home equity review platform for homeowners and investors exploring equity options.",
     areaServed: ["Washington", "Seattle", "United States"],
   };
 }

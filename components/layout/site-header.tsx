@@ -96,12 +96,12 @@ export function SiteHeader() {
           <Logo variant="navbar" priority />
         </Link>
 
-        <nav className="hidden items-center gap-3 xl:flex 2xl:gap-5">
+        <nav className="hidden items-center gap-6 md:flex lg:gap-8">
           {NAV_LINKS.map((link) => (
             <SiteNavLink
               key={link.href}
               href={link.href}
-              className="text-xs text-white/65 transition hover:text-white 2xl:text-sm"
+              className="text-sm text-white/65 transition hover:text-white"
             >
               {link.label}
             </SiteNavLink>

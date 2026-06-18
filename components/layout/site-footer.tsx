@@ -4,7 +4,7 @@ import { FooterNavLink } from "@/components/layout/footer-nav-link";
 import { PlatformPhoneLink } from "@/components/trust/platform-phone-link";
 import { CtaLink } from "@/components/ui/cta-link";
 import { PLATFORM_STATEMENT } from "@/lib/brand-positioning";
-import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL, PRIMARY_CTA_SHORT } from "@/lib/cta";
+import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from "@/lib/cta";
 import { FOOTER_PLATFORM_DISCLOSURE } from "@/lib/legal/compliance";
 import { PRIVACY_POLICY_PATH, TERMS_OF_USE_PATH } from "@/lib/legal/routes";
 import { FOOTER_LINKS, SITE_NAME, SITE_URL } from "@/lib/site";
@@ -27,8 +27,7 @@ export function SiteFooter() {
               className="mt-5 w-full sm:mt-6 sm:w-auto"
               ctaLocation="footer"
             >
-              <span className="md:hidden">{PRIMARY_CTA_SHORT}</span>
-              <span className="hidden md:inline">{PRIMARY_CTA_LABEL}</span>
+              {PRIMARY_CTA_LABEL}
             </CtaLink>
             <p className="mt-4 text-sm">
               <PlatformPhoneLink />

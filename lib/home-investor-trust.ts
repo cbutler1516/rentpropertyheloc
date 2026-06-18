@@ -1,14 +1,14 @@
-export const HOME_INVESTOR_TRUST_HEADLINE = "Why clients use The Loan Playbook";
+export const HOME_INVESTOR_TRUST_HEADLINE = "Why property owners start here";
 
 export const HOME_INVESTOR_TRUST_SUBHEADLINE =
-  "A modern mortgage company — strategy, Deal Analyzer technology, and human guidance for purchase, equity, and investor goals.";
+  "A focused HELOC review for primary residences, second homes, and rental properties—technology-powered with licensed human guidance.";
 
 export const HOME_INVESTOR_TRUST_CARDS = [
   {
     id: "investor-focused",
     title: "Investor Focused",
     description:
-      "Built specifically for rental property owners—not primary residence lending.",
+      "HELOC and home equity review for homeowners and investors exploring equity options.",
   },
   {
     id: "human-review",

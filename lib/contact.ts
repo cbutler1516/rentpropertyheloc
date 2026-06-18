@@ -1,6 +1,6 @@
 /** Platform inquiries */
 export const PLATFORM_EMAIL =
-  process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@theloanplaybook.com";
+  process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@rentpropertyheloc.com";
 
 /** @deprecated Use PLATFORM_EMAIL */
 export const CONTACT_EMAIL = PLATFORM_EMAIL;

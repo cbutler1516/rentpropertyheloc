@@ -1,31 +1,32 @@
-export const PRIMARY_CTA_LABEL = "Build My Loan Playbook";
-export const PRIMARY_CTA_SHORT = "Build Playbook";
+export const PRIMARY_CTA_LABEL = "Find My Rate";
+export const PRIMARY_CTA_SHORT = "Find My Rate";
 export const FUNNEL_SUBMIT_LABEL = "Submit My Review";
-export const NAV_CTA_LABEL = "Build My Loan Playbook";
-export const SECONDARY_CTA_LABEL = "Explore the Deal Analyzer";
+export const NAV_CTA_LABEL = "Find My Rate";
 export const HERO_CTA_LABEL = "Find My Rate";
 
 export const START_YOUR_REVIEW_LABEL = "Start Your Review";
 
 export const PRIMARY_CTA_HREF = "/check-options";
-export const DEAL_ANALYZER_HREF = "/deal-analyzer";
 export const FUNNEL_SECTION_ID = "funnel";
 export const HEADER_FUNNEL_HREF = `/check-options#${FUNNEL_SECTION_ID}`;
 export const HERO_FUNNEL_HREF = "/check-options?step=1";
-export const SECONDARY_CTA_HREF = "/deal-analyzer";
-
-export const ANALYZE_SCENARIO_LABEL = "Analyze My Scenario";
-export const ANALYZE_SCENARIO_HREF = "/check-options?step=1";
-export const STRATEGY_CALL_HREF = "/strategy-call";
-export const SCHEDULE_STRATEGY_CALL_LABEL = "Schedule Strategy Call";
-export const LAUNCH_ANALYZER_LABEL = "Launch the Deal Analyzer";
-export const LAUNCH_ANALYZER_HREF = "/check-options?step=1";
 
 export const CTA_REASSURANCE =
-  "Strategy-first review · Educational estimates · No obligation.";
+  "Licensed guidance · ~60 seconds · No obligation.";
 
 export const COMPLIANCE_SHORT =
-  "Not a commitment to lend. Subject to credit, income, asset, property, and program approval. Educational estimates only. Equal Housing Opportunity.";
+  "Programs may be available for qualifying properties, subject to approval, property eligibility, and lender guidelines. Not a commitment to lend.";
 
 export const COMPLIANCE_TIMING =
-  "Timelines depend on documentation, appraisal, and lender guidelines.";
+  "Funding possible in as little as 7 days when documentation and third-party items are complete.";
+
+/** @deprecated Legacy routes — redirect to HELOC funnel for build compatibility */
+export const DEAL_ANALYZER_HREF = PRIMARY_CTA_HREF;
+export const LAUNCH_ANALYZER_HREF = PRIMARY_CTA_HREF;
+export const LAUNCH_ANALYZER_LABEL = PRIMARY_CTA_LABEL;
+export const SECONDARY_CTA_HREF = PRIMARY_CTA_HREF;
+export const SECONDARY_CTA_LABEL = PRIMARY_CTA_LABEL;
+export const ANALYZE_SCENARIO_HREF = PRIMARY_CTA_HREF;
+export const ANALYZE_SCENARIO_LABEL = PRIMARY_CTA_LABEL;
+export const STRATEGY_CALL_HREF = PRIMARY_CTA_HREF;
+export const SCHEDULE_STRATEGY_CALL_LABEL = PRIMARY_CTA_LABEL;

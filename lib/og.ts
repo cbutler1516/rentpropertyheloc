@@ -1,9 +1,9 @@
-import { BRAND, BRAND_ASSETS, OG_IMAGE_ASPECT } from "@/lib/brand";
+import { BRAND, BRAND_ASSETS, LOGO_LIGHT_ASPECT } from "@/lib/brand";
 
 export const DEFAULT_OG_IMAGE = {
-  url: BRAND_ASSETS.og,
-  width: OG_IMAGE_ASPECT.width,
-  height: OG_IMAGE_ASPECT.height,
+  url: BRAND_ASSETS.light,
+  width: LOGO_LIGHT_ASPECT.width,
+  height: LOGO_LIGHT_ASPECT.height,
   alt: BRAND.name,
 } as const;
 
