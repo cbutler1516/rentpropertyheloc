@@ -90,7 +90,7 @@ export function Logo({ variant = "navbar", className, priority = false }: LogoPr
           src={src}
           alt={BRAND.name}
           fill
-          sizes="(max-width: 640px) 180px, 260px"
+          sizes="(max-width: 767px) 140px, 180px"
           priority={priority || variant === "navbar"}
           className="object-contain object-left"
         />

@@ -1,0 +1,28 @@
+<svg width="814" height="324" viewBox="0 0 814 324" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rent Property HELOC">
+  <defs>
+    <linearGradient id="hexGrad" x1="96" y1="416" x2="416" y2="96" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17D4D4"/>
+      <stop offset="1" stop-color="#082B5B"/>
+    </linearGradient>
+    <linearGradient id="barGrad" x1="160" y1="360" x2="352" y2="280" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17D4D4"/>
+      <stop offset="1" stop-color="#00B8D9"/>
+    </linearGradient>
+    <linearGradient id="helocGrad" x1="280" y1="0" x2="780" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17D4D4"/>
+      <stop offset="1" stop-color="#00B8D9"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(10 6) scale(0.595)">
+    <path d="M256 72L416 164V348L256 440L96 348V164L256 72Z" stroke="url(#hexGrad)" stroke-width="22" stroke-linejoin="round"/>
+    <path d="M176 292V220L256 160L336 220V292" stroke="#FFFFFF" stroke-width="20" stroke-linejoin="round"/>
+    <rect x="236" y="236" width="40" height="40" rx="4" stroke="#FFFFFF" stroke-width="8"/>
+    <rect x="188" y="312" width="36" height="72" rx="6" fill="url(#barGrad)"/>
+    <rect x="238" y="288" width="36" height="96" rx="6" fill="url(#barGrad)"/>
+    <rect x="288" y="264" width="36" height="120" rx="6" fill="url(#barGrad)"/>
+    <rect x="338" y="240" width="36" height="144" rx="6" fill="url(#barGrad)"/>
+  </g>
+  <text x="292" y="98" fill="#FFFFFF" font-family="Inter, Arial, Helvetica, sans-serif" font-size="46" font-weight="700" letter-spacing="0.08em">RENT</text>
+  <text x="292" y="156" fill="#FFFFFF" font-family="Inter, Arial, Helvetica, sans-serif" font-size="46" font-weight="700" letter-spacing="0.08em">PROPERTY</text>
+  <text x="290" y="278" fill="url(#helocGrad)" font-family="Inter, Arial, Helvetica, sans-serif" font-size="108" font-weight="800" letter-spacing="0.05em">HELOC</text>
+</svg>

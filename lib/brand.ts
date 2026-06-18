@@ -11,36 +11,37 @@ export const BRAND = {
 } as const;
 
 export const BRAND_ASSETS = {
-  /** Dark navy site header — white wordmark + teal accents */
-  header: "/brand/logo-header.png",
-  /** Light background lockup */
-  light: "/brand/logo-light.png",
+  /** Dark navy site header — horizontal lockup, white wordmark + teal accents */
+  header: "/brand/rph-logo-header-horizontal.png",
+  /** Light background horizontal lockup */
+  light: "/brand/rph-logo-light-horizontal.png",
   icon: "/brand/logo-icon.png",
   iconSvg: "/brand/logo-icon.svg",
   /** Source SVG for header lockup (reference / regeneration) */
-  headerSvg: "/brand/logo-header.svg",
+  headerSvg: "/brand/rph-logo-header-horizontal.svg",
+  lightSvg: "/brand/rph-logo-light-horizontal.svg",
   /** @deprecated Use BRAND_ASSETS.header for navbar; legacy asset */
   dark: "/brand/logo-dark.png",
   /** @deprecated Use BRAND_ASSETS.light */
-  primary: "/brand/logo-light.png",
+  primary: "/brand/rph-logo-light-horizontal.png",
   /** @deprecated Use BRAND_ASSETS.light */
-  horizontal: "/brand/logo-horizontal.png",
+  horizontal: "/brand/rph-logo-light-horizontal.png",
   /** @deprecated Use BRAND_ASSETS.light */
   stacked: "/brand/logo-stacked.png",
 } as const;
 
-export const LOGO_HEADER_ASPECT = {
-  width: 858,
-  height: 349,
-} as const;
-
-/** @deprecated Use LOGO_HEADER_ASPECT */
-export const LOGO_DARK_ASPECT = LOGO_HEADER_ASPECT;
-
-export const LOGO_LIGHT_ASPECT = {
+/** Shared horizontal lockup aspect ratio (814×324) */
+export const LOGO_HORIZONTAL_ASPECT = {
   width: 814,
   height: 324,
 } as const;
+
+export const LOGO_HEADER_ASPECT = LOGO_HORIZONTAL_ASPECT;
+
+/** @deprecated Use LOGO_HORIZONTAL_ASPECT */
+export const LOGO_DARK_ASPECT = LOGO_HORIZONTAL_ASPECT;
+
+export const LOGO_LIGHT_ASPECT = LOGO_HORIZONTAL_ASPECT;
 
 /** @deprecated Use LOGO_LIGHT_ASPECT */
 export const LOGO_PRIMARY_ASPECT = LOGO_LIGHT_ASPECT;
@@ -62,11 +63,12 @@ export type LogoVariant =
   | "monochrome"
   | "light";
 
+/** Width-driven frame — height follows 814:324 aspect ratio */
 export const LOGO_NAVBAR_FRAME =
-  "relative h-9 w-[130px] max-w-[145px] md:h-11 md:w-[240px] md:max-w-[260px]";
+  "relative block aspect-[814/324] w-[140px] shrink-0 md:w-[180px]";
 
 export const LOGO_FOOTER_FRAME =
-  "relative h-9 w-[150px] max-w-[180px] sm:h-10 sm:w-[220px] sm:max-w-[240px]";
+  "relative block aspect-[814/324] w-[160px] shrink-0 sm:w-[190px]";
 
 export const LOGO_LIGHT_SECTION_FRAME =
-  "relative h-10 w-[170px] max-w-[180px] sm:h-11 sm:w-[240px] sm:max-w-[280px]";
+  "relative block aspect-[814/324] w-[170px] shrink-0 sm:w-[200px]";

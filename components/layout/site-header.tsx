@@ -88,10 +88,10 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-brand-dark/90 backdrop-blur-2xl">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 px-3 sm:gap-4 sm:px-6 md:h-[4.25rem] lg:px-8">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-3 sm:gap-5 sm:px-6 md:h-[4.25rem] md:gap-8 lg:px-8">
         <Link
           href="/"
-          className="rounded-lg py-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="mr-1 shrink-0 rounded-lg py-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:mr-3"
         >
           <Logo variant="navbar" priority />
         </Link>
