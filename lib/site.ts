@@ -27,8 +27,10 @@ export const FOOTER_LINKS = {
   resources: [
     { href: "/#faq", label: "FAQ" },
     { href: "/washington-heloc", label: "Washington HELOC" },
-    { href: "/california-heloc", label: "California HELOC" },
     { href: "/texas-heloc", label: "Texas HELOC" },
+    { href: "/florida-heloc", label: "Florida HELOC" },
+    { href: "/arizona-heloc", label: "Arizona HELOC" },
+    { href: "/california-heloc", label: "California HELOC" },
     { href: "/home-equity-line-of-credit", label: "HELOC guide" },
     { href: "/licensing-information", label: "Licensing" },
   ],

@@ -8,7 +8,7 @@ export const BRAND_SUPPORTING_COPY =
 export const HERO_HEADLINE = "Keep Your Rate. Access Your Equity.";
 
 export const HERO_SUPPORTING_COPY =
-  "Explore HELOC and home equity financing options for primary residences, second homes, and investment properties in about 60 seconds.";
+  "See how much capital may be available from your home, rental property, or investment portfolio — in about 60 seconds.";
 
 export const SEO_GUIDANCE_TAGLINE =
   "Compare home equity options for primary residences, second homes, and investment properties with guidance from licensed financing specialists and lending partners.";

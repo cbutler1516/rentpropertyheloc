@@ -285,6 +285,11 @@ body {
   .site-anchor-section {
     scroll-margin-top: 4.25rem;
   }
+
+  .funnel-confirmation-shell {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
 }
 
 .funnel-form-field:focus,

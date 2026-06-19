@@ -5,7 +5,7 @@ export const BRAND = {
   tagline: "The modern operating system for residential rental property equity.",
   headline: "Keep Your Rate. Access Your Equity.",
   subheadline:
-    "Explore HELOC and home equity financing options for primary residences, second homes, and investment properties in about 60 seconds.",
+    "See how much capital may be available from your home, rental property, or investment portfolio — in about 60 seconds.",
   descriptor:
     "A streamlined review for homeowners and investors exploring HELOC and home equity options—subject to approval.",
 } as const;

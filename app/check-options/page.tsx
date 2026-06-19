@@ -4,14 +4,14 @@ import { Container } from "@/components/layout/container";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Build My Loan Playbook | Financing Review",
+  title: "Find My Rate | HELOC Review",
   description:
-    "Start a personalized mortgage strategy review with The Loan Playbook. Compare options that may be available — subject to credit, income, asset, property, and program approval.",
+    "Start a personalized HELOC and home equity review in about 60 seconds. Primary residences, rentals, and investment properties—subject to approval.",
 };
 
 export default function CheckOptionsPage() {
   return (
-    <div className="min-h-[100dvh] bg-[var(--color-surface-50)] py-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-[var(--color-ink)] sm:py-6 lg:py-8">
+    <div className="min-h-[100dvh] overflow-x-clip bg-[var(--color-surface-50)] py-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-[var(--color-ink)] sm:py-6 lg:py-8">
       <FunnelPageTracker />
       <Container className="funnel-page-container mx-auto w-full max-w-3xl px-4 sm:max-w-3xl sm:px-6 lg:max-w-4xl lg:px-8">
         <CheckOptionsPageContent />

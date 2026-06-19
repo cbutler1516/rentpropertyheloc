@@ -3,6 +3,7 @@
 import { CredibilityBar } from "@/components/marketing/credibility-bar";
 import { Section, SectionHeader } from "@/components/layout/section";
 import { Reveal, StaggerItem, StaggerReveal } from "@/components/motion/reveal";
+import { FaqJsonLd } from "@/components/seo/faq-json-ld";
 import { CtaLink } from "@/components/ui/cta-link";
 import { StateAvailabilitySection } from "@/components/trust/state-availability-section";
 import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from "@/lib/cta";
@@ -11,6 +12,7 @@ import { FAQ_ITEMS } from "@/lib/home-content";
 export function FaqSection() {
   return (
     <Section id="faq" divider className="bg-white">
+      <FaqJsonLd />
       <Reveal>
         <SectionHeader
           tone="light"

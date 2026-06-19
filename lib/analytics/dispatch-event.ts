@@ -3,6 +3,7 @@ import { normalizeEventPayload } from "@/lib/analytics/payload";
 import { enrichRetargetingParams } from "@/lib/analytics/retargeting";
 import { recordAnalyticsSessionEvent } from "@/lib/analytics/session-tracker";
 import { getTrackingConfig } from "@/lib/analytics/tracking-config";
+import { trackLeadSubmitConversion } from "@/lib/google-ads";
 
 function sanitizeParams(
   params?: ConversionEventPayload,
@@ -80,19 +81,6 @@ const META_STANDARD_EVENTS: Partial<Record<ConversionEventName, string>> = {
   fast_track_lead: "Lead",
 };
 
-function trackGoogleAdsLeadConversion(
-  googleAdsId: string,
-  conversionLabel: string,
-  params?: Record<string, string | number | boolean>,
-) {
-  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
-
-  window.gtag("event", "conversion", {
-    send_to: `${googleAdsId}/${conversionLabel}`,
-    ...params,
-  });
-}
-
 function trackClarityEvent(name: ConversionEventName) {
   if (typeof window === "undefined" || typeof window.clarity !== "function") return;
 
@@ -131,16 +119,8 @@ export function dispatchAnalyticsEvent(
       trackMetaEvent(name, cleaned);
     }
 
-    if (
-      name === "lead_submitted" &&
-      config.googleAdsId &&
-      config.googleAdsLeadConversionLabel
-    ) {
-      trackGoogleAdsLeadConversion(
-        config.googleAdsId,
-        config.googleAdsLeadConversionLabel,
-        cleaned,
-      );
+    if (name === "lead_submitted") {
+      trackLeadSubmitConversion(cleaned);
     }
 
     if (config.clarityProjectId) {

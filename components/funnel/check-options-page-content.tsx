@@ -1,5 +1,6 @@
 "use client";
 
+import { FunnelTrustStrip } from "@/components/funnel/funnel-trust-strip";
 import { FunnelComplianceNote } from "@/components/funnel/funnel-compliance-note";
 import { FunnelIntro } from "@/components/funnel/funnel-intro";
 import { LeadFunnel } from "@/components/funnel/lead-funnel";
@@ -28,7 +29,12 @@ export function CheckOptionsPageContent() {
 
   return (
     <div id={FUNNEL_SECTION_ID} className="site-anchor-section">
-      {!isPostSubmit ? <FunnelIntro /> : null}
+      {!isPostSubmit ? (
+        <>
+          <FunnelIntro />
+          <FunnelTrustStrip />
+        </>
+      ) : null}
       <Suspense
         fallback={
           <div className="card-surface h-[70dvh] animate-pulse rounded-2xl" aria-hidden />

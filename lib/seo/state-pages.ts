@@ -70,9 +70,187 @@ const STATES: StateDef[] = [
   },
 ];
 
+type StateEnhancement = {
+  metadata?: Partial<SeoPageConfig["metadata"]>;
+  hero?: Partial<SeoPageConfig["hero"]>;
+  whatItIs?: Partial<SeoPageConfig["whatItIs"]>;
+  secondPosition?: SeoPageConfig["secondPosition"];
+  relatedPaths?: string[];
+};
+
+/** Phase 1 — priority state hubs with richer unique copy */
+const PHASE1_STATE_ENHANCEMENTS: Record<string, StateEnhancement> = {
+  washington: {
+    metadata: {
+      title: "Washington HELOC & Home Equity Review",
+      description:
+        "Explore Washington HELOC options for Seattle metro homeowners, Puget Sound rentals, and vacation properties—programs may be available, subject to approval.",
+      ogDescription:
+        "Compare Washington home equity paths for primary homes, rentals, and second homes in about 60 seconds—subject to approval.",
+    },
+    hero: {
+      h1: "Washington HELOC options for homeowners and rental investors",
+      intro: undefined,
+    },
+    whatItIs: {
+      title: "Washington home equity programs overview",
+      paragraphs: [
+        "Washington property owners—from Seattle and Bellevue to Spokane and Tacoma—may explore revolving HELOC and home equity options on primary residences, second homes, and rental collateral when programs may be available, subject to approval.",
+        "Pacific Northwest markets often carry meaningful equity. A second-lien HELOC may help preserve an existing first-mortgage rate while accessing capital for renovations, reserves, or the next acquisition—when combined loan-to-value and guidelines allow.",
+      ],
+    },
+    secondPosition: {
+      title: "Second home & investment property HELOC in Washington",
+      paragraphs: [
+        "Vacation cabins, Olympic Peninsula getaways, and non-owner-occupied rentals in Washington may follow different occupancy paths than primary-residence HELOCs—subject to approval, property review, and lender guidelines.",
+        "Investors with Washington rental collateral may explore revolving equity for acquisitions, unit turns, or portfolio reserves without automatically replacing a favorable first mortgage.",
+      ],
+    },
+    relatedPaths: [
+      "/owner-occupied-heloc",
+      "/rental-property-heloc",
+      "/second-home-heloc",
+      "/heloc-for-primary-residence",
+      "/home-equity-options",
+    ],
+  },
+  texas: {
+    metadata: {
+      title: "Texas HELOC & Home Equity Review",
+      description:
+        "Explore Texas HELOC options across Dallas, Houston, Austin, and San Antonio for primary homes, rentals, and investment properties—subject to approval.",
+      ogDescription:
+        "Compare Texas home equity paths for homeowners and investors—about 60 seconds to start, subject to approval.",
+    },
+    hero: {
+      h1: "Texas HELOC options for homeowners and property investors",
+    },
+    whatItIs: {
+      title: "Texas home equity overview",
+      paragraphs: [
+        "Texas homeowners and investors may explore HELOC and home equity line options secured by primary residences, second homes, and rental properties—availability varies by property type, equity, credit, and lender guidelines.",
+        "Many Texas property owners prefer a second-lien HELOC to keep an existing first mortgage in place while funding renovations, debt repositioning, or the next rental acquisition—subject to approval.",
+      ],
+    },
+    secondPosition: {
+      title: "Second home & rental property HELOC in Texas",
+      paragraphs: [
+        "Gulf Coast second homes, Hill Country retreats, and Texas rental portfolios may qualify for non-owner-occupied or second-home HELOC programs when collateral, equity, and borrower profile align with guidelines—subject to approval.",
+        "Revolving lines may suit active acquirers who want flexible capital between Dallas, Houston, and Austin metro deals.",
+      ],
+    },
+    relatedPaths: [
+      "/owner-occupied-heloc",
+      "/rental-property-heloc",
+      "/investment-property-heloc",
+      "/heloc-for-primary-residence",
+      "/cash-out-refi-vs-heloc",
+    ],
+  },
+  florida: {
+    metadata: {
+      title: "Florida HELOC & Home Equity Review",
+      description:
+        "Explore Florida HELOC options for primary residences, snowbird second homes, and Sun Belt rentals—programs may be available, subject to approval.",
+      ogDescription:
+        "Compare Florida home equity options for owners and investors—subject to approval, not a commitment to lend.",
+    },
+    hero: {
+      h1: "Florida HELOC options for homeowners, snowbirds, and investors",
+    },
+    whatItIs: {
+      title: "Florida home equity programs overview",
+      paragraphs: [
+        "Florida property owners—including full-time residents, seasonal second-home owners, and rental investors—may explore HELOC paths when equity and program guidelines align, subject to approval.",
+        "Coastal condos, single-family rentals, and owner-occupied homes follow different occupancy rules. An educational review helps compare structures that may fit your property use.",
+      ],
+    },
+    secondPosition: {
+      title: "Second home & investment property HELOC in Florida",
+      paragraphs: [
+        "Snowbird second homes and Florida vacation properties may qualify for dedicated second-home HELOC programs separate from primary-residence and full-time rental paths—subject to approval and occupancy verification.",
+        "Investors with Florida rental collateral may use revolving equity for reserves, hurricane-season repairs, or the next acquisition—when lender guidelines allow.",
+      ],
+    },
+    relatedPaths: [
+      "/second-home-heloc",
+      "/vacation-home-heloc",
+      "/rental-property-heloc",
+      "/owner-occupied-heloc",
+      "/home-equity-options",
+    ],
+  },
+  arizona: {
+    metadata: {
+      title: "Arizona HELOC & Home Equity Review",
+      description:
+        "Explore Arizona HELOC options in Phoenix, Tucson, and statewide markets for primary homes, rentals, and second homes—subject to approval.",
+      ogDescription:
+        "Compare Arizona home equity paths for homeowners and investors in about 60 seconds—subject to approval.",
+    },
+    hero: {
+      h1: "Arizona HELOC options for homeowners and rental investors",
+    },
+    whatItIs: {
+      title: "Arizona home equity overview",
+      paragraphs: [
+        "Arizona property owners in growth markets like Phoenix and Tucson may explore revolving HELOC options on primary residences, desert second homes, and rental collateral—programs may be available, subject to approval.",
+        "High-equity Arizona files often compare a second-lien HELOC against cash-out refinance to preserve an existing first rate—terms vary by lender and property type.",
+      ],
+    },
+    secondPosition: {
+      title: "Second home & investment property HELOC in Arizona",
+      paragraphs: [
+        "Desert vacation homes and Arizona long-term rentals may follow separate investor or second-home underwriting paths—subject to approval, property eligibility, and state availability.",
+        "Revolving equity may help fund value-add renovations or down payments on the next Phoenix-metro rental—subject to program use-of-funds rules.",
+      ],
+    },
+    relatedPaths: [
+      "/owner-occupied-heloc",
+      "/rental-property-heloc",
+      "/heloc-on-rental-property",
+      "/heloc-for-primary-residence",
+      "/home-equity-options",
+    ],
+  },
+  california: {
+    metadata: {
+      title: "California HELOC & Home Equity Review",
+      description:
+        "Explore California HELOC options for coastal and inland homeowners, vacation properties, and rental investors—programs may be available, subject to approval.",
+      ogDescription:
+        "Compare California home equity paths across primary, second-home, and rental collateral—subject to approval.",
+    },
+    hero: {
+      h1: "California HELOC options for high-equity homeowners and investors",
+    },
+    whatItIs: {
+      title: "California home equity programs overview",
+      paragraphs: [
+        "California's high-equity markets—from Los Angeles and San Diego to the Bay Area and Central Valley—may support owner-occupied, second-home, and rental HELOC programs when guidelines allow, subject to approval.",
+        "Many California owners explore second-lien HELOCs to access substantial equity without resetting a historically low first-mortgage rate—combined loan-to-value limits apply.",
+      ],
+    },
+    secondPosition: {
+      title: "Second home & investment property HELOC in California",
+      paragraphs: [
+        "Mountain cabins, wine-country second homes, and California rental portfolios each follow distinct occupancy and documentation paths—subject to approval and property review.",
+        "Investors may use revolving lines for ADU projects, unit renovations, or acquisition reserves across multi-market portfolios.",
+      ],
+    },
+    relatedPaths: [
+      "/owner-occupied-heloc",
+      "/home-equity-options",
+      "/rental-property-heloc",
+      "/second-home-heloc",
+      "/cash-out-refi-vs-heloc",
+    ],
+  },
+};
+
 function buildStatePage(state: StateDef): SeoPageConfig {
   const path = `/${state.slug}-heloc`;
-  return {
+  const base: SeoPageConfig = {
     path,
     metadata: {
       title: `${state.name} HELOC Options`,
@@ -172,6 +350,24 @@ function buildStatePage(state: StateDef): SeoPageConfig {
       areaServed: state.name,
       serviceType: `${state.name} home equity line of credit review`,
     },
+  };
+
+  const enhancement = PHASE1_STATE_ENHANCEMENTS[state.slug];
+  if (!enhancement) return base;
+
+  return {
+    ...base,
+    metadata: { ...base.metadata, ...enhancement.metadata },
+    hero: {
+      ...base.hero,
+      ...enhancement.hero,
+      intro: enhancement.hero?.intro ?? base.hero.intro,
+    },
+    whatItIs: enhancement.whatItIs
+      ? { ...base.whatItIs, ...enhancement.whatItIs }
+      : base.whatItIs,
+    secondPosition: enhancement.secondPosition ?? base.secondPosition,
+    relatedPaths: enhancement.relatedPaths ?? base.relatedPaths,
   };
 }
 

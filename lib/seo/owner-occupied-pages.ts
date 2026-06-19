@@ -110,8 +110,8 @@ export const OWNER_OCCUPIED_SEO_PAGES: Record<OwnerOccupiedSeoPath, SeoPageConfi
     relatedPaths: [
       "/heloc-for-primary-residence",
       "/home-equity-options",
+      "/cash-out-refi-vs-heloc",
       "/home-equity-line-of-credit",
-      "/rental-property-heloc",
       "/washington-heloc",
     ],
     service: {

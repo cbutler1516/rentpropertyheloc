@@ -1,3 +1,47 @@
+export const FAQ_ITEMS = [
+  {
+    question: "Can I access equity without refinancing my first mortgage?",
+    answer:
+      "Often, yes. A HELOC is typically a second-lien revolving line that may let you access equity while keeping your existing first mortgage in place—when combined loan-to-value, credit, and program guidelines allow. This is not a guarantee of approval or specific terms.",
+  },
+  {
+    question: "Can I get a HELOC on a rental property?",
+    answer:
+      "Revolving HELOC programs on non-owner-occupied rental collateral may be available for qualifying property owners, subject to approval, property type, equity, credit, and lender guidelines. Investor paths are underwritten differently than primary-residence products.",
+  },
+  {
+    question: "Can I get a HELOC on a second home?",
+    answer:
+      "Second-home and vacation-property HELOC programs may be available separately from primary-residence and rental paths, subject to approval, occupancy verification, equity, and state availability. Guidelines vary by lender.",
+  },
+  {
+    question: "How much equity do I need?",
+    answer:
+      "Combined loan-to-value limits vary by occupancy, property type, credit, and program. Many files require meaningful equity after existing liens—limits are lender-specific and subject to approval. A review may discuss illustrative ranges only.",
+  },
+  {
+    question: "Is this a loan application?",
+    answer:
+      "No. This is an educational review to explore financing options that may be available. It is not a loan application, approval, or commitment to lend. A licensed specialist can explain next steps if you choose to proceed.",
+  },
+  {
+    question: "How quickly will someone review my request?",
+    answer:
+      "Many requests receive follow-up within one business day when contact information is complete. Funding timelines depend on documentation, third-party items, and lender processing—subject to approval. Faster timelines are not guaranteed.",
+  },
+  {
+    question: "Will this affect my credit?",
+    answer:
+      "Starting a review does not by itself mean a hard credit inquiry. If you move forward with a full application, a licensed specialist can explain when credit is accessed and how inquiries may appear on your report.",
+  },
+  {
+    question: "What types of properties can be reviewed?",
+    answer:
+      "Primary residences, second homes, vacation properties, and rental or investment properties may be reviewed on different occupancy paths—subject to approval and property eligibility. Share your address and how you use the property to follow the right path.",
+  },
+] as const;
+
+/** @deprecated Import FAQ_ITEMS directly */
 export const HERO_STATS = [
   { label: "Typical draw period", value: "10 years" },
   { label: "Collateral focus", value: "Residential property" },
@@ -90,9 +134,9 @@ export const PROGRAM_HIGHLIGHTS = [
     icon: "shield",
   },
   {
-    title: "Rental property focus",
+    title: "Every property type",
     description:
-      "Single-family, condo, 2–4 unit, and STR collateral—not primary-residence consumer HELOCs.",
+      "Primary residences, second homes, rentals, and investment properties—subject to approval.",
     icon: "building",
   },
   {
@@ -113,34 +157,6 @@ export const FUNDING_TIMELINES = [
   { stage: "Day 1–2", detail: "Online intake and property snapshot" },
   { stage: "Day 3–5", detail: "Documentation and third-party ordering" },
   { stage: "Day 5–7+", detail: "Closing may be available when the file is complete" },
-] as const;
-
-export const FAQ_ITEMS = [
-  {
-    question: "Can a HELOC be secured by a rental property?",
-    answer:
-      "Often, yes. Investor-focused programs may be available on non-owner-occupied collateral. Eligibility depends on equity, occupancy, credit, and lender guidelines—subject to approval.",
-  },
-  {
-    question: "How does a HELOC compare with a cash-out refinance?",
-    answer:
-      "A HELOC is revolving—you draw, repay, and access again. A cash-out refinance replaces your mortgage with a new term loan, which can make sense when you want one long-term rate lock.",
-  },
-  {
-    question: "What documentation is typically required?",
-    answer:
-      "Expect property details, leases or rent rolls, entity documents where applicable, and income verification. Alternative documentation paths may be available on select programs.",
-  },
-  {
-    question: "How quickly can funding happen?",
-    answer:
-      "Timelines depend on appraisal, title, and documentation. Closings in as little as 7 days may be available when the file is complete.",
-  },
-  {
-    question: "Is this site offering financial advice?",
-    answer:
-      "No. Content here is educational only. Consult a financing specialist and tax professional before making financing decisions.",
-  },
 ] as const;
 
 export const INVESTOR_EDUCATION_BLOCKS = [

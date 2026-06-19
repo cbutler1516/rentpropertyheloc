@@ -13,7 +13,7 @@ export const INVESTOR_SUPPORT_SECTION = {
   sectionLabel: "What happens after you submit",
   headline: "What Happens After You Submit?",
   subheadline:
-    "Every request is reviewed by a financing specialist to help evaluate potential financing opportunities for your rental property.",
+    "Every request is reviewed by a financing specialist to help evaluate potential home equity and HELOC options for your property.",
   timeline: [
     {
       title: "Property Review",
@@ -32,11 +32,11 @@ export const INVESTOR_SUPPORT_SECTION = {
       description: "Discuss next steps and answer questions.",
     },
   ],
-  benefitsHeadline: "Why clients use The Loan Playbook",
+  benefitsHeadline: "Why property owners start here",
   benefits: [
     "Reviewed by a financing specialist",
     "No full loan application required to start",
-    "Explore financing options and strategies",
+    "Explore HELOC and home equity options",
     "Direct access to our team if questions arise",
   ] as const,
 } as const;
